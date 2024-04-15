@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>登入模擬</title>
+	<style>
+		body {
+			background-color: #faf0e6;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 auto;
+			height: 100vh;
+		}
+
+		.button-container {
+			display: flex;
+		}
+
+		.shape-ex1 {
+			width: 200px;
+			height: 80px;
+			display: block;
+			text-align: center;
+			cursor: pointer;
+			line-height: 40px;
+			color: #000;
+			border: 1px solid #000;
+			transition: all .3s linear;
+			margin: 0 100px;
+			border-radius: 25px;
+			font-size: 32px;
+			background-color: transparent;
+		}
+
+		.shape-ex1:hover {
+			background-color: #ff8c00;
+			color: #fff;
+		}
+
+		a {
+			text-decoration: none;
+			/* 移除链接的下划线 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="button-container">
+		<a href="Login.do"><button class="shape-ex1">會員登入</button></a>
+		<a href="admin-loginPage"> <button class="shape-ex1">管理員登入</button></a>
+	</div>
+<!--	<script>-->
+<!--		function student() {-->
+<!--			fetch("/Login.do", {-->
+<!--				method: "POST"-->
+<!--			}).then((response) => {-->
+<!--				if (response.ok) {-->
+<!--					window.location.href = "index.html"-->
+<!--				}-->
+<!--			})-->
+<!--		}-->
+
+<!--		function admin() {-->
+<!--			fetch("", {-->
+<!--				method: "POST"-->
+<!--			}).then((response) => {-->
+<!--				if (response.ok) {-->
+<!--					window.location.href = "backendPage.html"-->
+<!--				}-->
+<!--			})-->
+<!--		}-->
+<!--	</script>-->
+</body>
+
+</html>
