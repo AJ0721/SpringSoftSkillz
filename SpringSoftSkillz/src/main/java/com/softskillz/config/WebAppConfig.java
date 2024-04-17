@@ -110,7 +110,7 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/Companion/CompanionImg/**").addResourceLocations("/WEB-INF/Companion/CompanionImg/");
 		registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/account/images/");
 		registry.addResourceHandler("/Mall/MallImg/**").addResourceLocations("/WEB-INF/Mall/MallImg/");
-		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/forum/css/");
+		registry.addResourceHandler("/forum/css/**").addResourceLocations("/WEB-INF/forum/css/");
 
 
 	}

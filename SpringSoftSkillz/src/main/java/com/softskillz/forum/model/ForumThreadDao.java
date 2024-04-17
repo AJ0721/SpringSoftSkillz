@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 @Repository
 @Transactional
 public class ForumThreadDao implements InterfaceForumThreadDao {
@@ -25,9 +23,9 @@ public class ForumThreadDao implements InterfaceForumThreadDao {
 
 		try (Session session = sessionFactory.openSession()) {
 
-			return session.createQuery(hql, ForumThreadBean.class).setParameter("keyword", "%" + keyword + "%")
-					.getResultList();
-
+			List<ForumThreadBean> threads = session.createQuery(hql, ForumThreadBean.class)
+					.setParameter("keyword", "%" + keyword + "%").getResultList();
+			return threads;
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
@@ -40,8 +38,8 @@ public class ForumThreadDao implements InterfaceForumThreadDao {
 		String hql = "FROM forumThreadBean;";
 
 		try (Session session = sessionFactory.openSession()) {
-			return session.createQuery(hql, ForumThreadBean.class).getResultList();
-
+			List<ForumThreadBean> threads = session.createQuery(hql, ForumThreadBean.class).getResultList();
+			return threads;
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
@@ -105,7 +103,7 @@ public class ForumThreadDao implements InterfaceForumThreadDao {
 
 		Session session = sessionFactory.openSession();
 		try {
-			
+
 			session.remove(thread);
 			session.flush();
 			return true;
@@ -117,8 +115,6 @@ public class ForumThreadDao implements InterfaceForumThreadDao {
 
 		return false;
 	}
-
-
 
 	public void updateThread(ForumThreadBean thread) {
 
@@ -136,7 +132,7 @@ public class ForumThreadDao implements InterfaceForumThreadDao {
 	@Override
 	public void insertThread(ForumThreadBean thread, Integer studentId, Integer teacherId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	// upload image/video/audio in thread

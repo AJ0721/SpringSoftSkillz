@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.softskillz.forum.model.ForumThreadBean"%>
-<%@ page import="com.softskillz.forum.model.ForumCategoryBean"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/forum/css/basicStyle.css">
+<link rel="stylesheet" href="forum/css/basicStyle.css">
 
 
 <style>
@@ -32,35 +31,26 @@ textarea {
 
 		<div class="threadContainer">
 			<form
-				action="${pageContext.request.contextPath}/forum.insertthread.controller"
+				action="${pageContext.request.contextPath}/forum.updatethread.controller"
 				method="post">
 				<input type="hidden" name="threadId" value="${editThread.threadId}">
 				<div>
-					
-					<label for="category">分類:</label>
-						<select id="category" name="category">
-							<option value="">請選擇文章分類</option>
-						<c:forEach items="${forumCategoryBeans}" var="category">
-							<option value="${category.forumCategoryId}">
-							${category.forumCategoryId} ${category.forumCategoryName}
-							</option>
-					</c:forEach>
-					</select>
+					<label for="category">分類:</label> <span id="category"
+						name="category" value="${editThread.forumCategoryBean.forumCategoryName }" readonly>
+						${editThread.forumCategoryBean.forumCategoryName } </span>
 				</div>
 				<div>
-					<label for="title">標題:</label> 
-					<input type="text" id="title"
-						name="title" value="" required>
+					<label for="title">標題:</label> <input type="text" id="title"
+						name="title" value="${editThread.threadTitle}" required>
 				</div>
 				<div>
 					<label for="content">內文:</label>
-					<textarea id="content" name="content" required></textarea>
+					<textarea id="content" name="content" required>${editThread.threadContent}</textarea>
 				</div>
 		</div>
 
 		<div class="btncontainer">
-			<a
-				href="${pageContext.request.contextPath}/forum/mythreads/{username}">
+			<a href="${pageContext.request.contextPath}/forum.mythreadspage.controller">
 				<button class="opbtn" type="button">取消</button>
 			</a>
 

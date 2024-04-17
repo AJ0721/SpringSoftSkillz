@@ -16,10 +16,12 @@ import com.softskillz.account.model.StudentBean;
 import com.softskillz.account.model.TeacherBean;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@SessionAttributes(names = { "student", "teacher", "category", "forumCategoyBeans", "thread" })
+@SessionAttributes(names = { "student", "teacher", "username"})
 public class InsertThreadController {
 
 	@Autowired
@@ -27,15 +29,17 @@ public class InsertThreadController {
 	@Autowired
 	private InterfaceForumThreadService interfaceForumThreadService;
 
-	@GetMapping("/forum.shownewthread.controller")
-	public String showInsertThreadPage(Model model) {
+	@GetMapping("/forum/newthread/{username}")
+	public String showInsertThreadPage(@PathVariable("username") String username, Model model) {
 
 		StudentBean student = (StudentBean) model.getAttribute("student");
 		TeacherBean teacher = (TeacherBean) model.getAttribute("teacher");
 		
-		if (student ==null || teacher == null) {
-			return "forum/pages/login";
+		if (student ==null && teacher == null) {
+			return "redirect: /SpringSoftSkillz/loginpage.controller";
 		}
+		
+
 
 		Set<ForumCategoryBean> ForumCategoryBeans = forumCategoryDao.getAllCategories();
 		model.addAttribute("forumCategoryBeans", ForumCategoryBeans);
@@ -44,20 +48,21 @@ public class InsertThreadController {
 
 	}
 
-	@PostMapping("/forum.doinsertthread.controller")
-	public String intertThread(@RequestParam("category") int categoryId, @RequestParam("title") String title,
-			@RequestParam("content") String content, Model model) {
+	@PostMapping("/forum.insertthread.controller")
+	public String intertThread(
+			@RequestParam("category") int categoryId, @RequestParam("title") String title,
+			@RequestParam("content") String content  ,@ModelAttribute("username") String username
+			 ,Model model) {
 
 		StudentBean student = (StudentBean) model.getAttribute("student");
 		TeacherBean teacher = (TeacherBean) model.getAttribute("teacher");
+	
 
 		ForumCategoryBean category = forumCategoryDao.getCategoryById(categoryId);
 
-		ForumThreadBean newThread = new ForumThreadBean();
 		if (category != null && !title.isBlank() && !content.isBlank()) {
-			newThread.setForumCategoryBean(category);
-			newThread.setThreadTitle(title);
-			newThread.setThreadContent(content);
+			ForumThreadBean newThread = new ForumThreadBean(title, content, category);
+		
 
 			if (student != null) {
 				newThread.setStudentBean(student);
@@ -75,7 +80,7 @@ public class InsertThreadController {
 
 		}
 
-		return "redirect:forum.mythreadspage.controller";
+		return "redirect:/forum/mythreads/" + username;
 
 	}
 

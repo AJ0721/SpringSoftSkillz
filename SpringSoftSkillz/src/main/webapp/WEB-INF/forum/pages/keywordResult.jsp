@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/basicStyle.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/forum/css/basicStyle.css">
 
 <article>
 
@@ -31,7 +31,7 @@
 				<c:forEach items="${threads}" var="thread">
 					<tr>
 						<td><a
-							href="${pageContext.request.contextPath}/forum.threaddetail.controller?threadId=${thread.threadId}">${thread.threadTitle}</a></td>
+							href="${pageContext.request.contextPath}/forum/${thread.forumCategoryBean.forumCategoryName}/thread/${thread.threadId}">${thread.threadTitle}</a></td>
 						<td>${thread.threadContent}</td>
 					</tr>
 

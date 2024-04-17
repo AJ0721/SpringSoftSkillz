@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/basicStyle.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/forum/css/basicStyle.css">
 
 
 <style>
@@ -50,7 +50,7 @@ textarea {
 		</div>
 
 		<div class="btncontainer">
-			<a href="${pageContext.request.contextPath}/forum.mythreadspage.controller">
+			<a href="${pageContext.request.contextPath}/forum/mythreads/${username}">
 				<button class="opbtn" type="button">取消</button>
 			</a>
 

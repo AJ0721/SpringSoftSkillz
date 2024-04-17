@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/basicStyle.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/forum/css/basicStyle.css">
 
 
 <style>
@@ -67,14 +67,14 @@
 		<h2 class="title">論壇</h2>
 
 		<div class="btncontainer">
-			<a href="${pageContext.request.contextPath}/forum.shownewthread.controller">
+			<a href="${pageContext.request.contextPath}/forum/newthread/${username}">
 				<button class="opbtn">我要發文</button>
 			</a>
 		</div>
 
 		<div class="btncontainer">
 			<a
-				href="${pageContext.request.contextPath}/forum.mythreadspage.controller"><button
+				href="${pageContext.request.contextPath}/forum/mythreads/${username}"><button
 					class="opbtn" type="button">我的文章</button></a>
 		</div>
 	</article>

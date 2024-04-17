@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/basicStyle.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/forum/css/basicStyle.css">
 <style>
 .thread {
 	background-color: #fff;
@@ -38,7 +38,7 @@
 
 
 		<a
-			href="${pageContext.request.contextPath}/forum.mythreadspage.controller"><button
+			href="${pageContext.request.contextPath}/forum/mythreads/${username}"><button
 				class="opbtn" type="button">我的文章</button></a>
 
 
