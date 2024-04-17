@@ -15,7 +15,7 @@ import com.softskillz.forum.model.InterfaceForumThreadService;
 import com.softskillz.account.model.StudentBean;
 import com.softskillz.account.model.TeacherBean;
 
-@SessionAttributes(names = { "student", "teacher", "threads","thread" })
+@SessionAttributes(names = { "student", "teacher" })
 @Controller
 public class MyThreadsPageController {
 

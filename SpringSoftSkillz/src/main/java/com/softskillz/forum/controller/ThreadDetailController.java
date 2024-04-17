@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-@SessionAttributes(names = {"thread"})
+@SessionAttributes()
 public class ThreadDetailController {
 
 	@Autowired
