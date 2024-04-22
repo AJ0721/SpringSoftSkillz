@@ -13,6 +13,19 @@ Tomcat 10.1
 3.Database Setup:
 Use the 'springMVC_softskillz_forumDB' file to set up the database required for the project. This file contains all the necessary SQL scripts.
 
+-create a database in sql server named 'softskillzdb'
+-create all the tables and insert corresponding data
+-add resourse in server -> context.xml as below:
+*NOTE: if you are using mysql or other database service, make sure the name and the database in the url matches. 
+
+<Resource name="connectSqlServerJdbc/SystemService"
+		type="javax.sql.DataSource" auth="Container"
+		username="your username"
+		password="your password"
+		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+		url="jdbc:sqlserver://localhost:1433;databaseName=softskillzdb;encrypt=true;trustServerCertificate=true" />
+
+
 4.Running the Application:
 Clone the repository to your local machine.
 The application will be available at http://localhost:8082.
