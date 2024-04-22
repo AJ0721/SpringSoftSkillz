@@ -11,7 +11,7 @@ Eclipse 2023/6
 Tomcat 10.1
 
 3.Database Setup:
-Use the 'springMVC_softskillz_forumDB' file to set up the database required for the project. This file contains all the necessary SQL scripts.
+Use the 'springMVC_softskillz_DB' file to set up the database required for the project. This file contains all the necessary SQL scripts.
 
 -create a database in sql server named 'softskillzdb'
 -create all the tables and insert corresponding data
