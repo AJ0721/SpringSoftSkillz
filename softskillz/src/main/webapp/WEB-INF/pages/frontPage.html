@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/175cdc5140.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Soft Skillz 使用者首頁</title>
+    <style>
+      /* CSS 樣式可以根據需要進行修改 */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        position: relative; /* 將 body 設置為相對定位 */
+        min-height: 100vh; /* 確保 body 的最小高度等於視窗的高度 */
+      }
+      header {
+        background-color: #fff;
+        color: #425169;
+        padding: 10px 0;
+        text-align: center;
+      }
+      nav {
+        background-color: #f8f9fa;
+        padding: 10px 0;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .left-links,
+      .right-links {
+      display: flex;
+      }
+
+      .right-links {
+      margin-left: auto;
+      }
+
+      nav a {
+        color: #7d91a6;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+      section {
+        padding: 20px;
+        text-align: center;
+      }
+      footer {
+        position: fixed; /* 將 footer 設置為固定定位 */
+        bottom: 0; /* 將 footer 距離底部的距離設置為 0 */
+        width: 100%; /* 使 footer 的寬度與視窗寬度相等 */
+        background-color: #f8f9fa;
+        padding: 10px 0;
+        text-align: center;
+        color: #a3a2a3;
+        font-size: 10px;
+      }
+      .topic-button {
+        background-color: #c5d0e2;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .topic-button:hover {
+        background-color: #0056b3;
+      }
+      /* 新增的橫幅相關樣式 */
+      .banner {
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 20px auto;
+        width: 80%;
+        position: relative;
+      }
+      .banner img {
+        width: 20%; /* 調整圖片寬度 */
+        height: auto;
+        display: inline-block;
+        vertical-align: middle;
+        transition: transform 0.5s ease;
+      }
+      .banner .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        color: #425169;
+        font-size: 20px;
+        z-index: 2;
+      }
+      .arrow.left {
+        left: 10px;
+      }
+      .arrow.right {
+        right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Soft Skillz</h1>
+    </header>
+    <nav>
+      <div class="left-links">
+        <a href="首頁">首頁</a>
+        <a href="#論壇頁面">論壇</a>
+        <a href="#找學伴頁面">找學伴</a>
+      </div>
+      <div class="right-links">
+        <a href="#教師登入頁面">成為教師</a>
+        <a href="學生登入頁面">學生登入</a>
+        <a href="#購物車頁面"><i class="fa-solid fa-cart-shopping"></i></a>
+      </div>
+    </nav>    
+    <section>
+      <h2>歡迎來到 Soft Skillz</h2>
+      <p>這裡提供豐富的線上課程，讓您隨時隨地都能學習新知識。</p>
+      <div class="popular-topics">
+        <h3>熱門課程主題</h3>
+        <!-- 熱門課程按鈕 -->
+        <button class="topic-button">程式設計</button>
+        <button class="topic-button">數據分析</button>
+        <button class="topic-button">網頁開發</button>
+        <button class="topic-button">影片剪輯</button>
+        <button class="topic-button">水彩油畫</button>
+        <button class="topic-button">各國語言</button>
+        <button class="topic-button">面試技巧</button>
+        <!-- 在這裡可以添加更多的主題按鈕 -->
+      </div>
+      <!-- 橫幅部分 -->
+      <div class="banner">
+        <div class="arrow left">
+          <i class="fa-solid fa-angles-left" style="color: #fdfcfd;"></i>
+        </div>
+        <!-- 點擊圖片可以導向該分類的課程總覽頁面 -->
+        <a href="page1.html"><img src="../img/java.jpg" alt="Image 1" /></a>
+        <a href="page2.html"><img src="../img/002.jpg" alt="Image 2" /></a>
+        <a href="page3.html"><img src="../img/003.jpg" alt="Image 3" /></a>
+        <a href="page4.html"><img src="../img/004.jpg" alt="Image 4" /></a>
+        <a href="page5.html"><img src="../img/005.jpg" alt="Image 5" /></a>
+        <a href="page6.html"><img src="../img/006.jpg" alt="Image 6" /></a>
+        <div class="arrow right">
+          <i class="fa-solid fa-angles-right" style="color: #fdfcfd;"></i>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <h4>Copyright © 2024 HedyWu All rights reserved</h4>
+    </footer>
+    <script>
+      // JavaScript 代碼，用於實現箭頭點擊切換圖片功能
+      document.addEventListener("DOMContentLoaded", function () {
+        const banner = document.querySelector(".banner");
+        const images = banner.querySelectorAll("img");
+        const leftArrow = banner.querySelector(".arrow.left");
+        const rightArrow = banner.querySelector(".arrow.right");
+        let currentIndex = 0;
+
+        function showImage(index) {
+          images.forEach((img, idx) => {
+            img.style.transform = `translateX(-${index * 100}%)`;
+          });
+        }
+
+        leftArrow.addEventListener("click", function () {
+          currentIndex =
+            currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+          showImage(currentIndex);
+        });
+
+        rightArrow.addEventListener("click", function () {
+          currentIndex =
+            currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+          showImage(currentIndex);
+        });
+      });
+    </script>
+  </body>
+</html>

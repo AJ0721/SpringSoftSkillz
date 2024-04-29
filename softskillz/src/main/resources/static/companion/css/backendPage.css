@@ -1,0 +1,85 @@
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #425169;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav {
+    background-color: #425169;
+    padding: 10px;
+    text-align: left;
+    /* 左對齊 */
+    height: 100%;
+    /* 設置導航列高度為視口高度 */
+    position: fixed;
+    /* 將導航列固定在視口中 */
+    top: 0;
+    /* 設置導航列距離視口頂部的距離為0 */
+    bottom: 0;
+    /* 設置導航列距離視口底部的距離為0 */
+}
+
+nav a {
+    display: block;
+    /* 顯示為區塊元素 */
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 10px;
+    /* 底邊距，控制連結之間的間距 */
+    padding: 10px;
+    /* 添加內邊距 */
+}
+
+nav a:hover {
+    background-color: #2c3e50;
+    /* 滑鼠懸停時的底色 */
+    text-decoration: underline;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin-bottom: 10px;
+    /* 設置項目之間的間距 */
+}
+
+nav ul li a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.dropdown-content {
+    display: none;
+    background-color: #34495e;
+    padding: 10px 0;
+}
+
+.dropdown-content a {
+    color: #fff;
+    padding: 10px 20px;
+    display: block;
+    font-size: 14px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+section {
+    padding: 20px;
+    text-align: center;
+    margin-left: 160px;
+    /* 為 <nav> 留出空間 */
+}

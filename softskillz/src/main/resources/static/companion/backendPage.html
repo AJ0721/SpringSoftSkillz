@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soft Skillz 管理者後台首頁</title>
+  <style>
+    /* CSS 樣式可以根據需要進行修改 */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #425169;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #425169;
+      padding: 10px;
+      text-align: left;
+      /* 左對齊 */
+      height: 100%;
+      /* 設置導航列高度為視口高度 */
+      position: fixed;
+      /* 將導航列固定在視口中 */
+      top: 0;
+      /* 設置導航列距離視口頂部的距離為0 */
+      bottom: 0;
+      /* 設置導航列距離視口底部的距離為0 */
+    }
+
+    nav a {
+      display: block;
+      /* 顯示為區塊元素 */
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 10px;
+      /* 底邊距，控制連結之間的間距 */
+      padding: 10px;
+      /* 添加內邊距 */
+    }
+
+    nav a:hover {
+      background-color: #2c3e50;
+      /* 滑鼠懸停時的底色 */
+      text-decoration: underline;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 10px;
+      /* 設置項目之間的間距 */
+    }
+
+    nav ul li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+    }
+
+    .dropdown-content {
+      display: none;
+      background-color: #34495e;
+      padding: 10px 0;
+    }
+
+    .dropdown-content a {
+      color: #fff;
+      padding: 10px 20px;
+      display: block;
+      font-size: 14px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    section {
+      padding: 20px;
+      text-align: center;
+      margin-left: 160px;
+      /* 為 <nav> 留出空間 */
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Soft Skillz</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="#">首頁</a></li>
+      <li class="dropdown" id="userDropdown">
+        <a href="#">用戶管理</a>
+        <div class="dropdown-content" id="userDropdownContent">
+          <a href="#">管理員</a>
+          <a href="#">學生</a>
+          <a href="#">教師</a>
+        </div>
+      </li>
+      <li class="dropdown" id="courseDropdown">
+        <a href="#">課程管理</a>
+        <div class="dropdown-content" id="courseDropdownContent">
+          <a href="#">課程</a>
+          <a href="#">學生行事曆</a>
+          <a href="#">學生課程預約</a>
+          <a href="#">教師行事曆</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">課程訂單管理</a>
+        <a href="#">商品管理</a>
+        <a href="#">商品訂單管理</a>
+        <a href="/index.html">學伴資料管理</a>
+        <a href="#">論壇管理</a>
+      </li>
+    </ul>
+  </nav>
+  <section>
+    <h2>歡迎來到管理者後台</h2>
+    <p>您可以在此進行各種管理操作，包括用戶、課程、訂單和留言的管理。</p>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var userDropdown = document.getElementById("userDropdown");
+      var userDropdownContent = document.getElementById(
+        "userDropdownContent"
+      );
+
+      userDropdown.addEventListener("click", function (event) {
+        event.stopPropagation(); // 防止點擊事件向上冒泡
+        toggleDropdown(userDropdownContent);
+      });
+
+      var courseDropdown = document.getElementById("courseDropdown");
+      var courseDropdownContent = document.getElementById(
+        "courseDropdownContent"
+      );
+
+      courseDropdown.addEventListener("click", function (event) {
+        event.stopPropagation(); // 防止點擊事件向上冒泡
+        toggleDropdown(courseDropdownContent);
+      });
+
+      function toggleDropdown(dropdownContent) {
+        var allDropdowns = document.querySelectorAll(".dropdown-content");
+        allDropdowns.forEach(function (dropdown) {
+          if (dropdown !== dropdownContent) {
+            dropdown.style.display = "none";
+          }
+        });
+
+        if (dropdownContent.style.display === "none") {
+          dropdownContent.style.display = "block";
+        } else {
+          dropdownContent.style.display = "none";
+        }
+      }
+
+      // 點擊頁面其他地方隱藏下拉菜單
+      document.addEventListener("click", function (event) {
+        var dropdowns = document.querySelectorAll(".dropdown-content");
+        dropdowns.forEach(function (dropdown) {
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

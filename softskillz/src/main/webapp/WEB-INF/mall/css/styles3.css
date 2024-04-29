@@ -1,0 +1,62 @@
+.info{
+	margin-left: 170px;
+}
+
+/* 表單樣式 */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 50%; /* 設置最大寬度為頁面的50% */
+    margin: auto; 
+}
+
+/* 標籤樣式 */
+label {
+    font-weight: bold;
+    display: block;
+    margin: 15px 0 5px;
+}
+
+/* 輸入框和下拉選單的共通樣式 */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* 按鈕樣式 */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+/* 按鈕懸停效果 */
+button:hover {
+    background-color: #0056b3;
+}
+
+
+/* 響應式設計 */
+@media (max-width: 600px) {
+    form {
+        padding: 10px;
+        max-width: 90%; /* 在小屏幕上設置最大寬度為90% */
+    }
+}

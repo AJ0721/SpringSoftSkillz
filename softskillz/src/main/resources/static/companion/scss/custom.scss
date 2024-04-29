@@ -1,0 +1,9 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+$primary: lightblue;
+$accordion-button-active-bg: lightpink;
+
+@import "../tools/scss/bootstrap.scss";
+
+// Then add additional custom code here

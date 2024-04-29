@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.datatables.net/v/dt/dt-2.0.1/datatables.min.css" rel="stylesheet">
+
+</head>
+<style>
+</style>
+
+<body>
+    <div class="center">
+        <h2>123</h2>
+
+        <table class="table"></table>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-2.0.1/datatables.min.js"></script>
+    <script>
+        $(function () {
+            $('.dt-empty').remove;
+
+
+            $.ajax({
+                url: '/adminorder', // 替换为您的 API 端点
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('.table').DataTable({
+                        // "scrollX": "1200px",
+                        // "scrollY": "800px",
+                        "scrollCollapse": true,
+                        "searching": false,
+                        "language": {
+                            "processing": "處理中...",
+                            "loadingRecords": "載入中...",
+                            "lengthMenu": "顯示 _MENU_ 項結果",
+                            "zeroRecords": "沒有符合的結果",
+                            "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                            "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                            "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                            "infoPostFix": "",
+                            "search": "搜尋:",
+                            "paginate": {
+                                "first": "第一頁",
+                                "previous": "上一頁",
+                                "next": "下一頁",
+                                "last": "最後一頁"
+                            },
+
+                            "aria": {
+                                "sortAscending": ": 升冪排列",
+                                "sortDescending": ": 降冪排列"
+                            }
+                        },
+                        "data": data,
+
+                        "columns": [
+                            { data: 'orderID', title: "訂單編號" },
+                            { data: 'studentID', title: "購買人" },
+                            { data: 'orderPrice', title: "總金額" },
+                            { data: 'orderDate', title: "購買時間" },
+                            { data: 'paymentMethod', title: "付款方式" },
+                            { data: 'orderStatus', title: "訂單狀態" },
+
+                            {
+                                title: "修改",
+                                render: function (data, type, row, meta) {
+                                    return '<form method="get" action="/UpdateUser/' + row.idUser + '">' +
+                                        '<button class="circle" type="submit">修改</button>' + '</form>';
+                                }
+                            },
+                            {
+                                title: "刪除",
+                                render: function (data, type, row, meta) {
+                                    return '<form method="post" action="/DeleteUser?idUser=' + row.idUser + '">' + '<input type="hidden" name="_method" value="DELETE">' + ' <button class="circle" type="submit">刪除</button>' + ' </form>';
+                                }
+                            },
+                            {
+                                title: "刪除",
+                                render: function (data, type, row, meta) {
+                                    return '<form method="post" action="/DeleteUser?idUser=' + row.idUser + '">' + '<input type="hidden" name="_method" value="DELETE">' + ' <button class="circle" type="submit">刪除</button>' + ' </form>';
+                                }
+                            }
+                        ]
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(status, error);
+                    alert('錯誤！');
+                }
+            });
+
+
+
+
+        });
+
+
+    </script>
+
+</body>
+
+</html>

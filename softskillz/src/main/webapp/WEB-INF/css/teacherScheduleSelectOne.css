@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+body {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	background-color: #425169;
+	color: #fff;
+	padding: 10px 0;
+	text-align: center;
+}
+
+p {
+	font-size: 20px;
+	font-family: serif;
+}
+
+/* 時段的容器外框 */
+.timeSlotContainer {
+	border: 2px solid #7D91A6;
+	/* 外框樣式 */
+	border-radius: 10px;
+	padding: 20px;
+	/* 內間距 */
+	margin-bottom: 20px;
+	/* 加上間距 */
+	display: inline-block;
+	/* 讓外框大小剛好包住內容 */
+}
+
+/* 時段的預設樣式 */
+.timeSlot {
+	display: block;
+	/* 改為 block，使元素垂直排列 */
+	margin-bottom: 5px;
+	/* 加上間距 */
+}
+
+/* 開放預約的時段的樣式 */
+.selectedTimeSlot {
+ background-color: #C5D0E2;
+}
+
+/* 已被預約的時段的樣式 */
+.teachedTimeSlot {
+ background-color: #bfbab0;
+}
+button {
+	font-weight: bolder;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	border-radius: 10px;
+	font-size: 20px;
+	margin: 20px;
+	background-color: #425169;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+header h1 a {
+	color: #fff;
+	/* 保持文字白色 */
+	text-decoration: none;
+	/* 去除下劃線 */
+}
