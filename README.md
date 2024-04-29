@@ -29,7 +29,7 @@ Use the 'springboot_softskillz_forumDB.sql' file to set up the database required
 4.Running the Application:
 Clone the repository to your local machine.
 The application will be available at http://localhost:8080.
-Usage:
+
 
 5.Accessing the Forum:
 go to http://localhost:8080/forum/adminhome to enter backstage homepage.
