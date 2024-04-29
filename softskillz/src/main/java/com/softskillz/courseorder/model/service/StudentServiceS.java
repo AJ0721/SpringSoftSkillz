@@ -1,7 +1,6 @@
 package com.softskillz.courseorder.model.service;
 
-
-import com.softskillz.account.model.StudentBean;
+import com.softskillz.account.model.bean.StudentBean;
 
 public interface StudentServiceS {
 

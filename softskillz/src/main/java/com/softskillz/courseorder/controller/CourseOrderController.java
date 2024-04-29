@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.softskillz.account.model.StudentBean;
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.courseorder.model.bean.CartItem;
 import com.softskillz.courseorder.model.bean.CorderBean;
 import com.softskillz.courseorder.model.bean.ItemInfo;

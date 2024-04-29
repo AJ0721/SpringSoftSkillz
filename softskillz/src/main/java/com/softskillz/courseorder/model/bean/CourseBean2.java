@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.softskillz.account.model.TeacherBean;
+import com.softskillz.account.model.bean.TeacherBean;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

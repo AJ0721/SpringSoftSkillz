@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
-import com.softskillz.account.model.TeacherBean;
+import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 
 import jakarta.persistence.CascadeType;

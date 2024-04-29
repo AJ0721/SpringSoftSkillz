@@ -2,82 +2,29 @@ package com.softskillz.account.model.bean;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
 import com.softskillz.forum.model.ForumThreadModel;
+import com.softskillz.studentreservation.model.StudentReservationBean;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-//@Entity
-//@Table(name = "student")
-//@Component
+@Entity
+@Table(name = "student")
+@Component
 public class StudentBean {
-
-	public StudentBean() {
-
-	}
-
-	// 有studentId
-	public StudentBean(Integer studentId, String studentFirstName, String studentLastName, String studentUsername,
-			String studentNickname, Date studentRegistrationDate, String studentGender, Date studentBirth,
-			String studentMobile, String studentEmail, String studentPassword, String studentCountry,
-			String studentPhoto, String studentEducation, Integer studentForumStatus, Integer studentCourseStatus,
-			String firstLanguage, String learningFrequency, String studentIdFormatted) {
-		super();
-		this.studentId = studentId;
-		this.studentFirstName = studentFirstName;
-		this.studentLastName = studentLastName;
-		this.studentUsername = studentUsername;
-		this.studentNickname = studentNickname;
-		this.studentRegistrationDate = studentRegistrationDate;
-		this.studentGender = studentGender;
-		this.studentBirth = studentBirth;
-		this.studentMobile = studentMobile;
-		this.studentEmail = studentEmail;
-		this.studentPassword = studentPassword;
-		this.studentCountry = studentCountry;
-		this.studentPhoto = studentPhoto;
-		this.studentEducation = studentEducation;
-		this.studentForumStatus = studentForumStatus;
-		this.studentCourseStatus = studentCourseStatus;
-		this.firstLanguage = firstLanguage;
-		this.learningFrequency = learningFrequency;
-		this.studentIdFormatted = studentIdFormatted;
-	}
-
-	// 沒有studentId
-	public StudentBean(String studentFirstName, String studentLastName, String studentUsername, String studentNickname,
-			Date studentRegistrationDate, String studentGender, Date studentBirth, String studentMobile,
-			String studentEmail, String studentPassword, String studentCountry, String studentPhoto,
-			String studentEducation, Integer studentForumStatus, Integer studentCourseStatus, String firstLanguage,
-			String learningFrequency, String studentIdFormatted) {
-		this.studentFirstName = studentFirstName;
-		this.studentLastName = studentLastName;
-		this.studentUsername = studentUsername;
-		this.studentNickname = studentNickname;
-		this.studentRegistrationDate = studentRegistrationDate;
-		this.studentGender = studentGender;
-		this.studentBirth = studentBirth;
-		this.studentMobile = studentMobile;
-		this.studentEmail = studentEmail;
-		this.studentPassword = studentPassword;
-		this.studentCountry = studentCountry;
-		this.studentPhoto = studentPhoto;
-		this.studentEducation = studentEducation;
-		this.studentForumStatus = studentForumStatus;
-		this.studentCourseStatus = studentCourseStatus;
-		this.firstLanguage = firstLanguage;
-		this.learningFrequency = learningFrequency;
-		this.studentIdFormatted = studentIdFormatted;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -138,12 +85,81 @@ public class StudentBean {
 	@Column(name = "student_id_formatted")
 	private String studentIdFormatted;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
+	private Set<StudentReservationBean> studentReservation = new HashSet<StudentReservationBean>();
 	
+	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
+	//private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
 
+	//任萱forum
+	@OneToMany (mappedBy = "studentBean")
+	private List<ForumThreadModel> threads= new ArrayList<>();
 	
+	public List<ForumThreadModel> getThreads() {
+		return threads;
+	}
+
+	public void setThreads(List<ForumThreadModel> threads) {
+		this.threads = threads;
+	}
 	
-	
-	
+	public StudentBean() {
+	}
+
+	// 有studentId
+	public StudentBean(Integer studentId, String studentFirstName, String studentLastName, String studentUsername,
+			String studentNickname, Date studentRegistrationDate, String studentGender, Date studentBirth,
+			String studentMobile, String studentEmail, String studentPassword, String studentCountry,
+			String studentPhoto, String studentEducation, Integer studentForumStatus, Integer studentCourseStatus,
+			String firstLanguage, String learningFrequency, String studentIdFormatted) {
+		super();
+		this.studentId = studentId;
+		this.studentFirstName = studentFirstName;
+		this.studentLastName = studentLastName;
+		this.studentUsername = studentUsername;
+		this.studentNickname = studentNickname;
+		this.studentRegistrationDate = studentRegistrationDate;
+		this.studentGender = studentGender;
+		this.studentBirth = studentBirth;
+		this.studentMobile = studentMobile;
+		this.studentEmail = studentEmail;
+		this.studentPassword = studentPassword;
+		this.studentCountry = studentCountry;
+		this.studentPhoto = studentPhoto;
+		this.studentEducation = studentEducation;
+		this.studentForumStatus = studentForumStatus;
+		this.studentCourseStatus = studentCourseStatus;
+		this.firstLanguage = firstLanguage;
+		this.learningFrequency = learningFrequency;
+		this.studentIdFormatted = studentIdFormatted;
+	}
+
+	// 沒有studentId
+	public StudentBean(String studentFirstName, String studentLastName, String studentUsername, String studentNickname,
+			Date studentRegistrationDate, String studentGender, Date studentBirth, String studentMobile,
+			String studentEmail, String studentPassword, String studentCountry, String studentPhoto,
+			String studentEducation, Integer studentForumStatus, Integer studentCourseStatus, String firstLanguage,
+			String learningFrequency, String studentIdFormatted) {
+		this.studentFirstName = studentFirstName;
+		this.studentLastName = studentLastName;
+		this.studentUsername = studentUsername;
+		this.studentNickname = studentNickname;
+		this.studentRegistrationDate = studentRegistrationDate;
+		this.studentGender = studentGender;
+		this.studentBirth = studentBirth;
+		this.studentMobile = studentMobile;
+		this.studentEmail = studentEmail;
+		this.studentPassword = studentPassword;
+		this.studentCountry = studentCountry;
+		this.studentPhoto = studentPhoto;
+		this.studentEducation = studentEducation;
+		this.studentForumStatus = studentForumStatus;
+		this.studentCourseStatus = studentCourseStatus;
+		this.firstLanguage = firstLanguage;
+		this.learningFrequency = learningFrequency;
+		this.studentIdFormatted = studentIdFormatted;
+	}
+
 	public Integer getStudentId() {
 		return studentId;
 	}
@@ -294,6 +310,14 @@ public class StudentBean {
 
 	public void setStudentIdFormatted(String studentIdFormatted) {
 		this.studentIdFormatted = studentIdFormatted;
+	}
+
+	public Set<StudentReservationBean> getStudentReservation() {
+		return studentReservation;
+	}
+
+	public void setStudentReservation(Set<StudentReservationBean> studentReservation) {
+		this.studentReservation = studentReservation;
 	}
 
 }

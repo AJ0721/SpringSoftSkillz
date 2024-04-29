@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.softskillz.account.model.StudentBean;
-import com.softskillz.account.model.TeacherBean;
+import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.bean.TeacherBean;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -7,8 +7,14 @@ body {
 header {
     background-color: #425169;
     color: #fff;
-    padding: 10px 0;
+    padding: 24px 0;
+    /* Increased padding */
     text-align: center;
+}
+
+header h1 {
+    font-size: 45px;
+    /* Increased font size */
 }
 
 
@@ -84,6 +90,9 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
     padding: 10px 20px;
+    /* Increased left padding */
+    font-size: 18px;
+    /* Increased font size */
 }
 
 .dropdown-content {
@@ -108,4 +117,15 @@ section {
     text-align: center;
     margin-left: 160px;
     /* 為 <nav> 留出空間 */
+}
+
+
+.nav.flex-column li a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding-left: 30px;
+    /* Increase left padding */
+    font-size: 18px;
+    /* Increased font size for better visibility */
 }

@@ -1,82 +1,35 @@
 package com.softskillz.account.model.bean;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.softskillz.course.model.CourseBean;
+import com.softskillz.forum.model.ForumPostModel;
+import com.softskillz.forum.model.ForumThreadModel;
+import com.softskillz.teacherschedule.model.TeacherScheduleBean;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-//@Entity
-//@Table(name = "teacher")
-//@Component
+@Entity
+@Table(name = "teacher")
+@Component
 public class TeacherBean {
 
 	public TeacherBean() {
-
-	}
-	
-	//有teacherId
-	public TeacherBean(Integer teacherId, String teacherFirstName, String teacherLastName, String teacherUserName,
-			Date teacherRegistrationDate, String teacherGender, Date teacherBirth, String teacherMobile,
-			String teacherEmail, String teacherPassword, String teacherCountry, String teacherPhoto, String subject,
-			String experience, String status, String teacherEducation, String certification, String teachTime,
-			String strength, Integer teacherForumStatus, Integer teacherCourseStatus, String teacherIdFormatted) {
-		this.teacherId = teacherId;
-		this.teacherFirstName = teacherFirstName;
-		this.teacherLastName = teacherLastName;
-		this.teacherUserName = teacherUserName;
-		this.teacherRegistrationDate = teacherRegistrationDate;
-		this.teacherGender = teacherGender;
-		this.teacherBirth = teacherBirth;
-		this.teacherMobile = teacherMobile;
-		this.teacherEmail = teacherEmail;
-		this.teacherPassword = teacherPassword;
-		this.teacherCountry = teacherCountry;
-		this.teacherPhoto = teacherPhoto;
-		this.subject = subject;
-		this.experience = experience;
-		this.status = status;
-		this.teacherEducation = teacherEducation;
-		this.certification = certification;
-		this.teachTime = teachTime;
-		this.strength = strength;
-		this.teacherForumStatus = teacherForumStatus;
-		this.teacherCourseStatus = teacherCourseStatus;
-		this.teacherIdFormatted = teacherIdFormatted;
-	}
-
-	//沒有teacherId
-	public TeacherBean(String teacherFirstName, String teacherLastName, String teacherUserName,
-			Date teacherRegistrationDate, String teacherGender, Date teacherBirth, String teacherMobile,
-			String teacherEmail, String teacherPassword, String teacherCountry, String teacherPhoto, String subject,
-			String experience, String status, String teacherEducation, String certification, String teachTime,
-			String strength, Integer teacherForumStatus, Integer teacherCourseStatus, String teacherIdFormatted) {
-		this.teacherFirstName = teacherFirstName;
-		this.teacherLastName = teacherLastName;
-		this.teacherUserName = teacherUserName;
-		this.teacherRegistrationDate = teacherRegistrationDate;
-		this.teacherGender = teacherGender;
-		this.teacherBirth = teacherBirth;
-		this.teacherMobile = teacherMobile;
-		this.teacherEmail = teacherEmail;
-		this.teacherPassword = teacherPassword;
-		this.teacherCountry = teacherCountry;
-		this.teacherPhoto = teacherPhoto;
-		this.subject = subject;
-		this.experience = experience;
-		this.status = status;
-		this.teacherEducation = teacherEducation;
-		this.certification = certification;
-		this.teachTime = teachTime;
-		this.strength = strength;
-		this.teacherForumStatus = teacherForumStatus;
-		this.teacherCourseStatus = teacherCourseStatus;
-		this.teacherIdFormatted = teacherIdFormatted;
 	}
 
 	@Id
@@ -113,9 +66,17 @@ public class TeacherBean {
 
 	@Column(name = "teacher_country")
 	private String teacherCountry;
-	
+
 	@Column(name = "teacher_photo")
 	private String teacherPhoto;
+	
+	public String getTeacherPhoto() {
+		return teacherPhoto;
+	}
+
+	public void setTeacherPhoto(String teacherPhoto) {
+		this.teacherPhoto = teacherPhoto;
+	}
 
 	@Column(name = "subject")
 	private String subject;
@@ -147,6 +108,95 @@ public class TeacherBean {
 	@Column(name = "teacher_id_formatted")
 	private String teacherIdFormatted;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacherBean", cascade = CascadeType.ALL)
+	private Set<CourseBean> course = new HashSet<CourseBean>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacherBean", cascade = CascadeType.ALL)
+	private Set<TeacherScheduleBean> teacherSchedule = new HashSet<TeacherScheduleBean>();
+
+	
+	// 論壇forum
+	@OneToMany(mappedBy = "teacherBean")
+	private Set<ForumThreadModel> threads = new LinkedHashSet<>();
+	
+	@OneToMany(mappedBy = "teacherBean")
+	private List<ForumPostModel> posts = new ArrayList<>();
+	
+		
+	public Set<ForumThreadModel> getThreads() {
+		return threads;
+	}
+
+	public void setThreads(Set<ForumThreadModel> threads) {
+		this.threads = threads;
+	}
+
+	public List<ForumPostModel> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<ForumPostModel> posts) {
+		this.posts = posts;
+	}
+
+	// 有id
+	public TeacherBean(Integer teacherId, String teacherFirstName, String teacherLastName, String teacherUserName,
+			Date teacherRegistrationDate, String teacherGender, Date teacherBirth, String teacherMobile,
+			String teacherEmail, String teacherPassword, String teacherCountry, String subject, String experience,
+			String status, String teacherEducation, String certification, String teachTime, String strength,
+			Integer teacherForumStatus, Integer teacherCourseStatus, String teacherIdFormatted) {
+		this.teacherId = teacherId;
+		this.teacherFirstName = teacherFirstName;
+		this.teacherLastName = teacherLastName;
+		this.teacherUserName = teacherUserName;
+		this.teacherRegistrationDate = teacherRegistrationDate;
+		this.teacherGender = teacherGender;
+		this.teacherBirth = teacherBirth;
+		this.teacherMobile = teacherMobile;
+		this.teacherEmail = teacherEmail;
+		this.teacherPassword = teacherPassword;
+		this.teacherCountry = teacherCountry;
+		this.subject = subject;
+		this.experience = experience;
+		this.status = status;
+		this.teacherEducation = teacherEducation;
+		this.certification = certification;
+		this.teachTime = teachTime;
+		this.strength = strength;
+		this.teacherForumStatus = teacherForumStatus;
+		this.teacherCourseStatus = teacherCourseStatus;
+		this.teacherIdFormatted = teacherIdFormatted;
+	}
+
+	// 沒有id
+	public TeacherBean(String teacherFirstName, String teacherLastName, String teacherUserName,
+			Date teacherRegistrationDate, String teacherGender, Date teacherBirth, String teacherMobile,
+			String teacherEmail, String teacherPassword, String teacherCountry, String subject, String experience,
+			String status, String teacherEducation, String certification, String teachTime, String strength,
+			Integer teacherForumStatus, Integer teacherCourseStatus, String teacherIdFormatted) {
+		this.teacherFirstName = teacherFirstName;
+		this.teacherLastName = teacherLastName;
+		this.teacherUserName = teacherUserName;
+		this.teacherRegistrationDate = teacherRegistrationDate;
+		this.teacherGender = teacherGender;
+		this.teacherBirth = teacherBirth;
+		this.teacherMobile = teacherMobile;
+		this.teacherEmail = teacherEmail;
+		this.teacherPassword = teacherPassword;
+		this.teacherCountry = teacherCountry;
+		this.subject = subject;
+		this.experience = experience;
+		this.status = status;
+		this.teacherEducation = teacherEducation;
+		this.certification = certification;
+		this.teachTime = teachTime;
+		this.strength = strength;
+		this.teacherForumStatus = teacherForumStatus;
+		this.teacherCourseStatus = teacherCourseStatus;
+		this.teacherIdFormatted = teacherIdFormatted;
+	}
+
+	// getter setter
 	public Integer getTeacherId() {
 		return teacherId;
 	}
@@ -235,14 +285,6 @@ public class TeacherBean {
 		this.teacherCountry = teacherCountry;
 	}
 
-	public String getTeacherPhoto() {
-		return teacherPhoto;
-	}
-
-	public void setTeacherPhoto(String teacherPhoto) {
-		this.teacherPhoto = teacherPhoto;
-	}
-
 	public String getSubject() {
 		return subject;
 	}
@@ -323,4 +365,20 @@ public class TeacherBean {
 		this.teacherIdFormatted = teacherIdFormatted;
 	}
 
+	public Set<CourseBean> getCourse() {
+		return course;
+	}
+
+	public void setCourse(Set<CourseBean> course) {
+		this.course = course;
+	}
+
+	public Set<TeacherScheduleBean> getTeacherSchedule() {
+		return teacherSchedule;
+	}
+
+	public void setTeacherSchedule(Set<TeacherScheduleBean> teacherSchedule) {
+		this.teacherSchedule = teacherSchedule;
+	}
+	
 }

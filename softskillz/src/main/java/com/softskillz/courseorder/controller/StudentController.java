@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.softskillz.account.model.StudentBean;
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.courseorder.model.service.impl.StudentServiceImpl;
 
 import jakarta.servlet.http.HttpSession;

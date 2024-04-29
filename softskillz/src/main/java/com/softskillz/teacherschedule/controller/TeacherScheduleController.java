@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.softskillz.account.model.TeacherBean;
-import com.softskillz.account.model.TeacherService;
+import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.account.model.service.TeacherService;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleService;
 

@@ -4,7 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.softskillz.account.model.StudentBean;
+import com.softskillz.account.model.bean.StudentBean;
+
 
 public interface StudentRepositoryS extends JpaRepository<StudentBean, Integer> {
 

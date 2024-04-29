@@ -5,6 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -15,6 +16,7 @@ import com.softskillz.courseorder.model.bean.CorderBean;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableCaching
 public class SoftSkillzApplication {
 
 	public static void main(String[] args) {

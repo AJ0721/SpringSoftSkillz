@@ -5,16 +5,31 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Soft Skillz 論壇管理員首頁</title>
+        <title>Soft Skillz 管理者後台首頁</title>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/backstageStyles.css">
+        <link rel="stylesheet" href="/css/backstageStyles.css">
 
+        <script src="/js/backend.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+
+            fetch("/html/backstageFrame.html")
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                }).then(data => {
+                    document.querySelector('#sidebar').innerHTML = data;
+                })
+
+
+        </script>
 
 
 
@@ -481,93 +496,11 @@
             <h1>Soft Skillz</h1>
         </header>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var userDropdown = document.getElementById("userDropdown");
-                var userDropdownContent = document.getElementById(
-                    "userDropdownContent"
-                );
-
-                userDropdown.addEventListener("click", function (event) {
-                    event.stopPropagation(); // 防止點擊事件向上冒泡
-                    toggleDropdown(userDropdownContent);
-                });
-
-                var courseDropdown = document.getElementById("courseDropdown");
-                var courseDropdownContent = document.getElementById(
-                    "courseDropdownContent"
-                );
-
-                courseDropdown.addEventListener("click", function (event) {
-                    event.stopPropagation(); // 防止點擊事件向上冒泡
-                    toggleDropdown(courseDropdownContent);
-                });
-
-                function toggleDropdown(dropdownContent) {
-                    var allDropdowns = document.querySelectorAll(".dropdown-content");
-                    allDropdowns.forEach(function (dropdown) {
-                        if (dropdown !== dropdownContent) {
-                            dropdown.style.display = "none";
-                        }
-                    });
-
-                    if (dropdownContent.style.display === "none") {
-                        dropdownContent.style.display = "block";
-                    } else {
-                        dropdownContent.style.display = "none";
-                    }
-                }
-
-                // 點擊頁面其他地方隱藏下拉菜單
-                document.addEventListener("click", function (event) {
-                    var dropdowns = document.querySelectorAll(".dropdown-content");
-                    dropdowns.forEach(function (dropdown) {
-                        if (dropdown.style.display === "block") {
-                            dropdown.style.display = "none";
-                        }
-                    });
-                });
-            });
-        </script>
 
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-                <nav class="col-md-2 d-none d-md-block  sidebar">
-                    <div class="sidebar-sticky">
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a class="nav-link active" href="#">首頁</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    用戶管理
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">管理員</a>
-                                    <a class="dropdown-item" href="#">學生</a>
-                                    <a class="dropdown-item" href="#">教師</a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCourses" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    課程管理
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownCourses">
-                                    <a class="dropdown-item" href="#">課程</a>
-                                    <a class="dropdown-item" href="#">學生行事曆</a>
-                                    <a class="dropdown-item" href="#">學生課程預約</a>
-                                    <a class="dropdown-item" href="#">教師行事曆</a>
-                                </div>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="#">課程訂單管理</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">商品管理</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">商品訂單管理</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">學伴資料管理</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">論壇管理</a></li>
-                        </ul>
-                    </div>
-                </nav>
+                <div id="sidebar"></div>
 
                 <!-- Right Column: Admin Backstage Content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -592,7 +525,8 @@
                             <input type="text" class="form-control" placeholder="搜尋" id="searchInput">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" id="searchbtn"><i
-                                        class="fas fa-search"></i> 搜尋</button>
+                                        class="fas fa-search"></i>
+                                    搜尋</button>
                             </div>
                         </div>
                     </div>
@@ -770,6 +704,9 @@
                             <!-- Others content goes here -->
                         </div>
                     </div>
+            </div>
+        </div>
+
 
     </body>
 

@@ -7,9 +7,9 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
-import com.softskillz.account.model.StudentBean;
-import com.softskillz.account.model.TeacherBean;
 import com.softskillz.account.model.bean.AdminBean;
+import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.bean.TeacherBean;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

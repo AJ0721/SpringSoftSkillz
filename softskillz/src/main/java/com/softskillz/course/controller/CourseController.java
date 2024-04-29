@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.softskillz.account.model.TeacherBean;
-import com.softskillz.account.model.TeacherService;
+import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.account.model.service.TeacherService;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
 

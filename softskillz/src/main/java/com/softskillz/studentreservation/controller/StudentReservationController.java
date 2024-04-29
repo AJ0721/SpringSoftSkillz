@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.softskillz.account.model.StudentBean;
-import com.softskillz.account.model.StudentService;
+import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.service.StudentService;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
 import com.softskillz.studentreservation.model.ReservationException;

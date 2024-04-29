@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Component;
 
-import com.softskillz.account.model.StudentBean;
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 
