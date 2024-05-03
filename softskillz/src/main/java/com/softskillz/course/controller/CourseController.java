@@ -88,8 +88,6 @@ public class CourseController {
 	// 處理刪除課程的請求
 	@PostMapping("/deleted")
 	public String deleteCourse(@RequestParam("courseID") Integer courseID, RedirectAttributes redirectAttributes) {
-//		CourseBean courseBean = new CourseBean();
-//		courseBean.setCourseID(courseID);
 		courseService.deleteByCourseId(courseID);
 		redirectAttributes.addFlashAttribute("message", "課程刪除成功");
 		return "/course/coursePage/CourseDeleteSuccessed.jsp";

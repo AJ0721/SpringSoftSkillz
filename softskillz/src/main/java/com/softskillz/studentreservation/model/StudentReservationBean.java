@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.course.model.CourseBean;
+import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 
 import jakarta.persistence.Column;
@@ -60,6 +61,10 @@ public class StudentReservationBean implements Serializable {
 	@JoinColumn(name = "teacher_schedule_id", insertable = false, updatable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TeacherScheduleBean teacherScheduleBean;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id", insertable = false, updatable = false)
+    private StudentScheduleBean studentScheduleBean;
 
 	public StudentReservationBean() {
 	}

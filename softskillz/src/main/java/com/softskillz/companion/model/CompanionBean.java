@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softskillz.account.model.bean.StudentBean;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,17 +30,8 @@ public class CompanionBean {
 	@Column(name = "companion_id")
 	private Integer companionId;
 	
-	@Column(name = "student_id")
-	private Integer studentId;
-	
-	@Column(name = "companion_username")
-	private String companionUsername;
-	
-	@Column(name = "companion_gender")
-	private String companionGender;
-	
-	@Column(name = "companion_birth")
-	private String companionBirth;
+//	@Column(name = "student_id")
+//	private Integer studentId;
 	
 	@Column(name = "companion_first_language")
 	private String companionFirstLanguage;
@@ -52,8 +45,8 @@ public class CompanionBean {
 	@Column(name = "companion_learning_frequency")
 	private String companionLearningFrequency;
 	
-	@Column(name = "companion_photo")
-	private String companionPhoto;
+	@Column(name = "companion_about_me")
+	private String companionAboutMe;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companionAId", cascade = CascadeType.ALL)
@@ -62,28 +55,29 @@ public class CompanionBean {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companionBId", cascade = CascadeType.ALL)
 	private Set<CompanionMatchBean> companionMatchB;
-
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "student_id")
+	private StudentBean studentBeanID;
 	
 	public CompanionBean() {
 	}
-	
-	public CompanionBean(Integer companionId, Integer studentId, String companionUsername, String companionGender,
-			String companionBirth, String companionFirstLanguage, String companionSpeakingLanguage,
-			String companionLearningInterest, String companionLearningFrequency, String companionPhoto) {
+
+	public CompanionBean(Integer companionId, String companionFirstLanguage, String companionSpeakingLanguage,
+			String companionLearningInterest, String companionLearningFrequency, String companionAboutMe,
+			Set<CompanionMatchBean> companionMatchA, Set<CompanionMatchBean> companionMatchB,
+			StudentBean studentBeanID) {
 		super();
 		this.companionId = companionId;
-		this.studentId = studentId;
-		this.companionUsername = companionUsername;
-		this.companionGender = companionGender;
-		this.companionBirth = companionBirth;
 		this.companionFirstLanguage = companionFirstLanguage;
 		this.companionSpeakingLanguage = companionSpeakingLanguage;
 		this.companionLearningInterest = companionLearningInterest;
 		this.companionLearningFrequency = companionLearningFrequency;
-		this.companionPhoto = companionPhoto;
+		this.companionAboutMe = companionAboutMe;
+		this.companionMatchA = companionMatchA;
+		this.companionMatchB = companionMatchB;
+		this.studentBeanID = studentBeanID;
 	}
-
-
 
 	public Integer getCompanionId() {
 		return companionId;
@@ -91,38 +85,6 @@ public class CompanionBean {
 
 	public void setCompanionId(Integer companionId) {
 		this.companionId = companionId;
-	}
-
-	public Integer getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(Integer studentId) {
-		this.studentId = studentId;
-	}
-
-	public String getCompanionUsername() {
-		return companionUsername;
-	}
-
-	public void setCompanionUsername(String companionUsername) {
-		this.companionUsername = companionUsername;
-	}
-
-	public String getCompanionGender() {
-		return companionGender;
-	}
-
-	public void setCompanionGender(String companionGender) {
-		this.companionGender = companionGender;
-	}
-
-	public String getCompanionBirth() {
-		return companionBirth;
-	}
-
-	public void setCompanionBirth(String companionBirth) {
-		this.companionBirth = companionBirth;
 	}
 
 	public String getCompanionFirstLanguage() {
@@ -156,13 +118,13 @@ public class CompanionBean {
 	public void setCompanionLearningFrequency(String companionLearningFrequency) {
 		this.companionLearningFrequency = companionLearningFrequency;
 	}
-
-	public String getCompanionPhoto() {
-		return companionPhoto;
+	
+	public String getCompanionAboutMe() {
+		return companionAboutMe;
 	}
 
-	public void setCompanionPhoto(String companionPhoto) {
-		this.companionPhoto = companionPhoto;
+	public void setCompanionAboutMe(String companionAboutMe) {
+		this.companionAboutMe = companionAboutMe;
 	}
 
 	public Set<CompanionMatchBean> getCompanionMatchA() {
@@ -181,19 +143,19 @@ public class CompanionBean {
 		this.companionMatchB = companionMatchB;
 	}
 
+	public StudentBean getStudentBeanID() {
+		return studentBeanID;
+	}
+
+	public void setStudentBeanID(StudentBean studentBeanID) {
+		this.studentBeanID = studentBeanID;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("CompanionBean [companionId=");
 		builder.append(companionId);
-		builder.append(", studentId=");
-		builder.append(studentId);
-		builder.append(", companionUsername=");
-		builder.append(companionUsername);
-		builder.append(", companionGender=");
-		builder.append(companionGender);
-		builder.append(", companionBirth=");
-		builder.append(companionBirth);
 		builder.append(", companionFirstLanguage=");
 		builder.append(companionFirstLanguage);
 		builder.append(", companionSpeakingLanguage=");
@@ -202,11 +164,16 @@ public class CompanionBean {
 		builder.append(companionLearningInterest);
 		builder.append(", companionLearningFrequency=");
 		builder.append(companionLearningFrequency);
-		builder.append(", companionPhoto=");
-		builder.append(companionPhoto);
+		builder.append(", companionAboutMe=");
+		builder.append(companionAboutMe);
+		builder.append(", companionMatchA=");
+		builder.append(companionMatchA);
+		builder.append(", companionMatchB=");
+		builder.append(companionMatchB);
+		builder.append(", studentBeanID=");
+		builder.append(studentBeanID);
 		builder.append("]");
 		return builder.toString();
 	}
-
 
 }

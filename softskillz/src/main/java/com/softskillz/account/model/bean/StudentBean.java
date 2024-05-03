@@ -8,8 +8,10 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.softskillz.companion.model.CompanionBean;
 import com.softskillz.forum.model.ForumThreadModel;
 import com.softskillz.studentreservation.model.StudentReservationBean;
+import com.softskillz.studentschedule.model.StudentScheduleBean;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,6 +21,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -88,8 +91,8 @@ public class StudentBean {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
 	private Set<StudentReservationBean> studentReservation = new HashSet<StudentReservationBean>();
 	
-	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
-	//private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
+	private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
 
 	//任萱forum
 	@OneToMany (mappedBy = "studentBean")
@@ -102,6 +105,19 @@ public class StudentBean {
 	public void setThreads(List<ForumThreadModel> threads) {
 		this.threads = threads;
 	}
+	
+	//京田compainon
+	@OneToOne (mappedBy = "studentBeanID")
+	private CompanionBean companionBean;
+	
+	public CompanionBean getCompanionBean() {
+		return companionBean;
+	}
+
+	public void setCompanionBean(CompanionBean companionBean) {
+		this.companionBean = companionBean;
+	}
+	
 	
 	public StudentBean() {
 	}
@@ -318,6 +334,14 @@ public class StudentBean {
 
 	public void setStudentReservation(Set<StudentReservationBean> studentReservation) {
 		this.studentReservation = studentReservation;
+	}
+
+	public Set<StudentScheduleBean> getStudentSchedule() {
+		return studentSchedule;
+	}
+
+	public void setStudentSchedule(Set<StudentScheduleBean> studentSchedule) {
+		this.studentSchedule = studentSchedule;
 	}
 
 }

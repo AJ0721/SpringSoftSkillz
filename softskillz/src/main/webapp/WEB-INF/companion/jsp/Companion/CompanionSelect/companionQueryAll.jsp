@@ -113,7 +113,7 @@ tr:hover {
             <script>
                 var indexPage = 1;
 
-                $(function () {
+                $(document).ready(function() {
                     loadPage(indexPage);
                     console.log("onLoad");
                 });

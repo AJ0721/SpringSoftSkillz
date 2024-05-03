@@ -13,6 +13,7 @@
 	<div id="header"></div>
 	<div class="info">
 		<h2>學生預約查詢成功</h2>
+		<h3 style="color: #C5D0E2">預約時段</h3>
 		<p>預約編號：${reservations.studentReservationID}</p>
 		<p>課程編號：${reservations.courseID}</p>
 		<p>預約日期：${reservations.reservationDate}</p>

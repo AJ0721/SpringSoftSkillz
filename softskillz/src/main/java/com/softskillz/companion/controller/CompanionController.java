@@ -1,5 +1,6 @@
 package com.softskillz.companion.controller;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
@@ -33,6 +34,8 @@ import com.softskillz.companion.model.CompanionBean;
 import com.softskillz.companion.model.CompanionMatchBean;
 import com.softskillz.companion.model.CompanionMatchService;
 import com.softskillz.companion.model.CompanionService;
+import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.service.StudentService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -43,40 +46,54 @@ public class CompanionController {
 
 	@Autowired
 	private CompanionService companionService;
-
+	
 	@Autowired
 	private CompanionMatchService companionMatchService;
-
+	
+	@Autowired
+	private StudentService studentService;
+	
+	@PostMapping("/insertJSP")
+	public String insertJSP() {
+		return "/companion/jsp/Companion/CompanionInsert/insert.jsp";
+	};
+	
 	// 新增
 	@PutMapping("/Insert")
 	@ResponseBody
-	public ModelAndView insert(// @RequestParam("companion_id") Integer companionId,
-			@RequestParam("student_id") Integer studentId, @RequestParam("companion_username") String companionUsername,
-			@RequestParam("companion_gender") String companionGender,
-			@RequestParam("companion_birth") String companionBirth,
+	public ModelAndView insert(//@RequestParam("companion_id") Integer companionId,
+//			@RequestParam("student_id") Integer studentId,
+//			@RequestParam("companion_username") String companionUsername,
+//			@RequestParam("companion_gender") String companionGender,
+//			@RequestParam("companion_birth") String companionBirth,
 			@RequestParam("companion_first_language") String companionFirstLanguage,
 			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
 			@RequestParam("companion_learning_interest") String companionLearningInterest,
 			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
-			@RequestParam("companion_photo") String companionPhoto) {
+			@RequestParam("companion_about_me") String companionAboutMe,
+			HttpSession session
+//			,@RequestParam("companion_photo") String companionPhoto
+			) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/insertOK.jsp");
 		try {
 			CompanionBean companionBean = new CompanionBean();
-			String birth = companionBirth;
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate newBirth = LocalDate.parse(birth, formatter);
-
-//			companionBean.setCompanionId(Integer.parseInt(request.getParameter("companion_id")));
-			companionBean.setStudentId(studentId);
-			companionBean.setCompanionUsername(companionUsername);
-			companionBean.setCompanionGender(companionGender);
-//			companionBean.setCompanionBirth(java.sql.Date(newBirth));
-			companionBean.setCompanionBirth(companionBirth);
+			StudentBean studentBean = (StudentBean)session.getAttribute("studentID");
+//			StudentBean studentBeanID = studentService.getById(studentId);
+			
+//			String birth = companionBirth;
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//			LocalDate newBirth = LocalDate.parse(birth, formatter);
+			
+			companionBean.setStudentBeanID(studentBean);
+//			companionBean.setCompanionUsername(companionUsername);
+//			companionBean.setCompanionGender(companionGender);
+//			companionBean.setCompanionBirth(companionBirth);
 			companionBean.setCompanionFirstLanguage(companionFirstLanguage);
 			companionBean.setCompanionSpeakingLanguage(companionSpeakingLanguage);
 			companionBean.setCompanionLearningInterest(companionLearningInterest);
 			companionBean.setCompanionLearningFrequency(companionLearningFrequency);
-			companionBean.setCompanionPhoto(companionPhoto);
+			companionBean.setCompanionAboutMe(companionAboutMe);
+//			companionBean.setCompanionPhoto(companionPhoto);
 			companionService.insert(companionBean);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,7 +101,7 @@ public class CompanionController {
 		}
 		return view;
 	}
-
+	
 	// 新增學伴配對 先查詢符合興趣之學伴 再insert
 //	@PostMapping("/InsertCompanion")
 //	public ModelAndView insertCompanion(@RequestParam("companion_id") Integer companionId,
@@ -104,20 +121,21 @@ public class CompanionController {
 //		}
 //		return view;
 //	}
-
+	
 	@PostMapping("/InsertCompanion")
-	public ModelAndView insertCompanion(@RequestParam("companion_id") Integer companionId,
-
-			@SessionAttribute("companionUsername") String companionUsername) {
+	public ModelAndView insertCompanion(@RequestParam("companion_id") Integer companionId
+			
+//			,@SessionAttribute("companionUsername") String companionUsername
+			) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/insertCompanion.jsp");
 		try {
 			CompanionMatchBean companionMatch = new CompanionMatchBean();
-			CompanionBean companionBeanA = companionService.getByName(companionUsername);
+//			CompanionBean companionBeanA = companionService.getByName(companionUsername);
 			CompanionBean companionBeanB = companionService.getById(companionId);
-
-			companionMatch.setCompanionAId(companionBeanA);
+			
+//			companionMatch.setCompanionAId(companionBeanA);
 			companionMatch.setCompanionBId(companionBeanB);
-
+			
 //			Set<CompanionMatchBean> companionMatchA = new LinkedHashSet<>();
 //			companionMatchA.add(companionMatch);
 			companionMatchService.insert(companionMatch);
@@ -128,7 +146,7 @@ public class CompanionController {
 		}
 		return view;
 	}
-
+	
 	// 刪除單筆 id
 	@DeleteMapping("/DeleteCompanionById")
 	@ResponseBody
@@ -145,8 +163,8 @@ public class CompanionController {
 		}
 		return view;
 	}
-
-	// 查詢欲修改學伴 單筆 id
+	
+	// 查詢欲修改學伴 單筆 id 
 	@GetMapping("/GetUpdateData")
 	public ModelAndView getUpdateData(@RequestParam("companion_id") Integer companionId) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionUpdate/updateData.jsp");
@@ -159,36 +177,44 @@ public class CompanionController {
 		}
 		return view;
 	}
-
+	
 	// 修改單筆 抓id
 	@PutMapping("/Update")
 	public ModelAndView update(@RequestParam("companion_id") Integer companionId,
-			@RequestParam("student_id") Integer studentId, @RequestParam("companion_username") String companionUsername,
-			@RequestParam("companion_gender") String companionGender,
-			@RequestParam("companion_birth") String companionBirth,
+			@RequestParam("student_id") Integer studentId,
+			@RequestParam("companion_username") String companionUsername,
+//			@RequestParam("companion_gender") String companionGender,
+//			@RequestParam("companion_birth") String companionBirth,
 			@RequestParam("companion_first_language") String companionFirstLanguage,
 			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
 			@RequestParam("companion_learning_interest") String companionLearningInterest,
 			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
-			@RequestParam("companion_photo") String companionPhoto) {
+			@RequestParam("companion_about_me") String companionAboutMe,
+			HttpSession session
+//			,@RequestParam("companion_photo") String companionPhoto
+			) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionUpdate/update.jsp");
 		try {
 			CompanionBean companionBean = new CompanionBean();
-			String birth = companionBirth;
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate newBirth = LocalDate.parse(birth, formatter);
-
+//			String birth = companionBirth;
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//			LocalDate newBirth = LocalDate.parse(birth, formatter);
+			
+			StudentBean studentBeanID = studentService.getById(studentId);
+//			StudentBean studentBean = (StudentBean)session.getAttribute("studentBeanID");
+			
 			companionBean.setCompanionId(companionId);
-			companionBean.setStudentId(studentId);
-			companionBean.setCompanionUsername(companionUsername);
-			companionBean.setCompanionGender(companionGender);
+			companionBean.setStudentBeanID(studentBeanID);
+//			companionBean.setCompanionUsername(companionUsername);
+//			companionBean.setCompanionGender(companionGender);
 //			companionBean.setCompanionBirth(java.sql.Date(newBirth));
-			companionBean.setCompanionBirth(companionBirth);
+//			companionBean.setCompanionBirth(companionBirth);
 			companionBean.setCompanionFirstLanguage(companionFirstLanguage);
 			companionBean.setCompanionSpeakingLanguage(companionSpeakingLanguage);
 			companionBean.setCompanionLearningInterest(companionLearningInterest);
 			companionBean.setCompanionLearningFrequency(companionLearningFrequency);
-			companionBean.setCompanionPhoto(companionPhoto);
+			companionBean.setCompanionAboutMe(companionAboutMe);
+//			companionBean.setCompanionPhoto(companionPhoto);
 			companionService.update(companionBean);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,7 +222,8 @@ public class CompanionController {
 		}
 		return view;
 	}
-
+	
+	
 	// 查詢單筆 id
 	@GetMapping("/GetCompanionById")
 	public ModelAndView getCompanionById(@RequestParam("companion_id") Integer companionId) {
@@ -210,39 +237,53 @@ public class CompanionController {
 		}
 		return view;
 	}
-
+	
 	// 查詢單筆 username
 	@GetMapping("/GetCompanionByName")
 	public ModelAndView getCompanionByName(@RequestParam("companion_username") String companionUsername) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectByName.jsp");
 		try {
-			CompanionBean companion = companionService.getByName(companionUsername);
-			view.addObject("companion", companion);
+//			CompanionBean companion = companionService.getByName(companionUsername);
+//			view.addObject("companion", companion);
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
 		}
 		return view;
 	}
-
-	// 查詢單筆 interest
-	@GetMapping("/GetCompanionByInterest")
-	public ModelAndView getCompanionByInterest(@RequestParam("companion_username") String companionUsername,
-			@RequestParam("companion_learning_interest") String companionLearningInterest, HttpSession session) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/CompanionByInterest.jsp");
-		try {
-			List<CompanionBean> companions = companionService.getByInterest(companionLearningInterest,
-					companionUsername);
-			view.addObject("companions", companions);
-			session.setAttribute("companionUsername", companionUsername);
-			view.getModelMap();
-		} catch (Exception e) {
-			e.printStackTrace();
-			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
-		}
-		return view;
-	}
-
+	
+	// 查詢多筆符合條件的學伴後 再申請配對
+//	@GetMapping("/GetCompanionByInterest")
+//	public ModelAndView getCompanionByInterest(
+////			@RequestParam("companion_username") String companionUsername,
+////			@RequestParam("companion_gender") String companionGender,
+//			@RequestParam("companion_first_language") String companionFirstLanguage,
+//			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
+//			@RequestParam("companion_learning_interest") String companionLearningInterest,
+//			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
+//			HttpSession session) {
+//		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/CompanionByInterest.jsp");
+//		try {
+//			List<CompanionBean> companions = companionService.getByInterest(companionLearningInterest,companionGender, companionFirstLanguage, companionSpeakingLanguage, companionLearningFrequency, companionUsername);
+//			view.addObject("companions", companions);
+//			session.setAttribute("companionUsername", companionUsername);
+//			System.out.println(companionLearningInterest);
+//			System.out.println(companionGender);
+//			if (companionGender == null) {
+//			    // 如果變量為 null，執行這裡的程式碼
+//			    System.out.println("變量是 null");
+//			} else {
+//			    // 如果變量不為 null，執行這裡的程式碼
+//			    System.out.println("變量不是 null");
+//			}
+//			view.getModelMap();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+//		}
+//		return view;
+//	}
+	
 	// 查詢全部
 	@GetMapping("/GetAllCompanions")
 //	@RequestMapping(value = "/GetAllCompanions", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT,RequestMethod.DELETE})
@@ -250,55 +291,42 @@ public class CompanionController {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/GetAllCompanions.jsp");
 		try {
 			List<CompanionBean> companions = companionService.getAll();
+			List<StudentBean> students = studentService.findAllStudents();
 			System.out.println(companions);
 			view.addObject("companions", companions);
+			view.addObject("students", students);
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
 		}
 		return view;
 	}
-
+	
 	@GetMapping("/companionqueryallpage.controller")
-	public String processQueryAllPageAction(HttpServletRequest request) {
-		int pageSize = 5;
-		Pageable p1 = PageRequest.of(0, pageSize);
-		Page<CompanionBean> page = companionService.findAllByPage(p1);
-
-		int totalPages = page.getTotalPages();
-		long totalElements = page.getTotalElements();
-
-		HttpSession session = request.getSession();
-
-		session.setAttribute("totalPages", totalPages);
-		session.setAttribute("totalElements", totalElements);
+	public String processQueryAllPageAction() {
 		return "/companion/jsp/Companion/CompanionSelect/companionQueryAll.jsp";
 	}
-
+	
 	@GetMapping("/queryByPage/{pageNo}")
 	@ResponseBody
-	public List<CompanionBean> processQueryAllByPage(@PathVariable("pageNo") int pageNo, Model m,
-			HttpServletRequest request) {
+	public List<CompanionBean> processQueryAllByPage(@PathVariable("pageNo") int pageNo, Model m, HttpServletRequest request){
 		int pageSize = 5;
-
-		System.out.println("pageNo :" + pageNo);
-		Pageable p1 = PageRequest.of(pageNo - 1, pageSize);
+		Pageable p1 = PageRequest.of(pageNo-1, pageSize);
 		Page<CompanionBean> page = companionService.findAllByPage(p1);
-
-//		int totalPages = page.getTotalPages();
-//		long totalElements = page.getTotalElements();
-
-//		HttpSession session = request.getSession();
-
-//		session.setAttribute("totalPages", totalPages);
-//		session.setAttribute("totalElements", totalElements);
-
+		
+		int totalPages = page.getTotalPages();
+		long totalElements = page.getTotalElements();
+		
+		HttpSession session = request.getSession();
+		
+		session.setAttribute("totalPages", totalPages);
+		session.setAttribute("totalElements", totalElements);
+		
 //		m.addAttribute("totalPages", totalPages);
 //		m.addAttribute("totalElements", totalElements);
-
-		System.out.println(page.getContent());
-
+		
 		return page.getContent();
 	}
+	
 
 }

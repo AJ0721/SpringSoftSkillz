@@ -1,7 +1,10 @@
 package com.softskillz.studentreservation.model;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softskillz.studentschedule.model.StudentScheduleBean;
+import com.softskillz.studentschedule.model.StudentScheduleRepository;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleRepository;
 
@@ -20,6 +25,9 @@ public class StudentReservationService {
 	private StudentReservationRepository studentReservationRepository;
 
 	@Autowired
+	private StudentScheduleRepository studentScheduleRepository;
+
+	@Autowired
 	private TeacherScheduleRepository teacherScheduleRepository;
 
 	private ObjectMapper objectMapper = new ObjectMapper();
@@ -27,6 +35,7 @@ public class StudentReservationService {
 	// 新增學生預約
 	public StudentReservationBean insertStudentReservation(StudentReservationBean studentReservationBean)
 			throws ReservationException {
+
 		// 解析 JSON 字串為時間段列表
 		List<String> timeSlotsList;
 		try {
@@ -36,7 +45,6 @@ public class StudentReservationService {
 		} catch (IOException e) {
 			throw new RuntimeException("解析時間段 JSON 失敗", e);
 		}
-
 		// 轉換時間段列表為字串
 		String studentTimeSlotsString = convertTimeSlotsToString(timeSlotsList.toArray(new String[0]));
 		studentReservationBean.setStudentTimeSlots(studentTimeSlotsString);
@@ -50,15 +58,16 @@ public class StudentReservationService {
 		if (!areTimeSlotsAvailable(teacherScheduleBean.getTeacherTimeSlots(), studentTimeSlotsString)) {
 			throw new ReservationException("選擇的時段中含有未開放預約的時間，無法完成預約。", "TIME_SLOT_NOT_AVAILABLE");
 		}
-
 		// 儲存學生預約資料
 		StudentReservationBean savedReservation = studentReservationRepository.save(studentReservationBean);
 
 		// 更新教師行事曆
 		updateTeacherScheduleTimeSlots(teacherScheduleBean, studentTimeSlotsString);
 
+		// 更新學生行事曆
+		updateStudentSchedule(savedReservation);
+
 		return savedReservation;
-		// return studentReservationRepository.save(studentReservationBean);
 	}
 
 	// 檢查學生選擇的時段是否全部開放
@@ -89,6 +98,100 @@ public class StudentReservationService {
 		return updatedTimeSlots.toString();
 	}
 
+//	// 轉換和合併學生時間段數據為全時間段數據，包含預約ID
+//	private String convertAndUpdateTimeSlots(String existingSlots, String newSlots, int reservationId) {
+//		StringBuilder updatedSlots = new StringBuilder(
+//				existingSlots == null ? new String(new char[24]).replace('\0', '0') : existingSlots);
+//
+//		for (int i = 0; i < newSlots.length(); i++) {
+//			if (newSlots.charAt(i) == '1') {
+//				updatedSlots.setCharAt(i, Character.forDigit(reservationId, 10)); // 使用預約ID標記時間段
+//			}
+//		}
+//		return updatedSlots.toString();
+//	}
+
+	private void updateStudentSchedule(StudentReservationBean reservation) {
+		// 從教師行事曆獲取開課日期
+		LocalDate courseDate = teacherScheduleRepository.findById(reservation.getTeacherScheduleID())
+				.orElseThrow(() -> new IllegalStateException("教師行事曆數據缺失")).getCourseDate();
+		System.out.println("課程日期" + courseDate);// 有抓到課程日期
+
+		// 檢查是否已有對應的學生行事曆
+		Optional<StudentScheduleBean> existingSchedule = studentScheduleRepository
+				.findByStudentIDAndCourseDate(reservation.getStudentID(), courseDate);
+		System.out.println("查詢新增的學生預約日期在有沒有資料表有沒有舊資料" + existingSchedule);
+		// 格式化和準備新的時間段數據
+		String newTimeSlotsAll = formatTimeSlotsAll(reservation);
+
+		// 根據是否存在現有記錄進行更新或新增操作
+		if (existingSchedule.isPresent()) {
+			// 更新已存在的行事曆
+			StudentScheduleBean schedule = existingSchedule.get();
+			schedule.setStudentTimeSlotsAll(mergeStudentTimeSlots(schedule.getStudentTimeSlotsAll(), newTimeSlotsAll));
+//			String updatedTimeSlotsAll = mergeStudentTimeSlots(schedule.getStudentTimeSlotsAll(), newTimeSlotsAll);
+//			schedule.setStudentTimeSlotsAll(updatedTimeSlotsAll);
+			studentScheduleRepository.save(schedule);
+			System.out.println("更新資料" + schedule);
+		} else {
+			// 新建行事曆條目
+			StudentScheduleBean newSchedule = new StudentScheduleBean();
+			newSchedule.setStudentID(reservation.getStudentID());
+			newSchedule.setStudentCourseDate(courseDate);
+			newSchedule.setStudentTimeSlotsAll(newTimeSlotsAll);
+			studentScheduleRepository.save(newSchedule);
+			System.out.println("全新資料" + newSchedule);
+		}
+	}
+
+//	private String formatTimeSlotsAll(StudentReservationBean reservation) {
+//		String slots = reservation.getStudentTimeSlots();
+//		StringBuilder formatted = new StringBuilder();
+//
+//		for (int i = 0; i < slots.length(); i++) {
+//			if (slots.charAt(i) == '1') {
+//				formatted.append(reservation.getStudentReservationID()); // 使用預約ID標記
+//			} else {
+//				formatted.append('0'); // 沒有預約的時段用'0'標記
+//			}
+//			if (i < slots.length() - 1)
+//				formatted.append('-'); // 添加分隔符
+//		}
+//		return formatted.toString();
+//	}
+
+	private String formatTimeSlotsAll(StudentReservationBean reservation) {
+		// 這裡需要改寫以包含預約編號和時段
+		String[] timeSlots = new String[24];
+		Arrays.fill(timeSlots, "0");
+		String studentTimeSlots = reservation.getStudentTimeSlots();
+		for (int i = 0; i < studentTimeSlots.length(); i++) {
+			if (studentTimeSlots.charAt(i) == '1') {
+				timeSlots[i] = String.valueOf(reservation.getStudentReservationID());
+			}
+		}
+		return String.join("-", timeSlots);
+	}
+
+	private String mergeStudentTimeSlots(String existingSlots, String newSlots) {
+		String[] partsExisting = existingSlots.split("-");
+		String[] partsNew = newSlots.split("-");
+		StringBuilder merged = new StringBuilder();
+
+		for (int i = 0; i < partsExisting.length; i++) {
+			// 如果原始時段為「0」且新時段不為「0」，則使用新的預約ID，否則保留原始時段
+			if (partsExisting[i].equals("0") && !partsNew[i].equals("0")) {
+				merged.append(partsNew[i]);
+			} else {
+				merged.append(partsExisting[i]);
+			}
+			if (i < partsExisting.length - 1) {
+				merged.append('-');
+			}
+		}
+		return merged.toString();
+	}
+
 	// 轉換時間段數組為時間段字串
 	private String convertTimeSlotsToString(String[] timeSlotsArray) {
 		String timeSlots = "000000000000000000000000";
@@ -108,7 +211,7 @@ public class StudentReservationService {
 	public StudentReservationBean findStudentReservationById(Integer studentReservationID) {
 		return studentReservationRepository.findById(studentReservationID).orElse(null);
 	}
-	
+
 	// 查詢單名學生所有預約
 	public List<StudentReservationBean> getStudentReservationsById(int studentId) {
 		return studentReservationRepository.findByStudentID(studentId);
@@ -123,5 +226,4 @@ public class StudentReservationService {
 	public void deleteByStudentReservationId(Integer studentReservationID) {
 		studentReservationRepository.deleteById(studentReservationID);
 	}
-	
 }

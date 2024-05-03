@@ -15,8 +15,8 @@
 	<div id="header"></div>
 	<div class="info">
 		<h2>教師行事曆查詢成功</h2>
-		<h3 style="color:#C5D0E2">開放預約</h3>
-		<h3 style="color:#bfbab0">已被預約</h3>
+		<h3 style="color: #C5D0E2">開放預約</h3>
+		<h3 style="color: #bfbab0">已被預約</h3>
 		<p>教師編號：${teacherSchedule.teacherID}</p>
 		<p>教師帳號：${teacherSchedule.teacherUserName}</p>
 		<p>課程日期：${teacherSchedule.courseDate}</p>
@@ -126,13 +126,6 @@
 				timeSlotsContainer2.appendChild(button);
 			}
 		}
-		
-/* 		//防止jsp內容被覆蓋
-		document.addEventListener('DOMContentLoaded', function () {
-		    var navWidth = document.querySelector('nav').offsetWidth;
-		    var mainContent = document.querySelector('.timeSlotsBtn'); // 可能需要根據實際情況選擇正確的容器元素
-		    mainContent.style.marginLeft = navWidth + 'px';
-		}); */
 
 		// 監聽表單提交事件，防止直接提交表單
 		document.getElementById('scheduleForm').addEventListener(

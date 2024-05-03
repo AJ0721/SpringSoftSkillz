@@ -22,12 +22,6 @@ public class CompanionMatchBean {
 	@Column(name = "match_id")
 	private Integer matchId;
 	
-//	@Column(name = "fk_student_a_id")
-//	private Integer studentAId;
-//	
-//	@Column(name = "fk_student_b_id")
-//	private Integer studentBId;
-	
 	@ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_student_a_id")
 	private CompanionBean companionAId;
@@ -36,48 +30,21 @@ public class CompanionMatchBean {
     @JoinColumn(name = "fk_student_b_id")
 	private CompanionBean companionBId;
 
+	@Column(name = "match_request")
+	private String matchRequest;
+	
 	public CompanionMatchBean() {
 	}
 
-//	public Integer getMatchId() {
-//		return matchId;
-//	}
-//
-//	public void setMatchId(Integer matchId) {
-//		this.matchId = matchId;
-//	}
-//
-//	public Integer getStudentAId() {
-//		return studentAId;
-//	}
-//
-//	public void setStudentAId(Integer studentAId) {
-//		this.studentAId = studentAId;
-//	}
-//
-//	public Integer getStudentBId() {
-//		return studentBId;
-//	}
-//
-//	public void setStudentBId(Integer studentBId) {
-//		this.studentBId = studentBId;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		StringBuilder builder = new StringBuilder();
-//		builder.append("CompanionMatchBean [matchId=");
-//		builder.append(matchId);
-//		builder.append(", studentAId=");
-//		builder.append(studentAId);
-//		builder.append(", studentBId=");
-//		builder.append(studentBId);
-//		builder.append("]");
-//		return builder.toString();
-//	}
+	public CompanionMatchBean(Integer matchId, CompanionBean companionAId, CompanionBean companionBId,
+			String matchRequest) {
+		super();
+		this.matchId = matchId;
+		this.companionAId = companionAId;
+		this.companionBId = companionBId;
+		this.matchRequest = matchRequest;
+	}
 
-	
-	
 	public Integer getMatchId() {
 		return matchId;
 	}
@@ -102,6 +69,14 @@ public class CompanionMatchBean {
 		this.companionBId = companionBId;
 	}
 
+	public String getMatchRequest() {
+		return matchRequest;
+	}
+
+	public void setMatchRequest(String matchRequest) {
+		this.matchRequest = matchRequest;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -111,10 +86,12 @@ public class CompanionMatchBean {
 		builder.append(companionAId);
 		builder.append(", companionBId=");
 		builder.append(companionBId);
+		builder.append(", matchRequest=");
+		builder.append(matchRequest);
 		builder.append("]");
 		return builder.toString();
 	}
-
-
+	
+	
 
 }

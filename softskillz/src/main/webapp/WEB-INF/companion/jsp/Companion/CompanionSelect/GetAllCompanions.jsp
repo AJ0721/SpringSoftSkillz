@@ -1,3 +1,4 @@
+<%@page import="com.softskillz.account.model.bean.StudentBean"%>
 <%@page import="java.text.SimpleDateFormat" %>
 	<%@page import="com.softskillz.companion.model.CompanionBean" %>
 		<%@page import="java.util.List" %>
@@ -114,39 +115,46 @@ tr:hover {
 					<body style="background-color:#FFFAF2">
 						<div align="center">
 							<h2>學伴資料</h2>
-							<div style="display: flex; justify-content: flex-end;"><button class="add" id="add">新增</button></div>
+							<div style="display: flex; justify-content: flex-end;">
+							<form method="post" action="${pageContext.request.contextPath}/insertJSP">
+							<button class="add" id="add" type="submit">新增</button>
+							</form>
+							</div>
 							<div class="right">
 								<div style="visibility: hidden">空白</div>
 							</div>
 							<table border="1">
 								<tr style="background-color:#ffe4e1">
-									<th>學伴編號
+<!-- 									<th>學伴編號 -->
 									<th>學生會員編號
-									<th>學伴帳號名稱
-									<th>學伴性別
-									<th>學伴生日
-									<th>學伴母語
-									<th>學伴會說語言
-									<th>學伴學習興趣
-									<th>學伴學習頻率
-									<th>學伴照片
+									<th>暱稱
+									<th>性別
+<!-- 									<th>生日 -->
+									<th>母語
+									<th>其他會說的語言
+									<th>學習興趣
+									<th>學習頻率
+									<th>關於我
+									<th>照片
 									<th>修改
 									<th>刪除
 										<% List<CompanionBean> companions = (ArrayList<CompanionBean>)request.getAttribute("companions");
+// 										List<StudentBean> students = (ArrayList<StudentBean>)request.getAttribute("students");
 												SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS");
 												SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-												for(CompanionBean companion: companions){ %>
+												for(CompanionBean companion: companions){ 
+												%>
 								<tr>
+<!-- 									<td> -->
+<%-- 										<%= companion.getCompanionId()%> --%>
 									<td>
-										<%= companion.getCompanionId()%>
+										<%= companion.getStudentBeanID().getStudentId()%>
 									<td>
-										<%= companion.getStudentId()%>
+										<%= companion.getStudentBeanID().getStudentNickname()%>
 									<td>
-										<%= companion.getCompanionUsername()%>
-									<td>
-										<%= companion.getCompanionGender()%>
-									<td>
-										<%= outputFormat.format(inputFormat.parse(companion.getCompanionBirth()))%>
+										<%= companion.getStudentBeanID().getStudentGender()%>
+<!-- 									<td> -->
+<%-- 										<%= outputFormat.format(inputFormat.parse(companion.getCompanionBirth()))%> --%>
 											<%-- <td>
 												<%= companion.getCompanionBirth()%> --%>
 									<td>
@@ -157,9 +165,11 @@ tr:hover {
 										<%= companion.getCompanionLearningInterest()%>
 									<td>
 										<%= companion.getCompanionLearningFrequency()%>
-									<td><img id="img"
-											src="<%=request.getContextPath()%><%=companion.getCompanionPhoto()%>"
-											alt=photo>
+									<td>
+										<%= companion.getCompanionAboutMe()%>
+ 									<td>
+										<img id="img" src="<%=request.getContextPath()%>
+										<%=companion.getStudentBeanID().getStudentPhoto()%>" alt=photo>
 									<td>
 										<form method="get" action="${pageContext.request.contextPath}/GetUpdateData">
 											<input type="hidden" value="<%= companion.getCompanionId() %>"
@@ -214,10 +224,10 @@ tr:hover {
 							index.addEventListener('click', function () {
 								location.href = "/index.html"
 							})
-							const add = document.querySelector('#add')
-							add.addEventListener('click', function () {
-								location.href = "/insert.html"
-							})
+// 							const add = document.querySelector('#add')
+// 							add.addEventListener('click', function () {
+// 								location.href = "../CompanionInsert/insert.jsp"
+// 							})
 						</script>
 					</body>
 

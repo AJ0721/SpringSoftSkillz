@@ -704,6 +704,7 @@
                             <!-- Others content goes here -->
                         </div>
                     </div>
+                </main>
             </div>
         </div>
 

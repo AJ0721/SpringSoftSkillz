@@ -121,8 +121,11 @@ li a {
 			<li><a href="${pageContext.request.contextPath}/homepage">首頁</a></li>
 			<li class="dropdown" id="userDropdown"><a href="#">用戶管理</a>
 				<div class="dropdown-content" id="userDropdownContent">
-					<a href="/admin/admin-account">管理員</a> <a href="#">學生</a> <a href="#">教師</a>
-				</div></li>
+					<a href="/admin/admin-account">管理員</a>
+					<a href="#">學生</a>
+					<a href="#">教師</a>
+				</div>
+			</li>
 			<li class="dropdown" id="courseDropdown"><a href="#">課程管理</a>
 				<div class="dropdown-content" id="courseDropdownContent">
 					<a
@@ -130,11 +133,17 @@ li a {
 					<a
 						href="${pageContext.request.contextPath}/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage">教師行事曆</a>
 					<a
-						href="${pageContext.request.contextPath}/studentReservation/studentReservationPage/studentReservationAllPage">學生課程預約</a><a
+						href="${pageContext.request.contextPath}/studentReservation/studentReservationPage/studentReservationAllPage">學生課程預約</a>
+					<a
 						href="#">學生行事曆</a>
-				</div></li>
-			<li><a href="/adminorder/adorder.do">課程訂單管理</a> <a href="/mall/index">商品管理</a>
-				<a href="/order">商品訂單管理</a> <a href="/companion/index.html">學伴資料管理</a> <a href="/forum/adminhome">論壇管理</a></li>
+				</div>
+			</li>
+			<li>
+			<a href="/adminorder/adorder.do">課程訂單管理</a>
+			<a href="/mall/index">商品管理</a>
+			<a href="/order">商品訂單管理</a>
+			<a href="/companion/index.html">學伴資料管理</a>
+			<a href="/forum/adminhome">論壇管理</a></li>
 		</ul>
 	</nav>
 	<section>

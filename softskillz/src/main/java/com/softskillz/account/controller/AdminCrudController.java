@@ -110,34 +110,33 @@ public class AdminCrudController {
 	}
 
 	// 查詢全部
-		@GetMapping("/AdminSelectAll")
-		public String processFindAllAction(Model m, HttpServletRequest request) {
-			List<AdminBean> admin = adminService.getAll();
-			System.out.println(admin);
-			m.addAttribute("admin", admin);
+	@GetMapping("/AdminSelectAll")
+	public String processFindAllAction(Model m, HttpServletRequest request) {
+		List<AdminBean> admin = adminService.getAll();
+		System.out.println(admin);
+		m.addAttribute("admin", admin);
 
-			int pageSize = 10; // 設置每頁顯示的數量
-			Pageable pageable = PageRequest.of(0, pageSize); // 創建分頁請求，從0開始(所以如果從第一頁，要減一才會從零開始)
-			Page<AdminBean> page = adminService.findAllByPage(pageable); // 調用服務層方法，返回分頁數據
+		int pageSize = 10; // 設置每頁顯示的數量
+		Pageable pageable = PageRequest.of(0, pageSize); // 創建分頁請求，從0開始(所以如果從第一頁，要減一才會從零開始)
+		Page<AdminBean> page = adminService.findAllByPage(pageable); // 調用服務層方法，返回分頁數據
 
-			request.getSession().setAttribute("totalElements", page.getTotalElements());
-			request.getSession().setAttribute("totalPages", page.getTotalPages()); // 從Page對象獲取總頁數
+		request.getSession().setAttribute("totalElements", page.getTotalElements());
+		request.getSession().setAttribute("totalPages", page.getTotalPages()); // 從Page對象獲取總頁數
 
-			
-			return "/account/admin/AdminHomepageCRUD.jsp";
-		}
+		return "/account/admin/AdminHomepageCRUD.jsp";
+	}
 
-		@GetMapping("/AdminQueryByPage/{pageNo}")
-		@ResponseBody
-		public List<AdminBean> AdminQueryByPage(@PathVariable("pageNo") int pageNo, Model model,
-				HttpServletRequest request) {
-			int pageSize = 10; // 設置每頁顯示的數量
-			Pageable pageable = PageRequest.of(pageNo - 1, pageSize); // 創建分頁請求，從0開始(所以如果從第一頁，要減一才會從零開始)
-			Page<AdminBean> page = adminService.findAllByPage(pageable); // 調用服務層方法，返回分頁數據
-	
-			return page.getContent();
+	@GetMapping("/AdminQueryByPage/{pageNo}")
+	@ResponseBody
+	public List<AdminBean> AdminQueryByPage(@PathVariable("pageNo") int pageNo, Model model,
+			HttpServletRequest request) {
+		int pageSize = 10; // 設置每頁顯示的數量
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize); // 創建分頁請求，從0開始(所以如果從第一頁，要減一才會從零開始)
+		Page<AdminBean> page = adminService.findAllByPage(pageable); // 調用服務層方法，返回分頁數據
 
-		}
+		return page.getContent();
+
+	}
 
 	@PutMapping("/AdminUpdate")
 	public String processUpdateAction(@RequestParam("adminId") Integer adminId,

@@ -36,12 +36,10 @@ public class CourseService {
 	// 更新課程
 	// 先檢查傳入的CourseBean是否為非空,且其 ID 是否有效（即資料庫中已存在此 ID 的課程）
 	// 如果是，使用save()更新課程。
-
 	public CourseBean updateCourse(CourseBean course) {
 		if (course != null && course.getCourseID() != null && courseRepository.existsById(course.getCourseID())) {
 			return courseRepository.save(course);
 		}
 		return null;
 	}
-
 }

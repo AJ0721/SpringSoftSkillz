@@ -1,8 +1,12 @@
 package com.softskillz.studentreservation.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,9 @@ import com.softskillz.course.model.CourseService;
 import com.softskillz.studentreservation.model.ReservationException;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 import com.softskillz.studentreservation.model.StudentReservationService;
+import com.softskillz.studentschedule.model.StudentScheduleBean;
+import com.softskillz.studentschedule.model.StudentScheduleRepository;
+import com.softskillz.studentschedule.model.StudentScheduleService;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleService;
 
@@ -37,6 +44,35 @@ public class StudentReservationController {
 
 	@Autowired
 	private StudentService studentService;
+	
+	@Autowired
+	private StudentScheduleService studentScheduleService;
+	
+	@Autowired
+	private StudentScheduleRepository studentScheduleRepository;
+	
+	//測試東東
+	@GetMapping("/findSchedule")
+	public ResponseEntity<?> findStudentSchedule(@RequestParam int studentID,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate courseDate) {
+		Optional<StudentScheduleBean> schedule = studentScheduleRepository.findByStudentIDAndCourseDate(studentID,
+				courseDate);
+		if (schedule.isPresent()) {
+			StudentScheduleBean scheduleBean = schedule.get();
+			// 轉換為DTO或直接返回所需屬性
+			return ResponseEntity.ok(scheduleBean);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	//測試東東
+//	@GetMapping("/findSchedule")
+//	public ResponseEntity<String> findSchedule(@RequestParam int studentID,
+//			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate courseDate) {
+//		studentScheduleService.testFindByStudentIDAndCourseDate(studentID, courseDate);
+//		return ResponseEntity.ok("查詢完成，結果已輸出到控制台");
+//	}
 
 	// 學生預約課程CRUD頁面
 	@GetMapping("/studentReservationPage/studentReservationAllPage")
@@ -78,7 +114,7 @@ public class StudentReservationController {
 	public String selectStudentReservationPage(Model model) {
 		List<StudentReservationBean> reservations = studentReservationService.findAllStudentReservations();
 		model.addAttribute("reservations", reservations);
-		return "/studentReservation/studentReservationPage/studentReservationSelect";
+		return "/studentReservation/studentReservationPage/studentReservationSelect.jsp";
 	}
 
 	@GetMapping("/oneStudentReservation")

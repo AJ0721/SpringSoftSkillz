@@ -13,8 +13,8 @@
 	<div id="header"></div>
 	<div class="info">
 		<h2>教師行事曆查詢成功</h2>
-		<h3 style="color:#C5D0E2">開放預約</h3>
-		<h3 style="color:#bfbab0">已被預約</h3>
+		<h3 style="color: #C5D0E2">開放預約</h3>
+		<h3 style="color: #bfbab0">已被預約</h3>
 		<p>教師編號：${teacherSchedule.teacherID}</p>
 		<p>教師帳號：${teacherSchedule.teacherUserName}</p>
 		<p>課程日期：${teacherSchedule.courseDate}</p>
