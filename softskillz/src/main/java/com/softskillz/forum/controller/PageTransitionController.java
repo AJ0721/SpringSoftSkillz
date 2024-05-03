@@ -3,6 +3,7 @@ package com.softskillz.forum.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -51,7 +52,7 @@ public class PageTransitionController {
 
     }
 	
-	//to backstage category details
+	
 	
 	//to backstage category insert
 	@GetMapping("/admin/category/insert")
@@ -70,7 +71,7 @@ public class PageTransitionController {
 		
 	}
 	
-	//to backstage category insert
+	//to backstage category update
 		@GetMapping("/admin/category/update")
 		public String adminUpdateCategory(Model model) {
 			/*
@@ -85,6 +86,14 @@ public class PageTransitionController {
 			return "/forum/pages/jsp/updateForumCategory.jsp";
 
 			
+		}
+		
+	//to category detail
+		@GetMapping("/category/detail/{categoryId}")
+		public String categoryDetailPage(@PathVariable int categoryId, Model model) {
+		    model.addAttribute("categoryId", categoryId);
+		    System.out.println(categoryId);
+		    return "/forum/pages/jsp/forumCategoryDetail.jsp"; 
 		}
 	
 	//to thread details page

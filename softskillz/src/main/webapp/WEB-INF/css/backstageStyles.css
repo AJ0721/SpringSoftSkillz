@@ -10,11 +10,14 @@ header {
     padding: 24px 0;
     /* Increased padding */
     text-align: center;
+    margin-top: 0;
+
 }
 
 header h1 {
     font-size: 45px;
     /* Increased font size */
+
 }
 
 
@@ -128,4 +131,15 @@ section {
     /* Increase left padding */
     font-size: 18px;
     /* Increased font size for better visibility */
+}
+
+
+
+.nav-item:hover .dropdown-content {
+    display: block;
+}
+
+.form-control:disabled, .form-control:read-only {
+    background-color: #ffffff; /* white background */
+    opacity: 1; /* full opacity */
 }

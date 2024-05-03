@@ -42,7 +42,7 @@ public class ForumCategoryController {
 	}
 
 	@GetMapping("/find/id/{categoryId}")
-	public ForumCategoryDto findForumCategoryById(@PathVariable int categoryId
+	public ForumCategoryDto findForumCategoryById(@PathVariable Integer categoryId
 			) {
 		
 		ForumCategoryDto category = iforumCategoryService.findForumCategoryById(categoryId);

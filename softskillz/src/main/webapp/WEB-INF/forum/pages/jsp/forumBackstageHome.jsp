@@ -11,14 +11,15 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="/css/backstageStyles.css">
 
-        <script src="/js/backend.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- <script src="/js/backend.js"></script> -->
 
+        <!-- FETCH HTML SIDE BAR -->
         <script>
-
             fetch("/html/backstageFrame.html")
                 .then(response => {
                     if (response.ok) {
@@ -27,8 +28,6 @@
                 }).then(data => {
                     document.querySelector('#sidebar').innerHTML = data;
                 })
-
-
         </script>
 
 
@@ -38,17 +37,17 @@
     <body>
         <script>
 
-
             $(document).ready(function () {
+
                 //FETCH ALL DATA
                 $('#nav-category-tab').click(function (e) {
                     e.preventDefault();
-                    $('#categoryList').empty()
+                    $('#categoryList').empty();
                     fetchCategories();
                 });
                 $('#nav-threads-tab').click(function (e) {
                     e.preventDefault();
-                    $('#threadList').empty()
+                    $('#threadList').empty();
                     fetchThreads();
                 });
 
@@ -74,7 +73,7 @@
                     }
                 });
 
-                //SELECT DELETE ALL CHECKBOX
+                //SELECT 'DELETE ALL CHECKBOX'
                 $('#selectAllCategories').change(function () {
                     $('#categoryList :checkbox').prop('checked', $(this).prop('checked'));
                 });
@@ -82,13 +81,15 @@
                     $('#threadList :checkbox').prop('checked', $(this).prop('checked'));
                 });
 
-                //BULK DELETE !!!NOT WORKING!!!
+                //BULK DELETE TEMPLATE !!!NOT WORKING!!!
 
                 //setupDeleteHandler('#deleteSelectedCategories', '#categoryList', '/forum/category/deleteall', 'forumCategoryIds', fetchCategories);
                 // setupDeleteHandler('#deleteSelectedThreads', '#threadList', '/forum/thread/deleteall', 'ThreadIds', fetchThreads);
 
 
+
                 //SWEET ALERT
+
                 $('#deleteSelectedCategories').click(function () {
                     var selectedCheckboxes = $('#categoryList :checkbox:checked');
                     if (selectedCheckboxes.length === 0) {
@@ -178,9 +179,14 @@
                 //PAGE REDIRECT
                 $('#createNewCategory').click(function (e) {
                     e.preventDefault();
-
                     window.location.href = '/forum/admin/category/insert'
                 });
+
+
+
+
+
+                $('#')
 
                 //UPDATE !!!NOT COMPLETED!!!
                 $(document).on('click', '#updateCategory', function (e) {
@@ -213,7 +219,7 @@
                 });
 
 
-                //FUCTION: FETCH DATA
+                //FUCTION: FETCH ALL DATA
                 function fetchCategories() {
                     console.log("Fetching categories!");
                     // avoid repetitive loading when multiple clicks happen
@@ -226,17 +232,31 @@
                             console.log("Categories fetched successfully:", categories);
                             categories.forEach(function (category) {
                                 $('#categoryList').append(`
-                        <tr>
+                            <tr>
                             <td><input type="checkbox"></td>
                             <td >`+ category.forumCategoryId + `</td>
-                            <td > <a href="#detail">`+ category.forumCategoryName + `</a></td>
+                            
+                            <td > <a href="/forum/category/detail/`+ category.forumCategoryId + `" class="category-link">` + category.forumCategoryName + `</a></td>
                             <td>`+ category.forumCategoryDescription + `</td>
+                           
+                            <td id="updateCategory"> <a href="/forum/category/update/`+ category.forumCategoryId + `" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
+                            編輯</a>
+                    
+                            </td>
+                        </tr>
+
+
+                          <!--  <tr>
+                            <td><input type="checkbox"></td>
+                            <td > ${category.forumCategoryId} </td>
+                            <td > <a href="#detail"> ${category.forumCategoryName} </a></td>
+                            <td> ${category.forumCategoryDescription} </td>
                            
                             <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
                             編輯</a>
                     
                                         </td>
-                        </tr>
+                        </tr> -->
                     `);
                             });
                         },
@@ -256,7 +276,7 @@
                             console.log("Threads fetched successfully:", threads);
                             threads.forEach(function (thread) {
                                 $('#threadList').append(`
-                                <tr>
+                                        <tr>
                                             <td><input type="checkbox"></td>
                                             <td>`+ thread.threadId + `</td>
                                             <td>`+ thread.forumCategoryId + `</td>
@@ -274,7 +294,7 @@
                                                 
                                             </td>
                                         </tr>
-                    `);
+                                    `);
                             });
                         },
                         error: function (error) {
@@ -283,6 +303,23 @@
                     });
                 }
 
+
+                //FUNCTION: FETCH 1 AND STORE 
+                function fetchAndStoreCategory(categoryId) {
+                    fetch("/forum/category/find/id/${categoryId}")
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("not a valid response");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data.forumCategoryName);
+
+                        })
+                        .catch(error => console.log(error));
+
+                }
 
                 // FUNCTION: SEARCH BAR
                 function searchCategoriesByKeyword() {
@@ -299,23 +336,24 @@
 
                             categories.forEach(function (category) {
                                 $('#categoryList').append(`
-                    <tr>
-                        <td><input type="checkbox"></td>
-                            <td >`+ category.forumCategoryId + `</td>
-                            <td > <a href="#detail">`+ category.forumCategoryName + `</a></td>
-                            <td>`+ category.forumCategoryDescription + `</td>
-                            <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                            編輯</a>
-                    </tr>
-                `);
+                                < tr >
+                                <td><input type="checkbox"></td>
+                                <td >${category.forumCategoryId} </td>
+                                <td > <a href="#detail"> ${category.forumCategoryName} </a></td>
+                                <td>${category.forumCategoryDescription}</td>
+                                <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
+                                    編輯</a>
+                                    </tr>
+                                    `);
                             });
                         },
                         error: function (xhr, status, error) {
+                            $('#categoryList').empty();
                             $('#threadList').append(`
-                                <tr>
-                                <td colspan="13">查無資訊，請重新輸入</td>         
-                                </tr>
-                                            `);
+                            < tr >
+                            <td colspan="13">查無資訊，請重新輸入</td>         
+                            </tr >
+                            `);
                             console.error('Error searching categories:', error);
                         }
                     });
@@ -329,23 +367,27 @@
                         success: function (category) {
                             $('#categoryList').empty();
                             $('#categoryList').append(`
-                <tr>
-                    <td><input type="checkbox"></td>
+                            <tr>
+                            <td><input type="checkbox"></td>
                             <td >`+ category.forumCategoryId + `</td>
-                            <td > <a href="#detail">`+ category.forumCategoryName + `</a></td>
+                            
+                            <td > <a href="/forum/category/detail/`+ category.forumCategoryId + `" class="category-link">` + category.forumCategoryName + `</a></td>
                             <td>`+ category.forumCategoryDescription + `</td>
-                            <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
+                           
+                            <td id="updateCategory"> <a href="/forum/category/update/`+ category.forumCategoryId + `" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
                             編輯</a>
-                </tr>
-            `);
+                    
+                            </td>
+                        </tr>
+                                    `);
                         },
                         error: function (xhr, status, error) {
                             $('#categoryList').empty();
                             $('#categoryList').append(`
-                                <tr>
-                                <td colspan="5">查無資訊，請重新輸入</td>         
-                                </tr>
-                                 `);
+                                    <tr>
+                                        <td colspan="5">查無資訊，請重新輸入</td>         
+                                        </tr >
+                                        `);
                             console.error('Error searching category by ID:', error);
                         }
                     });
@@ -363,25 +405,24 @@
                             $('#threadList').empty();
                             threads.forEach(function (thread) {
                                 $('#threadList').append(`
-                                <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>`+ thread.threadId + `</td>
-                                            <td>`+ thread.forumCategoryId + `</td>
-                                            <td>`+ thread.studentId + `</td>
-                                            <td>`+ thread.teacherId + `</td>
-                                            <td>`+ thread.adminId + `</td>
-                                            <td><a href="#">`+ thread.threadTitle + `</a></td>
-                                            <td>`+ thread.threadCreatedTime + `</td>
-                                            <td>`+ thread.threadContent + `</td>
-                                            <td>`+ thread.threadUpvoteCount + `</td>
-                                            <td>`+ thread.threadResponseCount + `</td>
-                                            <td>`+ thread.forumThreadStatus + `</td>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td${thread.threadId}</td>
+                                                <td${thread.forumCategoryId}</td>
+                                            <td${thread.studentId}</td>
+                                            <td${thread.teacherId}</td>
+                                            <td${thread.adminId}</td>
+                                            <td><a href="#">${thread.threadTitle}</a></td>
+                                            <td>${thread.threadCreatedTime}</td>
+                                            <td>${thread.threadContent}</td>
+                                            <td>${thread.threadUpvoteCount}</td>
+                                            <td>${thread.threadResponseCount}</td>
+                                            <td>${thread.forumThreadStatus}</td>
                                             <td>
-                                                <a href="#" class="btn btn-primary btn-sm">編輯</a>
-                                                
-                                            </td>
-                                            </tr>
-                                            `);
+                                                <a href="#" class="btn btn-primary btn-sm">編輯</a> 
+                                                </td>
+                                                </tr>
+                                                `);
                             });
                         },
                         error: function (xhr, status, error) {
@@ -401,42 +442,51 @@
                         success: function (thread) {
                             $('#threadList').empty();
                             $('#threadList').append(`
-                                <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>`+ thread.threadId + `</td>
-                                            <td>`+ thread.forumCategoryId + `</td>
-                                            <td>`+ thread.studentId + `</td>
-                                            <td>`+ thread.teacherId + `</td>
-                                            <td>`+ thread.adminId + `</td>
-                                            <td><a href="#">`+ thread.threadTitle + `</a></td>
-                                            <td>`+ thread.threadCreatedTime + `</td>
-                                            <td>`+ thread.threadContent + `</td>
-                                            <td>`+ thread.threadUpvoteCount + `</td>
-                                            <td>`+ thread.threadResponseCount + `</td>
-                                            <td>`+ thread.forumThreadStatus + `</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm">編輯</a>
-                                                
-                                            </td>
-                                            </tr>
-                                            `);
+                            < tr >
+                            <td><input type="checkbox"></td>
+                            <td>${thread.threadId}</td>
+                            <td>${thread.forumCategoryId}</td>
+                            <td>${thread.studentId}</td>
+                            <td>${thread.teacherId}</td>
+                            <td>${thread.adminId}</td>
+                            <td><a href="#">${thread.threadTitle}</a></td>
+                            <td>${thread.threadCreatedTime}</td>
+                            <td>${thread.threadContent}</td>
+                            <td>${thread.threadUpvoteCount}</td>
+                            <td>${thread.threadResponseCount}</td>
+                            <td>${thread.forumThreadStatus}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm">編輯</a>
+                                
+                                </td>
+                                </tr >
+                                `);
 
                         },
                         error: function (xhr, status, error) {
                             $('#threadList').empty();
                             $('#threadList').append(`
                                 <tr>
-                                <td colspan="13">查無資訊，請重新輸入</td>         
-                                </tr>
-                                            `);
+                                    <td colspan="13">查無資訊，請重新輸入</td>         
+                                    </tr >
+                                    `);
                             console.error('Error searching threads:', error);
                         }
                     });
                 };
 
+
+
                 //TO DO LIST: MERGE WITH KEYWORD?
                 function searchThreadsByUsername() { }
+
+
+
+
             });
+
+
+
 
 
 

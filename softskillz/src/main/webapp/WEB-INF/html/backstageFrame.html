@@ -3,30 +3,22 @@
     <div class="sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item"><a class="nav-link active" href="/homepage">首頁</a></li>
+
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    用戶管理
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/admin/admin-account">管理員</a>
-                    <a class="dropdown-item" href="#">學生</a>
-                    <a class="dropdown-item" href="#">教師</a>
+                <a href="#" class="dropdown" id="userDropdown">用戶管理</a>
+                <div class="dropdown-content">
+                    <a href="/admin/admin-account">管理員</a>
+                    <a href="#">學生</a>
+                    <a href="#">教師</a>
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCourses" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    課程管理
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownCourses">
-                    <a class="dropdown-item" href="/course/coursePage/courseAllPage">課程</a>
-                    <a class="dropdown-item"
-                        href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage">教師行事曆</a>
-                    <a class="dropdown-item" href="#">學生行事曆</a>
-                    <a class="dropdown-item"
-                        href="/studentReservation/studentReservationPage/studentReservationAllPage">學生課程預約</a>
-
+            <li class="nav-item">
+                <a href="#" class="dropdown" id="courseDropdown">課程管理</a>
+                <div class="dropdown-content">
+                    <a href="/course/coursePage/courseAllPage">課程</a>
+                    <a href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage">教師行事曆</a>
+                    <a href="#">學生行事曆</a>
+                    <a href="/studentReservation/studentReservationPage/studentReservationAllPage">學生課程預約</a>
                 </div>
             </li>
             <li class="nav-item"><a class="nav-link" href="/adminorder/adorder.do">課程訂單管理</a></li>
