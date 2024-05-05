@@ -1,26 +1,29 @@
 package com.softskillz.forum.model;
 
+import java.util.List;
+
 public class ForumCategoryDto {
 	
-	private int forumCategoryId;
+	private Integer forumCategoryId;
     private String forumCategoryName;
     private String forumCategoryDescription;
+    private List<Integer> forumCategoryIds;
+
 
     public ForumCategoryDto() {
     }
 
-	public ForumCategoryDto(int forumCategoryId, String forumCategoryName, String forumCategoryDescription) {
+	public ForumCategoryDto(Integer forumCategoryId, String forumCategoryName, String forumCategoryDescription) {
 		this.forumCategoryId = forumCategoryId;
 		this.forumCategoryName = forumCategoryName;
 		this.forumCategoryDescription = forumCategoryDescription;
 	}
 
-	public int getForumCategoryId() {
+	public Integer getForumCategoryId() {
 		return forumCategoryId;
 	}
-	
-	
-	public void setForumCategoryId(int forumCategoryId) {
+
+	public void setForumCategoryId(Integer forumCategoryId) {
 		this.forumCategoryId = forumCategoryId;
 	}
 
@@ -40,9 +43,17 @@ public class ForumCategoryDto {
 		this.forumCategoryDescription = forumCategoryDescription;
 	}
 
+	public List<Integer> getForumCategoryIds() {
+		return forumCategoryIds;
+	}
+
+	public void setForumCategoryIds(List<Integer> forumCategoryIds) {
+		this.forumCategoryIds = forumCategoryIds;
+	}
 	
 	
-    
+
+
     
 
 }

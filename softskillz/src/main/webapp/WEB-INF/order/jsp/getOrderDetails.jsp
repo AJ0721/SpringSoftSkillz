@@ -17,27 +17,39 @@
     <h2 class="text-center mb-4">訂單詳情</h2>
     <div class="mb-3">
         <label for="orderId" class="form-label">訂單編號:</label>
-        <input type="text" class="form-control" id="orderId" value="<%= order.getOrder_id() %>" disabled>
+        <input type="text" class="form-control" id="orderId" value="${order.order_id}" disabled>
     </div>
     <div class="mb-3">
-        <label for="studentId" class="form-label">學生編號:</label>
-        <input type="text" class="form-control" id="studentId" value="<%= order.getStudent_id() %>" disabled>
+        <label for="studentId" class="form-label">會員編號:</label>
+        <input type="text" class="form-control" id="studentId" value="${order.student_id}" disabled>
     </div>
     <div class="mb-3">
-        <label for="orderDate" class="form-label">訂單時間:</label>
-        <input type="text" class="form-control" id="orderDate" value="<%= order.getOrder_date() %>" disabled>
+        <label for="couponId" class="form-label">優惠券編號:</label>
+        <input type="text" class="form-control" id="couponId" value="${order.coupon_id}" disabled>
+    </div>
+    <div class="mb-3">
+        <label for="orderDate" class="form-label">訂單日期:</label>
+        <input type="text" class="form-control" id="orderDate" value="${order.order_date}" disabled>
     </div>
     <div class="mb-3">
         <label for="totalAmount" class="form-label">訂單金額:</label>
-        <input type="text" class="form-control" id="totalAmount" value="<%= order.getTotal_amount() %>" disabled>
+        <input type="text" class="form-control" id="totalAmount" value="${order.total_amount}" disabled>
     </div>
     <div class="mb-3">
         <label for="orderStatus" class="form-label">訂單狀態:</label>
-        <input type="text" class="form-control" id="orderStatus" value="<%= order.getOrder_status() %>" disabled>
+        <input type="text" class="form-control" id="orderStatus" value="${order.order_status}" disabled>
+    </div>
+    <div class="mb-3">
+        <label for="paymentMethod" class="form-label">付款方式:</label>
+        <input type="text" class="form-control" id="paymentMethod" value="${order.payment_method}" disabled>
+    </div>
+    <div class="mb-3">
+        <label for="shipmentStatus" class="form-label">出貨狀態:</label>
+        <input type="text" class="form-control" id="shipmentStatus" value="${order.shipment_status}" disabled>
     </div>
     <div class="mb-3">
         <label for="shippingAddress" class="form-label">收貨地址:</label>
-        <input type="text" class="form-control" id="shippingAddress" value="<%= order.getShipping_address() %>" disabled>
+        <input type="text" class="form-control" id="shippingAddress" value="${order.shipping_address}" disabled>
     </div>
     <div class="text-center">
         <a href="/order/all" class="btn btn-secondary">返回訂單列表</a>

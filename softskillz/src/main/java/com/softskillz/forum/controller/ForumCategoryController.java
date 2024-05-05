@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softskillz.forum.model.ForumCategoryDto;
-import com.softskillz.forum.model.ForumCategoryIdListDto;
 import com.softskillz.forum.model.IForumCategoryService;
 
 @RestController
@@ -60,12 +59,12 @@ public class ForumCategoryController {
         }
 	
 	@DeleteMapping("/delete/{categoryId}")
-	public void deleteCategoryById(@PathVariable int categoryId) {
+	public void deleteCategoryById(@PathVariable Integer categoryId) {
 		iforumCategoryService.deleteForumCategoryById(categoryId);
 		
 	}
 	@DeleteMapping("/deleteall")
-	public void deleteAllCategory(@RequestBody ForumCategoryIdListDto categoryListDtos) {
+	public void deleteAllCategory(@RequestBody ForumCategoryDto categoryListDtos) {
 		iforumCategoryService.deleteForumCategoryByIds(categoryListDtos.getForumCategoryIds());
 		
 	}

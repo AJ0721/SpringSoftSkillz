@@ -23,7 +23,7 @@ public class ForumCategoryModel  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "forum_category_id")
-	private int forumCategoryId;
+	private Integer forumCategoryId;
 
 	@Column(name = "forum_category_name")
 	private String forumCategoryName;
@@ -41,7 +41,7 @@ public class ForumCategoryModel  {
 
 
 	//for update
-	public ForumCategoryModel(int forumCategoryId, String forumCategoryName, String forumCategoryDescription) {
+	public ForumCategoryModel(Integer forumCategoryId, String forumCategoryName, String forumCategoryDescription) {
 		this.forumCategoryId = forumCategoryId;
 		this.forumCategoryName = forumCategoryName;
 		this.forumCategoryDescription = forumCategoryDescription;
@@ -55,13 +55,13 @@ public class ForumCategoryModel  {
 
 
 
-	public int getForumCategoryId() {
+	public Integer getForumCategoryId() {
 		return forumCategoryId;
 	}
 
 
 
-	public void setForumCategoryId(int forumCategoryId) {
+	public void setForumCategoryId(Integer forumCategoryId) {
 		this.forumCategoryId = forumCategoryId;
 	}
 
@@ -100,6 +100,9 @@ public class ForumCategoryModel  {
 	public void setForumThreads(Set<ForumThreadModel> forumThreads) {
 		this.forumThreads = forumThreads;
 	}
+
+
+
 	
 	
 

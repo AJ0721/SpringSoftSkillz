@@ -16,7 +16,7 @@ public class ForumCategoryService implements IForumCategoryService {
 	private ForumCategoryRepository forumCategoryRepository;
 
 	// search by id
-	public ForumCategoryDto findForumCategoryById(int categoryId) {
+	public ForumCategoryDto findForumCategoryById(Integer categoryId) {
 		
 		 ForumCategoryModel category = forumCategoryRepository.findById(categoryId).orElse(null);
 		 return IDtoConverter.INSTANCE.toForumCategoryDTO(category);
@@ -54,7 +54,7 @@ public class ForumCategoryService implements IForumCategoryService {
 	}
 
 	// update by id
-	public ForumCategoryDto updateForumCategoryById(int categoryId, ForumCategoryDto categoryDto) {
+	public ForumCategoryDto updateForumCategoryById(Integer categoryId, ForumCategoryDto categoryDto) {
 
 		// Find existing category
 		ForumCategoryModel existingCategory = forumCategoryRepository.findById(categoryId)
@@ -71,7 +71,7 @@ public class ForumCategoryService implements IForumCategoryService {
 	}
 
 	//delete by id
-	public void deleteForumCategoryById(int categoryId) {
+	public void deleteForumCategoryById(Integer categoryId) {
 		forumCategoryRepository.deleteById(categoryId);
 	}
 	

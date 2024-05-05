@@ -1,6 +1,5 @@
 package com.softskillz.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,22 +67,44 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/courseorder/js/**").addResourceLocations("/WEB-INF/courseorder/js/");
 		registry.addResourceHandler("/courseorder/html/**").addResourceLocations("/WEB-INF/courseorder/html/");
 		registry.addResourceHandler("/courseorder/admin/**").addResourceLocations("/WEB-INF/admin/");
-		
-		registry.addResourceHandler("/Companion/CompanionImg/**").addResourceLocations("/WEB-INF/companion/jsp/Companion/CompanionImg/");
-		
-		
+
+		registry.addResourceHandler("/Companion/CompanionImg/**")
+				.addResourceLocations("/WEB-INF/companion/jsp/Companion/CompanionImg/");
+
 		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/js/");
 		registry.addResourceHandler("/html/**").addResourceLocations("/WEB-INF/html/");
-		
-		
+		registry.addResourceHandler("/forum/js/**").addResourceLocations("/WEB-INF/forum/js/");
 		registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/account/images/");
-		
-	    registry.addResourceHandler("/mall/css/**").addResourceLocations("/WEB-INF/mall/css/");
-	    registry.addResourceHandler("/mall/js/**").addResourceLocations("/WEB-INF/mall/js/");
-	    registry.addResourceHandler("/mall/img/**").addResourceLocations("/WEB-INF/mall/img/");
-	    registry.addResourceHandler("/mall/html/**").addResourceLocations("/WEB-INF/mall/html/");
-	    registry.addResourceHandler("/mall/jsp/**").addResourceLocations("/WEB-INF/mall/jsp/");
+		registry.addResourceHandler("/mall/css/**").addResourceLocations("/WEB-INF/mall/css/");
+		registry.addResourceHandler("/mall/js/**").addResourceLocations("/WEB-INF/mall/js/");
+		registry.addResourceHandler("/mall/img/**").addResourceLocations("/WEB-INF/mall/img/");
+		registry.addResourceHandler("/mall/html/**").addResourceLocations("/WEB-INF/mall/html/");
+		registry.addResourceHandler("/mall/jsp/**").addResourceLocations("/WEB-INF/mall/jsp/");
+
+		// 模版html
+		registry.addResourceHandler("/dist/**").addResourceLocations("/WEB-INF/dist/");
+		// 模版css
+		registry.addResourceHandler("/assets/compiled/css/**")
+				.addResourceLocations("/WEB-INF/dist/assets/compiled/css/");
+		// 模版js
+		registry.addResourceHandler("/assets/static/js/components/**")
+				.addResourceLocations("/WEB-INF/dist/assets/static/js/components/");
+		registry.addResourceHandler("/assets/static/js/pages/**")
+				.addResourceLocations("/WEB-INF/dist/assets/static/js/pages/");
+		registry.addResourceHandler("/assets/extensions/perfect-scrollbar/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/perfect-scrollbar/");
+		registry.addResourceHandler("/assets/compiled/js/**").addResourceLocations("/WEB-INF/dist/assets/compiled/js/");
+		registry.addResourceHandler("/assets/extensions/apexcharts/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/apexcharts/");
+		// 模版jpg
+		registry.addResourceHandler("/assets/compiled/jpg/**")
+				.addResourceLocations("/WEB-INF/dist/assets/compiled/jpg/");
+		// 模版svg
+		registry.addResourceHandler("/assets/static/images/**")
+				.addResourceLocations("/WEB-INF/dist/assets/static/images/");
+		registry.addResourceHandler("/assets/compiled/svg/**")
+				.addResourceLocations("/WEB-INF/dist/assets/compiled/svg/");
 
 	}
 
@@ -93,6 +114,10 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addViewController("/softskilz.homepage").setViewName("account/homepage/BackendPage.jsp");
 
 		registry.addViewController("/softskillz/homepage").setViewName("pages/backendPage.jsp");
+
+		// 模版首頁index.html
+		registry.addViewController("/softskillz/newhomepage").setViewName("dist/index.html");
+
 		registry.addViewController("/match.do").setViewName("companion/companion/backendPage.jsp");
 	}
 

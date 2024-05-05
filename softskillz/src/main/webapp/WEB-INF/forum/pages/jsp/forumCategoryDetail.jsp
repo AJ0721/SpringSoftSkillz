@@ -10,101 +10,25 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="/css/backstageStyles.css">
-
-        <script src="/js/backend.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <!-- FETCH SIDEBAR HTML -->
         <script>
-
             fetch("/html/backstageFrame.html")
                 .then(response => {
                     if (response.ok) {
                         return response.text();
                     }
-                }).then(data => {
+                })
+                .then(data => {
                     document.querySelector('#sidebar').innerHTML = data;
                 })
-
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const pathname = window.location.pathname;
-
-                
-                const parts = pathname.split("/"); //split url
-                const categoryId = parts[parts.length - 1];  //get the last index -> category ID
-               
-                fetch("/forum/category/find/id/" + categoryId)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Failed to fetch data");
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log(data);
-                        document.getElementById('categoryName').value = data.forumCategoryName;
-                        document.getElementById('categoryDescription').value = data.forumCategoryDescription;
-                    })
-                    .catch(error => console.error('Error fetching category details:', error));
-            }
-            );
-
         </script>
     </head>
 
     <body>
-
-        <script>
-            $(document).ready(function () {
-
-                //cancel btn page transfer
-
-                $('#cancel').click(function (e) {
-
-                    window.location.href = '/forum/adminhome#nav-category';
-                    //todo: go to category tab
-                });
-
-
-                $('#create').click(function (e) {
-                    e.preventDefault(); // Prevent the default form submit action
-
-                    // Get the values from the form inputs
-                    var categoryName = $('#categoryName').val();
-                    var categoryDescription = $('#categoryDescription').val();
-
-                    // Prepare the data to send in the request
-                    var categoryData = {
-                        forumCategoryName: categoryName,
-                        forumCategoryDescription: categoryDescription
-                    };
-
-                    // Send the AJAX request
-                    $.ajax({
-                        url: '/forum/category/insert', // The URL to the endpoint
-                        type: 'POST', // The type of request
-                        contentType: 'application/json', // The content type of the request
-                        data: JSON.stringify(categoryData), // Convert the JavaScript object to a JSON string
-                        success: function (response) {
-                            console.log('Category created successfully', response);
-                            Swal.fire('新增成功', '', 'success');
-                            window.location.href = '/forum/adminhome';
-                            //todo: redirect to category tab
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error creating category:', error);
-                            Swal.fire('新增失敗', '請檢查連線並重新整理' + error, 'error');
-                        }
-                    });
-                });
-
-            });
-
-
-
-
-        </script>
-
         <header>
             <h1>Soft Skillz</h1>
         </header>
@@ -124,16 +48,20 @@
                             <form>
                                 <div class="form-group">
                                     <label for="categoryName">看板名稱</label>
-                                    <input type="text" class="form-control" id="categoryName" readonly>
+                                    <div class="p-2 border rounded bg-white" style="user-select: text;"
+                                        id="categoryName" readonly>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="categoryDescription">看板說明</label>
-                                    <textarea class="form-control" id="categoryDescription" rows="3"
-                                        readonly></textarea>
+
+                                    <div class=" rounded p-2 border bg-white" style="user-select: text;"
+                                        id="categoryDescription" rows="3" readonly>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-secondary" id="cancel">取消</button>
-                                    <button type="submit" class="btn btn-primary" id="create">新增</button>
+                                    <button type="button" class="btn btn-secondary" id="cancel">返回</button>
+
                                 </div>
                             </form>
                         </div>
@@ -143,10 +71,35 @@
             </div>
         </div>
 
+        <script>
+            $(document).ready(function () {
+                const pathname = window.location.pathname;
+                const parts = pathname.split("/");
+                const categoryId = parts[parts.length - 1];
+
+                fetch("/forum/category/find/id/" + categoryId)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch data");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        document.getElementById('categoryName').innerHTML = data.forumCategoryName;
+                        document.getElementById('categoryDescription').innerHTML = data.forumCategoryDescription;
+                    })
+                    .catch(error => console.error('Error fetching category details:', error));
 
 
+                //PAGE REDIRECT
+                $('#cancel').click(function (e) {
+                    window.location.href = '/forum/adminhome';
+                });
 
+            });
 
+        </script>
     </body>
 
     </html>

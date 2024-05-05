@@ -2,6 +2,8 @@ package com.softskillz.productorder.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -12,6 +14,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer order_id;
     private Integer student_id;
+    private Integer coupon_id;    
     private Integer total_amount;
     private String order_status;
     private String payment_method;
@@ -23,6 +26,9 @@ public class Order {
    
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime shipment_date;
+	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<OrderItem> orderItems;
 
 	public Integer getOrder_id() {
 		return order_id;
@@ -38,6 +44,14 @@ public class Order {
 
 	public void setStudent_id(Integer student_id) {
 		this.student_id = student_id;
+	}
+
+	public Integer getCoupon_id() {
+		return coupon_id;
+	}
+
+	public void setCoupon_id(Integer coupon_id) {
+		this.coupon_id = coupon_id;
 	}
 
 	public Integer getTotal_amount() {
@@ -95,6 +109,13 @@ public class Order {
 	public void setShipment_date(LocalDateTime shipment_date) {
 		this.shipment_date = shipment_date;
 	}
-	
-}	
-	
+
+	public Set<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(Set<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
+
+}

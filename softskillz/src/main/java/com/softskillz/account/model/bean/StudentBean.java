@@ -95,7 +95,7 @@ public class StudentBean {
 	private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
 
 	//任萱forum
-	@OneToMany (mappedBy = "studentBean")
+	@OneToMany (mappedBy = "studentBean",cascade=CascadeType.ALL)
 	private List<ForumThreadModel> threads= new ArrayList<>();
 	
 	public List<ForumThreadModel> getThreads() {

@@ -27,17 +27,18 @@ public class ForumThreadController {
 
 	//find threads by username
 	
-	/*
+	
 	@PostMapping("/insert")
 	public ForumThreadDto insertThread(@RequestBody ForumThreadDto threadDto) {
 		//hardcode admin
+	
 	
 		threadDto.setAdminId(1);  //
 	    
 	    return iforumThreadService.insertForumThread(threadDto);
 
 	}
-	*/
+	
 
 	@PutMapping("/update/{threadId}")
 	public ForumThreadDto updateThread(@PathVariable int threadId, @RequestBody ForumThreadDto threadDto) {
@@ -54,12 +55,12 @@ public class ForumThreadController {
 
 	}
 	
+	// bulk delete by ID
 	@DeleteMapping("/deleteall")
-	public void deleteAllThreads(@RequestBody ForumThreadDto threadDtos) {
-		ForumThreadDto idToBeDelete = threadDtos;
+	public void deleteAllThreads(@RequestBody ForumThreadDto threadListDtos) {
+		ForumThreadDto idToBeDelete = threadListDtos;
 		iforumThreadService.deleteAllForumThreads(idToBeDelete.getThreadIds());
 		System.out.println(idToBeDelete);
-		
 	}
 
 	// Find all threads

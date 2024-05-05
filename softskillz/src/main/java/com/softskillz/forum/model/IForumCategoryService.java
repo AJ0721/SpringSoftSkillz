@@ -5,7 +5,7 @@ import java.util.List;
 public interface IForumCategoryService {
 
 	// search by id
-	ForumCategoryDto findForumCategoryById(int categoryId);
+	ForumCategoryDto findForumCategoryById(Integer categoryId);
 
 	// search all
 	List<ForumCategoryDto> findAllCategories();
@@ -17,10 +17,10 @@ public interface IForumCategoryService {
 	ForumCategoryDto insertForumCategory(ForumCategoryDto categoryDTO);
 
 	// update by id
-	ForumCategoryDto updateForumCategoryById(int categoryId, ForumCategoryDto categoryDTO);
+	ForumCategoryDto updateForumCategoryById(Integer categoryId, ForumCategoryDto categoryDTO);
 
 	// delete by id
-	void deleteForumCategoryById(int categoryId);
+	void deleteForumCategoryById(Integer categoryId);
 	
 	// bulk delete by id
 	void deleteForumCategoryByIds(List<Integer> categoryId);

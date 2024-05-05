@@ -39,32 +39,32 @@ public class CompanionService {
 		return null;
 	}
 	
-//	public CompanionBean getByName(String companionUsername) {
-//		Optional<CompanionBean> op1 = companionRepos.findBycompanionUsername(companionUsername);
-//		
-//		if(op1.isPresent()) {
-//			return op1.get();
-//		}
-//		
-//		return null;
-//	}
+	public CompanionBean getByName(String companionUsername) {
+		Optional<CompanionBean> op1 = companionRepos.findBycompanionUsername(companionUsername);
+		
+		if(op1.isPresent()) {
+			return op1.get();
+		}
+		
+		return null;
+	}
 	
-//	public List<CompanionBean> getByInterest(
-//			String companionLearningInterest,
-//			String companionGender,
-//			String companionFirstLanguage,
-//			String companionSpeakingLanguage,
-//			String companionLearningFrequency,
-//			String companionUsername) {
-//		
-//		return companionRepos.findByMatchRequirement(
-//			companionLearningInterest,
-//			companionGender,
-//			companionFirstLanguage,
-//			companionSpeakingLanguage,
-//			companionLearningFrequency,
-//			companionUsername);
-//	}
+	public List<CompanionBean> getByInterest(
+			String companionLearningInterest,
+			String companionGender,
+			String companionFirstLanguage,
+			String companionSpeakingLanguage,
+			String companionLearningFrequency,
+			String companionUsername) {
+		
+		return companionRepos.findByMatchRequirement(
+			companionLearningInterest,
+			companionGender,
+			companionFirstLanguage,
+			companionSpeakingLanguage,
+			companionLearningFrequency,
+			companionUsername);
+	}
 	
 	public List<CompanionBean> getAll() {
 		return companionRepos.findAll();

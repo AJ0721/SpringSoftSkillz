@@ -3,7 +3,7 @@ package com.softskillz.productorder.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "orderitem")
 public class OrderItem {
 
     @Id
@@ -15,7 +15,7 @@ public class OrderItem {
     private Integer product_price;
     private Integer sub_total;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id", insertable = false, updatable = false)
     private Order order;
 

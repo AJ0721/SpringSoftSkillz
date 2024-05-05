@@ -1,36 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>看板資訊</title>
+    <!DOCTYPE html>
+    <html lang="en">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="/css/backstageStyles.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>看板資訊</title>
 
-    <script src="/js/backend.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="/css/backstageStyles.css">
 
-    <script>
+        <script src="/js/backend.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        fetch("/html/backstageFrame.html")
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                }
-            }).then(data => {
-                document.querySelector('#sidebar').innerHTML = data;
-            })
+        <script>
+
+            fetch("/html/backstageFrame.html")
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                }).then(data => {
+                    document.querySelector('#sidebar').innerHTML = data;
+                })
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const categoryId = urlParams.get('categoryId');  // Get the categoryId from the URL query parameters
+            document.addEventListener('DOMContentLoaded', function () {
+                const pathname = window.location.pathname;
 
-            if (categoryId) {
-                fetch("/forum/find/id/" + categoryId)
+
+                const parts = pathname.split("/"); //split url
+                const categoryId = parts[parts.length - 1];  //get the last index -> category ID
+
+                fetch("/forum/category/find/id/" + categoryId)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error("Failed to fetch data");
@@ -39,113 +42,122 @@
                     })
                     .then(data => {
                         console.log(data);
-                        document.getElementById('categoryName').value = data.forumCategoryName;
-                        document.getElementById('categoryDescription').value = data.forumCategoryDescription;
+                        document.getElementById('categoryName').innerHTML = data.forumCategoryName;
+                        document.getElementById('categoryDescription').innerHTML = data.forumCategoryDescription;
                     })
                     .catch(error => console.error('Error fetching category details:', error));
-            } else {
-                console.error("CategoryId is missing in the URL");
-                // Handle the error appropriately, possibly redirecting the user or displaying an error message
             }
-        });
+            );
 
-    </script>
-</head>
+        </script>
+    </head>
 
-<body>
+    <body>
 
-    <script>
-        $(document).ready(function () {
+        <script>
+            $(document).ready(function () {
 
-            //cancel btn page transfer
+                //cancel btn page transfer
 
-            $('#cancel').click(function (e) {
+                $('#cancel').click(function (e) {
 
-                window.location.href = '/forum/adminhome#nav-category';
-                //todo: go to category tab
-            });
-
-
-            $('#create').click(function (e) {
-                e.preventDefault(); // Prevent the default form submit action
-
-                // Get the values from the form inputs
-                var categoryName = $('#categoryName').val();
-                var categoryDescription = $('#categoryDescription').val();
-
-                // Prepare the data to send in the request
-                var categoryData = {
-                    forumCategoryName: categoryName,
-                    forumCategoryDescription: categoryDescription
-                };
-
-                // Send the AJAX request
-                $.ajax({
-                    url: '/forum/category/insert', // The URL to the endpoint
-                    type: 'POST', // The type of request
-                    contentType: 'application/json', // The content type of the request
-                    data: JSON.stringify(categoryData), // Convert the JavaScript object to a JSON string
-                    success: function (response) {
-                        console.log('Category created successfully', response);
-                        Swal.fire('新增成功', '', 'success');
-                        window.location.href = '/forum/adminhome';
-                        //todo: redirect to category tab
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error creating category:', error);
-                        Swal.fire('新增失敗', '請檢查連線並重新整理' + error, 'error');
-                    }
+                    window.location.href = '/forum/adminhome#nav-category';
+                    //todo: go to category tab
                 });
+
+
+                $('#create').click(function (e) {
+                    e.preventDefault(); // Prevent the default form submit action
+
+                    // Get the values from the form inputs
+                    var categoryName = $('#categoryName').val();
+                    var categoryDescription = $('#categoryDescription').val();
+
+                    // Prepare the data to send in the request
+                    var categoryData = {
+                        forumCategoryName: categoryName,
+                        forumCategoryDescription: categoryDescription
+                    };
+
+                    // Send the AJAX request
+                    $.ajax({
+                        url: '/forum/category/insert', // The URL to the endpoint
+                        type: 'POST', // The type of request
+                        contentType: 'application/json', // The content type of the request
+                        data: JSON.stringify(categoryData), // Convert the JavaScript object to a JSON string
+                        success: function (response) {
+                            console.log('Category created successfully', response);
+                            Swal.fire('新增成功', '', 'success');
+                            window.location.href = '/forum/adminhome';
+                            //todo: redirect to category tab
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error creating category:', error);
+                            Swal.fire('新增失敗', '請檢查連線並重新整理' + error, 'error');
+                        }
+                    });
+                });
+
             });
 
-        });
 
 
 
+        </script>
 
-    </script>
+        <header>
+            <h1>Soft Skillz</h1>
+        </header>
 
-    <header>
-        <h1>Soft Skillz</h1>
-    </header>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div id="sidebar"></div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div id="sidebar"></div>
+                <!-- Right Column -->
+                <div class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            看板資訊
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="categoryName">看板名稱</label>
 
-            <!-- Right Column -->
-            <div class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-                <div class="card">
-                    <div class="card-header">
-                        看板資訊
-                    </div>
-                    <div class="card-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="categoryName">看板名稱</label>
-                                <input type="text" class="form-control" id="categoryName" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="categoryDescription">看板說明</label>
-                                <textarea class="form-control" id="categoryDescription" rows="3" readonly></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-secondary" id="cancel">取消</button>
-                                <button type="submit" class="btn btn-primary" id="create">新增</button>
-                            </div>
-                        </form>
+
+
+                                    <div class="p-2 border rounded bg-white" style="user-select: text;" id="categoryName"
+                                        readonly>
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="categoryDescription">看板說明</label>
+                                    
+                                    <div class=" rounded vh-50 p-2 border bg-white" style="user-select: text;" id="categoryDescription"
+                                    rows="3" readonly>
+                                    </div>
+                                    
+                            
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary" id="cancel">返回</button>
+                                   
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
 
 
 
 
 
-</body>
+    </body>
 
-</html>
+    </html>

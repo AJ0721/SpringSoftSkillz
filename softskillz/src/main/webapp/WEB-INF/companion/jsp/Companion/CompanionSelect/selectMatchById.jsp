@@ -101,13 +101,14 @@ tr:hover {
 <tr style="background-color:#a8fefa">
 <th>你的學生編號<th>已配對學伴的會員編號<th>學伴帳號名稱<th>學伴性別<th>學伴母語<th>學伴會說語言<th>學伴學習興趣<th>學伴學習頻率<th>學伴照片
 <jsp:useBean id="companion" scope="request" class="com.softskillz.companion.model.CompanionBean" />
+<jsp:useBean id="student" scope="request" class="com.softskillz.account.model.bean.StudentBean" />
 <% List<CompanionMatchBean> companionMatches = (ArrayList<CompanionMatchBean>)request.getAttribute("companionMatch");
 for(CompanionMatchBean companionMatch: companionMatches){ %>
 <tr><td><%= companionMatch.getCompanionAId().getCompanionId() %>
 <td><%= companionMatch.getCompanionBId().getCompanionId() %>
 
-<td><%= companionMatch.getCompanionBId().getCompanionUsername() %>
-<td><%= companionMatch.getCompanionBId().getCompanionGender() %>
+<td><%= companion.getStudentBeanID().getStudentNickname() %>
+<td><%= companion.getStudentBeanID().getStudentGender() %>
 <%-- <tr><td>學伴生日<td><input class="birth" type="text" disabled value="<%= outputFormat.format(inputFormat.parse(companion.getCompanionBirth()))%>"> --%>
 <td><%= companionMatch.getCompanionBId().getCompanionFirstLanguage() %>
 <td><%= companionMatch.getCompanionBId().getCompanionSpeakingLanguage() %>
@@ -115,7 +116,7 @@ for(CompanionMatchBean companionMatch: companionMatches){ %>
 <td><%= companionMatch.getCompanionBId().getCompanionLearningFrequency() %>
 <%-- <td><img id="img" src="${pageContext.request.contextPath}/Companion/CompanionImg/rabbit.png" alt="Companion_Photo"></td> --%>
 <!-- <tr><td>學伴照片</td> -->
-<td><img id="img" src="<%=request.getContextPath()%><%=companionMatch.getCompanionBId().getCompanionPhoto()%>" alt="Companion_Photo"></td>
+<td><img id="img" src="<%=request.getContextPath()%><%=companionMatch.getCompanionBId().getStudentBeanID().getStudentPhoto()%>" alt="Companion_Photo"></td>
 <%-- <td><img id="img" src="${companion.companionPhoto}" alt="Companion_Photo"></td> --%>
 <%-- <tr><td>學伴照片<td><input type="text" disabled value="${companion.companionPhoto}"> --%>
 <%} %>

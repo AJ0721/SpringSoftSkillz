@@ -139,7 +139,6 @@ tr:hover {
 									<th>修改
 									<th>刪除
 										<% List<CompanionBean> companions = (ArrayList<CompanionBean>)request.getAttribute("companions");
-// 										List<StudentBean> students = (ArrayList<StudentBean>)request.getAttribute("students");
 												SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS");
 												SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 												for(CompanionBean companion: companions){ 

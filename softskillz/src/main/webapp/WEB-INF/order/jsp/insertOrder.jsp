@@ -14,8 +14,12 @@
     <h2 class="text-center mb-4">新增訂單</h2>
     <form method="post" action="/order/create">
         <div class="mb-3">
-            <label for="studentId" class="form-label">學生編號:</label>
+            <label for="studentId" class="form-label">會員編號:</label>
             <input type="text" class="form-control" id="studentId" name="student_id" required>
+        </div>
+        <div class="mb-3">
+            <label for="couponId" class="form-label">優惠券編號:</label>
+            <input type="text" class="form-control" id="couponId" name="coupon_id" required>
         </div>
         <div class="mb-3">
             <label for="orderDate" class="form-label">訂單日期:</label>
@@ -27,8 +31,33 @@
         </div>
         <div class="mb-3">
             <label for="orderStatus" class="form-label">訂單狀態:</label>
-            <input type="text" class="form-control" id="orderStatus" name="order_status" required>
+            <select class="form-control" id="orderStatus" name="order_status">
+        <option value="">請選擇訂單狀態</option>
+        <option value="支付成功">支付成功</option>
+        <option value="支付失敗">支付失敗</option>
+        </select>
         </div>
+        <div class="mb-3">
+    	<label for="paymentMethod" class="form-label">付款方式:</label>
+    	<select class="form-control" id="paymentMethod" name="payment_method">
+        <option value="">請選擇付款方式</option>
+        <option value="綠界">綠界</option>
+        <option value="藍新(智富通)">藍新(智富通)</option>
+        <option value="LINE PAY">LINE PAY</option>
+        </select>
+        <div class="mb-3">
+    	<label for="shipmentDate" class="form-label">出貨日期:</label>
+    	<input type="datetime-local" class="form-control" id="shipmentDate" name="shipment_date">
+		</div>
+        <div class="mb-3">
+    	<label for="shipmentStatus" class="form-label">出貨狀態:</label>
+    	<select class="form-control" id="shipmentStatus" name="shipment_status">
+        <option value="">請選擇出貨狀態</option>
+        <option value="已出貨">已出貨</option>
+        <option value="處理運送中">處理運送中</option>
+        <option value="未出貨">未出貨</option>
+    	</select>
+		</div>
         <div class="mb-3">
             <label for="shippingAddress" class="form-label">收貨地址:</label>
             <input type="text" class="form-control" id="shippingAddress" name="shipping_address" required>

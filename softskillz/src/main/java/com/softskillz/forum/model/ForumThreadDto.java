@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ForumThreadDto {
 
-    private int threadId;
+    private Integer threadId;
     private String threadTitle;
     private Timestamp threadCreatedTime;
     private String threadContent;
@@ -16,8 +16,6 @@ public class ForumThreadDto {
     private Integer studentId;    
     private Integer teacherId;  
     private Integer adminId;    
-    private String studentUsername;
-    private String teacherUsername;
     private List<Integer> threadIds;
     
     
@@ -28,7 +26,7 @@ public class ForumThreadDto {
     
 
     //update thread
-	public ForumThreadDto(int threadId, String threadTitle, String threadContent) {
+	public ForumThreadDto(Integer threadId, String threadTitle, String threadContent) {
 		super();
 		this.threadId = threadId;
 		this.threadTitle = threadTitle;
@@ -59,9 +57,6 @@ public class ForumThreadDto {
 	}
 
 
-	public String getStudentUsername() {
-		return studentUsername;
-	}
 
 	
 
@@ -76,26 +71,12 @@ public class ForumThreadDto {
 	}
 
 
-	public void setStudentUsername(String studentUsername) {
-		this.studentUsername = studentUsername;
-	}
 
-
-	public String getTeacherUsername() {
-		return teacherUsername;
-	}
-
-
-	public void setTeacherUsername(String teacherUsername) {
-		this.teacherUsername = teacherUsername;
-	}
-
-
-	public int getThreadId() {
+	public Integer getThreadId() {
 		return threadId;
 	}
 
-	public void setThreadId(int threadId) {
+	public void setThreadId(Integer threadId) {
 		this.threadId = threadId;
 	}
 

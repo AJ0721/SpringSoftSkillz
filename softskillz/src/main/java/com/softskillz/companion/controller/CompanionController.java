@@ -243,8 +243,8 @@ public class CompanionController {
 	public ModelAndView getCompanionByName(@RequestParam("companion_username") String companionUsername) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectByName.jsp");
 		try {
-//			CompanionBean companion = companionService.getByName(companionUsername);
-//			view.addObject("companion", companion);
+			CompanionBean companion = companionService.getByName(companionUsername);
+			view.addObject("companion", companion);
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
@@ -253,36 +253,36 @@ public class CompanionController {
 	}
 	
 	// 查詢多筆符合條件的學伴後 再申請配對
-//	@GetMapping("/GetCompanionByInterest")
-//	public ModelAndView getCompanionByInterest(
-////			@RequestParam("companion_username") String companionUsername,
-////			@RequestParam("companion_gender") String companionGender,
-//			@RequestParam("companion_first_language") String companionFirstLanguage,
-//			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
-//			@RequestParam("companion_learning_interest") String companionLearningInterest,
-//			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
-//			HttpSession session) {
-//		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/CompanionByInterest.jsp");
-//		try {
-//			List<CompanionBean> companions = companionService.getByInterest(companionLearningInterest,companionGender, companionFirstLanguage, companionSpeakingLanguage, companionLearningFrequency, companionUsername);
-//			view.addObject("companions", companions);
-//			session.setAttribute("companionUsername", companionUsername);
-//			System.out.println(companionLearningInterest);
-//			System.out.println(companionGender);
-//			if (companionGender == null) {
-//			    // 如果變量為 null，執行這裡的程式碼
-//			    System.out.println("變量是 null");
-//			} else {
-//			    // 如果變量不為 null，執行這裡的程式碼
-//			    System.out.println("變量不是 null");
-//			}
-//			view.getModelMap();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
-//		}
-//		return view;
-//	}
+	@GetMapping("/GetCompanionByInterest")
+	public ModelAndView getCompanionByInterest(
+			@RequestParam("companion_username") String companionUsername,
+			@RequestParam("companion_gender") String companionGender,
+			@RequestParam("companion_first_language") String companionFirstLanguage,
+			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
+			@RequestParam("companion_learning_interest") String companionLearningInterest,
+			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
+			HttpSession session) {
+		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/CompanionByInterest.jsp");
+		try {
+			List<CompanionBean> companions = companionService.getByInterest(companionLearningInterest,companionGender, companionFirstLanguage, companionSpeakingLanguage, companionLearningFrequency, companionUsername);
+			view.addObject("companions", companions);
+			session.setAttribute("companionUsername", companionUsername);
+			System.out.println(companionLearningInterest);
+			System.out.println(companionGender);
+			if (companionGender == null) {
+			    // 如果變量為 null，執行這裡的程式碼
+			    System.out.println("變量是 null");
+			} else {
+			    // 如果變量不為 null，執行這裡的程式碼
+			    System.out.println("變量不是 null");
+			}
+			view.getModelMap();
+		} catch (Exception e) {
+			e.printStackTrace();
+			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+		}
+		return view;
+	}
 	
 	// 查詢全部
 	@GetMapping("/GetAllCompanions")

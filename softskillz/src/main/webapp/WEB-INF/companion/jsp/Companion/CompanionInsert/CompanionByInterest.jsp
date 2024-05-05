@@ -104,16 +104,16 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS
 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 for(CompanionBean companion: companions){ %>
 <tr><td><%= companion.getCompanionId()%>
-<td><%= companion.getStudentId()%>
-<td><%= companion.getCompanionUsername()%>
-<td><%= companion.getCompanionGender()%>
+<td><%= companion.getStudentBeanID().getStudentId()%>
+<td><%= companion.getStudentBeanID().getStudentNickname()%>
+<td><%= companion.getStudentBeanID().getStudentGender()%>
 <%-- <td><%= outputFormat.format(inputFormat.parse(companion.getCompanionBirth()))%> --%>
 <%-- <td><%= companion.getCompanionBirth()%> --%>
 <td><%= companion.getCompanionFirstLanguage()%>
 <td><%= companion.getCompanionSpeakingLanguage()%>
 <td><%= companion.getCompanionLearningInterest()%>
 <td><%= companion.getCompanionLearningFrequency()%>
-<td><img id ="img" src= "<%=request.getContextPath()%><%=companion.getCompanionPhoto()%>" alt=photo>
+<td><img id ="img" src= "<%=request.getContextPath()%><%=companion.getStudentBeanID().getStudentPhoto()%>" alt=photo>
 <td style="text-align: center;">
 
 <form method="post" action="${pageContext.request.contextPath}/InsertCompanion">

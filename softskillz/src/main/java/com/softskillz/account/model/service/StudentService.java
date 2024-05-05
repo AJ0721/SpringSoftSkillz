@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.repository.StudentRepository;
-import com.softskillz.companion.model.CompanionBean;
 
 @Service
 public class StudentService {
@@ -19,10 +18,6 @@ public class StudentService {
 	// 找所有學生
 	public List<StudentBean> findAllStudents() {
 		return studentRepository.findAll();
-	}
-	
-	public StudentBean insert(StudentBean studentBean) {
-		return studentRepository.save(studentBean);
 	}
 	
 	public StudentBean update(StudentBean studentBean) {
@@ -38,6 +33,14 @@ public class StudentService {
 		
 		return null;
 	}
+
+	//Create,新增,註冊學生
+	public StudentBean insert(StudentBean students) {
+		return studentRepository.save(students);
+		
+
+	}
+	
 	
 	
 

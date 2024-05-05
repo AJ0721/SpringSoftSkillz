@@ -21,18 +21,14 @@ public interface IDtoConverter {
 	@Mapping(source = "forumCategoryModel.forumCategoryId", target = "forumCategoryId")
 	@Mapping(source = "studentBean.studentId", target = "studentId")
 	@Mapping(source = "teacherBean.teacherId", target = "teacherId")
-	@Mapping(source = "studentBean.studentUsername", target = "studentUsername")
-	@Mapping(source = "teacherBean.teacherUserName", target = "teacherUsername")
 	ForumThreadDto toForumThreadDto(ForumThreadModel forumThreadModel);
 
 	@Mapping(target = "studentBean", ignore = true)
     @Mapping(target = "teacherBean", ignore = true)
 	@Mapping(source = "forumCategoryId", target = "forumCategoryModel.forumCategoryId")
-	@Mapping(source = "studentId", target = "studentBean.studentId")
+	@Mapping(source = "studentId", target = "studentBean.studentId") //attribute if id=null don't create a new student
 	@Mapping(source = "teacherId", target = "teacherBean.teacherId")
 	@Mapping(source = "adminId", target = "adminBean.adminId")
-	@Mapping(source = "studentUsername", target = "studentBean.studentUsername")
-	@Mapping(source = "teacherUsername", target = "teacherBean.teacherUserName")
 	@Mapping(target = "forumImageModel", ignore = true)
 	@Mapping(target = "forumPostModel", ignore = true)
 	 ForumThreadModel toForumThreadModel(ForumThreadDto forumThreadDto);

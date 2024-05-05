@@ -11,13 +11,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="/css/backstageStyles.css">
 
-
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!-- <script src="/js/backend.js"></script> -->
-
         <!-- FETCH HTML SIDE BAR -->
         <script>
             fetch("/html/backstageFrame.html")
@@ -35,511 +28,6 @@
     </head>
 
     <body>
-        <script>
-
-            $(document).ready(function () {
-
-                //FETCH ALL DATA
-                $('#nav-category-tab').click(function (e) {
-                    e.preventDefault();
-                    $('#categoryList').empty();
-                    fetchCategories();
-                });
-                $('#nav-threads-tab').click(function (e) {
-                    e.preventDefault();
-                    $('#threadList').empty();
-                    fetchThreads();
-                });
-
-                //SEARCH BAR: INPUT
-                $('#searchInput').on('input', function () {
-                    var searchValue = $(this).val();
-                    var searchCondition = $('#searchConditionSelect').val();
-                    if (searchCondition === 'categoryKeyword') {
-                        searchCategoriesByKeyword(searchValue);
-                    } else if (searchCondition === 'threadKeyword') {
-                        searchThreadsByKeyword(searchValue);
-                    }
-                });
-
-                //SEARCH BAR: CLICK
-                $('#searchbtn').on('click', function () {
-                    var searchValue = $(this).val();
-                    var searchCondition = $('#searchConditionSelect').val();
-                    if (searchCondition === 'categoryId') {
-                        searchCategoriesById(searchValue);
-                    } else if (searchCondition === 'threadId') {
-                        searchThreadsById(searchValue);
-                    }
-                });
-
-                //SELECT 'DELETE ALL CHECKBOX'
-                $('#selectAllCategories').change(function () {
-                    $('#categoryList :checkbox').prop('checked', $(this).prop('checked'));
-                });
-                $('#selectAllThreads').change(function () {
-                    $('#threadList :checkbox').prop('checked', $(this).prop('checked'));
-                });
-
-                //BULK DELETE TEMPLATE !!!NOT WORKING!!!
-
-                //setupDeleteHandler('#deleteSelectedCategories', '#categoryList', '/forum/category/deleteall', 'forumCategoryIds', fetchCategories);
-                // setupDeleteHandler('#deleteSelectedThreads', '#threadList', '/forum/thread/deleteall', 'ThreadIds', fetchThreads);
-
-
-
-                //SWEET ALERT
-
-                $('#deleteSelectedCategories').click(function () {
-                    var selectedCheckboxes = $('#categoryList :checkbox:checked');
-                    if (selectedCheckboxes.length === 0) {
-                        Swal.fire('錯誤', '請選擇至少一筆刪除資料', 'error');
-                        return;
-                    }
-
-                    Swal.fire({
-                        title: '是否刪除選取資料?',
-                        text: '',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: '確認',
-                        cancelButtonText: '取消'
-                    }).then((result) => {
-
-                        if (result.isConfirmed) {
-
-                            var categoryIds = [];
-                            selectedCheckboxes.each(function () {
-                                var categoryId = $(this).closest('tr').find('td:nth-child(2)').text();
-                                categoryIds.push(categoryId);
-                            });
-
-                            $.ajax({
-                                url: '/forum/category/deleteall',
-                                type: 'DELETE',
-                                data: JSON.stringify({ forumCategoryIds: categoryIds }),
-                                contentType: 'application/json',
-                                success: function (response) {
-                                    Swal.fire('刪除成功', '', 'success');
-                                    fetchCategories(); // Refresh the category list
-                                },
-                                error: function (xhr, status, error) {
-                                    Swal.fire('刪除失敗', '請重新整理' + error, 'error');
-                                }
-                            });
-                        }
-                    });
-                });
-                $('#deleteSelectedThreads').click(function () {
-                    var selectedCheckboxes = $('#threadList :checkbox:checked');
-                    if (selectedCheckboxes.length === 0) {
-                        Swal.fire('錯誤', '請選擇至少一筆刪除資料', 'error');
-                        return;
-                    }
-
-                    Swal.fire({
-                        title: '是否刪除選取資料?',
-                        text: '',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: '確認',
-                        cancelButtonText: '取消'
-                    }).then((result) => {
-
-                        if (result.isConfirmed) {
-
-                            var threadIds = [];
-                            selectedCheckboxes.each(function () {
-                                var threadId = $(this).closest('tr').find('td:nth-child(2)').text();
-                                threadIds.push(threadId);
-                            });
-
-                            console.log(threadIds); //debug ok
-
-                            $.ajax({
-                                url: '/forum/thread/deleteall',
-                                type: 'DELETE',
-                                data: JSON.stringify({ threadIds: threadIds }),
-                                contentType: 'application/json',
-                                success: function (response) {
-                                    Swal.fire('刪除成功', '', 'success');
-                                    fetchThreads(); // Refresh the category list
-                                },
-                                error: function (xhr, status, error) {
-                                    Swal.fire('刪除失敗', '請檢查連線並重新整理' + error + xhr.responseText, 'error');
-                                }
-                            });
-                        }
-
-
-                    });
-                });
-
-
-                //PAGE REDIRECT
-                $('#createNewCategory').click(function (e) {
-                    e.preventDefault();
-                    window.location.href = '/forum/admin/category/insert'
-                });
-
-
-
-
-
-                $('#')
-
-                //UPDATE !!!NOT COMPLETED!!!
-                $(document).on('click', '#updateCategory', function (e) {
-                    e.preventDefault();
-
-                    // Retrieve the category ID 
-                    var categoryId = $(this).closest('tr').find('td:nth-child(2)').text();
-
-
-                    // $(window).on('click', function () { //load?
-
-                    $.ajax({
-                        url: '/forum/category/find/id/' + categoryId,
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (category) {
-                            console.log(category);
-
-                            // $('#categoryName').val(category.forumCategoryName);
-                            // $('#categoryDescription').val(category.forumCategoryDescription);
-
-                            window.location.href = '/forum/admin/category/update?categoryId=' + categoryId;
-
-
-                        },
-                        error: function (error) {
-                            console.error("Error fetching category details: ", error);
-                        }
-                    });
-                });
-
-
-                //FUCTION: FETCH ALL DATA
-                function fetchCategories() {
-                    console.log("Fetching categories!");
-                    // avoid repetitive loading when multiple clicks happen
-                    $('#categoryList').empty();
-                    $.ajax({
-                        url: '/forum/category/findall',
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (categories) {
-                            console.log("Categories fetched successfully:", categories);
-                            categories.forEach(function (category) {
-                                $('#categoryList').append(`
-                            <tr>
-                            <td><input type="checkbox"></td>
-                            <td >`+ category.forumCategoryId + `</td>
-                            
-                            <td > <a href="/forum/category/detail/`+ category.forumCategoryId + `" class="category-link">` + category.forumCategoryName + `</a></td>
-                            <td>`+ category.forumCategoryDescription + `</td>
-                           
-                            <td id="updateCategory"> <a href="/forum/category/update/`+ category.forumCategoryId + `" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                            編輯</a>
-                    
-                            </td>
-                        </tr>
-
-
-                          <!--  <tr>
-                            <td><input type="checkbox"></td>
-                            <td > ${category.forumCategoryId} </td>
-                            <td > <a href="#detail"> ${category.forumCategoryName} </a></td>
-                            <td> ${category.forumCategoryDescription} </td>
-                           
-                            <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                            編輯</a>
-                    
-                                        </td>
-                        </tr> -->
-                    `);
-                            });
-                        },
-                        error: function (error) {
-                            console.error("Error fetching categories: ", error);
-                        }
-                    });
-                }
-                function fetchThreads() {
-                    console.log("Fetching threads!");
-                    $('#threadList').empty();
-                    $.ajax({
-                        url: '/forum/thread/findall',
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (threads) {
-                            console.log("Threads fetched successfully:", threads);
-                            threads.forEach(function (thread) {
-                                $('#threadList').append(`
-                                        <tr>
-                                            <td><input type="checkbox"></td>
-                                            <td>`+ thread.threadId + `</td>
-                                            <td>`+ thread.forumCategoryId + `</td>
-                                            <td>`+ thread.studentId + `</td>
-                                            <td>`+ thread.teacherId + `</td>
-                                            <td>`+ thread.adminId + `</td>
-                                            <td><a href="#">`+ thread.threadTitle + `</a></td>
-                                            <td>`+ thread.threadCreatedTime + `</td>
-                                            <td>`+ thread.threadContent + `</td>
-                                            <td>`+ thread.threadUpvoteCount + `</td>
-                                            <td>`+ thread.threadResponseCount + `</td>
-                                            <td>`+ thread.forumThreadStatus + `</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm">編輯</a>
-                                                
-                                            </td>
-                                        </tr>
-                                    `);
-                            });
-                        },
-                        error: function (error) {
-                            console.error("Error fetching threads: ", error);
-                        }
-                    });
-                }
-
-
-                //FUNCTION: FETCH 1 AND STORE 
-                function fetchAndStoreCategory(categoryId) {
-                    fetch("/forum/category/find/id/${categoryId}")
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error("not a valid response");
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log(data.forumCategoryName);
-
-                        })
-                        .catch(error => console.log(error));
-
-                }
-
-                // FUNCTION: SEARCH BAR
-                function searchCategoriesByKeyword() {
-                    var keyword = $('#searchInput').val();
-
-                    $.ajax({
-                        url: '/forum/category/search',
-                        method: 'GET',
-                        data: { keyword: keyword },
-                        dataType: 'json',
-                        success: function (categories) {
-                            $('#categoryList').empty();
-
-
-                            categories.forEach(function (category) {
-                                $('#categoryList').append(`
-                                < tr >
-                                <td><input type="checkbox"></td>
-                                <td >${category.forumCategoryId} </td>
-                                <td > <a href="#detail"> ${category.forumCategoryName} </a></td>
-                                <td>${category.forumCategoryDescription}</td>
-                                <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                                    編輯</a>
-                                    </tr>
-                                    `);
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            $('#categoryList').empty();
-                            $('#threadList').append(`
-                            < tr >
-                            <td colspan="13">查無資訊，請重新輸入</td>         
-                            </tr >
-                            `);
-                            console.error('Error searching categories:', error);
-                        }
-                    });
-                }
-                function searchCategoriesById() {
-                    var categoryId = $('#searchInput').val();
-                    $.ajax({
-                        url: '/forum/category/find/id/' + categoryId,
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (category) {
-                            $('#categoryList').empty();
-                            $('#categoryList').append(`
-                            <tr>
-                            <td><input type="checkbox"></td>
-                            <td >`+ category.forumCategoryId + `</td>
-                            
-                            <td > <a href="/forum/category/detail/`+ category.forumCategoryId + `" class="category-link">` + category.forumCategoryName + `</a></td>
-                            <td>`+ category.forumCategoryDescription + `</td>
-                           
-                            <td id="updateCategory"> <a href="/forum/category/update/`+ category.forumCategoryId + `" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                            編輯</a>
-                    
-                            </td>
-                        </tr>
-                                    `);
-                        },
-                        error: function (xhr, status, error) {
-                            $('#categoryList').empty();
-                            $('#categoryList').append(`
-                                    <tr>
-                                        <td colspan="5">查無資訊，請重新輸入</td>         
-                                        </tr >
-                                        `);
-                            console.error('Error searching category by ID:', error);
-                        }
-                    });
-                }
-
-                function searchThreadsByKeyword() {
-                    var keyword = $('#searchInput').val();
-
-                    $.ajax({
-                        url: '/forum/thread/search',
-                        method: 'GET',
-                        data: { keyword: keyword },
-                        dataType: 'json',
-                        success: function (threads) {
-                            $('#threadList').empty();
-                            threads.forEach(function (thread) {
-                                $('#threadList').append(`
-                                            <tr>
-                                                <td><input type="checkbox"></td>
-                                                <td${thread.threadId}</td>
-                                                <td${thread.forumCategoryId}</td>
-                                            <td${thread.studentId}</td>
-                                            <td${thread.teacherId}</td>
-                                            <td${thread.adminId}</td>
-                                            <td><a href="#">${thread.threadTitle}</a></td>
-                                            <td>${thread.threadCreatedTime}</td>
-                                            <td>${thread.threadContent}</td>
-                                            <td>${thread.threadUpvoteCount}</td>
-                                            <td>${thread.threadResponseCount}</td>
-                                            <td>${thread.forumThreadStatus}</td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm">編輯</a> 
-                                                </td>
-                                                </tr>
-                                                `);
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error searching threads:', error);
-                        }
-                    });
-
-
-                }
-                function searchThreadsById() {
-                    var threadId = $('#searchInput').val();
-
-                    $.ajax({
-                        url: '/forum/thread/find/' + threadId,
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (thread) {
-                            $('#threadList').empty();
-                            $('#threadList').append(`
-                            < tr >
-                            <td><input type="checkbox"></td>
-                            <td>${thread.threadId}</td>
-                            <td>${thread.forumCategoryId}</td>
-                            <td>${thread.studentId}</td>
-                            <td>${thread.teacherId}</td>
-                            <td>${thread.adminId}</td>
-                            <td><a href="#">${thread.threadTitle}</a></td>
-                            <td>${thread.threadCreatedTime}</td>
-                            <td>${thread.threadContent}</td>
-                            <td>${thread.threadUpvoteCount}</td>
-                            <td>${thread.threadResponseCount}</td>
-                            <td>${thread.forumThreadStatus}</td>
-                            <td>
-                                <a href="#" class="btn btn-primary btn-sm">編輯</a>
-                                
-                                </td>
-                                </tr >
-                                `);
-
-                        },
-                        error: function (xhr, status, error) {
-                            $('#threadList').empty();
-                            $('#threadList').append(`
-                                <tr>
-                                    <td colspan="13">查無資訊，請重新輸入</td>         
-                                    </tr >
-                                    `);
-                            console.error('Error searching threads:', error);
-                        }
-                    });
-                };
-
-
-
-                //TO DO LIST: MERGE WITH KEYWORD?
-                function searchThreadsByUsername() { }
-
-
-
-
-            });
-
-
-
-
-
-
-
-
-            //FUNCTION: BULK DELETE !!!NOT WORKING!!!
-            // function setupDeleteHandler(buttonSelector, tableSelector, apiUrl, propertyName, successCallback) {
-            //     $(buttonSelector).click(function () {
-            //         var selectedCheckboxes = $(tableSelector + ' tbody tr :checkbox:checked');
-            //         if (selectedCheckboxes.length === 0) {
-            //             Swal.fire('錯誤', '請選擇至少一筆刪除資料', 'error');
-            //             return;
-            //         }
-
-            //         Swal.fire({
-            //             title: '是否刪除選取資料?',
-            //             text: '',
-            //             icon: 'warning',
-            //             showCancelButton: true,
-            //             confirmButtonText: '確認',
-            //             cancelButtonText: '取消'
-            //         }).then((result) => {
-
-            //             if (result.isConfirmed) {
-
-            //                 var idList = [];
-            //                 selectedCheckboxes.each(function () {
-            //                     var id = $(this).closest('tr').find('td:nth-child(2)').text();
-            //                     idList.push(id);
-            //                 });
-
-            //                 var data = {};
-            //                 data[propertyName] = idList;
-
-            //                 $.ajax({
-            //                     url: apiUrl,
-            //                     type: 'DELETE',
-            //                     data: JSON.stringify(data),
-            //                     contentType: 'application/json',
-            //                     success: function (response) {
-            //                         Swal.fire('刪除成功', '', 'success');
-            //                         successCallback; // Refresh the category list
-            //                     },
-            //                     error: function (xhr, status, error) {
-            //                         Swal.fire('刪除失敗', '請檢查連線並重新整理' + error, 'error');
-            //                     }
-            //                 });
-            //             }
-            //         });
-            //     });
-            // }
-
-        </script>
 
 
         <header>
@@ -555,6 +43,8 @@
                 <!-- Right Column: Admin Backstage Content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h1 class="mt-4">論壇管理</h1>
+
+                    <!-- search bar -->
                     <div class="search-bar">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -675,11 +165,11 @@
                                         <tr class="text-nowrap">
                                             <th><input type="checkbox" id="selectAllThreads" name="threadMainBox"></th>
                                             <th>編號</th>
+                                            <th>標題</th>
                                             <th>分類看板</th>
                                             <th>學生編號</th>
                                             <th>老師編號</th>
                                             <th>管理員編號</th>
-                                            <th>標題</th>
                                             <th>創建時間</th>
                                             <th>內文</th>
                                             <th>讚數</th>
@@ -758,6 +248,106 @@
             </div>
         </div>
 
+
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="/forum/js/categoryTab.js"></script>
+        <script src="/forum/js/threadTab.js"></script>
+        <script src="/forum/js/postTab.js"></script>
+
+
+        <script>
+
+            $(document).ready(function () {
+
+                // //SEARCH BAR: INPUT
+                // $('#searchInput').on('input', function () {
+                //     var searchValue = $(this).val();
+                //     var searchCondition = $('#searchConditionSelect').val();
+                //     if (searchCondition === 'categoryKeyword') {
+                //         searchCategoriesByKeyword(searchValue);
+                //     } else if (searchCondition === 'threadKeyword') {
+                //         searchThreadsByKeyword(searchValue);
+                //     }
+                // });
+
+                // //SEARCH BAR: CLICK
+                // $('#searchbtn').on('click', function () {
+                //     var searchValue = $(this).val();
+                //     var searchCondition = $('#searchConditionSelect').val();
+                //     if (searchCondition === 'categoryId') {
+                //         searchCategoriesById(searchValue);
+                //     } else if (searchCondition === 'threadId') {
+                //         searchThreadsById(searchValue);
+                //     }
+                // });
+
+
+                //BULK DELETE TEMPLATE !!!NOT WORKING!!!
+
+                //setupDeleteHandler('#deleteSelectedCategories', '#categoryList', '/forum/category/deleteall', 'forumCategoryIds', fetchCategories);
+                // setupDeleteHandler('#deleteSelectedThreads', '#threadList', '/forum/thread/deleteall', 'ThreadIds', fetchThreads);
+
+
+              
+
+
+                //TO DO LIST: MERGE WITH KEYWORD?
+                // function searchThreadsByUsername() { }
+            });
+
+
+            //FUNCTION: BULK DELETE !!!NOT WORKING!!!
+            // function setupDeleteHandler(buttonSelector, tableSelector, apiUrl, propertyName, successCallback) {
+            //     $(buttonSelector).click(function () {
+            //         var selectedCheckboxes = $(tableSelector + ' tbody tr :checkbox:checked');
+            //         if (selectedCheckboxes.length === 0) {
+            //             Swal.fire('錯誤', '請選擇至少一筆刪除資料', 'error');
+            //             return;
+            //         }
+
+            //         Swal.fire({
+            //             title: '是否刪除選取資料?',
+            //             text: '',
+            //             icon: 'warning',
+            //             showCancelButton: true,
+            //             confirmButtonText: '確認',
+            //             cancelButtonText: '取消'
+            //         }).then((result) => {
+
+            //             if (result.isConfirmed) {
+
+            //                 var idList = [];
+            //                 selectedCheckboxes.each(function () {
+            //                     var id = $(this).closest('tr').find('td:nth-child(2)').text();
+            //                     idList.push(id);
+            //                 });
+
+            //                 var data = {};
+            //                 data[propertyName] = idList;
+
+            //                 $.ajax({
+            //                     url: apiUrl,
+            //                     type: 'DELETE',
+            //                     data: JSON.stringify(data),
+            //                     contentType: 'application/json',
+            //                     success: function (response) {
+            //                         Swal.fire('刪除成功', '', 'success');
+            //                         successCallback; // Refresh the category list
+            //                     },
+            //                     error: function (xhr, status, error) {
+            //                         Swal.fire('刪除失敗', '請檢查連線並重新整理' + error, 'error');
+            //                     }
+            //                 });
+            //             }
+            //         });
+            //     });
+            // }
+
+        </script>
 
     </body>
 

@@ -8,9 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface StudentScheduleRepository extends JpaRepository<StudentScheduleBean, Integer> {
-
 	@Query("SELECT ss FROM StudentScheduleBean ss WHERE ss.studentID = :studentID AND ss.studentCourseDate = :courseDate")
 	Optional<StudentScheduleBean> findByStudentIDAndCourseDate(@Param("studentID") int studentID,
 			@Param("courseDate") LocalDate courseDate);
-
 }

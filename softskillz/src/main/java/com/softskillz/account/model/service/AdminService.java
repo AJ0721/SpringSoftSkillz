@@ -19,7 +19,7 @@ public class AdminService {
 	@Autowired
 	private AdminRepository adminRepos;
 
-	// 新增,註冊會員
+	//
 	public AdminBean insert(AdminBean adminBean) {
 		
 //		String newAccount =adminBean.getAdminAccount();

@@ -129,8 +129,6 @@ public class StudentReservationService {
 			// 更新已存在的行事曆
 			StudentScheduleBean schedule = existingSchedule.get();
 			schedule.setStudentTimeSlotsAll(mergeStudentTimeSlots(schedule.getStudentTimeSlotsAll(), newTimeSlotsAll));
-//			String updatedTimeSlotsAll = mergeStudentTimeSlots(schedule.getStudentTimeSlotsAll(), newTimeSlotsAll);
-//			schedule.setStudentTimeSlotsAll(updatedTimeSlotsAll);
 			studentScheduleRepository.save(schedule);
 			System.out.println("更新資料" + schedule);
 		} else {
@@ -218,8 +216,14 @@ public class StudentReservationService {
 	}
 
 	// 查詢所有學生預約
+//	public List<StudentReservationBean> findAllStudentReservations() {
+//		return studentReservationRepository.findAll();
+//	}
+
 	public List<StudentReservationBean> findAllStudentReservations() {
-		return studentReservationRepository.findAll();
+		List<StudentReservationBean> reservations = studentReservationRepository.findAll();
+		System.out.println("All student reservations: " + reservations);
+		return reservations;
 	}
 
 	// 刪除單筆學生預約

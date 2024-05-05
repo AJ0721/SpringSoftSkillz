@@ -22,7 +22,6 @@ import com.softskillz.account.model.bean.AdminBean;
 import com.softskillz.account.model.service.AdminService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")

@@ -8,7 +8,7 @@ public interface IForumThreadService {
 	ForumThreadDto insertForumThread(ForumThreadDto threadDto);
 
 	// update
-	ForumThreadDto updateForumThreadById(int threadId,ForumThreadDto threadDto);
+	ForumThreadDto updateForumThreadById(Integer threadId,ForumThreadDto threadDto);
 	
 
 	// delete
@@ -19,7 +19,7 @@ public interface IForumThreadService {
 	// read
 	List<ForumThreadDto> findThreadsByKeyword(String keyword);
 
-	ForumThreadDto findThreadByThreadId(int threadId);
+	ForumThreadDto findThreadByThreadId(Integer threadId);
 
 	List<ForumThreadDto> findAllThreads();
 

@@ -46,33 +46,30 @@ public class StudentScheduleBean implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private StudentBean studentBean;
 
-	@OneToMany(mappedBy = "studentScheduleBean", fetch = FetchType.LAZY)
-	private Set<StudentReservationBean> reservations = new HashSet<>();
-
 	public StudentScheduleBean() {
 	}
 
 	// 有id
 	public StudentScheduleBean(int studentScheduleID, int studentID, LocalDate studentCourseDate,
-			String studentTimeSlotsAll, StudentBean studentBean, Set<StudentReservationBean> reservations) {
+			String studentTimeSlotsAll, StudentBean studentBean) {
 		super();
 		this.studentScheduleID = studentScheduleID;
 		this.studentID = studentID;
 		this.studentCourseDate = studentCourseDate;
 		this.studentTimeSlotsAll = studentTimeSlotsAll;
 		this.studentBean = studentBean;
-		this.reservations = reservations;
+		
 	}
 
 	// 沒id
 	public StudentScheduleBean(int studentID, LocalDate studentCourseDate, String studentTimeSlotsAll,
-			StudentBean studentBean, Set<StudentReservationBean> reservations) {
+			StudentBean studentBean) {
 		super();
 		this.studentID = studentID;
 		this.studentCourseDate = studentCourseDate;
 		this.studentTimeSlotsAll = studentTimeSlotsAll;
 		this.studentBean = studentBean;
-		this.reservations = reservations;
+		
 	}
 
 	// getter setter
@@ -116,30 +113,16 @@ public class StudentScheduleBean implements Serializable {
 		this.studentBean = studentBean;
 	}
 
-	public Set<StudentReservationBean> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(Set<StudentReservationBean> reservations) {
-		this.reservations = reservations;
-	}
-
-	@Override
-	public String toString() {
-		return "StudentScheduleBean [studentScheduleID=" + studentScheduleID + ", studentID=" + studentID
-				+ ", studentTimeSlotsAll=" + studentTimeSlotsAll + ", studentBean=" + studentBean + ", reservations="
-				+ reservations + "]";
-	}
-
-	// 測試用 測完關掉
-	public void setCourseDate(LocalDate now) {
-		// TODO Auto-generated method stub
-
-	}
-
-	// 測試用 測完關掉
-	public Object[] getCourseDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
+
+//	// 測試用 測完關掉
+//	public void setCourseDate(LocalDate now) {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	// 測試用 測完關掉
+//	public Object[] getCourseDate() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}

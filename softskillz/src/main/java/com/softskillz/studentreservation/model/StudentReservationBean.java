@@ -49,7 +49,7 @@ public class StudentReservationBean implements Serializable {
 
 	@Column(name = "total_hours")
 	private int totalHours;
-	
+
 	@JoinColumn(name = "course_id", insertable = false, updatable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CourseBean courseBean;
@@ -61,10 +61,7 @@ public class StudentReservationBean implements Serializable {
 	@JoinColumn(name = "teacher_schedule_id", insertable = false, updatable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TeacherScheduleBean teacherScheduleBean;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id", insertable = false, updatable = false)
-    private StudentScheduleBean studentScheduleBean;
+
 
 	public StudentReservationBean() {
 	}
@@ -178,5 +175,4 @@ public class StudentReservationBean implements Serializable {
 	public void setTeacherScheduleBean(TeacherScheduleBean teacherScheduleBean) {
 		this.teacherScheduleBean = teacherScheduleBean;
 	}
-
 }

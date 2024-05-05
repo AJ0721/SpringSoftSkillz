@@ -1,4 +1,4 @@
-﻿--會員
+--會員
 --管理員
 CREATE TABLE admin (
    admin_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -478,31 +478,43 @@ SELECT * FROM coupon_type_relations;
 
 --商城訂單
 
---訂單資料
+--商品訂單
 CREATE TABLE orders (
     order_id INT PRIMARY KEY IDENTITY(1, 1),
     student_id INT NOT NULL FOREIGN KEY REFERENCES student(student_id),
+	coupon_id INT NULL FOREIGN KEY REFERENCES coupon(coupon_id),
     order_date DATETIME2 NOT NULL,
     total_amount INT NOT NULL,
     order_status NVARCHAR(50) DEFAULT N'未付款',
     payment_method NVARCHAR(10) DEFAULT NULL,
     shipment_date DATETIME2 DEFAULT NULL,
     shipment_status NVARCHAR(50) NULL, 
-    shipping_address NVARCHAR(100) NOT NULL
+    shipping_address NVARCHAR(255) NOT NULL
 );
+INSERT INTO orders
+    (student_id, coupon_id, order_date, total_amount, order_status, payment_method, shipment_date, shipment_status, shipping_address)
+VALUES
+    (1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
+	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
+	(3, 3, '2024-04-29 11:54:00', 600, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
 
-
-
---訂單項目
+--商品訂單項目
 CREATE TABLE orderitem (
     order_item_id INT PRIMARY KEY IDENTITY(1, 1),
     order_id INT NOT NULL FOREIGN KEY REFERENCES orders(order_id),
-    product_id INT NOT NULL,
+    product_id INT NOT NULL FOREIGN KEY REFERENCES product(product_id),
+	product_image_id INT FOREIGN KEY REFERENCES product_image(product_image_id),
     quantity INT NOT NULL,
     product_price INT NOT NULL,
     sub_total INT NOT NULL
 );
 
+--插入商品訂單項目
+INSERT INTO orderitem (order_id, product_id, product_image_id, quantity, product_price, sub_total)
+VALUES
+(1, 1, 1, 5, 500, 2500),  
+(2, 2, 2, 1, 1500, 1500), 
+(2, 3, 3, 3, 300, 900);  
 
 --學伴
 
@@ -756,12 +768,48 @@ INSERT INTO forum_post (post_admin_id, thread_id, parent_post_id, post_content, 
 VALUES (1, 21, NULL, '歡迎大家查看更新後的資源，希望大家能喜歡。', 20, 2, 'VISIBLE');
 -- Child posts for parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 21, 13, 'U質，這是我看過講解得最清楚的，太感謝了！', 5, 0, 'VISIBLE');
+VALUES (2, 3, NULL, '回文內容1 (s2)', 14, 0, 'VISIBLE');
+
+-- Second post for Thread ID 3
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (2, 3, NULL, '回文內容2 (s2)', 17, 1, 'VISIBLE');
+
+-- Replies to the second post for Thread ID 3
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (2, 3, 10, '回覆回文內容2 (s2)', 21, 1, 'VISIBLE');
+
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (2, 3, 11, '二次回覆回文內容2 (s2)', 8, 0, 'VISIBLE');
+
+-- First post for Thread ID 4
 INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 21, 13, '寫得很好耶，我會推薦給我的學生!', 4, 0, 'VISIBLE');
--- Parent post 2
-INSERT INTO forum_post (post_admin_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 21, NULL, '謝謝大家回饋!如果有任何問題，請不吝嗇給我們反饋。', 18, 0, 'VISIBLE');
+VALUES (2, 4, NULL, '回文內容1 (t2)', 13, 0, 'VISIBLE');
+
+-- Second post for Thread ID 4
+INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (2, 4, NULL, '回文內容2 (t2)', 16, 1, 'VISIBLE');
+
+-- Replies to the second post for Thread ID 4
+INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (2, 4, 14, '回覆回文內容2 (t2)', 19, 1, 'VISIBLE');
+
+INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (2, 4, 15, '二次回覆回文內容2 (t2)', 6, 0, 'VISIBLE');
+
+-- First post for Thread ID 5
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (3, 5, NULL, 'Post Content 1 (s3)', 11, 0, 'VISIBLE');
+
+-- Second post for Thread ID 5
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (3, 5, NULL, 'Post Content 2 (s3)', 20, 1, 'VISIBLE');
+
+-- Replies to the second post for Thread ID 5
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (3, 5, 18, 'Reply 1 to Post Content 2 (s3)', 23, 1, 'VISIBLE');
+
+INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
+VALUES (3, 5, 19, 'Reply to Reply 1 to Post Content 2 (s3)', 10, 0, 'VISIBLE');
 
 
 SELECT* FROM forum_post;
