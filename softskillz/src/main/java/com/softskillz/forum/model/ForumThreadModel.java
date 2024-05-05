@@ -49,7 +49,7 @@ public class ForumThreadModel{
 	private int threadResponseCount = 0;
 
 	@Column(name = "thread_status")
-	private String threadStatus = "VISIBLE";
+	private String threadStatus = "VISIBLE"; // We can consider creating an Enum for VISIBLE
 
 	@ManyToOne
 	@JoinColumn(name = "forum_category_id", referencedColumnName = "forum_category_id")

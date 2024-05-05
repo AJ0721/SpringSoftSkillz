@@ -1,11 +1,6 @@
 package com.softskillz.companion.model;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface CompanionRepository extends JpaRepository<CompanionBean, Integer> {
 	@Query("SELECT c FROM CompanionBean c JOIN c.studentBeanID s WHERE s.studentNickname = :nickname")
