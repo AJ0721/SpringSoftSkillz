@@ -24,6 +24,7 @@ public class ForumThreadService implements IForumThreadService {
 		ForumThreadModel forumThread = IDtoConverter.INSTANCE.toForumThreadModel(threadDto);
 		
 		//workaround: check if id is null
+		//test
 		if( threadDto.getStudentId() == null) {
 			forumThread.setStudentBean(null);
 		}
