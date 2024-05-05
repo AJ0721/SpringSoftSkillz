@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.softskillz.forum.model.ForumCategoryDto;
-import com.softskillz.forum.model.IForumCategoryService;
+import com.softskillz.forum.model.dto.ForumCategoryDto;
+import com.softskillz.forum.model.service.IForumCategoryService;
+
+
 
 @RestController
 @RequestMapping("/forum/category")
@@ -59,7 +61,7 @@ public class ForumCategoryController {
         }
 	
 	@DeleteMapping("/delete/{categoryId}")
-	public void deleteCategoryById(@PathVariable Integer categoryId) {
+	public void deleteCategoryById(@PathVariable int categoryId) {
 		iforumCategoryService.deleteForumCategoryById(categoryId);
 		
 	}

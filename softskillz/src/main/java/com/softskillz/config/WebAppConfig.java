@@ -84,19 +84,28 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 		// 模版html
 		registry.addResourceHandler("/dist/**").addResourceLocations("/WEB-INF/dist/");
+		registry.addResourceHandler("/dist/course/**").addResourceLocations("/WEB-INF/dist/course/");
 		// 模版css
 		registry.addResourceHandler("/assets/compiled/css/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/css/");
 		// 模版js
 		registry.addResourceHandler("/assets/static/js/components/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/js/components/");
+		
 		registry.addResourceHandler("/assets/static/js/pages/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/js/pages/");
+		
 		registry.addResourceHandler("/assets/extensions/perfect-scrollbar/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/perfect-scrollbar/");
+		
 		registry.addResourceHandler("/assets/compiled/js/**").addResourceLocations("/WEB-INF/dist/assets/compiled/js/");
+		
+		registry.addResourceHandler("/assets/extensions/sweetalert2/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/sweetalert2/");
+		
 		registry.addResourceHandler("/assets/extensions/apexcharts/**")
-				.addResourceLocations("/WEB-INF/dist/assets/extensions/apexcharts/");
+		.addResourceLocations("/WEB-INF/dist/assets/extensions/apexcharts/");
+		
 		// 模版jpg
 		registry.addResourceHandler("/assets/compiled/jpg/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/jpg/");

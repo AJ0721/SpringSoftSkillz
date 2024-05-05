@@ -3,6 +3,8 @@ package com.softskillz.course.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.softskillz.account.model.bean.TeacherBean;
@@ -32,6 +35,26 @@ public class CourseController {
 	public String courseAllPage() {
 		// 在這裡添加任何需要的模型屬性
 		return "/course/coursePage/courseAllPage.jsp";
+	}
+	
+	// 模版新增課程CRUD頁面，一樣先用add進行新增
+	@GetMapping("/courseInsertPage")
+	public String courseInsertPage(Model model) {
+		List<TeacherBean> teachers = teacherService.findAllTeachers();
+		model.addAttribute("teachers", teachers);
+		return "/dist/course/courseinsert.jsp";
+	}
+	
+	// 處理添加課程的請求
+	@PostMapping("/add")
+	@ResponseBody  // 確保返回的是響應體而非視圖名
+	public ResponseEntity<?> addCourse(@ModelAttribute CourseBean courseBean) {
+	    CourseBean newCourse = courseService.insertCourse(courseBean);
+	    if (newCourse != null && newCourse.getCourseID() != null) {
+	        return ResponseEntity.ok("課程添加成功");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("課程添加失敗");
+	    }
 	}
 
 	// 根據ID查詢單筆課程的頁面
@@ -63,18 +86,6 @@ public class CourseController {
 		List<TeacherBean> teachers = teacherService.findAllTeachers();
 		model.addAttribute("teachers", teachers);
 		return "/course/coursePage/courseInsert.jsp";
-	}
-
-	// 處理添加課程的請求
-	@PostMapping("/add")
-	public String addCourse(@ModelAttribute CourseBean courseBean, RedirectAttributes redirectAttributes) {
-		CourseBean newCourse = courseService.insertCourse(courseBean);
-		if (newCourse != null && newCourse.getCourseID() != null) {
-			redirectAttributes.addFlashAttribute("message", "課程添加成功");
-		} else {
-			redirectAttributes.addFlashAttribute("error", "課程添加失敗");
-		}
-		return "/course/coursePage/CourseInsertSuccessed.jsp"; // 新增課程成功的頁面
 	}
 
 	// 刪除課程的頁面

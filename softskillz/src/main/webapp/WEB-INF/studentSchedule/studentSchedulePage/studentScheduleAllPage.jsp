@@ -3,41 +3,38 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="/css/background.css" />
-<title>課程CRUD頁面</title>
+<title>學生行事曆CRUD頁面</title>
 </head>
 <body>
 	<div id="header"></div>
 	<div class="info">
 		<div class="head">
-			<h3>歡迎進入課程資料系統</h3>
+			<h3>歡迎進入學生行事曆資料系統</h3>
 			<h4>請點選以下按鈕進入功能頁面</h4>
 		</div>
-		<br />
-		<!-- 查詢單筆 -->
+		<br>
+
 		<form method="get"
-			action="${pageContext.request.contextPath}/course/select">
-			<input type="submit" value="查詢單筆課程" />
+			action="${pageContext.request.contextPath}/studentReservation/select">
+			<input type="submit" name="" value="查詢單筆學生行事曆" />
 		</form>
-		<br />
-		<!-- 查詢全部 -->
+		<br>
 		<form method="get"
-			action="${pageContext.request.contextPath}/course/selectAll">
-			<input type="submit" name="" value="查詢所有課程" />
+			action="${pageContext.request.contextPath}/studentReservation/selectAll">
+			<input type="submit" name="" value="查詢單一學生所有行事曆" />
 		</form>
-		<br />
-		<!-- 刪除 -->
+		<br>
 		<form method="post"
-			action="${pageContext.request.contextPath}/course/delete">
-			<input type="submit" name="" value="刪除單筆課程" />
+			action="${pageContext.request.contextPath}/studentReservation/delete">
+			<input type="submit" name="" value="刪除單筆學生行事曆" />
 		</form>
-		<br />
-		<!-- 修改 -->
+		<br>
 		<form method="post"
-			action="${pageContext.request.contextPath}/course/update">
-			<input type="submit" name="" value="修改單筆課程" />
+			action="${pageContext.request.contextPath}/studentReservation/update">
+			<input type="submit" name="" value="修改單筆學生行事曆" />
 		</form>
 	</div>
 	<script>

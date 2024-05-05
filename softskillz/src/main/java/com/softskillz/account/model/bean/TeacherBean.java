@@ -10,8 +10,8 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.softskillz.course.model.CourseBean;
-import com.softskillz.forum.model.ForumPostModel;
-import com.softskillz.forum.model.ForumThreadModel;
+import com.softskillz.forum.model.model.ForumPostModel;
+import com.softskillz.forum.model.model.ForumThreadModel;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 
 import jakarta.persistence.CascadeType;

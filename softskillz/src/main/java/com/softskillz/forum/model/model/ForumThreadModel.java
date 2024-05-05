@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class ForumThreadModel{
 	private int threadResponseCount = 0;
 
 	@Column(name = "thread_status")
-	private String threadStatus = "VISIBLE"; // We can consider creating an Enum for VISIBLE
+	private String threadStatus = "VISIBLE";
 
 	@ManyToOne
 	@JoinColumn(name = "forum_category_id", referencedColumnName = "forum_category_id")

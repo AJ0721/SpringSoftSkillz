@@ -1,8 +1,8 @@
 package com.softskillz.config;
 
-import java.io.File;
-import java.util.Locale;
-
+import java.io.File;  
+import java.util.Locale;  
+  
 import org.springframework.web.servlet.view.InternalResourceView;  
 public class HtmlResourceView extends InternalResourceView {  
      @Override  

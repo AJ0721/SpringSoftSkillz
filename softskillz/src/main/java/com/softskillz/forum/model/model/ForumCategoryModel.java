@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.model;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -12,8 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+
 
 @Component @Entity
 @Table(name = "forum_category")

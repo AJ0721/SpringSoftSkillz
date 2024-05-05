@@ -1,6 +1,8 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.service;
 
 import java.util.List;
+
+import com.softskillz.forum.model.dto.ForumThreadDto;
 
 public interface IForumThreadService {
 

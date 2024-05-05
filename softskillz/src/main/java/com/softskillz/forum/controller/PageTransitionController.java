@@ -11,81 +11,93 @@ import com.softskillz.account.model.bean.AdminBean;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
 
-@SessionAttributes(names = { "student", "teacher", "username", "admin" })
+
+@SessionAttributes(names={"student","teacher","username","admin"})
 @Controller
 @RequestMapping("/forum")
 public class PageTransitionController {
-
-	// to frontstage home
+	
+	//to frontstage home
 	@GetMapping("/userhome.controller")
-	public String showUserForumHome(Model model) {
-
-		StudentBean student = (StudentBean) model.getAttribute("student");
-		TeacherBean teacher = (TeacherBean) model.getAttribute("teacher");
-
-		if (student != null) {
+    public String showUserForumHome(Model model){
+		
+		StudentBean student =(StudentBean)model.getAttribute("student");
+		TeacherBean teacher = (TeacherBean)model.getAttribute("teacher");
+		
+		
+		if(student != null) {
 			String sUsername = student.getStudentUsername();
 			model.addAttribute("username", sUsername);
-		} else if (teacher != null) {
-			String tUsername = teacher.getTeacherUserName();
-			model.addAttribute("username", tUsername);
-		} else {
-			model.addAttribute("username", "guest");
-		}
-
-		return "/forum/pages/jsp/forumFrontstageHome.jsp";
-	}
-
+		}else if (teacher != null) {
+			String tUsername =teacher.getTeacherUserName();
+		model.addAttribute("username", tUsername);
+		}else {model.addAttribute("username", "guest");}
+		
+		return "/forum/pages/jsp/forumFrontstageHome.jsp"; 
+    }
+	
 	// to backstage home
 	@GetMapping("/adminhome")
-	public String showAdminForumHome(Model model) {
+    public String showAdminForumHome(Model model) {
 		/*
-		 * AdminBean admin=(AdminBean)model.getAttribute("admin"); if(admin != null) {
-		 * return "pages/forumBackstageHome"; }
-		 */
-		AdminBean admin1 = new AdminBean();
+		AdminBean admin=(AdminBean)model.getAttribute("admin");
+		if(admin != null) {
+			return "pages/forumBackstageHome"; 	
+		}
+		*/
+		AdminBean admin1= new AdminBean();
 		admin1.setAdminId(1);
 		model.addAttribute("admin", admin1);
 		return "/forum/pages/jsp/forumBackstageHome.jsp";
 
-	}
-
-	// to backstage category insert
+    }
+	
+	
+	
+	//to backstage category insert
 	@GetMapping("/admin/category/insert")
 	public String adminNewCategory(Model model) {
 		/*
-		 * AdminBean admin=(AdminBean)model.getAttribute("admin"); if(admin != null) {
-		 * return "pages/forumBackstageHome"; }
-		 */
-		AdminBean admin1 = new AdminBean();
+		AdminBean admin=(AdminBean)model.getAttribute("admin");
+		if(admin != null) {
+			return "pages/forumBackstageHome"; 	
+		}
+		*/
+		AdminBean admin1= new AdminBean();
 		admin1.setAdminId(1);
 		model.addAttribute("admin", admin1);
 		return "/forum/pages/jsp/insertForumCategory.jsp";
 
+		
 	}
-
-	// to backstage category update
-	@GetMapping("/admin/category/update/{categoryId}")
-	public String adminUpdateCategory(@PathVariable Integer categoryId, Model model) {
-		/*
-		 * AdminBean admin=(AdminBean)model.getAttribute("admin"); if(admin != null) {
-		 * return "pages/forumBackstageHome"; }
-		 */
-		AdminBean admin1 = new AdminBean();
-		admin1.setAdminId(1);
-		model.addAttribute("admin", admin1);
-		return "/forum/pages/jsp/updateForumCategory.jsp";
-
-	}
-
-	// to category detail
-	@GetMapping("/category/detail/{categoryId}")
-	public String categoryDetailPage(@PathVariable Integer categoryId, Model model) {
-		model.addAttribute("categoryId", categoryId);
-		return "/forum/pages/jsp/forumCategoryDetail.jsp";
-	}
-
 	
-	// to thread details page
+	//to backstage category update
+		@GetMapping("/admin/category/update/{categoryId}")
+		public String adminUpdateCategory(Model model, @PathVariable Integer categoryId) {
+			/*
+			AdminBean admin=(AdminBean)model.getAttribute("admin");
+			if(admin != null) {
+				return "pages/forumBackstageHome"; 	
+			}
+			*/
+			AdminBean admin1= new AdminBean();
+			admin1.setAdminId(1);
+			model.addAttribute("admin", admin1);
+			return "/forum/pages/jsp/updateForumCategory.jsp";
+
+			
+		}
+		
+	//to category detail
+		@GetMapping("/category/detail/{categoryId}")
+		public String categoryDetailPage(@PathVariable int categoryId, Model model) {
+		    model.addAttribute("categoryId", categoryId);
+		    return "/forum/pages/jsp/forumCategoryDetail.jsp"; 
+		}
+	
+	//to thread details page
+	
+	
+	
 
 }

@@ -110,8 +110,6 @@ $(document).ready(function () {
 
 
     //PAGE REDIRECT
-
-
     $('#createNewCategory').click(function (e) {
         e.preventDefault();
         window.location.href = '/forum/admin/category/insert'
@@ -197,4 +195,3 @@ $(document).ready(function () {
     }
 
 })
-

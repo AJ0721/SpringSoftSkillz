@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.dto;
 
 import java.sql.Timestamp;
 import java.util.List;

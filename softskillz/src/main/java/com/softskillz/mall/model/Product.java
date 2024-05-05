@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.softskillz.mall.serializer.ProductStockSerializer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

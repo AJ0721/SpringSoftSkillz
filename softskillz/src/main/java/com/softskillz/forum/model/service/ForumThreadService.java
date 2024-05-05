@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +7,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.softskillz.forum.model.dto.ForumThreadDto;
+import com.softskillz.forum.model.dto.IDtoConverter;
+import com.softskillz.forum.model.model.ForumThreadModel;
+import com.softskillz.forum.model.repository.ForumThreadRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -18,6 +23,7 @@ public class ForumThreadService implements IForumThreadService {
 	private ForumThreadRepository forumThreadRepository;
 
 	// insert
+	@Override
 	public ForumThreadDto insertForumThread(ForumThreadDto threadDto) {
 		
 		
@@ -42,6 +48,7 @@ public class ForumThreadService implements IForumThreadService {
 	}
 
 	// update
+	@Override
 	public ForumThreadDto updateForumThreadById(Integer threadId, ForumThreadDto threadDto) {
 		Optional<ForumThreadModel> existingThread = forumThreadRepository.findById(threadId);
 		if (existingThread.isPresent()) {
@@ -58,6 +65,7 @@ public class ForumThreadService implements IForumThreadService {
 	}
 
 	// Delete
+	@Override
 	public void deleteForumThreadById(Integer threadId) {
 		if (!forumThreadRepository.existsById(threadId)) {
 			throw new EntityNotFoundException("Thread ID not found: " + threadId);
@@ -65,6 +73,7 @@ public class ForumThreadService implements IForumThreadService {
 		forumThreadRepository.deleteById(threadId);
 	}
 
+	@Override
 	public void deleteAllForumThreads(List<Integer> threadIds) {
 
 		if (threadIds == null || threadIds.isEmpty()) {
@@ -80,6 +89,7 @@ public class ForumThreadService implements IForumThreadService {
 	}
 
 	// Read all threads
+	@Override
 	public List<ForumThreadDto> findAllThreads() {
 		List<ForumThreadModel> threads = forumThreadRepository.findAll();
 		return threads.stream()
@@ -88,12 +98,14 @@ public class ForumThreadService implements IForumThreadService {
 	}
 
 	// Find threads by keyword
+	@Override
 	public List<ForumThreadDto> findThreadsByKeyword(String keyword) {
 		List<ForumThreadModel> threads = forumThreadRepository.findThreadsByKeyword(keyword);
 		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());
 	}
 
 	// Get thread by thread ID
+	@Override
 	public ForumThreadDto findThreadByThreadId(Integer threadId) {
 		ForumThreadModel thread = forumThreadRepository.findById(threadId)
 				.orElseThrow(() -> new EntityNotFoundException("Thread not found with id: " + threadId));
@@ -101,12 +113,14 @@ public class ForumThreadService implements IForumThreadService {
 	}
 
 	// Get threads by teacher ID
+	@Override
 	public List<ForumThreadDto> findThreadsByTeacherId(Integer teacherId) {
 		List<ForumThreadModel> threads = forumThreadRepository.findByTeacherBeanTeacherId(teacherId);
 		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());
 	}
 
 	// Get threads by student ID
+	@Override
 	public List<ForumThreadDto> findThreadsByStudentId(Integer studentId) {
 		List<ForumThreadModel> threads = forumThreadRepository.findByStudentBeanStudentId(studentId);
 		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());

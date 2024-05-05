@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-=======
-USE softskillzdb;
-
->>>>>>> Stashed changes
 --會員
 --管理員
 CREATE TABLE admin (
@@ -71,6 +66,7 @@ INSERT INTO teacher VALUES('汶安','熊','123456','20200101','male','19950402',
 INSERT INTO teacher VALUES('惠民','郭','000000','19991201','male','19750802','090000000','456@456','000000','桃園','img/guo.jpg','全',20,'full_time','大學','有','100','愛念',0,0)
 INSERT INTO teacher VALUES('建輝','李','111111','20001101','male','19850302','091111111','789@789','111111','台北','img/gary.jpg','全',10,'full_time','大學','有','80','啥都不會',0,0)
 
+SELECT * FROM teacher;
 
 --課程
 
@@ -585,31 +581,31 @@ CREATE TABLE forum_category (
 
 INSERT INTO forum_category (forum_category_name, forum_category_description)
 VALUES
-(N'Java', N'深入探討Java程式語言，學習如何開發軟體和應用程式。'),
-(N'英語', N'提高英語聽說讀寫能力，掌握國際語言的精粹。'),
-(N'美術', N'從素描到數位繪畫，開發你的藝術天賦並展現創意。'),
-(N'音樂理論', N'學習音樂理論，探索作曲和演奏的基本技巧。'),
-(N'數學', N'解開數學謎題，從基礎算術到高等數學的全面探索。'),
-(N'物理', N'揭示物理學的奧秘，理解宇宙的基本法則。'),
-(N'化學', N'化學反應背後的科學，探索物質的性質和變化。'),
-(N'生物學', N'研究生命科學，從細胞結構到生態系統的動態。'),
-(N'經濟學', N'深入了解經濟學原理，分析市場和財政決策。'),
-(N'歷史', N'回顧歷史，了解不同文明的演變和重大事件。'),
-(N'心理學', N'探索心理學的領域，理解人類行為和心理過程。'),
-(N'哲學', N'哲學思辨，從倫理學到存在主義的深入討論。'),
-(N'計算機科學', N'從數據結構到人工智能，學習計算機科學的核心。'),
-(N'企業管理', N'為未來的管理者提供知識，學習管理策略和業務運作。'),
-(N'市場營銷', N'掌握市場營銷的技巧，學習如何吸引和保留客戶。'),
-(N'會計', N'學習會計原理，精通財務報表和審計流程。'),
-(N'環境科學', N'了解環境問題，探討可持續發展的解決方案。'),
-(N'統計學', N'掌握統計方法，分析數據以支持決策制定。'),
-(N'德文', N'用德文開拓視野，學習德國與歐洲文化。'),
-(N'法律', N'瞭解法律框架，探討法律問題和案例。'),
-(N'健康與體育', N'提升健康意識，學習體育運動和營養知識。'),
-(N'藝術歷史', N'穿越藝術的時空，從古典到現代藝術的演變。'),
-(N'C++', N'深入探討C++程式語言，學習如何開發軟體和應用程式。'),
-(N'戲劇和表演藝術', N'表達舞台藝術的魅力，學習表演技巧和戲劇製作。'),
-(N'數字媒體製作', N'掌握數字媒體的創作工具，從視頻製作到音頻編輯。');
+('Java', '深入探討Java程式語言，學習如何開發軟體和應用程式。'),
+('英語', '提高英語聽說讀寫能力，掌握國際語言的精粹。'),
+('美術', '從素描到數位繪畫，開發你的藝術天賦並展現創意。'),
+('音樂理論', '學習音樂理論，探索作曲和演奏的基本技巧。'),
+('數學', '解開數學謎題，從基礎算術到高等數學的全面探索。'),
+('物理', '揭示物理學的奧秘，理解宇宙的基本法則。'),
+('化學', '化學反應背後的科學，探索物質的性質和變化。'),
+('生物學', '研究生命科學，從細胞結構到生態系統的動態。'),
+('經濟學', '深入了解經濟學原理，分析市場和財政決策。'),
+('歷史', '回顧歷史，了解不同文明的演變和重大事件。'),
+('心理學', '探索心理學的領域，理解人類行為和心理過程。'),
+('哲學', '哲學思辨，從倫理學到存在主義的深入討論。'),
+('計算機科學', '從數據結構到人工智能，學習計算機科學的核心。'),
+('企業管理', '為未來的管理者提供知識，學習管理策略和業務運作。'),
+('市場營銷', '掌握市場營銷的技巧，學習如何吸引和保留客戶。'),
+('會計', '學習會計原理，精通財務報表和審計流程。'),
+('環境科學', '了解環境問題，探討可持續發展的解決方案。'),
+('統計學', '掌握統計方法，分析數據以支持決策制定。'),
+('德文', '用德文開拓視野，學習德國與歐洲文化。'),
+('法律', '瞭解法律框架，探討法律問題和案例。'),
+('健康與體育', '提升健康意識，學習體育運動和營養知識。'),
+('藝術歷史', '穿越藝術的時空，從古典到現代藝術的演變。'),
+('C++', '深入探討C++程式語言，學習如何開發軟體和應用程式。'),
+('戲劇和表演藝術', '表達舞台藝術的魅力，學習表演技巧和戲劇製作。'),
+('數字媒體製作', '掌握數字媒體的創作工具，從視頻製作到音頻編輯。');
 
 
 SELECT*FROM forum_category
@@ -638,39 +634,39 @@ CREATE TABLE forum_thread (
 -- Threads created by students (1-10)
 INSERT INTO forum_thread (forum_category_id, thread_student_id, thread_title, thread_content, thread_status, thread_upvote_count, thread_response_count) 
 VALUES 
-(1, 1, N'Java環境配置問題', N'剛開始學習Java，建環境遇到的問題，安裝JDK和配置PATH時一直出錯。有沒有詳細的步驟指導？', 'VISIBLE', 5, 4),
-(2, 2, N'大家都能辨別不同英語口音嗎', N'在學習英語過程中，我發現理解不同口音時很困難，尤其是印度口音。有沒有有效的練習方法來提升這方面的能力？', 'VISIBLE', 7, 4),
-(3, 3, N'美術學習中的色彩理論問題', N'在學習繪畫時，對如何配色感到困惑。有沒有基本的色彩理論和實用的配色指南？', 'VISIBLE', 8, 4),
-(4, 1, N'音樂理論中的和聲學習困難', N'音樂理論學習中，和聲部分特別難以掌握，有沒有學習資源或練習方法可以推薦？', 'VISIBLE', 6, 4),
-(5, 2, N'數學函數圖形的畫法', N'在數學學習中，畫函數圖形時經常遇到困難，尤其是複雜函數的圖形。有沒有好的工具或方法來幫助理解和畫出這些圖形？', 'VISIBLE', 9, 4),
-(6, 3, N'物理學中的力學問題', N'在學習力學時，對於牛頓運動定律的應用實例感到迷惑，如何更好地理解和應用這些定律？', 'VISIBLE', 11, 0),
-(7, 1, N'化學實驗中的安全問題', N'在進行化學實驗時，經常擔心安全問題。有沒有一套完整的實驗室安全指南？', 'VISIBLE', 10, 0),
-(8, 2, N'生物學DNA複製機制的理解', N'在學習DNA複製過程時，對酶的作用和整個複製機制的步驟感到困惑。如何更清晰地理解這一過程？', 'VISIBLE', 13, 0),
-(9, 3, N'經濟學中的微觀經濟與宏觀經濟', N'如何區分微觀經濟學與宏觀經濟學？在學習經濟學理論時，這兩者有什麼聯繫和差異？', 'VISIBLE', 7,0),
-(10, 1, N'歷史學習中的時間線理解', N'在學習歷史時，對於不同事件的時間線和背景常常感到困惑，有沒有好的學習方法來清晰地理解歷史事件的發展過程？', 'VISIBLE', 12, 0);
+(1, 1, 'Java環境配置問題', '剛開始學習Java，建環境遇到的問題，安裝JDK和配置PATH時一直出錯。有沒有詳細的步驟指導？', 'VISIBLE', 5, 4),
+(2, 2, '大家都能辨別不同英語口音嗎', '在學習英語過程中，我發現理解不同口音時很困難，尤其是印度口音。有沒有有效的練習方法來提升這方面的能力？', 'VISIBLE', 7, 4),
+(3, 3, '美術學習中的色彩理論問題', '在學習繪畫時，對如何配色感到困惑。有沒有基本的色彩理論和實用的配色指南？', 'VISIBLE', 8, 4),
+(4, 1, '音樂理論中的和聲學習困難', '音樂理論學習中，和聲部分特別難以掌握，有沒有學習資源或練習方法可以推薦？', 'VISIBLE', 6, 4),
+(5, 2, '數學函數圖形的畫法', '在數學學習中，畫函數圖形時經常遇到困難，尤其是複雜函數的圖形。有沒有好的工具或方法來幫助理解和畫出這些圖形？', 'VISIBLE', 9, 4),
+(6, 3, '物理學中的力學問題', '在學習力學時，對於牛頓運動定律的應用實例感到迷惑，如何更好地理解和應用這些定律？', 'VISIBLE', 11, 0),
+(7, 1, '化學實驗中的安全問題', '在進行化學實驗時，經常擔心安全問題。有沒有一套完整的實驗室安全指南？', 'VISIBLE', 10, 0),
+(8, 2, '生物學DNA複製機制的理解', '在學習DNA複製過程時，對酶的作用和整個複製機制的步驟感到困惑。如何更清晰地理解這一過程？', 'VISIBLE', 13, 0),
+(9, 3, '經濟學中的微觀經濟與宏觀經濟', '如何區分微觀經濟學與宏觀經濟學？在學習經濟學理論時，這兩者有什麼聯繫和差異？', 'VISIBLE', 7,0),
+(10, 1, '歷史學習中的時間線理解', '在學習歷史時，對於不同事件的時間線和背景常常感到困惑，有沒有好的學習方法來清晰地理解歷史事件的發展過程？', 'VISIBLE', 12, 0);
 
 -- Threads created by teachers (11-20)
 INSERT INTO forum_thread (forum_category_id, thread_teacher_id, thread_title, thread_content, thread_status, thread_upvote_count, thread_response_count) 
 VALUES 
-(1, 1, N'Java錯誤處理', N'在Java編程中，錯誤處理是確保程序穩定運行的關鍵。本文將分享一些錯誤處理的最佳實踐和常見錯誤避免技巧。', 'VISIBLE', 14, 4),
-(2, 2, N'英語口語的快速提升技巧', N'許多學生在提升英語口語方面遇到困難。這裡將分享一些有效的練習方法和技巧來快速提高你的英語口語能力。', 'VISIBLE', 15, 4),
-(3, 3, N'數位繪畫工具和技巧介紹', N'在美術學習中，數位繪畫是一個重要分支。本帖將介紹一些流行的數位繪畫工具和基本技巧。', 'VISIBLE', 13, 4),
-(4, 1, N'音樂作曲的基礎知識', N'學習音樂理論是作曲的基礎。本帖將介紹一些作曲的基礎知識和創作技巧，幫助你開始你的音樂創作旅程。', 'VISIBLE', 16, 4),
-(5, 2, N'數學證明技巧和策略', N'在高等數學學習中，數學證明是一個挑戰。這裡將分享一些證明技巧和策略來幫助你理解並解決複雜的數學問題。', 'VISIBLE', 18, 4),
-(6, 3, N'物理實驗的設計與分析', N'進行物理實驗是理解理論的一個重要方法。本帖將討論如何設計實驗並分析實驗數據，以提高學習效果。', 'VISIBLE', 17, 0),
-(7, 1, N'化學平衡的深入探討', N'化學反應中的平衡狀態是一個複雜的主題。這裡將深入探討化學平衡的概念和計算方法。', 'VISIBLE', 19,0),
-(8, 2, N'生物學中的遺傳學基礎', N'遺傳學是生物學的一個重要分支。本帖將介紹遺傳學的基礎知識和一些基本的遺傳實驗方法。', 'VISIBLE', 14, 0),
-(9, 3, N'宏觀經濟學中的政策分析', N'宏觀經濟學中的政策分析對理解國家經濟政策的影響至關重要。本帖將分析一些關鍵的經濟政策及其對經濟的影響。', 'VISIBLE', 12, 0),
-(10, 1, N'歷史研究方法與技巧', N'在歷史研究中，使用正確的研究方法和技巧是非常重要的。這裡將分享一些有效的歷史研究方法來幫助你進行學術研究。', 'VISIBLE', 11, 0);
+(1, 1, 'Java錯誤處理', '在Java編程中，錯誤處理是確保程序穩定運行的關鍵。本文將分享一些錯誤處理的最佳實踐和常見錯誤避免技巧。', 'VISIBLE', 14, 4),
+(2, 2, '英語口語的快速提升技巧', '許多學生在提升英語口語方面遇到困難。這裡將分享一些有效的練習方法和技巧來快速提高你的英語口語能力。', 'VISIBLE', 15, 4),
+(3, 3, '數位繪畫工具和技巧介紹', '在美術學習中，數位繪畫是一個重要分支。本帖將介紹一些流行的數位繪畫工具和基本技巧。', 'VISIBLE', 13, 4),
+(4, 1, '音樂作曲的基礎知識', '學習音樂理論是作曲的基礎。本帖將介紹一些作曲的基礎知識和創作技巧，幫助你開始你的音樂創作旅程。', 'VISIBLE', 16, 4),
+(5, 2, '數學證明技巧和策略', '在高等數學學習中，數學證明是一個挑戰。這裡將分享一些證明技巧和策略來幫助你理解並解決複雜的數學問題。', 'VISIBLE', 18, 4),
+(6, 3, '物理實驗的設計與分析', '進行物理實驗是理解理論的一個重要方法。本帖將討論如何設計實驗並分析實驗數據，以提高學習效果。', 'VISIBLE', 17, 0),
+(7, 1, '化學平衡的深入探討', '化學反應中的平衡狀態是一個複雜的主題。這裡將深入探討化學平衡的概念和計算方法。', 'VISIBLE', 19,0),
+(8, 2, '生物學中的遺傳學基礎', '遺傳學是生物學的一個重要分支。本帖將介紹遺傳學的基礎知識和一些基本的遺傳實驗方法。', 'VISIBLE', 14, 0),
+(9, 3, '宏觀經濟學中的政策分析', '宏觀經濟學中的政策分析對理解國家經濟政策的影響至關重要。本帖將分析一些關鍵的經濟政策及其對經濟的影響。', 'VISIBLE', 12, 0),
+(10, 1, '歷史研究方法與技巧', '在歷史研究中，使用正確的研究方法和技巧是非常重要的。這裡將分享一些有效的歷史研究方法來幫助你進行學術研究。', 'VISIBLE', 11, 0);
 
 -- Threads created by admins (21-25)
 INSERT INTO forum_thread (forum_category_id, thread_admin_id, thread_title, thread_content, thread_status, thread_upvote_count, thread_response_count) 
 VALUES 
-(1, 1, N'Java學習資源更新', N'我們更新了Java學習資源，包括最新的教程和實例。這些資源旨在幫助初學者和進階開發者提升他們的Java技能。', 'VISIBLE', 20, 4),
-(2, 1, N'英語學習平台優化公告', N'為了提升英語學習的效果，我們對學習平台進行了一系列的優化調整。歡迎大家體驗新的學習工具和資源。', 'VISIBLE', 18, 4),
-(3, 1, N'美術課程新開設通知', N'我們將開設新的美術課程，包括現代藝術和傳統繪畫技巧。這些課程適合所有水平的學習者。', 'VISIBLE', 15, 0),
-(4, 1, N'音樂理論課程更新', N'我們更新了音樂理論課程，新增了多種樂器的教學內容。這將幫助學生更全面地理解音樂理論和實踐。', 'VISIBLE', 12, 0),
-(5, 1, N'數學線上輔導服務', N'為了支持學生在數學學習中的需求，我們推出了線上輔導服務。這項服務將提供個別輔導和答疑。', 'VISIBLE', 10, 0);
+(1, 1, 'Java學習資源更新', '我們更新了Java學習資源，包括最新的教程和實例。這些資源旨在幫助初學者和進階開發者提升他們的Java技能。', 'VISIBLE', 20, 4),
+(2, 1, '英語學習平台優化公告', '為了提升英語學習的效果，我們對學習平台進行了一系列的優化調整。歡迎大家體驗新的學習工具和資源。', 'VISIBLE', 18, 4),
+(3, 1, '美術課程新開設通知', '我們將開設新的美術課程，包括現代藝術和傳統繪畫技巧。這些課程適合所有水平的學習者。', 'VISIBLE', 15, 0),
+(4, 1, '音樂理論課程更新', '我們更新了音樂理論課程，新增了多種樂器的教學內容。這將幫助學生更全面地理解音樂理論和實踐。', 'VISIBLE', 12, 0),
+(5, 1, '數學線上輔導服務', '為了支持學生在數學學習中的需求，我們推出了線上輔導服務。這項服務將提供個別輔導和答疑。', 'VISIBLE', 10, 0);
 
 SELECT* FROM forum_thread;
 
@@ -731,49 +727,48 @@ CREATE TABLE forum_post (
 -- Thread 1: student-Java環境配置問題
 -- Parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 1, NULL, N'同問!有誰遇到過類似的問題嗎？', 5, 2, 'VISIBLE');
+VALUES (2, 1, NULL, '同問!有誰遇到過類似的問題嗎？', 5, 2, 'VISIBLE');
 -- Child posts for parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (3, 1, 1, N'我之前也有遇過，重啟安裝就好了，應該是安裝過程有問題。', 2, 0, 'VISIBLE');
+VALUES (3, 1, 1, '我之前也有遇過，重啟安裝就好了，應該是安裝過程有問題。', 2, 0, 'VISIBLE');
 INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 1, 1, N'要確保環境變數設置正確，可以參考這篇官方文件。', 3, 0, 'VISIBLE');
+VALUES (1, 1, 1, '要確保環境變數設置正確，可以參考這篇官方文件。', 3, 0, 'VISIBLE');
 -- Parent post 2
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 1, NULL, N'我有寫一個詳細的教學可以參考，網址如下：xxxxxx。希望對你有幫助。', 4, 0, 'VISIBLE');
+VALUES (1, 1, NULL, '我有寫一個詳細的教學可以參考，網址如下：xxxxxx。希望對你有幫助。', 4, 0, 'VISIBLE');
 
 -- Thread 2: student-大家都能辨別不同英語口音嗎
 -- Parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 2, NULL, N'我也有同樣的問題，尤其是在電話的時候。', 6, 2, 'VISIBLE');
+VALUES (1, 2, NULL, '我也有同樣的問題，尤其是在電話的時候。', 6, 2, 'VISIBLE');
 -- Child posts for parent post 1
 INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 2, 5, N'可以試著聽不同的podcast熟悉各種口音，找自己有興趣的主題會比較有動力。', 5, 0, 'VISIBLE');
+VALUES (2, 2, 5, '可以試著聽不同的podcast熟悉各種口音，找自己有興趣的主題會比較有動力。', 5, 0, 'VISIBLE');
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (3, 2, 5, N'看電影或影集也很有幫助喔!', 3, 0, 'VISIBLE');
+VALUES (3, 2, 5, '看電影或影集也很有幫助喔!', 3, 0, 'VISIBLE');
 -- Parent post 2
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 2, NULL, N'請問有沒有推薦的影集或適合初學者的podcast練習資源呢？', 7, 0, 'VISIBLE');
+VALUES (2, 2, NULL, '請問有沒有推薦的影集或適合初學者的podcast練習資源呢？', 7, 0, 'VISIBLE');
 
 -- Thread 11: teacher-Java錯誤處理
 -- Parent post 1
 INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 11, NULL, N'這是一個常見的問題，我會發布一些錯誤處理的技巧。', 14, 2, 'VISIBLE');
+VALUES (1, 11, NULL, '這是一個常見的問題，我會發布一些錯誤處理的技巧。', 14, 2, 'VISIBLE');
 -- Child posts for parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 11, 9, N'感謝分享，這對我很有幫助！', 2, 0, 'VISIBLE');
+VALUES (1, 11, 9, '感謝分享，這對我很有幫助！', 2, 0, 'VISIBLE');
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 11, 9, N'能否提供更多關於異常處理的例子？', 3, 0, 'VISIBLE');
+VALUES (2, 11, 9, '能否提供更多關於異常處理的例子？', 3, 0, 'VISIBLE');
 -- Parent post 2
 INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 11, NULL, N'我將在下一篇文章中進一步深入討論。', 15, 0, 'VISIBLE');
+VALUES (2, 11, NULL, '我將在下一篇文章中進一步深入討論。', 15, 0, 'VISIBLE');
 
 -- Thread 21: admin-Java學習資源更新
 -- Parent post 1
 INSERT INTO forum_post (post_admin_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 21, NULL, N'歡迎大家查看更新後的資源，希望大家能喜歡。', 20, 2, 'VISIBLE');
+VALUES (1, 21, NULL, '歡迎大家查看更新後的資源，希望大家能喜歡。', 20, 2, 'VISIBLE');
 -- Child posts for parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-<<<<<<< Updated upstream
 VALUES (2, 3, NULL, '回文內容1 (s2)', 14, 0, 'VISIBLE');
 
 -- Second post for Thread ID 3
@@ -816,14 +811,6 @@ VALUES (3, 5, 18, 'Reply 1 to Post Content 2 (s3)', 23, 1, 'VISIBLE');
 
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
 VALUES (3, 5, 19, 'Reply to Reply 1 to Post Content 2 (s3)', 10, 0, 'VISIBLE');
-=======
-VALUES (1, 21, 13, N'U質，這是我看過講解得最清楚的，太感謝了！', 5, 0, 'VISIBLE');
-INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 21, 13, N'寫得很好耶，我會推薦給我的學生!', 4, 0, 'VISIBLE');
--- Parent post 2
-INSERT INTO forum_post (post_admin_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (1, 21, NULL, N'謝謝大家回饋!如果有任何問題，請不吝嗇給我們反饋。', 18, 0, 'VISIBLE');
->>>>>>> Stashed changes
 
 
 SELECT* FROM forum_post;

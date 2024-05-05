@@ -135,7 +135,7 @@ li a {
 					<a
 						href="${pageContext.request.contextPath}/studentReservation/studentReservationPage/studentReservationAllPage">學生課程預約</a>
 					<a
-						href="#">學生行事曆</a>
+						href="${pageContext.request.contextPath}/studentSchedule/studentSchedulePage/studentScheduleAllPage">學生行事曆</a>
 				</div>
 			</li>
 			<li>

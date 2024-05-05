@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.dto;
 
 public class StudentDto {
     private int studentId;

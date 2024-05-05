@@ -1,9 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SoftSkillz - 後台管理</title>
+    <title>SoftSkillz - 新增課程頁面</title>
 
     <link
       rel="shortcut icon"
@@ -19,6 +22,11 @@
     <link rel="stylesheet" href="/assets/compiled/css/app.css" />
     <link rel="stylesheet" href="/assets/compiled/css/app-dark.css" />
     <link rel="stylesheet" href="/assets/compiled/css/iconly.css" />
+    <!-- sweet alert -->
+    <link
+      rel="stylesheet"
+      href="/assets/extensions/sweetalert2/sweetalert2.min.css"
+    />
   </head>
 
   <body>
@@ -115,7 +123,6 @@
                   <span>首頁</span>
                 </a>
               </li>
-
               <li class="sidebar-title">用戶管理</li>
               <li class="sidebar-item has-sub">
                 <a href="#" class="sidebar-link">
@@ -166,9 +173,7 @@
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="/course/courseInsertPage" class="submenu-link"
-                      >新增課程</a
-                    >
+                    <a href="#" class="submenu-link">新增課程</a>
                   </li>
                   <li class="submenu-item">
                     <a href="#" class="submenu-link">查詢課程</a>
@@ -315,89 +320,195 @@
         </header>
 
         <div class="page-heading">
-          <h3>SoftSkillz - 後台首頁</h3>
+          <h3>SoftSkillz - 新增課程頁面</h3>
         </div>
         <div class="page-content">
           <section class="row">
             <div class="col-12 col-lg-9">
-              <div class="row">
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon purple mb-2">
-                            <i class="iconly-boldShow"></i>
+              <!-- 新增課程的東東 -->
+              <div class="card">
+                <h3 class="card-header">新增課程資料</h3>
+                <div class="card-body">
+                  <form
+                    id="courseForm"
+                    method="post"
+                    action="${pageContext.request.contextPath}/course/add"
+                    class="needs-validation"
+                    novalidate
+                  >
+                    <div class="row justify-content-center">
+                      <!-- 教師選擇的下拉選單 -->
+                      <div class="col-md-8 mb-3">
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-primary dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuTeacherID"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-required="true"
+                          >
+                            請選擇教師
+                          </button>
+                          <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuTeacherID"
+                          >
+                            <c:forEach items="${teachers}" var="teacher">
+                              <button
+                                class="dropdown-item"
+                                type="button"
+                                onclick="selectTeacher('${teacher.teacherId}', '${teacher.teacherFirstName} ${teacher.teacherLastName} (ID: ${teacher.teacherIdFormatted})')"
+                              >
+                                ${teacher.teacherFirstName}
+                                ${teacher.teacherLastName} (ID:
+                                ${teacher.teacherIdFormatted})
+                              </button>
+                            </c:forEach>
                           </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">本日瀏覽次數</h6>
-                          <h6 class="font-extrabold mb-0">1,000,000</h6>
+                          <input
+                            type="hidden"
+                            id="teacherID"
+                            name="teacherID"
+                            required
+                          />
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon blue mb-2">
-                            <i class="iconly-boldProfile"></i>
+
+                      <!-- 課程類別的下拉選單 -->
+                      <div class="col-md-8 mb-3">
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-primary dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuCourseCategory"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-required="true"
+                          >
+                            請選擇課程類別
+                          </button>
+                          <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuCourseCategory"
+                          >
+                            <button
+                              class="dropdown-item"
+                              type="button"
+                              onclick="selectCategory('藝術')"
+                            >
+                              藝術
+                            </button>
+                            <button
+                              class="dropdown-item"
+                              type="button"
+                              onclick="selectCategory('科學')"
+                            >
+                              科學
+                            </button>
+                            <button
+                              class="dropdown-item"
+                              type="button"
+                              onclick="selectCategory('商業')"
+                            >
+                              商業
+                            </button>
+                            <button
+                              class="dropdown-item"
+                              type="button"
+                              onclick="selectCategory('程式設計')"
+                            >
+                              程式設計
+                            </button>
+                            <button
+                              class="dropdown-item"
+                              type="button"
+                              onclick="selectCategory('語言')"
+                            >
+                              語言
+                            </button>
+                            <button
+                              class="dropdown-item"
+                              type="button"
+                              onclick="selectCategory('影片剪輯')"
+                            >
+                              影片剪輯
+                            </button>
                           </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">課程使用量</h6>
-                          <h6 class="font-extrabold mb-0">183,000</h6>
+                          <input
+                            type="hidden"
+                            id="courseCategory"
+                            name="courseCategory"
+                            required
+                          />
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon green mb-2">
-                            <i class="iconly-boldAdd-User"></i>
-                          </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">會員數</h6>
-                          <h6 class="font-extrabold mb-0">900,000</h6>
+
+                      <!-- 課程名稱的浮動輸入框 -->
+                      <div class="col-md-8 mb-3">
+                        <div class="form-floating">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="floatingCourseName"
+                            name="courseName"
+                            placeholder="輸入課程名稱"
+                            required
+                          />
+                          <label for="floatingCourseName">課程名稱</label>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon red mb-2">
-                            <i class="iconly-boldBookmark"></i>
-                          </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">付費會員</h6>
-                          <h6 class="font-extrabold mb-0">2,000</h6>
+
+                      <!-- 課程介紹的浮動輸入區 -->
+                      <div class="col-md-8 mb-3">
+                        <div class="form-floating">
+                          <textarea
+                            class="form-control"
+                            id="floatingCourseInfo"
+                            name="courseInfo"
+                            placeholder="輸入課程介紹"
+                            style="height: 100px"
+                            required
+                          ></textarea>
+                          <label for="floatingCourseInfo">課程介紹</label>
                         </div>
                       </div>
+
+                      <!-- 課程單價的輸入框 -->
+                      <div class="col-md-8 mb-3">
+                        <div class="form-floating">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="floatingCoursePrice"
+                            name="coursePrice"
+                            placeholder="輸入課程單價"
+                            required
+                          />
+                          <label for="floatingCoursePrice">課程單價</label>
+                        </div>
+                      </div>
+
+                      <!-- 提交按鈕 -->
+                      <div class="col-md-8">
+                        <!-- <button type="submit" class="btn btn-primary">
+                          新增課程
+                        </button> -->
+                        <button
+                          id="toast-success"
+                          type="button"
+                          class="btn btn-primary btn-lg btn-block"
+                        >
+                          新增課程
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-12">
                   <div class="card">
@@ -406,141 +517,6 @@
                     </div>
                     <div class="card-body">
                       <div id="chart-profile-visit"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 col-xl-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4>Profile Visit</h4>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-7">
-                          <div class="d-flex align-items-center">
-                            <svg
-                              class="bi text-primary"
-                              width="32"
-                              height="32"
-                              fill="blue"
-                              style="width: 10px"
-                            >
-                              <use
-                                xlink:href="/assets/static/images/bootstrap-icons.svg#circle-fill"
-                              />
-                            </svg>
-                            <h5 class="mb-0 ms-3">Europe</h5>
-                          </div>
-                        </div>
-                        <div class="col-5">
-                          <h5 class="mb-0 text-end">862</h5>
-                        </div>
-                        <div class="col-12">
-                          <div id="chart-europe"></div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                          <div class="d-flex align-items-center">
-                            <svg
-                              class="bi text-success"
-                              width="32"
-                              height="32"
-                              fill="blue"
-                              style="width: 10px"
-                            >
-                              <use
-                                xlink:href="/assets/static/images/bootstrap-icons.svg#circle-fill"
-                              />
-                            </svg>
-                            <h5 class="mb-0 ms-3">America</h5>
-                          </div>
-                        </div>
-                        <div class="col-5">
-                          <h5 class="mb-0 text-end">375</h5>
-                        </div>
-                        <div class="col-12">
-                          <div id="chart-america"></div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                          <div class="d-flex align-items-center">
-                            <svg
-                              class="bi text-danger"
-                              width="32"
-                              height="32"
-                              fill="blue"
-                              style="width: 10px"
-                            >
-                              <use
-                                xlink:href="/assets/static/images/bootstrap-icons.svg#circle-fill"
-                              />
-                            </svg>
-                            <h5 class="mb-0 ms-3">Indonesia</h5>
-                          </div>
-                        </div>
-                        <div class="col-5">
-                          <h5 class="mb-0 text-end">1025</h5>
-                        </div>
-                        <div class="col-12">
-                          <div id="chart-indonesia"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 col-xl-8">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4>Latest Comments</h4>
-                    </div>
-                    <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table table-hover table-lg">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Comment</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="col-3">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar avatar-md">
-                                    <img src="/assets/compiled/jpg/5.jpg" />
-                                  </div>
-                                  <p class="font-bold ms-3 mb-0">Si Cantik</p>
-                                </div>
-                              </td>
-                              <td class="col-auto">
-                                <p class="mb-0">
-                                  Congratulations on your graduation!
-                                </p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="col-3">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar avatar-md">
-                                    <img src="/assets/compiled/jpg/2.jpg" />
-                                  </div>
-                                  <p class="font-bold ms-3 mb-0">Si Ganteng</p>
-                                </div>
-                              </td>
-                              <td class="col-auto">
-                                <p class="mb-0">
-                                  Wow amazing design! Can you make another
-                                  tutorial for this design?
-                                </p>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -604,16 +580,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- 圓餅圖 -->
-              <div class="card">
-                <div class="card-header">
-                  <h4>Visitors Profile</h4>
-                </div>
-                <div class="card-body">
-                  <div id="chart-visitors-profile"></div>
-                </div>
-              </div>
             </div>
           </section>
         </div>
@@ -627,6 +593,7 @@
         </footer>
       </div>
     </div>
+
     <script src="/assets/static/js/components/dark.js"></script>
     <script src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
@@ -635,5 +602,55 @@
     <!-- Need: Apexcharts -->
     <script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
     <script src="/assets/static/js/pages/dashboard.js"></script>
+
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- sweet alert -->
+    <script src="/assets/static/js/pages/sweetalert2.js"></script>
+    <script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
+
+    <script>
+      // 選擇教師的下拉式選單
+      function selectTeacher(id, text) {
+        document.getElementById("dropdownMenuTeacherID").textContent = text; // 更新按鈕文字以反映當前選擇
+        document.getElementById("teacherID").value = id; // 更新隱藏 input 的值
+      }
+
+      //選擇課程類別的下拉式選單
+      function selectCategory(category) {
+        document.getElementById("dropdownMenuCourseCategory").textContent =
+          category; // 更新按鈕文字以反映當前選擇
+        document.getElementById("courseCategory").value = category; // 更新隱藏 input 的值
+      }
+
+      $("#toast-success").on("click", function (e) {
+        var formData = $("#courseForm").serialize(); // 序列化表單數據
+
+        $.ajax({
+          url: "${pageContext.request.contextPath}/course/add",
+          type: "POST",
+          data: formData,
+          success: function (response) {
+            Swal.fire({
+              title: "成功!",
+              text: "課程添加成功",
+              icon: "success",
+            }).then((result) => {
+              if (result.value) {
+                window.location.reload(); // 這將刷新頁面
+              }
+            });
+          },
+          error: function () {
+            Swal.fire({
+              title: "錯誤!",
+              text: "課程添加失敗",
+              icon: "error",
+            });
+          },
+        });
+      });
+    </script>
   </body>
 </html>

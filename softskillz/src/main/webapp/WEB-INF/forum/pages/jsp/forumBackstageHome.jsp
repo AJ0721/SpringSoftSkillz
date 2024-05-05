@@ -292,7 +292,7 @@
                 // setupDeleteHandler('#deleteSelectedThreads', '#threadList', '/forum/thread/deleteall', 'ThreadIds', fetchThreads);
 
 
-              
+
 
 
                 //TO DO LIST: MERGE WITH KEYWORD?

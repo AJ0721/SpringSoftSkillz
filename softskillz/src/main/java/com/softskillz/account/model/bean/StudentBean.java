@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.softskillz.companion.model.CompanionBean;
-import com.softskillz.forum.model.ForumThreadModel;
+import com.softskillz.forum.model.model.ForumThreadModel;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
 

@@ -1,8 +1,11 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.dto;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import com.softskillz.forum.model.model.ForumCategoryModel;
+import com.softskillz.forum.model.model.ForumThreadModel;
 
 @Mapper
 public interface IDtoConverter {

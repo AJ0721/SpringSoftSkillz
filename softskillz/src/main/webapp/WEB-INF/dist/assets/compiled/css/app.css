@@ -2522,6 +2522,7 @@ textarea.form-control-lg {
   height: calc(3.5rem + 2px);
   min-height: calc(3.5rem + 2px);
   line-height: 1.25;
+  padding-top: 1.25rem; /* 增加上方內邊距以提供空間給標籤 */
 }
 .form-floating > label {
   position: absolute;
@@ -2544,9 +2545,13 @@ textarea.form-control-lg {
     transition: none;
   }
 }
+/* 調整輸入框大小 讓輸入資料不會被擋到 */
 .form-floating > .form-control,
 .form-floating > .form-control-plaintext {
-  padding: 1rem 0.75rem;
+  height: calc(4rem + 2px); /* 增加輸入框的高度 */
+  min-height: calc(4rem + 2px); /* 可選，設定最小高度 */
+  line-height: 1.25;
+  padding-top: 2rem; /* 增加上方內邊距以容納標籤 */
 }
 .form-floating > .form-control::placeholder,
 .form-floating > .form-control-plaintext::placeholder {
@@ -2987,8 +2992,8 @@ fieldset:disabled .btn {
 }
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #435ebe;
-  --bs-btn-border-color: #435ebe;
+  --bs-btn-bg: #425169;
+  --bs-btn-border-color: #425169;
   --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #3950a2;
   --bs-btn-hover-border-color: #364b98;
@@ -2998,8 +3003,8 @@ fieldset:disabled .btn {
   --bs-btn-active-border-color: #32478f;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #435ebe;
-  --bs-btn-disabled-border-color: #435ebe;
+  --bs-btn-disabled-bg: #425169;
+  --bs-btn-disabled-border-color: #425169;
 }
 .btn-secondary {
   --bs-btn-color: #fff;
@@ -18214,7 +18219,8 @@ body .bi:before,
 }
 .form-group.with-title .form-control,
 .form-group.with-title dataTable-input {
-  padding-top: 2rem;
+  height: auto;
+  padding-top: 3rem;
 }
 .form-group.with-title .form-control:focus ~ label,
 .form-group.with-title dataTable-input:focus ~ label {
@@ -18634,7 +18640,7 @@ body .bi:before,
   content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9" style="fill:none;stroke:white;stroke-width:1"></polyline></svg>');
 }
 .sidebar-wrapper .menu .sidebar-item.active > .sidebar-link {
-  background-color: #435ebe;
+  background-color: #425169;
 }
 .sidebar-wrapper .menu .sidebar-item.active > .sidebar-link span {
   color: #fff;

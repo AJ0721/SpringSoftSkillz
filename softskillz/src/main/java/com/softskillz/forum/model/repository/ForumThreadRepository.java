@@ -1,10 +1,12 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.softskillz.forum.model.model.ForumThreadModel;
 
 public interface ForumThreadRepository extends JpaRepository<ForumThreadModel, Integer> {
 

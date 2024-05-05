@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.model;
 
 import java.sql.Timestamp;
 

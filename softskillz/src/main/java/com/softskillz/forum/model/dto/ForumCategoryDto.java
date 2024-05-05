@@ -1,4 +1,4 @@
-package com.softskillz.forum.model;
+package com.softskillz.forum.model.dto;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public class ForumCategoryDto {
     private String forumCategoryName;
     private String forumCategoryDescription;
     private List<Integer> forumCategoryIds;
-
+ 
 
     public ForumCategoryDto() {
     }
@@ -51,9 +51,6 @@ public class ForumCategoryDto {
 		this.forumCategoryIds = forumCategoryIds;
 	}
 	
-	
 
-
-    
 
 }
