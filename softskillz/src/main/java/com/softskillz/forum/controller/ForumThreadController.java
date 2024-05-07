@@ -73,8 +73,8 @@ public class ForumThreadController {
 	}
 
 	// Find thread by ID
-	@GetMapping("/find/{threadId}")
-	public ForumThreadDto findThreadById(@PathVariable int threadId) {
+	@GetMapping("/find/id/{threadId}")
+	public ForumThreadDto findThreadById(@PathVariable Integer threadId) {
 
 		ForumThreadDto threadDto = forumThreadService.findThreadByThreadId(threadId);
 		return threadDto;

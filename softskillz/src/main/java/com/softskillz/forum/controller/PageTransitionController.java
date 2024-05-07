@@ -33,69 +33,60 @@ public class PageTransitionController {
 		model.addAttribute("username", tUsername);
 		}else {model.addAttribute("username", "guest");}
 		
-		return "/forum/pages/jsp/forumFrontstageHome.jsp"; 
+		return "/forum/pages/jsp/homepage/forumFrontstageHome.jsp"; 
     }
 	
 	// to backstage home
 	@GetMapping("/adminhome")
-    public String showAdminForumHome(Model model) {
-		/*
-		AdminBean admin=(AdminBean)model.getAttribute("admin");
-		if(admin != null) {
-			return "pages/forumBackstageHome"; 	
-		}
-		*/
-		AdminBean admin1= new AdminBean();
-		admin1.setAdminId(1);
-		model.addAttribute("admin", admin1);
-		return "/forum/pages/jsp/forumBackstageHome.jsp";
+    public String showAdminForumHome() {
+		
+		return "/forum/pages/jsp/homepage/forumBackstageHome.jsp";
 
     }
 	
 	
-	
-	//to backstage category insert
-	@GetMapping("/admin/category/insert")
-	public String adminNewCategory(Model model) {
-		/*
-		AdminBean admin=(AdminBean)model.getAttribute("admin");
-		if(admin != null) {
-			return "pages/forumBackstageHome"; 	
-		}
-		*/
-		AdminBean admin1= new AdminBean();
-		admin1.setAdminId(1);
-		model.addAttribute("admin", admin1);
-		return "/forum/pages/jsp/insertForumCategory.jsp";
-
-		
+//CATEGORY
+	//to category insert
+	@GetMapping("/category/insertpage")
+	public String adminNewCategory() {	
+		return "/forum/pages/jsp/category/insertForumCategory.jsp";	
 	}
 	
-	//to backstage category update
-		@GetMapping("/admin/category/update/{categoryId}")
-		public String adminUpdateCategory(Model model, @PathVariable Integer categoryId) {
-			/*
-			AdminBean admin=(AdminBean)model.getAttribute("admin");
-			if(admin != null) {
-				return "pages/forumBackstageHome"; 	
-			}
-			*/
-			AdminBean admin1= new AdminBean();
-			admin1.setAdminId(1);
-			model.addAttribute("admin", admin1);
-			return "/forum/pages/jsp/updateForumCategory.jsp";
-
-			
+	//to category update
+		@GetMapping("/category/updatepage/{categoryId}")
+		public String adminUpdateCategory(@PathVariable Integer categoryId) {	
+			return "/forum/pages/jsp/category/updateForumCategory.jsp";	
 		}
 		
 	//to category detail
-		@GetMapping("/category/detail/{categoryId}")
+		@GetMapping("/category/detailpage/{categoryId}")
 		public String categoryDetailPage(@PathVariable int categoryId, Model model) {
 		    model.addAttribute("categoryId", categoryId);
-		    return "/forum/pages/jsp/forumCategoryDetail.jsp"; 
+		    return "/forum/pages/jsp/category/forumCategoryDetail.jsp"; 
 		}
-	
-	//to thread details page
+		
+		
+//THREAD
+	//to thread insert
+		@GetMapping("/thread/insertpage")
+		public String createThread(Model model) {
+			return "/forum/pages/jsp/thread/insertForumThread.jsp";
+		}
+		
+		
+	//to thread detail
+		@GetMapping("/thread/detailpage/{threadId}")
+		public String threadDetailPage(@PathVariable Integer threadId, Model model) {
+		    model.addAttribute("threadId", threadId);
+		    return "/forum/pages/jsp/thread/forumThreadDetail.jsp"; 
+		}
+		
+		
+	//to thread update
+		@GetMapping("/thread/updatepage/{threadId}")
+		public String updateThread(@PathVariable Integer threadId) {	
+			return "/forum/pages/jsp/thread/updateForumThread.jsp";	
+		}
 	
 	
 	

@@ -30,7 +30,6 @@ public class ForumThreadService implements IForumThreadService {
 		ForumThreadModel forumThread = IDtoConverter.INSTANCE.toForumThreadModel(threadDto);
 		
 		//workaround: check if id is null
-		//test
 		if( threadDto.getStudentId() == null) {
 			forumThread.setStudentBean(null);
 		}
@@ -40,6 +39,8 @@ public class ForumThreadService implements IForumThreadService {
 		if( threadDto.getAdminId() == null) {
 			forumThread.setAdminBean(null);
 		}
+		
+		
 		
 		
 		ForumThreadModel savedThread = forumThreadRepository.save(forumThread);

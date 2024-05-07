@@ -1,13 +1,12 @@
-$(document).ready(function () {
+// GLOBAL FUNCTION: SHOW TABS IN HOMEPAGE WHEN REDIRECT
 
-
-    //THREAD HTML
-    function createThreadHtml(thread) {
-        return `
+//THREAD HTML
+window.createThreadHtml = function (thread) {
+    return `
         <tr>
                   <td><input type="checkbox"></td>
                   <td>${thread.threadId}</td>
-                  <td><a href="/forum/thread/detail/`+ thread.forumThreadId + `" class="thread-link">` + thread.threadTitle + `</a></td>
+                  <td><a href="/forum/thread/detailpage/${thread.threadId}" class="thread-link"> ${thread.threadTitle}</a></td>
                   <td>${thread.forumCategoryId}</td>
                   <td>${thread.studentId}</td>
                   <td>${thread.teacherId}</td>
@@ -17,14 +16,35 @@ $(document).ready(function () {
                   <td>${thread.threadUpvoteCount}</td>
                   <td>${thread.threadResponseCount}</td>
                   <td>${thread.forumThreadStatus}</td>
-                  <td id="updateThread"> <a href="/forum/thread/update/`+ thread.forumThreadId + `" class="btn btn-primary btn-sm">編輯</a>
-                      
-                  </td>
+                  <td id="updateThread" class="edit btn btn-primary btn-sm">編輯</td>
         </tr>
         `
-            ;
-    }
+        ;
+}
 
+
+//FUCTION: FETCH ALL THREADS
+window.fetchThreads = function () {
+    return $.ajax({
+        url: '/forum/thread/findall',
+        method: 'GET',
+        dataType: 'json',
+    });
+}
+
+
+//FUNCTION: DISPLAY THREAD IN TAB
+window.displayThreadsTab = function (threads) {
+    var $threadList = $('#threadList');
+    $threadList.empty();
+    threads.forEach(function (thread) {
+        $threadList.append(`${createThreadHtml(thread)}`);
+    })
+
+}
+
+
+$(document).ready(function () {
 
     //ACTION: FETCH ALL 
     $('#nav-threads-tab').click(function (e) {
@@ -32,28 +52,6 @@ $(document).ready(function () {
         $('#threadList').empty();
         fetchThreads();
     });
-
-    //FUCTION: FETCH ALL
-    function fetchThreads() {
-        console.log("Fetching threads!");
-        $('#threadList').empty();
-        $.ajax({
-            url: '/forum/thread/findall',
-            method: 'GET',
-            dataType: 'json',
-            success: function (threads) {
-                console.log("Threads fetched successfully:", threads);
-                threads.forEach(function (thread) {
-                    $('#threadList').append(`
-                            ${createThreadHtml(thread)}
-                        `);
-                });
-            },
-            error: function (error) {
-                console.error("Error fetching threads: ", error);
-            }
-        });
-    }
 
     //SELECT 'DELETE ALL CHECKBOX'
     $('#selectAllThreads').change(function () {
@@ -110,19 +108,14 @@ $(document).ready(function () {
     //PAGE REDIRECT
     $('#createNewThread').click(function (e) {
         e.preventDefault();
-        window.location.href = '/forum/thread/insert'
+        window.location.href = '/forum/thread/insertpage'
     });
 
+    $('#threadList').on('click', '.edit', function () {
+        var threadId = $(this).closest('tr').find('td:nth-child(2)').text();
+        window.location.href = '/forum/thread/updatepage/' + threadId;
+    });
 
-
-    //SEARCH BAR: INPUT
-    // $('#searchInput').on('input', function () {
-    //     var searchValue = $(this).val();
-    //     var searchCondition = $('#searchConditionSelect').val();
-    //     if (searchCondition === 'threadKeyword') {
-    //         searchThreadsByKeyword(searchValue);
-    //     }
-    // });
 
     //SEARCH BAR: CLICK
     $('#searchbtn').on('click', function () {
@@ -193,6 +186,19 @@ $(document).ready(function () {
         });
     };
 
+    //ACTION:DISPLAY CATEGORY IN TAB WHEN LOAD
+    $('#nav-threads-tab').click(function (e) {
+        e.preventDefault();
+
+        fetchThreads().done(function (threads) {
+            displayThreadsTab(threads);
+        }).fail(function (error) {
+            console.error("Error fetching threads:", error);
+            $('#threadList').html('<tr><td colspan="5">載入資料失敗，請重新整理</td></tr>');
+        });
+
+
+    });
 
 
 

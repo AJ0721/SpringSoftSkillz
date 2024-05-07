@@ -22,6 +22,7 @@ public interface IDtoConverter {
 	// thread
 	@Mapping(source = "adminBean.adminId", target = "adminId")
 	@Mapping(source = "forumCategoryModel.forumCategoryId", target = "forumCategoryId")
+	@Mapping(source = "forumCategoryModel.forumCategoryName", target = "forumCategoryName")
 	@Mapping(source = "studentBean.studentId", target = "studentId")
 	@Mapping(source = "teacherBean.teacherId", target = "teacherId")
 	ForumThreadDto toForumThreadDto(ForumThreadModel forumThreadModel);
@@ -29,6 +30,7 @@ public interface IDtoConverter {
 	@Mapping(target = "studentBean", ignore = true)
     @Mapping(target = "teacherBean", ignore = true)
 	@Mapping(source = "forumCategoryId", target = "forumCategoryModel.forumCategoryId")
+	@Mapping(source = "forumCategoryName", target = "forumCategoryModel.forumCategoryName")
 	@Mapping(source = "studentId", target = "studentBean.studentId") //attribute if id=null don't create a new student
 	@Mapping(source = "teacherId", target = "teacherBean.teacherId")
 	@Mapping(source = "adminId", target = "adminBean.adminId")

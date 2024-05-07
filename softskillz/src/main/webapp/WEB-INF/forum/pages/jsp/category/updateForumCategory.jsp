@@ -74,7 +74,7 @@
 
                 // btn page transfer
                 $('#cancel').click(function (e) {
-                    window.location.href = '/forum/adminhome';
+                    window.location.href = '/forum/adminhome#nav-category';
                     //todo: go to category tab
                 });
 
@@ -127,12 +127,12 @@
                                 icon: 'success',
                                 timer: 2000, // 2000 milliseconds delay
                                 didClose: () => {
-                                    window.location.href = '/forum/adminhome'; // Redirect after the alert closes
+                                    window.location.href = '/forum/adminhome#nav-category'; // Redirect after the alert closes
                                     //todo: redirect to category tab
                                 }
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function (error) {
                             console.error('Error creating category:', error);
                             Swal.fire(
                                 '刪除失敗',

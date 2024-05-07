@@ -1,20 +1,39 @@
-$(document).ready(function () {
+// GLOBAL FUNCTION: SHOW TABS IN HOMEPAGE WHEN REDIRECT
 
-
-    //CATEGORY HTML
-    function createCategoryHtml(category) {
-        return `
+//CATEGORY HTML
+window.createCategoryHtml = function (category) {
+    return `
         <tr>
             <td><input type="checkbox"></td>
             <td>${category.forumCategoryId}</td>
-            <td> <a href="/forum/category/detail/`+ category.forumCategoryId + `">${category.forumCategoryName}</a></td>
+            <td><a href="/forum/category/detailpage/${category.forumCategoryId}">${category.forumCategoryName}</a></td>
             <td>${category.forumCategoryDescription}</td>
-            <td class="edit btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-            編輯
-            </td>
+            <td class="edit btn btn-primary btn-sm"><i class="fas fa-edit"></i>編輯</td>
         </tr>
-    ` ;
-    }
+    `;
+};
+
+//FUNCTION: FETCH ALL CATEGORIES (returns a jQuery promise)
+window.fetchCategories = function () {
+    return $.ajax({
+        url: '/forum/category/findall',
+        method: 'GET',
+        dataType: 'json',
+    });
+};
+
+//FUNCTION: DISPLAY CATEGORY IN TAB 
+window.displayCategoriesTab = function (categories) {
+    var $categoryList = $('#categoryList');
+    $categoryList.empty();
+    categories.forEach(function (category) {
+        $categoryList.append(`${createCategoryHtml(category)}`);
+    })
+
+}
+
+
+$(document).ready(function () {
 
     //ACTION: FETCH ALL 
     $('#nav-category-tab').click(function (e) {
@@ -22,42 +41,6 @@ $(document).ready(function () {
         $('#categoryList').empty();
         fetchCategories();
     })
-
-
-    //FUCTION: FETCH ALL
-    function fetchCategories() {
-        console.log("Fetching categories!");
-        // avoid repetitive loading when multiple clicks happen
-        $('#categoryList').empty();
-        $.ajax({
-            url: '/forum/category/findall',
-            method: 'GET',
-            dataType: 'json',
-            success: function (categories) {
-                console.log("Categories fetched successfully:", categories);
-                categories.forEach(function (category) {
-                    $('#categoryList').append(`
-                    ${createCategoryHtml(category)}
-           
-     <!--  <tr>
-            <td><input type="checkbox"></td>
-            <td> ${category.forumCategoryId} </td>
-            <td> <a href="#detail"> ${category.forumCategoryName} </a></td>
-            <td> ${category.forumCategoryDescription} </td>
-           
-            <td id="updateCategory"> <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-            編輯</a>
-    
-            </td>
-             </tr> -->
-                    `);
-                });
-            },
-            error: function (error) {
-                console.error("Error fetching categories: ", error);
-            }
-        });
-    }
 
 
     //SELECT 'DELETE ALL CHECKBOX'
@@ -112,23 +95,13 @@ $(document).ready(function () {
     //PAGE REDIRECT
     $('#createNewCategory').click(function (e) {
         e.preventDefault();
-        window.location.href = '/forum/admin/category/insert'
+        window.location.href = '/forum/category/insertpage'
     });
 
     $('#categoryList').on('click', '.edit', function () {
         var categoryId = $(this).closest('tr').find('td:nth-child(2)').text();
-        window.location.href = '/forum/admin/category/update/' + categoryId;
+        window.location.href = '/forum/category/updatepage/' + categoryId;
     });
-
-
-    //SEARCH BAR: INPUT
-    // $('#searchInput').on('input', function () {
-    //     var searchValue = $(this).val();
-    //     var searchCondition = $('#searchConditionSelect').val();
-    //     if (searchCondition === 'categoryKeyword') {
-    //         searchCategoriesByKeyword(searchValue);
-    //     }
-    // });
 
 
     //SEARCH BAR: CLICK
@@ -193,5 +166,20 @@ $(document).ready(function () {
             }
         });
     }
+
+    //ACTION:DISPLAY CATEGORY IN TAB WHEN LOAD
+    $('#nav-category-tab').click(function (e) {
+        e.preventDefault();
+
+        fetchCategories().done(function (categories) {
+            displayCategoriesTab(categories);
+        }).fail(function (error) {
+            console.error("Error fetching categories:", error);
+            $('#categoryList').html('<tr><td colspan="5">載入資料失敗，請重新整理</td></tr>');
+        });
+
+
+    });
+
 
 })

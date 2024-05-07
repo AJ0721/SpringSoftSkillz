@@ -13,6 +13,7 @@ public class ForumThreadDto {
     private int threadResponseCount=0;
     private String threadStatus = "VISIBLE";
     private int forumCategoryId; 
+    private String forumCategoryName;
     private Integer studentId;    
     private Integer teacherId;  
     private Integer adminId;    
@@ -45,6 +46,19 @@ public class ForumThreadDto {
 	
 
 
+
+
+
+
+
+	public String getForumCategoryName() {
+		return forumCategoryName;
+	}
+
+
+	public void setForumCategoryName(String forumCategoryName) {
+		this.forumCategoryName = forumCategoryName;
+	}
 
 
 	public List<Integer> getThreadIds() {

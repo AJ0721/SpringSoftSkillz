@@ -71,14 +71,14 @@
                         </div>
                     </div>
                     <nav>
-                        <div class="nav nav-tabs " id="nav-tab" role="tablist">
+                        <div class="nav nav-tabs " id="nav-overll-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-overall-tab" data-toggle="tab"
                                 href="#nav-overall" role="tab" aria-controls="nav-overall" aria-selected="true">整體資訊</a>
                             <a class="nav-item nav-link" id="nav-category-tab" data-toggle="tab" href="#nav-category"
                                 role="tab" aria-controls="nav-category" aria-selected="false">分類看板</a>
-                            <a class="nav-item nav-link" id="nav-threads-tab" data-toggle="tab" href="#nav-threads"
+                            <a class="nav-item nav-link" id="nav-threads-tab" data-toggle="tab" href="#nav-thread"
                                 role="tab" aria-controls="nav-threads" aria-selected="false">文章管理</a>
-                            <a class="nav-item nav-link" id="nav-posts-tab" data-toggle="tab" href="#nav-posts"
+                            <a class="nav-item nav-link" id="nav-posts-tab" data-toggle="tab" href="#nav-post"
                                 role="tab" aria-controls="nav-posts" aria-selected="false">留言管理</a>
                             <a class="nav-item nav-link" id="nav-others-tab" data-toggle="tab" href="#nav-others"
                                 role="tab" aria-controls="nav-others" aria-selected="false">其他</a>
@@ -133,7 +133,7 @@
 
                         <!-- Categories Tab -->
                         <div class="tab-pane fade" id="nav-category" role="tabpanel" aria-labelledby="nav-category-tab">
-                            <button class="btn btn-success mb-3" id="createNewCategory">新增分類看板</button>
+                            <button class="btn btn-success mb-3" id="createNewCategory">新增分類</button>
                             <button class="btn btn-danger mb-3" id="deleteSelectedCategories">刪除</button>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover">
@@ -156,7 +156,7 @@
                         </div>
 
                         <!-- Threads Tab -->
-                        <div class="tab-pane fade" id="nav-threads" role="tabpanel" aria-labelledby="nav-threads-tab">
+                        <div class="tab-pane fade" id="nav-thread" role="tabpanel" aria-labelledby="nav-threads-tab">
                             <button class="btn btn-success mb-3" id="createNewThread">新增文章</button>
                             <button class="btn btn-danger mb-3" id="deleteSelectedThreads">刪除</button>
                             <div class="table-responsive">
@@ -186,7 +186,7 @@
                         </div>
 
                         <!-- Posts Tab -->
-                        <div class="tab-pane fade" id="nav-posts" role="tabpanel" aria-labelledby="nav-posts-tab">
+                        <div class="tab-pane fade" id="nav-post" role="tabpanel" aria-labelledby="nav-posts-tab">
                             <button class="btn btn-success mb-3" id="createNewPost">新增留言</button>
                             <button class="btn btn-danger mb-3" id="deleteSelectedPosts">全部刪除</button>
                             <div class="table-responsive">
@@ -263,89 +263,55 @@
 
             $(document).ready(function () {
 
-                // //SEARCH BAR: INPUT
-                // $('#searchInput').on('input', function () {
-                //     var searchValue = $(this).val();
-                //     var searchCondition = $('#searchConditionSelect').val();
-                //     if (searchCondition === 'categoryKeyword') {
-                //         searchCategoriesByKeyword(searchValue);
-                //     } else if (searchCondition === 'threadKeyword') {
-                //         searchThreadsByKeyword(searchValue);
-                //     }
-                // });
-
-                // //SEARCH BAR: CLICK
-                // $('#searchbtn').on('click', function () {
-                //     var searchValue = $(this).val();
-                //     var searchCondition = $('#searchConditionSelect').val();
-                //     if (searchCondition === 'categoryId') {
-                //         searchCategoriesById(searchValue);
-                //     } else if (searchCondition === 'threadId') {
-                //         searchThreadsById(searchValue);
-                //     }
-                // });
 
 
-                //BULK DELETE TEMPLATE !!!NOT WORKING!!!
+                // Redirect to assigned tab based on hash in URL
+                var hash = window.location.hash;
+                if (hash) {
+                    $('.nav-tabs a[href="' + hash + '"]').tab('show');
+                }
 
-                //setupDeleteHandler('#deleteSelectedCategories', '#categoryList', '/forum/category/deleteall', 'forumCategoryIds', fetchCategories);
-                // setupDeleteHandler('#deleteSelectedThreads', '#threadList', '/forum/thread/deleteall', 'ThreadIds', fetchThreads);
+                $('a[data-toggle="tab"]').off('shown.bs.tab').on('shown.bs.tab', function (e) {
+                    var target = $(e.target).attr('href');
+                    window.location.hash = target;
+                    console.log("Tab shown:", target);
+                    // Activated tab
+                    switch (target) {
+                        case '#nav-category':
+                            $('#categoryList').empty();
+                            fetchCategories().done(function (categories) { //jquery syntax: done/fail 
+                                displayCategoriesTab(categories);
+                            }).fail(function (error) {
+                                console.error("Error fetching categories:", error);
+                                $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+                            });
+                            break;
+                        case '#nav-thread':
+                            $('#threadList').empty();
+                            fetchThreads().done(function (threads) {
+                                displayThreadsTab(threads);
+                            }).fail(function (error) {
+                                console.error("Error fetching threads:", error);
+                                $('#threadList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
+                            });
+                            break;
+                        case '#nav-post':
+                            $('#postList').empty();
+                            fetchThreads().done(function (posts) {
+                                displayThreadsTab(posts);
+                            }).fail(function (error) {
+                                console.error("Error fetching posts:", error);
+                                $('#postList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
+                            });
+                            break;
+                    }
+                });
 
 
-
-
-
-                //TO DO LIST: MERGE WITH KEYWORD?
-                // function searchThreadsByUsername() { }
             });
 
 
-            //FUNCTION: BULK DELETE !!!NOT WORKING!!!
-            // function setupDeleteHandler(buttonSelector, tableSelector, apiUrl, propertyName, successCallback) {
-            //     $(buttonSelector).click(function () {
-            //         var selectedCheckboxes = $(tableSelector + ' tbody tr :checkbox:checked');
-            //         if (selectedCheckboxes.length === 0) {
-            //             Swal.fire('錯誤', '請選擇至少一筆刪除資料', 'error');
-            //             return;
-            //         }
 
-            //         Swal.fire({
-            //             title: '是否刪除選取資料?',
-            //             text: '',
-            //             icon: 'warning',
-            //             showCancelButton: true,
-            //             confirmButtonText: '確認',
-            //             cancelButtonText: '取消'
-            //         }).then((result) => {
-
-            //             if (result.isConfirmed) {
-
-            //                 var idList = [];
-            //                 selectedCheckboxes.each(function () {
-            //                     var id = $(this).closest('tr').find('td:nth-child(2)').text();
-            //                     idList.push(id);
-            //                 });
-
-            //                 var data = {};
-            //                 data[propertyName] = idList;
-
-            //                 $.ajax({
-            //                     url: apiUrl,
-            //                     type: 'DELETE',
-            //                     data: JSON.stringify(data),
-            //                     contentType: 'application/json',
-            //                     success: function (response) {
-            //                         Swal.fire('刪除成功', '', 'success');
-            //                         successCallback; // Refresh the category list
-            //                     },
-            //                     error: function (xhr, status, error) {
-            //                         Swal.fire('刪除失敗', '請檢查連線並重新整理' + error, 'error');
-            //                     }
-            //                 });
-            //             }
-            //         });
-            //     });
-            // }
 
         </script>
 

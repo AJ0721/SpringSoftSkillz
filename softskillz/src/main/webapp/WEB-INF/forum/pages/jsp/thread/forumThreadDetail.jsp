@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>看板資訊</title>
+        <title>文章資訊</title>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -42,27 +42,32 @@
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <div class="card">
                         <div class="card-header">
-                            看板資訊
+                            新增文章
                         </div>
                         <div class="card-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="categoryName">看板名稱</label>
-                                    <div class="p-2 border rounded bg-white" style="user-select: text;"
-                                        id="categoryName" readonly>
+                                    <label for="category">分類</label>
+                                    <div class=" rounded p-2 border bg-white" style="user-select: text;" id="category"
+                                        readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="categoryDescription">看板說明</label>
-
+                                    <label for="threadTitle">標題</label>
                                     <div class=" rounded p-2 border bg-white" style="user-select: text;"
-                                        id="categoryDescription" rows="3" readonly>
+                                        id="threadTitle" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="threadContent">內文</label>
+                                    <div class=" rounded p-2 border bg-white" style="user-select: text;"
+                                        id="threadContent" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-secondary" id="cancel">返回</button>
-
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -75,9 +80,9 @@
             $(document).ready(function () {
                 const pathname = window.location.pathname;
                 const parts = pathname.split("/");
-                const categoryId = parts[parts.length - 1];
+                const threadId = parts[parts.length - 1];
 
-                fetch("/forum/category/find/id/" + categoryId)
+                fetch("/forum/thread/find/id/" + threadId)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error("Failed to fetch data");
@@ -86,15 +91,16 @@
                     })
                     .then(data => {
                         console.log(data);
-                        document.getElementById('categoryName').innerHTML = data.forumCategoryName;
-                        document.getElementById('categoryDescription').innerHTML = data.forumCategoryDescription;
+                        document.getElementById('category').innerHTML = data.forumCategoryName;
+                        document.getElementById('threadTitle').innerHTML = data.threadTitle;
+                        document.getElementById('threadContent').innerHTML = data.threadContent;
                     })
-                    .catch(error => console.error('Error fetching category details:', error));
+                    .catch(error => console.error('Error fetching thread details:', error));
 
 
                 //PAGE REDIRECT
                 $('#cancel').click(function (e) {
-                    window.location.href = '/forum/adminhome';
+                    window.location.href = '/forum/adminhome#nav-thread';
                 });
 
             });
