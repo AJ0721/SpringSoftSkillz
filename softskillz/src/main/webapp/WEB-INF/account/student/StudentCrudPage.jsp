@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" isErrorPage="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,22 +7,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>學生CRUD頁面</title>
+<title>學生帳號管理</title>
 </head>
 
 <body>
 	<div>
-		<h2>學生CRUD頁面</h2>
+		<h2>學生帳號管理</h2>
 		<div>
 			<table>
 				<td>
-					<form method="get" action="">
-						學生id搜尋：<input type="text" name="admin_id"></input>&nbsp;&nbsp; <input
+					<form method="get" action="StudentSelectOne">
+						學生ID搜尋：<input type="text" name="studentId"></input>&nbsp;&nbsp; <input
 							type="submit" value="搜尋"></input>
 					</form>
 				</td>
 				<td>
-					<form method="get" action="studentSelectAll">
+					<form method="get" action="StudentSelectAll">
 						<input type="submit" value="搜尋全部"></input>
 					</form>
 				</td>
@@ -54,36 +54,35 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${student}" var="students">
+					<!-- items="${students}" 是從controller傳來的信封的名字，然後去宣告變數var，從list裡一個一個拿出來 -->
+					<c:forEach items="${students}" var="student">
 						<tr>
-							<td>${students.studentId}</td>
-							<td>${students.studentLastName}</td>
-							<td>${students.studentFirstName}</td>
-							<td>${students.studentUsername}</td>
-							<td>${students.studentNickname}</td>
-							<td>${students.studentRegistrationDate}</td>
-							<td>${students.studentGender}</td>
-							<td>${students.studentBirth}</td>
-							<td>${students.studentMobile}</td>
-							<td>${students.studentEmail}</td>
-							<td>${students.studentPassword}</td>
-							<td>${students.studentCountry}</td>
-							<td>${students.studentPhoto}</td>
-							<td>${students.studentEducation}</td>
-							<td>${students.studentForumStatus}</td>
-							<td>${students.studentCourseStatus}</td>
-							<td>${students.firstLanguage}</td>
-							<td>${students.learningFrequency}</td>
-							<td hidden>${students.studentIdFormatted}</td>
+							<td>${student.studentId}</td>
+							<td>${student.studentLastName}</td>
+							<td>${student.studentFirstName}</td>
+							<td>${student.studentUsername}</td>
+							<td>${student.studentNickname}</td>
+							<td>${student.studentRegistrationDate}</td>
+							<td>${student.studentGender}</td>
+							<td>${student.studentBirth}</td>
+							<td>${student.studentMobile}</td>
+							<td>${student.studentEmail}</td>
+							<td>${student.studentPassword}</td>
+							<td>${student.studentCountry}</td>
+							<td>${student.studentPhoto}</td>
+							<td>${student.studentEducation}</td>
+							<td>${student.studentForumStatus}</td>
+							<td>${student.studentCourseStatus}</td>
+							<td>${student.firstLanguage}</td>
+							<td>${student.learningFrequency}</td>
+							<td hidden>${student.studentIdFormatted}</td>
+							<td><a
+								href="student-update?studentId=${student.studentId}"
+								class="button-link">修改</a></td>
 							<td>
-								<form action="" method="post">
-									<input type="hidden" name="adminId" value="${admin.adminId}" />
-									<button type="submit">修改</button>
-								</form>
-							</td>
-							<td>
-								<form action="" method="post">
-									<input type="hidden" name="adminId" value="${admin.adminId}" />
+								<form action="StudentDelete" method="post">
+									<input type="hidden" name="_method" value="delete"> <input
+										type="hidden" name="studentId" value="${student.studentId}" />
 									<button type="submit">刪除</button>
 								</form>
 							</td>
@@ -92,6 +91,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			<div>${rowMsg}</div>
 		</div>
 	</div>
 

@@ -13,7 +13,6 @@ import com.softskillz.courseorder.model.bean.CourseBean2;
 import com.softskillz.courseorder.model.repository.CourseRepositoryS;
 import com.softskillz.courseorder.model.service.CourseService;
 
-
 @Service
 @Transactional
 public class CourseServiceImpl implements CourseService {
@@ -28,6 +27,7 @@ public class CourseServiceImpl implements CourseService {
 		for (CourseBean2 c : resultList) {
 			Course2 course2 = new Course2();
 			course2.setCourseID(c.getCourseID());
+			course2.setTeacherID(c.getTeacherBean().getTeacherIdFormatted());
 			course2.setTeacherName(c.getTeacherBean().getTeacherLastName() + c.getTeacherBean().getTeacherFirstName());
 			course2.setTeacherPhoto(c.getTeacherBean().getTeacherPhoto());
 			course2.setCourseName(c.getCourseName());
@@ -47,6 +47,7 @@ public class CourseServiceImpl implements CourseService {
 		if (op1.isPresent()) {
 			CourseBean2 resultBean = op1.get();
 			course2.setCourseID(resultBean.getCourseID());
+			course2.setTeacherID(resultBean.getTeacherBean().getTeacherIdFormatted());
 			course2.setTeacherName(resultBean.getTeacherBean().getTeacherLastName()
 					+ resultBean.getTeacherBean().getTeacherFirstName());
 			course2.setTeacherPhoto(resultBean.getTeacherBean().getTeacherPhoto());

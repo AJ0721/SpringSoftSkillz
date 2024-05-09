@@ -62,7 +62,7 @@ public class AdminCrudController {
 	}
 
 	// 註冊頁面
-	@GetMapping({ "/admin-createPage" })
+	@GetMapping("/admin-createPage")
 	public String goToAdminCreatePage() {
 		return "account/admin/AdminCreate.jsp";
 	}

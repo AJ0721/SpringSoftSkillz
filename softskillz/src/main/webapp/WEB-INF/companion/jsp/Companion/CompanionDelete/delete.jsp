@@ -18,7 +18,7 @@
 <script>
 const index = document.querySelector('.index')
 index.addEventListener('click', function() {
-	location.href = "/index.html"})
+	location.href = "/companionIndex.html"})
 </script>
 </body>
 </html>

@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>折扣</title>
-    <link rel="stylesheet" href="/courseorder/css/backtest.css">
     <link rel="stylesheet" href="/courseorder/css/adminorder.css">
 </head>
 <style>
@@ -176,36 +175,55 @@
 <body>
 
     <div id="headder"></div>
+    <div class="col-12 col-lg-9">
+        <!-- 卡片中放你的功能內容 -->
+        <section class="section">
+            <div class="card">
+                <h3 class="card-header">新增課程資料</h3>
+                <div class="card-body"></div>
+            </div>
+            <div class="content">
+                <div class="result">
+                    <div class="search">
+                        <button class="custom-button" id="add">新增</button>
+                    </div>
 
-    <section>
-        <div class="content">
-            <div class="result">
-                <div class="search">
-                    <button class="custom-button" id="add">新增</button>
-                </div>
+                    <div class="container">
+                        <table align="center" style="width: 70%;">
+                            <thead>
+                                <tr>
+                                    <th>折扣編號</th>
+                                    <th>折扣詳情</th>
+                                    <th>折扣數量</th>
+                                    <th>開始時間</th>
+                                    <th>結束時間</th>
+                                    <th>修改</th>
+                                    <th>刪除</th>
+                                </tr>
+                            </thead>
 
-                <div class="container">
-                    <table align="center" style="width: 70%;">
-                        <thead>
-                            <tr>
-                                <th>折扣編號</th>
-                                <th>折扣詳情</th>
-                                <th>折扣數量</th>
-                                <th>開始時間</th>
-                                <th>結束時間</th>
-                                <th>修改</th>
-                                <th>刪除</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                        </tbody>
-                    </table>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
-    </section>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Profile Visit</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="chart-profile-visit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
 
     <dialog id="insertData">
         <form method="dialog">
@@ -378,12 +396,7 @@
         })
     }
 
-    fetch('/html/backtest.html')
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('#headder').innerHTML = data;
-        })
-        .catch(error => console.error('頁首內容加載錯誤:', error));
+
 
     function addDiscount() {
         let tbody = document.querySelector("tbody");
@@ -401,6 +414,13 @@
         addBtn.disabled = true;
 
     }
+
+    fetch('/dist/demo.html')
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('#headder').innerHTML = data;
+        })
+        .catch(error => console.error('頁首內容加載錯誤:', error));
 </script>
 
 </html>

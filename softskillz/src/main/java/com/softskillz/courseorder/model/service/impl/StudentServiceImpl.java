@@ -21,4 +21,9 @@ public class StudentServiceImpl implements StudentServiceS {
 		return stRepo.loginSimulation(account, pwd);
 	}
 
+	@Override
+	public StudentBean findStudentByFormatID(String studentIdFormatted) {
+		return stRepo.findByStudentIdFormatted(studentIdFormatted);
+	}
+
 }

@@ -12,24 +12,26 @@
 			<link rel="stylesheet" href="/courseorder/css/reset.css">
 			<link rel="stylesheet" href="/courseorder/css/bar.css">
 			<link rel="stylesheet" href="/courseorder/css/tablefotcart.css">
+			<script src="/courseorder/js/chatroom.js"></script>
+
 			<script>
 
 			</script>
 		</head>
 		<style>
-		    .header {
-        background-image: url(/img/xxx.jpg);
-        max-width: 100%;
-        height: 420px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
+			.header {
+				background-image: url(/img/xxx.jpg);
+				max-width: 100%;
+				height: 420px;
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-position: center center;
 
-        .text {
-            text-align: center;
-        }
-    }
-		
+				.text {
+					text-align: center;
+				}
+			}
+
 			.del {
 				background-color: #ff6347;
 				color: #fff;
@@ -108,14 +110,14 @@
 
 
 			<script>
-			fetch("/courseorder/html/testiframe3.html")
-		    .then(response => {
-		        if (response.ok) {
-		            return response.text();
-		        }
-		    }).then(data => {
-		        document.querySelector('#fetch').innerHTML = data;
-		    })
+				fetch("/courseorder/html/testiframe3.html")
+					.then(response => {
+						if (response.ok) {
+							return response.text();
+						}
+					}).then(data => {
+						document.querySelector('#fetch').innerHTML = data;
+					})
 			</script>
 		</body>
 

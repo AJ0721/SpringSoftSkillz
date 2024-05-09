@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.forum.model.model.ForumPostModel;
 import com.softskillz.forum.model.model.ForumThreadModel;
@@ -109,9 +111,11 @@ public class TeacherBean {
 	private String teacherIdFormatted;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacherBean", cascade = CascadeType.ALL)
+	@JsonManagedReference("course-teacher")
 	private Set<CourseBean> course = new HashSet<CourseBean>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacherBean", cascade = CascadeType.ALL)
+	@JsonManagedReference("teacher-teacherSchedule")
 	private Set<TeacherScheduleBean> teacherSchedule = new HashSet<TeacherScheduleBean>();
 
 	

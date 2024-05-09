@@ -140,9 +140,9 @@ tr:hover {
 
                                 $.each(data, function (i, n) {
                                 	<!--             使用 moment.js 在前端進行日期格式化 -->
-                                	var birthDate = moment(n.companionBirth, "YYYY-MM-DD HH:mm:ss.SSSSSSS");
+                                	var birthDate = moment(n.studentBeanID.studentBirth, "YYYY-MM-DD HH:mm:ss.SSSSSSS");
                                     var formattedBirthDate = birthDate.format("YYYY-MM-DD");
-                                    var tr = "<tr><td>" + n.companionId + "</td><td>" + n.studentId + "</td><td>" + n.companionUsername + "</td><td>" + n.companionGender + "</td><td>" + formattedBirthDate + "</td><td>"+ n.companionFirstLanguage + "</td><td>"+ n.companionSpeakingLanguage + "</td><td>"+ n.companionLearningInterest + "</td><td>"+ n.companionLearningFrequency + "</td><td><img id='img' src="+ n.companionPhoto + "></td></tr>";
+                                    var tr = "<tr><td>" + n.companionId + "</td><td>" + n.studentBeanID.studentId + "</td><td>" + n.studentBeanID.studentNickname + "</td><td>" + n.studentBeanID.studentGender + "</td><td>" + formattedBirthDate + "</td><td>"+ n.companionFirstLanguage + "</td><td>"+ n.companionSpeakingLanguage + "</td><td>"+ n.companionLearningInterest + "</td><td>"+ n.companionLearningFrequency + "</td><td><img id='img' src="+ n.studentBeanID.studentPhoto + "></td></tr>";
                                     table.append(tr);
                                 });
                             }
@@ -169,7 +169,7 @@ tr:hover {
 		<form method="get" action="../GetAllCompanions">
 			<button class="selectAll" type="submit">顯示全部資料</button>
 		</form>
-	<div><a href="/index.html" style="text-decoration: none;"><button class="index">回首頁</button></a></div>
+	<div><a href="/companionIndex.html" style="text-decoration: none;"><button class="index">回首頁</button></a></div>
 	</div>
 
         </body>

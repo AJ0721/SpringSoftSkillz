@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>softskillz</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://kit.fontawesome.com/8f15672443.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="reset.css">
+	<style>
+		.navbar {
+			background-color: #faf0e6;
+			height: 50px;
+			position: fixed;
+			/* 固定在屏幕上 */
+			top: 0;
+			/* 位置在顶部 */
+			width: 100%;
+			/* 覆盖整个宽度 */
+			background-color: #faf0e6;
+			height: 50px;
+			z-index: 10;
+			/* 确保在其他内容之上 */
+		}
+
+		.container {
+			width: 1024px;
+			margin: 0 auto;
+		}
+
+		/* Logo styles */
+		.logo {
+			display: inline;
+
+			a {
+				text-decoration: none;
+				color: #ff8c00;
+				font-size: 24px;
+				line-height: 50px;
+			}
+
+			.fa-lines-leaning {
+				color: #ff8c00;
+				margin-right: 1em;
+			}
+		}
+
+		/* Main menu styles */
+		.menu {
+			float: right;
+			list-style: none;
+			/* Removes default list style */
+		}
+
+		.menu>li {
+			float: left;
+			/* Horizontal alignment for top-level menu items */
+			position: relative;
+			/* Allows absolute positioning for submenus */
+		}
+
+		.menu>li>a {
+			display: block;
+			/* Ensure top-level menu items are block-level */
+			color: #ff8c00;
+			text-decoration: none;
+			padding: 0 1em;
+			line-height: 50px;
+			/* Match height of the navbar */
+		}
+
+		.menu>li>a:hover {
+			background-color: #ff8c00;
+			color: #faf0e6;
+		}
+
+		/* 子菜单样式 */
+		.submenu {
+			display: none;
+			position: absolute;
+			background-color: #faf0e6;
+			padding: 10px;
+			top: 50px;
+			left: 0;
+			z-index: 1;
+			min-width: 300px;
+			height: 500px;
+			overflow-y: auto;
+		}
+
+		.menu>li:hover .submenu {
+			display: block;
+		}
+
+		.submenu>li {
+			display: block;
+			padding: 5px;
+			margin: 10px;
+			height: 50px;
+			text-decoration: none;
+			color: #ff8c00;
+			padding: 0.5em;
+			line-height: 50px;
+		}
+
+
+
+		.submenu>li:hover {
+			background-color: #ff8c00;
+			color: #faf0e6;
+		}
+
+		/* 子菜单内的布局 */
+		.submenu div {
+			display: flex;
+			font-size: 20px;
+
+			justify-content: flex-start;
+			align-items: center;
+			float: left;
+		}
+
+		.submenu img {
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			margin-right: 10px;
+		}
+
+		.submenu span {
+			display: inline-block;
+		}
+
+		/* 其他布局部分 */
+		.header {
+			background-image: url();
+			max-width: 100%;
+			height: 420px;
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+		}
+
+		.text {
+			color: #fff;
+			background-color: #000;
+			opacity: 0.6;
+			padding: 2em;
+			text-align: center;
+		}
+
+		.content {
+			margin-top: 20px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			padding: 12px 15px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+			vertical-align: middle;
+		}
+
+		th {
+			background-color: #faf0e6;
+			color: #ff8c00;
+		}
+
+		tbody tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		tbody tr:hover {
+			background-color: #ddd;
+		}
+
+		img {
+			max-width: 100px;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+		}
+
+		/* 输入和按钮样式 */
+		input {
+			width: 150px;
+			height: 30px;
+			line-height: 25px;
+			padding: 5px 10px;
+			border-radius: 5px;
+			border: 2px solid;
+			font-size: 16px;
+		}
+
+		button {
+			width: 80px;
+			height: 44px;
+			padding: 5px 20px;
+			border-radius: 5px;
+		}
+
+		/* 聊天气泡的样式 */
+		.message {
+			padding: 10px;
+			margin-bottom: 5px;
+			border-radius: 10px;
+			max-width: 80%;
+			word-wrap: break-word;
+		}
+
+		.message-sent {
+			background-color: #d1f7c4;
+			text-align: right;
+			margin-left: auto;
+		}
+
+		.message-received {
+			background-color: #f1f1f1;
+			text-align: left;
+			margin-right: auto;
+		}
+
+		/* 聊天弹出框的样式 */
+		.chat-popup {
+			position: fixed;
+			bottom: 20px;
+			right: 100px;
+			width: 450px;
+			height: 500px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			background-color: #f9f9f9;
+			display: none;
+			flex-direction: column;
+		}
+
+		.chat-popup .chat-window {
+			flex: 1;
+			overflow-y: auto;
+			padding: 10px;
+		}
+
+		.chat-popup .chat-input {
+			display: flex;
+			padding: 10px;
+			background-color: #e0e0e0;
+		}
+
+		.chat-popup .chat-input input {
+			flex: 1;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+		}
+
+		.chat-popup .chat-input button {
+			padding: 10px 20px;
+			border-radius: 5px;
+			background-color: #0288d1;
+			color: white;
+		}
+
+		.chat-popup .chat-input button:hover {
+			background-color: #0277bd;
+		}
+
+		/* 聊天头部样式 */
+		.chat-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background-color: #f0f0f0;
+			padding: 10px;
+		}
+
+		.userPhotoElement {
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+		}
+
+		.userNameElement {
+			margin-left: 10px;
+		}
+
+		.closeButton {
+			font-size: 20px;
+			border: none;
+			background-color: transparent;
+			cursor: pointer;
+		}
+
+		.userContainer {
+			display: flex;
+			align-items: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="navbar">
+		<div class="container">
+			<div class="logo">
+				<a href="#"><i class="fa-solid fa-lines-leaning"></i>softskillz</a>
+			</div>
+
+			<ul class="menu">
+				<li><a href="/courses/course.do">課程</a></li>
+				<li><a href="#">商城</a></li>
+				<li><a href="/courseorder/order.do">訂單</a></li>
+				<li><a href="#">論壇</a></li>
+				<li><a href="#">學伴</a></li>
+				<li>
+					<a href="#">訊息</a>
+					<ul class="submenu" id="chatlist"> <!-- Submenu with vertical alignment -->
+						<li><a href="#">訊息1</a></li>
+						<li><a href="#">訊息2</a></li>
+						<li><a href="#">訊息3</a></li>
+					</ul>
+				</li>
+				<li><a href="/coursecart/Cart.do"><i class="fas fa-cart-shopping"></i></a></li>
+				<li><a href="/Logout">登出</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="header">
+		<div class="container"></div>
+	</div>
+	<section>
+		<div class="content">
+			<img src="" alt="">
+		</div>
+	</section>
+	聊天室<br /><br />
+	<input type="text" id="sendOutUser" placeholder="自己的用户名" />
+	<button onclick="connectWebSocket()">上线</button>
+	<button onclick="closeWebSocket()">下线</button>
+	<input type="text" id="receiveUser" placeholder="接收人的用户名" value="2" />
+	<button onclick="send()">发送</button>
+	<button id="toggle-chat-popup">高</button>
+	<div>訊息</div>
+	<br /><br />
+	<hr />
+	<div id="msgList"></div>
+
+	<script>
+		var websocket = null;
+		var chatPopup = null;
+		var sendOutUser = null;
+		function connectWebSocket() {
+			sendOutUser = document.getElementById("sendOutUser").value;
+
+			if (sendOutUser === "") {
+				alert("请输入用户名");
+				return;
+			}
+
+			if ('WebSocket' in window) {
+				websocket = new WebSocket("ws://localhost:8080/web-socket/" + sendOutUser);
+			} else {
+				alert("当前浏览器不支持 WebSocket");
+				return;
+			}
+
+			websocket.onerror = function () {
+				alert("连接发生错误");
+			};
+
+			websocket.onopen = function () {
+				document.getElementById("sendOutUser").readOnly = true;
+				document.getElementById("sendOutUser").style.backgroundColor = '#ddd';
+				addMessage("", "WebSocket 连接已建立", true);
+			};
+
+			websocket.onclose = function () {
+				addMessage("", "WebSocket 连接已关闭", true);
+			};
+
+			websocket.onmessage = function (event) {
+				innerdiv("", event.data)
+				if (!chatPopup) {  // 如果聊天窗口不存在
+					chatroom(1, "gege.jpg");
+					addMessageToChatWindow("接收到", event.data);
+				} else {
+					addMessageToChatWindow("接收到", event.data);
+				}
+			};
+		}
+
+		function closeWebSocket() {
+			if (websocket) {
+				websocket.close();
+			}
+		}
+
+
+		function send(msg) {
+			// var sendOutUser = document.getElementById("sendOutUser").value;
+			// var msg = document.getElementById("msg").value;
+			var receiveUser = document.getElementById("receiveUser").value;
+			console.log(sendOutUser);
+			if (msg === "") {
+				alert("请输入消息");
+				return;
+			}
+
+			var chatRoomId = generateChatRoomId(sendOutUser, receiveUser);
+			let sendTime = new Date();
+			var message = {
+				chatRoomId: chatRoomId,
+				sendOutUser: sendOutUser,
+				// receiveUser: receiveUser,
+				msg: msg,
+				sendTime: sendTime
+			};
+
+			websocket.send(JSON.stringify(message)); // 发送消息
+			innerdiv("我", msg); // 显示发送的消息
+		}
+
+		function resetUnread() {
+			unreadCount = 0; // 重置未读消息计数
+			updateUnreadCount(); // 更新按钮上的显示
+		}
+
+
+
+		function innerdiv(id, txt) {
+			var msgList = document.getElementById("msgList");
+			if (id === "") {
+				msgList.innerHTML += "<div>" + txt + "</div><br/>";
+			} else {
+				msgList.innerHTML += "<div>" + id + ": " + txt + "</div><br/>";
+			}
+		}
+
+		function generateChatRoomId(user1, user2) {
+			return user1 < user2 ? user1 + "_" + user2 : user2 + "_" + user1;
+		}
+
+
+
+		document.getElementById("toggle-chat-popup").addEventListener("click", function () {
+			if (!chatPopup) {  // 如果聊天窗口不存在
+				chatroom(2, "gege.jpg");
+			} else {
+				chatPopup.style.display = chatPopup.style.display === 'none' ? 'flex' : 'none';
+			}
+		});
+
+		function chatroom(userName, userPhotoURL) {
+			let chatPopup = document.querySelector(".chat-popup");
+
+			// 如果已有弹出框，先移除以确保不会有多余的绑定
+			if (!chatPopup) {
+
+				chatPopup = document.createElement("div");
+				chatPopup.className = "chat-popup";
+
+				// 创建顶部栏
+				var chatHeader = document.createElement("div");
+				chatHeader.className = "chat-header";
+
+				// 用户头像
+				var userPhotoElement = document.createElement("img");
+				userPhotoElement.className = "userPhotoElement"
+				userPhotoElement.src = userPhotoURL; // 用户头像链接
+
+
+				// 用户名称
+				var userNameElement = document.createElement("span"); // 用于显示用户名
+				userNameElement.className = "userNameElement";
+				userNameElement.textContent = userName;
+
+				// 关闭按钮
+				var closeButton = document.createElement("button");
+				closeButton.className = "closeButton";
+				closeButton.textContent = "×";
+
+				closeButton.addEventListener("click", function () {
+					chatPopup.remove();
+				});
+
+				// 创建一个容器来放置头像和用户名
+				var userContainer = document.createElement("div");
+				userContainer.style.display = "flex";
+				userContainer.style.alignItems = "center"; // 保持头像和用户名在一条线上
+				userContainer.appendChild(userPhotoElement);
+				userContainer.appendChild(userNameElement);
+
+				// 将用户信息和关闭按钮添加到顶部栏
+				chatHeader.appendChild(userContainer);
+				chatHeader.appendChild(closeButton);
+
+				// 创建聊天窗口
+				chatWindow = document.createElement("div");
+				chatWindow.className = "chat-window";
+
+				// 聊天输入区域
+				var chatInputContainer = document.createElement("div");
+				chatInputContainer.className = "chat-input";
+
+				var chatInput = document.createElement("input");
+				chatInput.placeholder = "输入消息...";
+				chatInput.id = "popup-chat-input";
+
+				var sendButton = document.createElement("button");
+				sendButton.textContent = "送出";
+
+				sendButton.addEventListener("click", function () {
+					var message = chatInput.value.trim();
+					if (message) {
+						var messageElement = document.createElement("div");
+						messageElement.className = "message message-sent";
+						messageElement.textContent = message;
+						chatWindow.appendChild(messageElement);
+
+						chatInput.value = '';
+						send(message);
+					}
+				});
+
+
+				chatInput.addEventListener("keypress", function (e) {
+					if (e.key === 'Enter') {
+						sendButton.click();
+					}
+				});
+
+				chatInputContainer.appendChild(chatInput);
+				chatInputContainer.appendChild(sendButton);
+
+				// 将顶部栏、聊天窗口和聊天输入区域添加到聊天框
+				chatPopup.appendChild(chatHeader); // 顶部栏
+				chatPopup.appendChild(chatWindow); // 聊天窗口
+				chatPopup.appendChild(chatInputContainer); // 聊天输入区域
+
+				document.body.appendChild(chatPopup); // 将聊天框添加到页面
+
+
+				chatPopup.style.display = 'flex'; // 显示聊天框
+			}
+		}
+
+		function createMessageElement(sender, message) {
+			var messageDiv = document.createElement("div");
+			messageDiv.className = sender === "我" ? "message message-sent" : "message message-received";
+			messageDiv.text内容 = sender + ": " + message;
+			return messageDiv;
+		}
+
+
+
+
+		function addMessageToChatWindow(sender, message) {
+			var messageDiv = document.createElement("div"); // 创建新消息元素
+
+			messageDiv.className = "message message-received"; // 设置样式
+			messageDiv.textContent = sender + ": " + message; // 设置消息内容
+
+			chatWindow.appendChild(messageDiv); // 将消息添加到聊天窗口
+			chatWindow.scrollTop = chatWindow.scrollHeight; // 滚动到最底部
+		}
+
+		fetch("/chat/" + 1)
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				}
+			}).then(data => {
+				let chatlist = document.querySelector("#chatlist");
+				chatlist.innerHTML = "";
+				console.log(data);
+				data.forEach((chat) => {
+					const li = document.createElement("li"); // 每个数据项一个 `li`
+
+					// 创建一个 flex 容器，确保图片和文本水平对齐
+					const container = document.createElement("div");
+
+
+					// 创建头像
+					const img = document.createElement("img");
+					img.src = chat.userPhoto; // 图片来源
+					img.alt = chat.userID; // 备用文本
+
+					// 创建用户ID的文本
+					const text = document.createElement("span");
+					text.textContent = chat.userID; // 设置用户ID
+
+					// 将图片和文本添加到 flex 容器
+					container.appendChild(img); // 图片在左侧
+					container.appendChild(text); // 文本在右侧
+
+					// 将 flex 容器添加到 `li`
+					li.appendChild(container);
+					li.addEventListener("click", () => {
+						chatroom(chat.userID, chat.userPhoto); // 确保事件处理函数没有修改 DOM 结构
+					});
+					chatlist.appendChild(li); // 添加到列表
+				});
+			})
+	</script>
+</body>
+
+</html>

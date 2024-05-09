@@ -1,186 +1,229 @@
 package com.softskillz.mall.model;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.softskillz.mall.serializer.ProductStockSerializer;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
+/**
+ * 商品實體類
+ */
 @Entity
 @Table(name = "product")
-@Component
-public class Product implements Serializable {
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer" })
+public class Product {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private Integer productId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")
-    private ProductCategory productCategory;
+    private Integer productId; // 商品編號
 
     @Column(name = "product_name")
-    private String productName;
+    private String productName; // 商品名稱
 
     @Column(name = "product_description")
-    private String productDescription;
+    private String productDescription; // 商品描述
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType; // 關聯的商品類型
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_status_id")
+    private ProductStatus productStatus; // 關聯的商品狀態
 
     @Column(name = "product_price")
-    private Integer productPrice;
+    private BigDecimal productPrice; // 商品價格
 
     @Column(name = "product_stock")
-//    @JsonSerialize(using = ProductStockSerializer.class)
-    private Integer productStock; // Integer 可以接受 null 值
+    @JsonSerialize(using = ProductStockSerializer.class)
+    private Integer productStock; // 商品庫存
 
     @Column(name = "product_target_audience")
-    private String productTargetAudience;
+    private String productTargetAudience; // 目標客群
 
-    @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
+    @Column(name = "product_author_name")
+    private String productAuthorName; // 作者名稱
+
+    @Column(name = "product_isbn")
+    private String productISBN; // ISBN編號
+
+    @Column(name = "product_publication_date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate productPublicationDate; // 出版日期
+
     @Column(name = "product_create_date")
-    private LocalDateTime productCreateDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime productCreateDate; // 商品創建日期
 
-    @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
     @Column(name = "product_update_date")
-    private LocalDateTime productUpdateDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime productUpdateDate; // 商品更新日期
 
-    @Column(name = "product_image_url")
-    private String productImageUrl;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon; // 關聯的優惠券
 
- // Constructor, getters and setters
-	public Product() {
-	}
-	
-	public Product(Integer productId, ProductCategory productCategory, String productName, String productDescription,
-		Integer productPrice, Integer productStock, String productTargetAudience, LocalDateTime productCreateDate,
-		LocalDateTime productUpdateDate, String productImageUrl) {
-	this.productId = productId;
-	this.productCategory = productCategory;
-	this.productName = productName;
-	this.productDescription = productDescription;
-	this.productPrice = productPrice;
-	this.productStock = productStock;
-	this.productTargetAudience = productTargetAudience;
-	this.productCreateDate = productCreateDate;
-	this.productUpdateDate = productUpdateDate;
-	this.productImageUrl = productImageUrl;
-}
+    // 無參數建構子
+    public Product() {
+    }
 
-	public Integer getProductId() {
-		return productId;
-	}
+    // 帶參數建構子
+    public Product(Integer productId, String productName, String productDescription, ProductType productType, ProductStatus productStatus, BigDecimal productPrice, Integer productStock, String productTargetAudience, String productAuthorName, String productISBN, LocalDate productPublicationDate, LocalDateTime productCreateDate, LocalDateTime productUpdateDate, Coupon coupon) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productType = productType;
+        this.productStatus = productStatus;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+        this.productTargetAudience = productTargetAudience;
+        this.productAuthorName = productAuthorName;
+        this.productISBN = productISBN;
+        this.productPublicationDate = productPublicationDate;
+        this.productCreateDate = productCreateDate;
+        this.productUpdateDate = productUpdateDate;
+        this.coupon = coupon;
+    }
 
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
+    // Getters、Setters
+    public Integer getProductId() {
+        return productId;
+    }
 
-	public ProductCategory getProductCategory() {
-		return productCategory;
-	}
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
-	public void setProductCategory(ProductCategory productCategory) {
-		this.productCategory = productCategory;
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	public String getProductName() {
-		return productName;
-	}
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
+    public String getProductDescription() {
+        return productDescription;
+    }
 
-	public String getProductDescription() {
-		return productDescription;
-	}
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
 
-	public void setProductDescription(String productDescription) {
-		this.productDescription = productDescription;
-	}
+    public ProductType getProductType() {
+        return productType;
+    }
 
-	public Integer getProductPrice() {
-		return productPrice;
-	}
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
 
-	public void setProductPrice(Integer productPrice) {
-		this.productPrice = productPrice;
-	}
+    public ProductStatus getProductStatus() {
+        return productStatus;
+    }
 
-	public Integer getProductStock() {
-		return productStock;
-	}
+    public void setProductStatus(ProductStatus productStatus) {
+        this.productStatus = productStatus;
+    }
 
-	public void setProductStock(Integer productStock) {
-		this.productStock = productStock;
-	}
+    public BigDecimal getProductPrice() {
+        return productPrice;
+    }
 
-	public String getProductTargetAudience() {
-		return productTargetAudience;
-	}
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
+    }
 
-	public void setProductTargetAudience(String productTargetAudience) {
-		this.productTargetAudience = productTargetAudience;
-	}
+    public Integer getProductStock() {
+        return productStock;
+    }
 
-	public LocalDateTime getProductCreateDate() {
-		return productCreateDate;
-	}
+    public void setProductStock(Integer productStock) {
+        this.productStock = productStock;
+    }
 
-	public void setProductCreateDate(LocalDateTime productCreateDate) {
-		this.productCreateDate = productCreateDate;
-	}
+    public String getProductTargetAudience() {
+        return productTargetAudience;
+    }
 
-	public LocalDateTime getProductUpdateDate() {
-		return productUpdateDate;
-	}
+    public void setProductTargetAudience(String productTargetAudience) {
+        this.productTargetAudience = productTargetAudience;
+    }
 
-	public void setProductUpdateDate(LocalDateTime productUpdateDate) {
-		this.productUpdateDate = productUpdateDate;
-	}
+    public String getProductAuthorName() {
+        return productAuthorName;
+    }
 
-	public String getProductImageUrl() {
-		return productImageUrl;
-	}
+    public void setProductAuthorName(String productAuthorName) {
+        this.productAuthorName = productAuthorName;
+    }
 
-	public void setProductImageUrl(String productImageUrl) {
-		this.productImageUrl = productImageUrl;
-	}
-	
-	
-	// toString
-	@Override
-	public String toString() {
-		return "Product [productId=" + productId + ", productCategory=" + productCategory + ", productName="
-				+ productName + ", productDescription=" + productDescription + ", productPrice=" + productPrice
-				+ ", productStock=" + productStock + ", productTargetAudience=" + productTargetAudience
-				+ ", productCreateDate=" + productCreateDate + ", productUpdateDate=" + productUpdateDate
-				+ ", productImageUrl=" + productImageUrl + "]";
-	}
-	
-	public String getFormattedProductStock() {
-        return productStock == null ? "無限" : productStock.toString();
+    public String getProductISBN() {
+        return productISBN;
+    }
+
+    public void setProductISBN(String productISBN) {
+        this.productISBN = productISBN;
+    }
+
+    public LocalDate getProductPublicationDate() {
+        return productPublicationDate;
+    }
+
+    public void setProductPublicationDate(LocalDate productPublicationDate) {
+        this.productPublicationDate = productPublicationDate;
+    }
+
+    public LocalDateTime getProductCreateDate() {
+        return productCreateDate;
+    }
+
+    public void setProductCreateDate(LocalDateTime productCreateDate) {
+        this.productCreateDate = productCreateDate;
+    }
+
+    public LocalDateTime getProductUpdateDate() {
+        return productUpdateDate;
+    }
+
+    public void setProductUpdateDate(LocalDateTime productUpdateDate) {
+        this.productUpdateDate = productUpdateDate;
+    }
+
+    public Coupon getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
+    }
+
+    // toString方法
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", productType=" + productType +
+                ", productStatus=" + productStatus +
+                ", productPrice=" + productPrice +
+                ", productStock=" + productStock +
+                ", productTargetAudience='" + productTargetAudience + '\'' +
+                ", productAuthorName='" + productAuthorName + '\'' +
+                ", productISBN='" + productISBN + '\'' +
+                ", productPublicationDate=" + productPublicationDate +
+                ", productCreateDate=" + productCreateDate +
+                ", productUpdateDate=" + productUpdateDate +
+                ", coupon=" + coupon +
+                '}';
     }
 }

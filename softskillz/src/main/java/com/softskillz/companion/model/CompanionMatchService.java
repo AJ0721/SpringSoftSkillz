@@ -32,10 +32,18 @@ public class CompanionMatchService {
 		return null;
 	}
 	
+	public List<CompanionMatchBean> getByMatchRequest(String matchRequest) {
+		return companionMatchRepos.findByMatchRequest(matchRequest);
+	}
+	
 //	public List<CompanionMatchBean> getByStudentAId(Integer studentAId) {
 //		return companionMatchRepos.findByStudentAId(studentAId);
 //}
 	public List<CompanionMatchBean> getByStudentAId(CompanionBean companionAId) {
 		return companionMatchRepos.findByCompanionAId(companionAId);
+	}
+	
+	public List<CompanionBean> findByIHaveMetCompanion(String studentNickname) {
+		return companionMatchRepos.findByIHaveMetCompanion(studentNickname);
 	}
 }

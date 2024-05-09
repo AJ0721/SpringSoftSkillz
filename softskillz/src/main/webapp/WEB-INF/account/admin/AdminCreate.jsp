@@ -6,13 +6,12 @@
 
 <head>
 <meta charset="UTF-8">
-<title>新增管理員</title>
+<title>管理員註冊</title>
 </head>
 
 <body style="background-color: #white">
-<jsp:include page="/WEB-INF/account/homepage/BackendPage.jsp" />
 	<div align="center">
-		<h3>新增管理員帳號</h3>
+		<h3>管理員帳號註冊</h3>
 		<form method="post" action="/admin/admin-create">
 			<table>
 				<tr>

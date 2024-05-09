@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>學伴資料</title>
+<title>你已送出申請的學伴資料</title>
 <style>
 #img{
 width: 170px;
@@ -94,7 +94,7 @@ tr:hover {
 </head>
 <body style="background-color:#fdf5e6">
 <div align="center">
-<h2>學伴資料</h2>
+<h2>你已送出申請的學伴資料</h2>
 <%-- <% SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS");%> --%>
 <%-- <% SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");%> --%>
 <table border="1">
@@ -107,8 +107,8 @@ for(CompanionMatchBean companionMatch: companionMatches){ %>
 <tr><td><%= companionMatch.getCompanionAId().getCompanionId() %>
 <td><%= companionMatch.getCompanionBId().getCompanionId() %>
 
-<td><%= companion.getStudentBeanID().getStudentNickname() %>
-<td><%= companion.getStudentBeanID().getStudentGender() %>
+<td><%= companionMatch.getCompanionBId().getStudentBeanID().getStudentNickname() %>
+<td><%= companionMatch.getCompanionBId().getStudentBeanID().getStudentGender() %>
 <%-- <tr><td>學伴生日<td><input class="birth" type="text" disabled value="<%= outputFormat.format(inputFormat.parse(companion.getCompanionBirth()))%>"> --%>
 <td><%= companionMatch.getCompanionBId().getCompanionFirstLanguage() %>
 <td><%= companionMatch.getCompanionBId().getCompanionSpeakingLanguage() %>
@@ -127,7 +127,7 @@ for(CompanionMatchBean companionMatch: companionMatches){ %>
 <script>
 const index = document.querySelector('.index')
 index.addEventListener('click', function() {
-	location.href = "/index.html"})
+	location.href = "/companionIndex.html"})
 </script>
 </body>
 </html>

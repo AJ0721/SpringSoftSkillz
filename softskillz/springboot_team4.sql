@@ -15,7 +15,7 @@ CREATE TABLE student (
   student_first_name NVARCHAR(50) NOT NULL,
   student_last_name NVARCHAR(50) NOT NULL,
   student_username VARCHAR(50) UNIQUE NOT NULL,
-  student_nickname NVARCHAR(50) UNIQUE,
+  student_nickname NVARCHAR(50) null,
   student_registration_date DATETIME2 DEFAULT GETDATE(),
   student_gender NVARCHAR(30) CHECK (student_gender IN ('Male', 'Female', 'Unspecified')) NOT NULL,
   student_birth DATETIME2 NOT NULL,
@@ -88,6 +88,8 @@ VALUES
     (2, '基礎化學', '打好化學基礎', '化學', 2000),
     (3, '進階Java', '從入門到放棄','Java', 3000);
 
+SELECT * FROM course;
+
 -- 教師開課課程行事曆資料表(一天一筆資料=一個日期對應一個開課時段)
 CREATE TABLE teacher_schedule
 (
@@ -106,16 +108,12 @@ CREATE TABLE teacher_schedule
 INSERT INTO teacher_schedule
     (teacher_id, course_date, teacher_time_slots)
 VALUES
-    (1, '2024-04-19', '000000000011111000000000'),
-    (2, '2024-04-20', '000000011000011000000000'),
-    (3, '2024-04-21', '000000000000001111000000');
+    (1, '2024-06-01', '000000000011111000000000'),
+    (2, '2024-06-02', '000000011000011000000000'),
+    (3, '2024-06-03', '000000000000001111000000');
 
-INSERT INTO teacher_schedule
-    (teacher_id, course_date, teacher_time_slots)
-VALUES
-    (1, '2024-04-19', '000000000011111000000000'),
-    (2, '2024-04-20', '000000011000011000000000'),
-    (3, '2024-04-21', '000000000000001111000000');
+SELECT * FROM teacher_schedule;
+DROP TABLE teacher_schedule;
 
 -- 學生預約單一課程之時段的資料表(一個課程一個預約資料、一個日期可能多筆訂單資料)
 CREATE TABLE student_reservation
@@ -142,6 +140,9 @@ VALUES
     (2, 2, '2024-01-21', 2, '000000000000000100000000', 1),
     (3, 3, '2024-01-22', 3, '000000000000000000011000', 2);
 
+SELECT * FROM student_reservation;
+DROP TABLE student_reservation;
+
 -- 學生行事曆資料表(選完課之後呈現的不同課程時段集合資料表)
 -- 同一個上課日期可能有不同課程
 -- 一個日期一筆資料
@@ -162,6 +163,8 @@ INSERT INTO student_schedule
 VALUES
     (1, '2024-05-01', '0-0-0-0-0-0-0-0-0-0-0-0-2-2-4-4-0-0-0-0-0-0-0-0'),
     (2, '2024-05-02', '0-0-0-0-0-0-0-0-0-0-0-0-3-3-0-0-0-0-0-0-0-0-0-0');
+
+SELECT * FROM student_schedule;
 
 --課程訂單
 CREATE TABLE corder(
@@ -215,65 +218,85 @@ INSERT INTO coursediscount VALUES(20,'15%off',85,'1970-01-01','2050-01-01');
 SELECT * FROM coursediscount;
 
 
+--教師學生聊天室
+create table coursechatroom(
+chatroom_id nvarchar(100) NOT NULL primary key,
+senduser nvarchar(50) NOT NULL,
+receiveuser nvarchar(50) NOT NULL,
+lasttime DATETIME2(3) not null
+)
+
+--教師學生聊天紀錄
+CREATE TABLE coursechat(
+id INT IDENTITY(1,1) NOT NULL primary key,
+chatroom_id nvarchar(100) NOT NULL,
+senduser nvarchar(50) NOT NULL,
+msg nvarchar(max)  not null,
+sendtime DATETIME2(3) not null
+)
+
+
+
+
 
 
 
 
 --商城
--- 商品狀態表
+-- 建立商品狀態表
 CREATE TABLE product_status (
-    product_status_id INT IDENTITY(1,1), -- 商品狀態編號(自增)
+    product_status_id INT NOT NULL, -- 商品狀態編號(手動指定)
     product_status_name NVARCHAR(50) NOT NULL, -- 商品狀態名稱
-    CONSTRAINT PK_product_status PRIMARY KEY (product_status_id), -- 主鍵
-    CONSTRAINT UQ_product_status_name UNIQUE (product_status_name) -- 商品狀態名稱唯一性約束
+    CONSTRAINT PK_product_status PRIMARY KEY (product_status_id),
+    CONSTRAINT UQ_product_status_name UNIQUE (product_status_name)
 );
 
- -- 插入商品狀態
-INSERT INTO product_status (product_status_name)
+-- 插入商品狀態數據
+INSERT INTO product_status (product_status_id, product_status_name)
 VALUES
-    ('未指定'),
-    ('已上架'),
-    ('已下架'),
-    ('預購中'),
-    ('售罄'),
-    ('暫停銷售'),
-    ('待補貨'),
-    ('補貨中'),
-    ('促銷中'),
-    ('特價中'),
-    ('限量供應');
+    (1, '未指定'),
+    (2, '已上架'),
+    (3, '已下架'),
+    (4, '預購中'),
+    (5, '促銷中'),
+    (6, '特價中'),
+    (7, '限量供應'),
+    (8, '補貨中'),
+    (9, '待補貨'),
+    (10, '售罄'),
+    (11, '暫停銷售');
 
--- 商品類型表
+-- 建立商品類型表
 CREATE TABLE product_type (
-    product_type_id INT IDENTITY(1,1), -- 商品類型編號(自增)
+    product_type_id INT NOT NULL, -- 商品類型編號(手動指定)
     product_type_name NVARCHAR(100) NOT NULL, -- 商品類型名稱
     product_type_description NVARCHAR(255), -- 商品類型描述
-    CONSTRAINT PK_product_type PRIMARY KEY (product_type_id), -- 主鍵
-    CONSTRAINT UQ_product_type_name UNIQUE (product_type_name) -- 商品類型名稱唯一性約束
+    CONSTRAINT PK_product_type PRIMARY KEY (product_type_id),
+    CONSTRAINT UQ_product_type_name UNIQUE (product_type_name)
 );
 
- -- 插入商品類型
-INSERT INTO product_type (product_type_name, product_type_description)
+-- 插入商品類型數據
+INSERT INTO product_type (product_type_id, product_type_name, product_type_description)
 VALUES
-    ('周邊商品', '與學習相關的周邊商品，旨在提升學習效率和學習體驗'),
-    ('教材影片', '提供各類教育影片，包括語言學習、專業科目深入講解、音樂教學、運動指導及生活技能等'),
-    ('實體教材', '精選實體書籍和教材，涵蓋多個學習領域的基礎與進階知識');
+    (1, '周邊商品', '與學習相關的周邊商品，旨在提升學習效率和學習體驗'),
+    (2, '教材影片', '提供各類教育影片，包括語言學習、專業科目深入講解、音樂教學、運動指導及生活技能等'),
+    (3, '實體教材', '精選實體書籍和教材，涵蓋多個學習領域的基礎與進階知識');
 
--- 優惠券類型表
+-- 建立優惠券類型表
 CREATE TABLE coupon_type (
-    coupon_type_id INT IDENTITY(1,1), -- 優惠券類型編號(自增)
+    coupon_type_id INT NOT NULL, -- 優惠券類型編號(手動指定)
     coupon_type_name NVARCHAR(50) NOT NULL, -- 優惠券類型名稱
-    CONSTRAINT PK_coupon_type PRIMARY KEY (coupon_type_id) -- 主鍵
+    CONSTRAINT PK_coupon_type PRIMARY KEY (coupon_type_id)
 );
 
- -- 插入優惠券類型
-INSERT INTO coupon_type (coupon_type_name)
+-- 插入優惠券類型數據
+INSERT INTO coupon_type (coupon_type_id, coupon_type_name)
 VALUES
-    ('折扣'),
-    ('滿額減免'),
-    ('買一送一');
+    (1, '折扣'),
+    (2, '滿額減免'),
+    (3, '買一送一');
 
--- 優惠券表
+-- 建立優惠券表
 CREATE TABLE coupon (
     coupon_id INT IDENTITY(1,1), -- 優惠券編號(自增)
     coupon_code NVARCHAR(50) NOT NULL UNIQUE, -- 優惠券代碼，獨特且不為空
@@ -286,16 +309,16 @@ CREATE TABLE coupon (
     coupon_get_quantity INT NOT NULL DEFAULT 0, -- 贈送數量，預設為0
     coupon_start_date DATETIME2(0) NOT NULL, -- 優惠券開始日期
     coupon_end_date DATETIME2(0), -- 優惠券結束日期
-    CONSTRAINT PK_coupon PRIMARY KEY (coupon_id), -- 主鍵
-    CONSTRAINT FK_coupon_coupon_type FOREIGN KEY (coupon_type_id) REFERENCES coupon_type(coupon_type_id), -- 外鍵，參考優惠券類型表
-    CONSTRAINT CHK_coupon_amount CHECK (coupon_amount >= 0), -- 優惠金額不得為負
-    CONSTRAINT CHK_coupon_rate CHECK (coupon_rate >= 0 AND coupon_rate <= 1), -- 優惠折扣率在0到1之間
-    CONSTRAINT CHK_coupon_buy_quantity CHECK (coupon_buy_quantity >= 0), -- 購買數量條件不得為負
-    CONSTRAINT CHK_coupon_get_quantity CHECK (coupon_get_quantity >= 0), -- 贈送數量不得為負
-    CONSTRAINT CHK_coupon_date CHECK (coupon_end_date >= coupon_start_date) -- 結束日期必須大於等於開始日期
+    CONSTRAINT PK_coupon PRIMARY KEY (coupon_id),
+    CONSTRAINT FK_coupon_coupon_type FOREIGN KEY (coupon_type_id) REFERENCES coupon_type(coupon_type_id),
+    CONSTRAINT CHK_coupon_amount CHECK (coupon_amount >= 0),
+    CONSTRAINT CHK_coupon_rate CHECK (coupon_rate >= 0 AND coupon_rate <= 1),
+    CONSTRAINT CHK_coupon_buy_quantity CHECK (coupon_buy_quantity >= 0),
+    CONSTRAINT CHK_coupon_get_quantity CHECK (coupon_get_quantity >= 0),
+    CONSTRAINT CHK_coupon_date CHECK (coupon_end_date >= coupon_start_date OR coupon_end_date IS NULL)
 );
 
- -- 插入優惠券
+-- 插入優惠券數據
 INSERT INTO coupon (coupon_code, coupon_name, coupon_description, coupon_type_id, coupon_amount, coupon_rate, coupon_buy_quantity, coupon_get_quantity, coupon_start_date, coupon_end_date)
 VALUES 
 	('1B817AD5', '新用戶折扣', '新註冊用戶專享折扣10%', 1, 0, 0.10, 0, 0, '2024-01-01', '2024-12-31'),
@@ -312,162 +335,161 @@ VALUES
     ('5E60B6B0', '年終回饋', '年底購物滿2000減200', 2, 200, 0, 2000, 0, '2024-12-01', '2024-12-31'),
     ('EBB8878E', '新年快樂購', '新年期間購物享受一次性折扣20%', 1, 0, 0.20, 0, 0, '2024-01-01', '2024-01-31');
 
--- 商品表
+-- 建立商品表
 CREATE TABLE product (
     product_id INT IDENTITY(1,1), -- 商品編號(自增)
     product_name NVARCHAR(100) NOT NULL, -- 商品名稱
     product_description NVARCHAR(255), -- 商品描述
-    product_type_id INT NOT NULL, -- 商品分類編號(外鍵)
+    product_type_id INT NOT NULL, -- 商品類型編號(外鍵)
     product_status_id INT NOT NULL DEFAULT 1, -- 商品狀態編號(外鍵)
     product_price DECIMAL(10,2) NOT NULL, -- 商品價格
-    product_stock INT DEFAULT 0, -- 商品庫存，預設為0
-    product_target_audience NVARCHAR(50) NOT NULL DEFAULT '初學者', -- 目標客群，預設為"初學者"
+    product_stock INT, -- 商品庫存，NULL表示無限
+    product_target_audience NVARCHAR(50) DEFAULT '初學者', -- 目標客群，預設為"初學者"
     product_author_name NVARCHAR(100) NULL, -- 作者名稱
     product_isbn NVARCHAR(20) NULL, -- ISBN編號
     product_publication_date DATE NULL, -- 出版日期
-    product_create_date DATETIME2(0) NULL, -- 商品建立日期，預設為空值
-    product_update_date DATETIME2(0) NULL, -- 商品更新日期，預設為空值
+    product_create_date DATETIME2(0) NULL, -- 商品建立日期
+    product_update_date DATETIME2(0) NULL, -- 商品更新日期
     coupon_id INT NULL, -- 優惠券編號(外鍵，商品可能沒有任何促銷活動)
-    CONSTRAINT PK_product PRIMARY KEY (product_id), -- 主鍵
-    CONSTRAINT FK_product_product_type FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id), -- 外鍵，參考商品類型表
-    CONSTRAINT FK_product_status FOREIGN KEY (product_status_id) REFERENCES product_status(product_status_id), -- 外鍵，參考商品狀態表
-    CONSTRAINT FK_product_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id), -- 外鍵，參考優惠券表
-    CONSTRAINT CHK_product_price CHECK (product_price >= 0), -- 商品價格不得為負
-    CONSTRAINT CHK_product_stock CHECK (product_stock >= 0), -- 商品庫存不得為負
+    CONSTRAINT PK_product PRIMARY KEY (product_id),
+    CONSTRAINT FK_product_product_type FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id),
+    CONSTRAINT FK_product_status FOREIGN KEY (product_status_id) REFERENCES product_status(product_status_id),
+    CONSTRAINT FK_product_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id),
+    CONSTRAINT CHK_product_price CHECK (product_price >= 0),
+    CONSTRAINT CHK_product_stock CHECK (product_stock >= 0 OR product_stock IS NULL),
     CONSTRAINT CHK_product_physical_material CHECK (
         (product_type_id != 3 OR (product_author_name IS NOT NULL AND product_isbn IS NOT NULL AND product_publication_date IS NOT NULL))
-    ) -- 只有當商品類型為實體教材時，作者名稱、ISBN和出版日期才必需填寫
+    )
 );
 
--- 插入商品
-INSERT INTO product (product_name, product_description, product_author_name, product_isbn, product_publication_date, product_status_id, product_target_audience, product_price, product_stock, product_create_date, product_update_date, product_type_id, coupon_id)
-VALUES 
-    ('初學者日語', '針對初學者設計的日語教學書', '田中太郎', '978-4-123456-78-9', '2023-03-01', 2, '初學者', 313, 100, '2024-01-01 01:00:00', '2024-02-27 15:24:31', 3, NULL),
-    ('高級日語會話', '適合有基礎的學習者提升會話能力', '山田花子', '978-4-876543-21-6', '2023-05-01', 2, '進階學習者', 349, 50, '2024-01-11 05:21:45', '2024-04-24 12:07:28', 3, 1),
-    ('學習用筆記本', '專為語言學習者設計的筆記本', NULL, NULL, NULL, 6, '所有學習者', 52, 200, '2024-02-13 14:55:20', '2024-05-20 17:20:31', 1, NULL),
-    ('基礎物理教學', '針對高中生設計的物理基礎教學影片', NULL, NULL, NULL, 5, '高中生', 150, 50, '2024-02-15 10:00:00', '2024-02-27 12:30:20', 2, NULL),
-    ('進階程式設計', '包含多種程式語言的進階教學影片', NULL, NULL, NULL, 3, '進階學習者', 300, 50, '2024-03-01 11:00:00', '2024-03-10 16:45:31', 2, NULL),
-    ('英語會話實戰', '針對即將出國的學習者，提供實戰英語會話練習', NULL, NULL, NULL, 7, '即將出國學習者', 200, 50, '2024-01-20 08:20:00', '2024-02-11 13:11:45', 2, 3),
-    ('數學解題技巧', '包含高中數學所有重要考點的解題技巧', NULL, NULL, NULL, 8, '高中生', 180, 75, '2024-01-25 09:30:00', '2024-02-15 11:40:30', 2, NULL),
-    ('化學元素深度解析', '深入解析化學元素及其反應', NULL, NULL, NULL, 4, '大學生', 220, 30, '2024-03-05 14:00:00', '2024-03-25 18:05:00', 2, NULL),
-    ('瑜伽初學指南', '從基礎到進階的瑜伽動作教學', NULL, NULL, NULL, 9, '健身愛好者', 120, 40, '2024-02-12 17:00:00', '2024-03-02 19:24:50', 2, 2),
-    ('古典音樂欣賞與分析', '深入了解古典音樂的歷史和風格', NULL, NULL, NULL, 1, '音樂愛好者', 170, 60, '2024-02-18 12:30:00', '2024-03-05 20:00:00', 2, NULL),
-    ('學習型耳機', '特製降噪功能，適合在嘈雜環境中學習使用', NULL, NULL, NULL, 10, '學生及上班族', 99, 150, '2024-03-03 11:30:00', '2024-04-15 14:20:31', 1, NULL),
-    ('便攜式書燈', '便於攜帶，適合夜晚閱讀使用的LED書燈', NULL, NULL, NULL, 11, '所有讀者', 210, 200, '2024-03-01 13:00:00', '2024-04-01 17:25:28', 1, 3),
-    ('高級數學解析', '提供大學數學和工程數學的深入教材', '劉偉', '978-3-456789-01-2', '2023-10-15', 2, '大學生', 250, 60, '2024-01-15 09:00:00', '2024-02-18 16:30:20', 3, NULL),
-    ('現代物理學入門', '現代物理的基礎知識和理論介紹', '陳大明', '978-2-987654-32-1', '2023-11-01', 2, '大學生', 299, 40, '2024-01-12 10:00:00', '2024-03-01 12:45:00', 3, NULL),
-    ('高效學習手冊', '為高效學習提供指導和技巧', NULL, NULL, NULL, 3, '大學生及自學者', 150, 80, '2024-02-20 09:15:00', '2024-03-30 14:15:00', 1, 2),
-    ('進階化學實驗', '包含多項化學實驗操作和理論解釋', NULL, NULL, NULL, 9, '高中生及大學生', 280, 60, '2024-03-10 10:20:00', '2024-04-15 13:30:00', 2, NULL),
-    ('生物學基礎', '深入淺出地介紹生物學基礎知識', '王小明', '978-3-654321-00-1', '2023-08-15', 4, '高中生及大學初學者', 190, 45, '2024-03-05 09:00:00', '2024-03-25 11:30:00', 3, 3),
-    ('數位攝影入門', '從基礎到進階的數位攝影技巧教學', NULL, NULL, NULL, 6, '攝影愛好者', 320, 30, '2024-01-25 16:00:00', '2024-02-19 14:50:00', 2, 1),
-    ('圍棋教學初階', '圍棋基礎規則和策略介紹', NULL, NULL, NULL, 7, '圍棋初學者', 110, 100, '2024-03-15 15:00:00', '2024-03-20 12:20:00', 2, NULL),
-    ('法語入門教程', '全面系統的法語初學者入門指南', '李明', '978-4-987654-32-9', '2023-12-01', 2, '語言學習者', 225, 50, '2024-02-28 08:00:00', '2024-03-15 13:00:00', 3, 1),
-    ('程式設計精解', '深入淺出的程式設計學習書籍', '張華', '978-2-123456-78-0', '2023-09-01', 8, '初學者至進階程式設計師', 255, 75, '2024-01-18 09:30:00', '2024-02-18 16:30:00', 3, NULL),
-    ('經濟學人必讀', '涵蓋當前經濟學重要理論與案例分析', '周星', '978-1-876543-21-0', '2023-10-20', 5, '經濟學學生及專業人士', 330, 40, '2024-03-12 11:45:00', '2024-04-10 15:50:00', 3, 2),
-    ('當代世界歷史', '詳細介紹從二十世紀至今的世界大事', '黃建', '978-0-123456-89-7', '2023-07-01', 10, '歷史愛好者及學生', 275, 60, '2024-02-01 14:00:00', '2024-03-01 17:00:00', 3, NULL),
-    ('心理學與生活', '探討心理學在日常生活中的應用', '吳心', '978-5-678901-23-4', '2023-06-01', 1, '心理學學生及普通讀者', 215, 85, '2024-01-02 12:00:00', '2024-01-31 18:30:00', 3, NULL),
-    ('創意繪畫技巧', '提升繪畫技能與創作靈感的實用指南', NULL, NULL, NULL, 11, '藝術學生及愛好者', 145, 95, '2024-02-15 17:15:00', '2024-02-28 19:45:00', 2, 3),
-    ('機器學習實戰', '介紹機器學習項目實施的步驟和技術', NULL, NULL, NULL, 4, '數據科學家及工程師', 350, 40, '2024-03-07 10:30:00', '2024-04-05 16:00:00', 2, NULL),
-    ('園藝基礎知識', '全面系統的家庭園藝指南', NULL, NULL, NULL, 9, '家庭主婦及園藝愛好者', 190, 100, '2024-03-20 15:00:00', '2024-04-18 11:20:00', 1, 2),
-    ('基礎機械工程', '介紹機械工程的基礎理論與應用', '劉剛', '978-6-543210-98-7', '2023-11-10', 7, '工程學生及專業工程師', 320, 55, '2024-02-10 13:00:00', '2024-03-10 14:40:00', 3, 1),
-    ('初級會計學', '為初學者提供會計基礎知識與實踐', '陳莉', '978-7-654321-09-4', '2023-04-01', 8, '商業學生及初創企業', 165, 70, '2024-03-01 08:30:00', '2024-03-31 12:15:00', 3, NULL),
-    ('進階網頁設計', '教授HTML、CSS及JavaScript進階技術', NULL, NULL, NULL, 2, '網頁設計師及開發者', 280, 45, '2024-02-05 10:00:00', '2024-02-25 15:20:00', 2, 2);
+-- 插入商品數據
+INSERT INTO product (product_name, product_description, product_type_id, product_status_id, product_price, product_stock, product_target_audience, product_author_name, product_isbn, product_publication_date, product_create_date, product_update_date, coupon_id)
+VALUES
+	('學習小夥伴筆記本', '精緻設計的筆記本，伴隨您學習之路', 1, 2, 599.00, 100, '學生', NULL, NULL, NULL, '2024-03-03T11:30:00Z', '2024-04-15T14:20:31Z', NULL),
+	('靜心瑜珈墊', '優質材質、防滑設計，適合居家健身', 1, 3, 849.00, 25, '瑜珈愛好者', NULL, NULL, NULL, '2024-03-01T13:00:00Z', '2024-04-01T17:25:28Z', NULL),
+	('智能記憶手環', '記錄學習數據、提醒作息時間', 1, 2, 1077.00, 49, '學生', NULL, NULL, NULL, '2024-02-20T09:15:00Z', '2024-03-30T14:15:00Z', NULL),
+	('多功能學習燈', '可調節亮度和色溫，保護眼睛', 1, 2, 789.00, 31, '學生', NULL, NULL, NULL, '2024-03-20T15:00:00Z', '2024-04-18T11:20:00Z', NULL),
+	('耳機收納盒', '隨身攜帶、防止線纏繞', 1, 10, 149.00, 0, '音樂愛好者', NULL, NULL, NULL, '2024-02-15T10:00:00Z', '2024-02-27T12:30:20Z', NULL),
+	('時尚書包', '舒適設計、多層空間收納', 1, 2, 1299.00, 79, '學生', NULL, NULL, NULL, '2024-03-01T11:00:00Z', '2024-03-10T16:45:31Z', NULL),
+	('滑鼠墊', '人體工學造型，減輕手腕壓力', 1, 3, 299.00, 64, '上班族', NULL, NULL, NULL, '2024-01-20T08:20:00Z', '2024-02-11T13:11:45Z', NULL),
+	('書夾文件夾', '多種顏色可選，方便攜帶', 1, 2, 199.00, 134, '學生', NULL, NULL, NULL, '2024-01-25T09:30:00Z', '2024-02-15T11:40:30Z', NULL),
+	('學習小夥伴水壺', '環保材質、輕巧便攜', 1, 3, 499.00, 19, '學生', NULL, NULL, NULL, '2024-03-05T14:00:00Z', '2024-03-25T18:05:00Z', NULL),
+	('靜音鍵盤', '人體工學設計，提升打字效率', 1, 2, 899.00, 49, '上班族', NULL, NULL, NULL, '2024-02-12T17:00:00Z', '2024-03-02T19:24:50Z', NULL),
+	('英語口語入門課程', '從頭學起，掌握日常對話技巧', 2, 3, 499.00, NULL, '英語初學者', NULL, NULL, NULL, '2024-02-18T12:30:00Z', '2024-03-05T20:00:00Z', NULL),
+	('Python程式設計基礎', '輕鬆入門，打好編程基礎', 2, 2, 679.00, NULL, '程式設計初學者', NULL, NULL, NULL, '2024-03-10T10:20:00Z', '2024-04-15T13:30:00Z', NULL),
+	('吉他自學超級秘笈', '各種技巧教學，打造專業吉他手', 2, 3, 1247.00, NULL, '吉他愛好者', NULL, NULL, NULL, '2024-01-25T16:00:00Z', '2024-02-19T14:50:00Z', NULL),
+	('初級瑜珈教學', '25堂課程，在家輕鬆練瑜珈', 2, 2, 1369.00, NULL, '瑜珈初學者', NULL, NULL, NULL, '2024-03-15T15:00:00Z', '2024-03-20T12:20:00Z', NULL),
+	('數學奧秘大揭祕', '啟發數學思維，培養解題能力', 2, 2, 1099.00, NULL, '中小學生', NULL, NULL, NULL, '2024-02-15T17:15:00Z', '2024-02-28T19:45:00Z', NULL),
+	('烹飪大師傳授', '名廚教你煮出美味佳餚', 2, 2, 1399.00, NULL, '烹飪愛好者', NULL, NULL, NULL, '2024-03-07T10:30:00Z', '2024-04-05T16:00:00Z', NULL),
+	('鋼琴入門自學課程', '循序漸進，掌握琴鍵樂理', 2, 3, 1599.00, NULL, '鋼琴初學者', NULL, NULL, NULL, '2024-02-05T10:00:00Z', '2024-02-25T15:20:00Z', NULL),
+	('素描寫生秘笈', '精煉技法，呈現生動畫作', 2, 3, 899.00, NULL, '繪畫愛好者', NULL, NULL, NULL, '2024-01-15T09:00:00Z', '2024-02-18T16:30:20Z', NULL),
+	('手工藝術製作課程', '多種材料應用，挖掘創意才能', 2, 2, 999.00, NULL, '手工藝愛好者', NULL, NULL, NULL, '2024-01-12T10:00:00Z', '2024-03-01T12:45:00Z', NULL),
+	('家庭理財規劃', '理財投資一把罩', 2, 2, 1199.00, NULL, '理財小白', NULL, NULL, NULL, '2024-03-05T09:00:00Z', '2024-03-25T11:30:00Z', NULL),
+	('Python程式設計詳解', '從基礎到進階，實例演練', 3, 3, 1299.00, 50, '程式設計學習者', '王小明', '978-3-654321-00-1', '2023-08-15', '2024-02-28T08:00:00Z', '2024-03-15T13:00:00Z', NULL),
+	('西班牙語口語入門', '生活實用對話，掌握語言規則', 3, 3, 659.00, 100, '西語初學者', '李雅婷', '978-3-654321-00-2', '2023-10-01', '2024-01-18T09:30:00Z', '2024-02-18T16:30:00Z', NULL),
+	('大學數學教程', '概念原理一目了然，題解深入淺出', 3, 2, 355.00, 80, '大學生', '陳建宏', '978-3-654321-00-3', '2023-09-20', '2024-03-12T11:45:00Z', '2024-04-10T15:50:00Z', NULL),
+	('旅遊英語會話手冊', '旅行途中不用怕，隨時說英語', 3, 2, 479.00, 150, '旅遊愛好者', '林美玲', '978-3-654321-00-4', '2023-11-15', '2024-02-01T14:00:00Z', '2024-02-28T18:30:00Z', NULL),
+	('高級微積分教程', '深入淺出的微積分學習資源', 3, 2, 659.00, 60, '大學生', '張立', '978-3-654321-00-5', '2023-09-01', '2024-03-20T08:00:00Z', '2024-04-01T10:00:00Z', NULL),
+	('商業法律基礎', '涵蓋商業法律的基本概念和實務應用', 3, 3, 738.00, 70, '商業學生', '劉嘉雯', '978-3-654321-00-6', '2023-10-10', '2024-03-15T09:00:00Z', '2024-04-05T14:00:00Z', NULL),
+	('基礎統計學', '統計學的基礎理論及其應用', 3, 2, 538.00, 85, '統計學學生', '黃薇', '978-3-654321-00-7', '2023-08-20', '2024-02-25T12:00:00Z', '2024-03-20T15:30:00Z', NULL),
+	('計算機結構導論', '介紹計算機硬件結構的基礎知識', 3, 2, 671.00, 55, '資訊科技學生', '王大明', '978-3-654321-00-8', '2023-11-01', '2024-03-10T11:00:00Z', '2024-03-30T17:00:00Z', NULL),
+	('現代物理入門', '探索現代物理的基本概念和發展', 3, 3, 367.00, 45, '物理學學生', '李思', '978-3-654321-00-9', '2023-12-15', '2024-03-05T10:00:00Z', '2024-03-25T13:20:00Z', NULL),
+	('生物化學基礎', '生物化學的基本原理及其在生命科學中的應用', 3, 2, 457.00, 75, '生物科學學生', '趙雯', '978-3-654321-01-0', '2023-10-20', '2024-02-28T09:00:00Z', '2024-03-18T16:10:00Z', NULL);
 
--- 商品圖片表
+-- 建立商品圖片表
 CREATE TABLE product_image (
     product_image_id INT IDENTITY(1,1), -- 商品圖片編號(自增)
     product_image_url NVARCHAR(255) NOT NULL, -- 商品圖片URL
-    product_id INT NOT NULL, --商品編號(外鍵)
-    CONSTRAINT PK_product_image PRIMARY KEY (product_image_id), -- 主鍵
-    CONSTRAINT FK_product_image_product FOREIGN KEY (product_id) REFERENCES product(product_id) -- 外鍵，參考商品表
+    product_id INT NOT NULL, -- 商品編號(外鍵)
+    CONSTRAINT PK_product_image PRIMARY KEY (product_image_id),
+    CONSTRAINT FK_product_image_product FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
--- 插入商品圖片
+-- 插入商品圖片數據
 INSERT INTO product_image (product_image_url, product_id)
-VALUES 
-    ('img/japanese_beginner_book.jpg', 1),
-    ('img/advanced_japanese_conversation.jpg', 2),
-    ('img/learning_notebook.jpg', 3),
-    ('img/basic_physics_teaching.jpg', 4),
-    ('img/advanced_programming_tutorial.jpg', 5),
-    ('img/english_conversation_practice.jpg', 6),
-    ('img/math_problem_solving_skills.jpg', 7),
-    ('img/chemistry_elements_analysis.jpg', 8),
-    ('img/yoga_beginners_guide.jpg', 9),
-    ('img/classical_music_appreciation.jpg', 10),
-    ('img/noise_cancelling_headphones.jpg', 11),
-    ('img/portable_book_light.jpg', 12),
-    ('img/advanced_mathematics_analysis.jpg', 13),
-    ('img/introduction_to_modern_physics.jpg', 14),
-    ('img/efficient_learning_manual.jpg', 15),
-    ('img/advanced_chemical_experiments.jpg', 16),
-    ('img/fundamentals_of_biology.jpg', 17),
-    ('img/digital_photography_intro.jpg', 18),
-    ('img/go_game_tutorial.jpg', 19),
-    ('img/french_language_course.jpg', 20),
-    ('img/programming_design_essentials.jpg', 21),
-    ('img/economist_must_read.jpg', 22),
-    ('img/contemporary_world_history.jpg', 23),
-    ('img/psychology_in_life.jpg', 24),
-    ('img/creative_painting_techniques.jpg', 25),
-    ('img/machine_learning_in_action.jpg', 26),
-    ('img/gardening_knowledge.jpg', 27),
-    ('img/basic_mechanical_engineering.jpg', 28),
-    ('img/basic_accounting.jpg', 29),
-    ('img/advanced_web_design.jpg', 30);
+VALUES
+	('img/notebook.jpg', 1),
+	('img/yoga_mat.jpg', 2),
+	('img/smart_bracelet.jpg', 3),
+	('img/study_lamp.jpg', 4),
+	('img/headphone_case.jpg', 5),
+	('img/stylish_backpack.jpg', 6),
+	('img/mouse_pad.jpg', 7),
+	('img/binder_clip.jpg', 8),
+	('img/water_bottle.jpg', 9),
+	('img/silent_keyboard.jpg', 10),
+	('img/english_beginner_course.jpg', 11),
+	('img/python_programming_basics.jpg', 12),
+	('img/guitar_skills.jpg', 13),
+	('img/yoga_tutorial.jpg', 14),
+	('img/math_secrets.jpg', 15),
+	('img/cooking_masterclass.jpg', 16),
+	('img/piano_course.jpg', 17),
+	('img/sketching_secrets.jpg', 18),
+	('img/crafts_course.jpg', 19),
+	('img/financial_planning.jpg', 20),
+	('img/python_detailed.jpg', 21),
+	('img/spanish_spoken_guide.jpg', 22),
+	('img/college_math.jpg', 23),
+	('img/travel_english_manual.jpg', 24),
+	('img/advanced_calculus.jpg', 25),
+	('img/business_law.jpg', 26),
+	('img/basic_statistics.jpg', 27),
+	('img/computer_architecture.jpg', 28),
+	('img/modern_physics_intro.jpg', 29),
+	('img/biochemistry_basics.jpg', 30);
 
--- 商品影片表
+-- 建立商品影片表
 CREATE TABLE product_video (
     product_video_id INT IDENTITY(1,1), -- 商品影片編號(自增)
     product_video_url NVARCHAR(255) NOT NULL, -- 商品影片URL
-    product_id INT NOT NULL, --商品編號(外鍵)
-    CONSTRAINT PK_product_video PRIMARY KEY (product_video_id), -- 主鍵
-    CONSTRAINT FK_product_video_product FOREIGN KEY (product_id) REFERENCES product(product_id) -- 外鍵，參考商品表
+    product_id INT NOT NULL, -- 商品編號(外鍵)
+    CONSTRAINT PK_product_video PRIMARY KEY (product_video_id),
+    CONSTRAINT FK_product_video_product FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
--- 插入商品影片
+-- 插入商品影片數據
 INSERT INTO product_video (product_video_url, product_id)
-VALUES 
-    ('video/basic_physics_lecture.mp4', 4),
-    ('video/advanced_programming_course.mp4', 5),
-    ('video/english_conversation_skills.mp4', 6),
-    ('video/math_problem_solving_methods.mp4', 7),
-    ('video/chemistry_elements_deep_dive.mp4', 8),
-    ('video/yoga_for_beginners_series.mp4', 9),
-    ('video/classical_music_history_and_analysis.mp4', 10),
-    ('video/advanced_chemical_experiments.mp4', 16),
-    ('video/go_game_tutorial_beginner.mp4', 19),
-    ('video/digital_photography_intro.mp4', 18),
-    ('video/machine_learning_in_action.mp4', 26);
+VALUES
+	('video/english_beginner_course.mp4', 11),
+	('video/python_programming_basics.mp4', 12),
+	('video/guitar_skills.mp4', 13),
+	('video/yoga_tutorial.mp4', 14),
+	('video/math_secrets.mp4', 15),
+	('video/cooking_masterclass.mp4', 16),
+	('video/piano_course.mp4', 17),
+	('video/sketching_secrets.mp4', 18),
+	('video/crafts_course.mp4', 19),
+	('video/financial_planning.mp4', 20);
 
--- 優惠券與商品類型關聯表(使特定類型的商品能夠應用特定的優惠券)
+-- 建立優惠券與商品類型關聯表
 CREATE TABLE coupon_type_relations (
-    coupon_id INT, -- 優惠方案編號(外鍵)
-    product_type_id INT, -- 商品類型編號(外鍵)
-    CONSTRAINT PK_coupon_type_relations PRIMARY KEY (coupon_id, product_type_id), -- 複合主鍵
-    CONSTRAINT FK_coupon_type_relations_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id), -- 外鍵，參考優惠券表
-    CONSTRAINT FK_coupon_type_relations_product_type FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id) -- 外鍵，參考商品類型表
+    coupon_id INT, -- 優惠券編號(外鍵)
+    product_type_id INT, -- 商品類型編號(外鍵),
+    CONSTRAINT PK_coupon_type_relations PRIMARY KEY (coupon_id, product_type_id),
+    CONSTRAINT FK_coupon_type_relations_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id),
+    CONSTRAINT FK_coupon_type_relations_product_type FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id)
 );
 
--- 插入優惠券與商品類型關聯
+-- 插入優惠券與商品類型關聯數據
 INSERT INTO coupon_type_relations (coupon_id, product_type_id)
-VALUES 
-    (1, 3),  -- 新用戶折扣適用於實體教材
-    (2, 1),  -- 滿1000減100適用於周邊商品
-    (3, 1),  -- 買一送一適用於周邊商品
-    (4, 1),  -- 新品上市折扣適用於周邊商品
-    (5, 2),  -- 學生專享折扣適用於教材影片
-    (6, 3),  -- 暑期學習大放送適用於實體教材
-    (7, 1),  -- 教師節感恩回饋適用於周邊商品
-    (8, 1),  -- 全額回饋免運費適用於周邊商品
-    (9, 1),  -- 限時快閃折扣適用於周邊商品
-    (10, 2), -- 秋季特賣適用於教材影片
-    (11, 3), -- 年終回饋適用於實體教材
-    (12, 1), -- 新年快樂購適用於周邊商品
-    (13, 2); -- 新年快樂購適用於教材影片
+VALUES
+	(1, 3), -- 新用戶折扣適用於實體教材
+	(2, 1), -- 滿1000減100適用於周邊商品
+	(3, 1), -- 買一送一適用於周邊商品
+	(4, 1), -- 週年慶特價適用於周邊商品
+	(5, 2), -- 新品上市折扣適用於教材影片
+	(6, 3), -- 學生專享折扣適用於實體教材
+	(7, 1), -- 暑期學習大放送適用於周邊商品
+	(8, 1), -- 教師節感恩回饋適用於周邊商品
+	(9, 1), -- 全額回饋免運費適用於周邊商品
+	(10, 2), -- 限時快閃折扣適用於教材影片
+	(11, 3), -- 秋季特賣適用於實體教材
+	(12, 1), -- 年終回饋適用於周邊商品
+	(13, 2); -- 新年快樂購適用於教材影片
 
 -- 查詢表資料
-SELECT * FROM product_status;
+SELECT * FROM product_status ORDER BY product_status_id;
 SELECT * FROM product_type;
 SELECT * FROM product;
 SELECT * FROM product_image;
@@ -523,52 +545,33 @@ VALUES
 CREATE TABLE learning_companion(
 	companion_id INT IDENTITY PRIMARY KEY,
 	student_id INT not null,
-	companion_username NVARCHAR(50) not null,
-	companion_gender VARCHAR(20) CHECK (companion_gender IN ('Male', 'Female', 'Unspecified')) not null,
-	companion_birth DATETIME2 not null,
 	companion_first_language NVARCHAR(50) not null,
 	companion_speaking_language NVARCHAR(100) not null,
 	companion_learning_interest NVARCHAR(50) not null,
 	companion_learning_frequency NVARCHAR(50) CHECK (companion_learning_frequency IN ('每週1-3次','每週4-7次')) not null,
-	companion_photo VARCHAR(200) not null,
+	companion_about_me NVARCHAR(300),
+	FOREIGN KEY (student_id) REFERENCES student(student_id),
 );
 truncate table learning_companion
+DROP TABLE learning_companion
 
-INSERT INTO [learning_companion] ([student_id], [companion_username], [companion_gender], [companion_birth], [companion_first_language], [companion_speaking_language], [companion_learning_interest], [companion_learning_frequency], [companion_photo])
+INSERT INTO [learning_companion] ([student_id], [companion_first_language], [companion_speaking_language], [companion_learning_interest], [companion_learning_frequency], [companion_about_me])
 VALUES 
-(1003, 'Wendy', 'Female', '1999-01-02 00:00:00.0000000', '日文', '英文', '程式設計', '每週4-7次', 'Companion/CompanionImg/Wendy.jpg'),
-(1004, 'Joe', 'Male', '1996-02-03 00:00:00.0000000', '中文', '英文', '程式設計', '每週1-3次', 'Companion/CompanionImg/Joe.jpg'),
-(1005, 'Cindy', 'Female', '2002-12-06 00:00:00.0000000', '中文', '日文', '電腦繪圖', '每週1-3次', 'Companion/CompanionImg/Cindy.jpg'),
-(1006, 'Chris', 'Male', '2003-05-25 00:00:00.0000000', '日文', '中文', '語言學習', '每週1-3次', 'Companion/CompanionImg/Chris.jpg'),
-(1007, 'Lily', 'Female', '1998-10-20 00:00:00.0000000', '英文', '英文', '語言學習', '每週4-7次', 'Companion/CompanionImg/Lily.jpg'),
-(1008, 'David', 'Male', '1995-08-18 00:00:00.0000000', '英文', '中文', '電腦繪圖', '每週4-7次', 'Companion/CompanionImg/David.jpg'),
-(1009, 'Ryan', 'Male', '1993-03-02 00:00:00.0000000', '西班牙文', '英文', '數位行銷', '每週4-7次', 'Companion/CompanionImg/Ryan.jpg'),
-(1010, 'Ella', 'Female', '1996-01-01 00:00:00.0000000', '德文', '法文', '電腦繪圖', '每週1-3次', 'Companion/CompanionImg/Ella.jpg'),
-(1011, 'Peter', 'Male', '1992-11-21 00:00:00.0000000', '中文', '西班牙文', '語言學習', '每週4-7次', 'Companion/CompanionImg/Peter.jpg'),
-(1012, 'Aimyon', 'Female', '1995-03-06 00:00:00.0000000', '日文', '英文', '音樂創作', '每週4-7次', 'Companion/CompanionImg/Aimyon.jpg'),
-(1013, 'Tommy', 'Male', '1990-02-01 00:00:00.0000000', '英文', '日文', '程式設計', '每週4-7次', 'Companion/CompanionImg/Tommy.jpg'),
-(1014, 'Wally', 'Male', '2000-09-30 00:00:00.0000000', '中文', '西班牙文', '電腦繪圖', '每週1-3次', 'Companion/CompanionImg/Wally.jpg'),
-(1015, 'Yoona', 'Female', '1990-05-30 00:00:00.0000000', '韓文', '中文', '音樂創作', '每週4-7次', 'Companion/CompanionImg/Yoona.jpg'),
-(1016, 'Randy', 'Male', '1998-06-25 00:00:00.0000000', '日文', '中文', '語言學習', '每週1-3次', 'Companion/CompanionImg/Randy.jpg'),
-(1017, 'Taylor', 'Female', '1989-12-13 00:00:00.0000000', '英文', '德文', '音樂創作', '每週4-7次', 'Companion/CompanionImg/Taylor.jpg'),
-(1018, 'Taeyeon', 'Female', '1989-03-09 00:00:00.0000000', '韓文', '英文', '音樂創作', '每週4-7次', 'Companion/CompanionImg/Taeyeon.jpg'),
-(1019, 'Betty', 'Female', '1997-10-19 00:00:00.0000000', '日文', '英文', '程式設計', '每週4-7次', 'Companion/CompanionImg/Betty.jpg'),
-(1020, 'Paul', 'Male', '1993-12-02 00:00:00.0000000', '英文', '德文', '數位行銷', '每週1-3次', 'Companion/CompanionImg/Paul.jpg'),
-(1021, 'John', 'Male', '1999-05-30 00:00:00.0000000', '西班牙文', '英文', '電腦繪圖', '每週1-3次', 'Companion/CompanionImg/John.jpg'),
-(1022, 'Winter', 'Female', '2001-01-01 00:00:00.0000000', '韓文', '英文', '音樂創作', '每週4-7次', 'Companion/CompanionImg/Winter.jpg'),
-(1023, 'Dora', 'Female', '2000-09-17 00:00:00.0000000', '中文', '英文', '數位行銷', '每週4-7次', 'Companion/CompanionImg/Dora.jpg'),
-(1024, 'Frieren', 'Female', '0950-02-14 00:00:00.0000000', '日文', '咒語', '魔法研究', '每週4-7次', 'Companion/CompanionImg/Frieren.jpg');
+(1, '日文', '英文', '程式設計', '每週4-7次','我想學程式'),
+(2, '中文', '英文', '程式設計', '每週1-3次', '寫程式能夠訓練我的邏輯思考能力'),
+(3, '中文', '日文', '電腦繪圖', '每週1-3次', '我希望能畫出人氣漫畫');
 
--- 資料表2 加PK companion_match 已配對學伴
+-- 資料表2 companion_match 已配對學伴
 CREATE TABLE companion_match (
     match_id INT IDENTITY PRIMARY KEY not null,
     fk_student_a_id INT,
     fk_student_b_id INT,
+	match_request VARCHAR(10) CHECK (match_request IN ('Yes', 'No')) not null,
     FOREIGN KEY (fk_student_a_id) REFERENCES learning_companion(companion_id),
     FOREIGN KEY (fk_student_b_id) REFERENCES learning_companion(companion_id),
 );
 
-
+DROP TABLE companion_match
 
 --論壇
 

@@ -89,21 +89,9 @@ public class TeacherScheduleService {
 	}
 
 	// 修改單筆教師行事曆
-	public TeacherScheduleBean updateTeacherSchedule(TeacherScheduleBean teacherScheduleBean) {
-		// 解析 JSON 字串為時間段列表
-		List<String> timeSlotsList;
-		try {
-			timeSlotsList = objectMapper.readValue(teacherScheduleBean.getTeacherTimeSlots(),
-					new TypeReference<List<String>>() {
-					});
-		} catch (IOException e) {
-			throw new RuntimeException("解析時間段 JSON 失敗", e);
-		}
+    public TeacherScheduleBean updateTeacherSchedule(TeacherScheduleBean teacherScheduleBean) {
+        // 直接使用從前端接收到的時段字串
+        return teacherScheduleRepository.save(teacherScheduleBean);
+    }
 
-		// 轉換時間段列表為字串
-		String timeSlotsString = convertTimeSlotsToString(timeSlotsList.toArray(new String[0]));
-		teacherScheduleBean.setTeacherTimeSlots(timeSlotsString);
-
-		return teacherScheduleRepository.save(teacherScheduleBean);
-	}
 }

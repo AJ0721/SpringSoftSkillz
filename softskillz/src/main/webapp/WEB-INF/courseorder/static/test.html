@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>聊天窗口示例</title>
+    <style>
+        /* 原本的样式 */
+        input {
+            width: 150px;
+            height: 30px;
+            line-height: 25px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 2px solid;
+            font-size: 16px;
+        }
+
+        button {
+            width: 80px;
+            height: 44px;
+            padding: 5px 20px;
+            border-radius: 5px;
+        }
+
+        /* 聊天气泡的样式 */
+        .message {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message-sent {
+            background-color: #d1f7c4;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .message-received {
+            background-color: #f1f1f1;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        /* 聊天弹出框的样式 */
+        .chat-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 100px;
+            width: 450px;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            display: none;
+            flex-direction: column;
+        }
+
+        .chat-popup .chat-window {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .chat-popup .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #e0e0e0;
+        }
+
+        .chat-popup .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chat-popup .chat-input button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            background-color: #0288d1;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-popup .chat-input button:hover {
+            background-color: #0277bd;
+        }
+    </style>
+</head>
+
+<body>
+    聊天室<br /><br />
+    <input type="text" id="sendOutUser" placeholder="自己的用户名" />
+    <button onclick="connectWebSocket()">上线</button>
+    <button onclick="closeWebSocket()">下线</button>
+    <button id="toggle-chat-popup">高</button>
+    <div>訊息</div>
+    <br /><br />
+    <hr />
+    <div id="msgList"></div>
+
+    <script>
+        var websocket = null;
+        var chatPopup = null;
+
+        function connectWebSocket() {
+            var sendOutUser = document.getElementById("sendOutUser").value;
+
+            if (sendOutUser === "") {
+                alert("请输入用户名");
+                return;
+            }
+
+            if ('WebSocket' in window) {
+                websocket = new WebSocket("ws://localhost:8080/web-socket/" + sendOutUser);
+            } else {
+                alert("当前浏览器不支持 WebSocket");
+                return;
+            }
+
+            websocket.onerror = function () {
+                alert("连接发生错误");
+            };
+
+            websocket.onopen = function () {
+                document.getElementById("sendOutUser").readOnly = true;
+                document.getElementById("sendOutUser").style.backgroundColor = '#ddd';
+                addMessage("", "WebSocket 连接已建立", true);
+            };
+
+            websocket.onclose = function () {
+                addMessage("", "WebSocket 连接已关闭", true);
+            };
+
+            websocket.onmessage = function (event) {
+                addMessage("", event.data, true);
+            };
+        }
+
+        function closeWebSocket() {
+            if (websocket) {
+                websocket.close();
+            }
+        }
+
+        function addMessage(sender, message, isReceived) {
+            var msgList = document.getElementById("msgList");
+            var messageDiv = document.createElement("div");
+            var messageText = sender ? sender + ": " + message : message;
+
+            messageDiv.className = "message " + (isReceived ? "message-received" : "message-sent");
+            messageDiv.innerText = messageText;
+
+            msgList.appendChild(messageDiv);
+        }
+
+        document.getElementById("toggle-chat-popup").addEventListener("click", function () {
+            if (!chatPopup) {  // 如果聊天窗口不存在
+                chatPopup = document.createElement("div");
+                chatPopup.className = "chat-popup";
+
+                var chatWindow = document.createElement("div");
+                chatWindow.className = "chat-window";
+
+                var chatInputContainer = document.createElement("div");
+                chatInputContainer.className = "chat-input";
+
+                var chatInput = document.createElement("input");
+                chatInput.placeholder = "输入消息...";
+                chatInput.id = "popup-chat-input";
+
+                var sendButton = document.createElement("button");
+                sendButton.textContent = "发送";
+
+                sendButton.addEventListener("click", function () {
+                    var message = chatInput.value.trim();
+                    if (message) {
+                        var messageElement = document.createElement("div");
+                        messageElement.className = "message message-sent";
+                        messageElement.textContent = message;
+                        chatWindow.appendChild(messageElement);
+
+                        chatInput.value = '';
+
+                        setTimeout(function () {
+                            var autoReply = document.createElement("div");
+                            autoReply.class名 = "message message-received";
+                            autoReply.text内容 = '自动回复: ' + message;
+                            chatWindow.appendChild(autoReply);
+                        }, 1000);
+
+                        chatWindow.scrollTop = chatWindow.scrollHeight;
+                    }
+                });
+
+                chatInput.addEventListener("keypress", function (e) {
+                    if (e.key === 'Enter') {
+                        sendButton.click();
+                    }
+                });
+
+                chatInputContainer.appendChild(chatInput);
+                chatInputContainer.appendChild(sendButton);
+
+                chatPopup.appendChild(chatWindow);
+                chatPopup.appendChild(chatInputContainer);
+
+                document.body.appendChild(chatPopup);
+
+                chatPopup.style.display = 'flex';  // 创建后立即显示
+            } else {
+                chatPopup.style.display = chatPopup.style.display === 'none' ? 'flex' : 'none';
+            }
+        });
+
+    </script>
+</body>
+
+</html>

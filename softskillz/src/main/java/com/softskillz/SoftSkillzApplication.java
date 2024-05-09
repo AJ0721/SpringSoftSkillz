@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import com.softskillz.courseorder.model.bean.CorderBean;
 
@@ -42,5 +43,9 @@ public class SoftSkillzApplication {
 	@Bean
 	public ReentrantLock reentrantLock() {
 		return new ReentrantLock();
+	}
+	@Bean
+	public ServerEndpointExporter serverEndpointExporter() {
+		return new ServerEndpointExporter();
 	}
 }

@@ -7,7 +7,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>管理員CRUD頁面</title>
+<title>管理員帳號管理</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 .bottom-link {
@@ -124,12 +124,12 @@ td {
 	<div id="header"></div>
 	<section style="padding: 20px; text-align: center; margin-left: 170px;">
 		<div class="crud-container" align="center">
-			<h2>管理員CRUD頁面</h2>
+			<h2>管理員帳號管理</h2>
 			<table>
 				<tr>
 					<td>
 						<form method="get" action="/admin/AdminSelectOne">
-							管理員id搜尋：<input type="text" name="admin_id"></input>&nbsp;&nbsp; <input
+							管理員ID搜尋：<input type="text" name="admin_id"></input>&nbsp;&nbsp; <input
 								type="submit" value="搜尋"></input>
 						</form>
 					</td>

@@ -11,4 +11,6 @@ public interface StudentRepositoryS extends JpaRepository<StudentBean, Integer> 
 
 	@Query("from StudentBean s where s.studentUsername = :account AND s.studentPassword = :pwd ")
 	StudentBean loginSimulation(@Param("account") String account, @Param("pwd") String pwd);
+	
+	StudentBean findByStudentIdFormatted(String studentIdFormatted);
 }

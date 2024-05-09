@@ -38,7 +38,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
             <div class="d-flex justify-content-between align-items-center">
               <!-- 左上角Logo -->
               <div class="logo">
-                <a href="index.html"
+                <a href="/softskillz/newhomepage"
                   ><img
                     src="/assets/compiled/jpg/logo1.jpg"
                     alt="Logo"
@@ -118,7 +118,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
           <div class="sidebar-menu">
             <ul class="menu">
               <li class="sidebar-item active">
-                <a href="index.html" class="sidebar-link">
+                <a href="/softskillz/newhomepage" class="sidebar-link">
                   <i class="bi bi-grid-fill"></i>
                   <span>首頁</span>
                 </a>
@@ -166,20 +166,14 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a
-                      href="/course/coursePage/courseAllPage"
-                      class="submenu-link"
-                      >所有課程功能</a
+                    <a href="/course/insertPage" class="submenu-link"
+                      >新增課程</a
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增課程</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢課程</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">修改課程</a>
+                    <a href="/course/selectAllPage" class="submenu-link"
+                      >查詢課程</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -190,20 +184,16 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a
-                      href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
-                      class="submenu-link"
-                      >所有教師行事曆功能</a
+                    <a href="/teacherSchedule/insertPage" class="submenu-link"
+                      >新增教師行事曆</a
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增教師行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢教師行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">修改教師行事曆</a>
+                    <a
+                      href="/teacherSchedule/selectAllPage"
+                      class="submenu-link"
+                      >查詢教師行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -221,10 +211,18 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增學生預約</a>
+                    <a
+                      href="/studentReservation/insertPage"
+                      class="submenu-link"
+                      >新增學生預約</a
+                    >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢學生預約</a>
+                    <a
+                      href="/studentReservation/selectAllPage"
+                      class="submenu-link"
+                      >查詢學生預約</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -493,9 +491,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
 
                       <!-- 提交按鈕 -->
                       <div class="col-md-8">
-                        <!-- <button type="submit" class="btn btn-primary">
-                          新增課程
-                        </button> -->
                         <button
                           id="toast-success"
                           type="button"
@@ -506,19 +501,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                       </div>
                     </div>
                   </form>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4>Profile Visit</h4>
-                    </div>
-                    <div class="card-body">
-                      <div id="chart-profile-visit"></div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

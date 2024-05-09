@@ -6,6 +6,7 @@ public class Course2 implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer courseID;
+	private String teacherID;
 	private String teacherName;
 	private String teacherPhoto;
 	private String courseName;
@@ -83,6 +84,14 @@ public class Course2 implements Serializable {
 
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public String getTeacherID() {
+		return teacherID;
+	}
+
+	public void setTeacherID(String teacherID) {
+		this.teacherID = teacherID;
 	}
 
 	@Override

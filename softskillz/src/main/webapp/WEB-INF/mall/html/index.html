@@ -1,196 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品管理</title>
-    <!-- 引入 jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-            crossorigin="anonymous"></script>
-    <!-- 引入自定義 CSS 樣式表 -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/styles2.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>商品管理</title>
+	<!-- 引入 jQuery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<!-- 引入自定義 CSS 樣式表 -->
+	<link rel="stylesheet" type="text/css" href="/mall/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/mall/css/styles2.css">
 </head>
 
 <body>
-    <!-- header區塊 -->
-    <div id="header"></div> 
+	<!-- header區塊 -->
+	<div id="header"></div>
 
 	<div id="info">
-    <!-- 商品區域（暫未使用） -->
-    <div id="product"></div>
-    <!-- 表格控制容器 -->
-    <div class="table-controls-container">
-        <div class="controls">
-            <!-- 查詢商品的表單 -->
-            <div class="query-product">
-                <label for="queryProductId">查詢商品ID:</label>
-                <input type="text" id="queryProductId">
-				<button id="queryProductBtn">查詢</button>
-				<button id="fetchAllBtn">查詢全部</button>	<!-- 查詢全部按钮 -->
-            </div>
-            <!-- 新增商品按鈕 -->
-            <div class="add-product">
-                <button id="addProductBtn">新增商品</button>
-            </div>
-        </div>
-        <!-- 商品表格顯示 -->
-        <table border="1" align="center" id="productTable">
-            <thead>
-                <tr>
-                    <th>商品編號</th>
-                    <th>商品名稱</th>
-                    <th>商品描述</th>
-                    <th>商品價格</th>
-                    <th>商品庫存</th>
-                    <th>目標受眾</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+		<!-- 商品區域（暫未使用） -->
+		<div id="product"></div>
+		<!-- 表格控制容器 -->
+		<div class="table-controls-container">
+			<div class="controls">
+				<!-- 查詢商品的表單 -->
+				<div class="query-product">
+					<label for="queryProductId">查詢商品ID:</label>
+					<input type="text" id="queryProductId">
+					<button id="queryProductBtn">查詢</button>
+					<button id="fetchAllBtn">查詢全部</button> <!-- 查詢全部按钮 -->
+				</div>
+				<!-- 新增商品按鈕 -->
+				<div class="add-product">
+					<button id="addProductBtn">新增商品</button>
+				</div>
+			</div>
+			<!-- 商品表格顯示 -->
+			<table border="1" align="center" id="productTable">
+				<thead>
+					<tr>
+						<th>編號</th>
+						<th>商品名稱</th>
+						<!-- <th>商品描述</th> --> <!-- 註解商品描述，不在列表顯示 -->
+						<th>商品類型</th>
+						<th>商品狀態</th>
+						<th>商品價格</th>
+						<th>商品庫存</th>
+						<th>目標客群</th>
+						<th>作者名稱</th>
+						<th>ISBN編號</th>
+						<th>出版日期</th>
+						<th>商品創建日期</th>
+						<th>商品更新日期</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
 	</div>
 
 
-    <!-- 引入 JavaScript 腳本 -->
-    <script src="js/scripts.js"></script>
-    <script src="js/utils.js"></script>
-   
-    <script>
-        $(document).ready(function() {
-            // 初始化頁面時加載商品資料
-            fetchProducts();
-            // 設定新增商品按鈕的點擊事件
-            $('#addProductBtn').click(addProduct);
-            // 設定商品表格中的修改和刪除按鈕事件
-            $('#productTable').on('click', '.update-btn', function() {
-                const productId = $(this).data('id');
-                updateProduct(productId);
-            });
-            $('#productTable').on('click', '.delete-btn', function() {
-                const productId = $(this).data('id');
-                deleteProduct(productId);
-            });
-        });
+	<!-- 引入 JavaScript 腳本 -->
+	<script src="/mall/js/scripts.js"></script>
+	<script src="/mall/js/utils.js"></script>
 
-        // 加載商品資料
-        function fetchProducts() {
-            $.ajax({
-                url: '/api/products',
-                method: 'GET',
-                success: function(products) {
-                    const tbody = $('#productTable tbody');
-                    tbody.empty();
-                    products.forEach(product => {
-                        tbody.append(`
-                            <tr>
-                                <td>${product.productId}</td>
-                                <td>${product.productName}</td>
-                                <td>${product.productDescription}</td>
-                                <td>${product.productPrice}</td>
-                                <td>${product.productStock}</td>
-                                <td>${product.productTargetAudience}</td>
-                                <td>
-                                    <button class='update-btn' data-id='${product.productId}'>修改</button>
-                                    <button class='delete-btn' data-id='${product.productId}'>刪除</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                },
-                error: function(xhr) {
-                    alert('商品加載錯誤: ' + xhr.status);
-                }
-            });
-        }
-		
-		// 查詢商品
-		// 設定查詢商品按鈕的點擊事件
-		$('#queryProductBtn').click(function() {
-		    var productId = $('#queryProductId').val();
-		    if (!productId) {
-		        alert('請輸入商品ID');
-		        return;
-		    }
-		    $.ajax({
-		        url: `/api/products/${productId}`,
-		        method: 'GET',
-		        success: function(product) {
-		            const tbody = $('#productTable tbody');
-		            tbody.empty(); // 清空表格
-		            if (product) {
-		                tbody.append(`
-		                    <tr>
-		                        <td>${product.productId}</td>
-		                        <td>${product.productName}</td>
-		                        <td>${product.productDescription}</td>
-		                        <td>${product.productPrice}</td>
-		                        <td>${product.productStock}</td>
-		                        <td>${product.productTargetAudience}</td>
-		                        <td>
-		                            <button class='update-btn' data-id='${product.productId}'>修改</button>
-		                            <button class='delete-btn' data-id='${product.productId}'>刪除</button>
-		                        </td>
-		                    </tr>
-		                `);
-		            } else {
-		                tbody.append('<tr><td colspan="7">未找到商品</td></tr>');
-		            }
-		        },
-		        error: function(xhr) {
-		            alert('查詢商品出錯: ' + xhr.status);
-		            const tbody = $('#productTable tbody');
-		            tbody.empty();
-		            tbody.append('<tr><td colspan="7">查詢出錯</td></tr>');
-		        }
-		    });
+	<script>
+		$(document).ready(function () {
+			// 初始化並獲取所有商品資訊
+			fetchProducts();
+
+			$('#addProductBtn').click(function() {
+				window.location.href = '/mall/html/addProduct.html'; // 導向新增商品頁面
+			});
+
+			$('#productTable').on('click', '.update-btn', function () {
+				const productId = $(this).data('id');
+				window.location.href = `/mall/html/updateProduct.html?productId=${productId}`; // 導向更新商品頁面
+			});
+
+			$('#productTable').on('click', '.delete-btn', function () {
+				const productId = $(this).data('id');
+				deleteProduct(productId); // 執行刪除操作
+			});
+
+			$('#queryProductBtn').click(queryProduct);
+			$('#fetchAllBtn').click(fetchProducts);
 		});
-		
-		// 查詢全部商品
-		    $('#fetchAllBtn').click(function() {
-		        fetchProducts(); // 重新加載並顯示全部商品
-		    });
-		
 
-        // 新增商品
-        function addProduct(event) {
-            event.preventDefault();
-            window.location.href = 'html/addProduct.html';
-        }
-
-		// 修改商品
-		function updateProduct(productId) {
-		    window.location.href = `html/updateProduct.html?productId=${productId}`;
+		function fetchProducts() {
+			$.ajax({
+				url: '/products',
+				method: 'GET',
+				success	: function (products) {
+					renderProducts(products);
+				},
+				error: function (xhr) {
+					alert('商品加載錯誤，錯誤訊息: ' + xhr.status);
+				}
+			});
 		}
 
-        // 刪除商品
-        function deleteProduct(productId) {
-            $.ajax({
-                url: '/api/products/' + productId,
-                method: 'DELETE',
-                success: function() {
-                    alert('商品成功刪除');
-                    fetchProducts();
-                },
-                error: function(xhr) {
-                    alert('刪除商品Error: ' + xhr.status);
-                }
-            });
-        }
-    </script>
-    <!-- 動態加載Header -->
-    <script>
-        fetch("/html/backtest.html")
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                }
-            }).then(data => {
-                document.querySelector('#header').innerHTML = data;
-            })
-    </script>
+		function renderProducts(products) {
+			const tbody = $('#productTable tbody');
+			tbody.empty();
+			products.forEach(product => {
+				let stockDisplay = product.productStock === null ? '無限' : product.productStock === 0 ? '無庫存' : product.productStock;
+				let authorName = product.productAuthorName || ''; // 若為null則顯示空白
+				let isbn = product.productISBN || ''; // 若為null則顯示空白
+				let publicationDate = product.productPublicationDate || ''; // 若為null則顯示空白
+				tbody.append(`
+					<tr>
+					    <td>${product.productId}</td>
+					    <td>${product.productName}</td>
+					    <!-- <td>${product.productDescription}</td> --> <!-- 註解商品描述 -->
+					    <td>${product.productType.productTypeName}</td>
+					    <td>${product.productStatus.productStatusName}</td>
+					    <td>${product.productPrice}</td>
+					    <td>${stockDisplay}</td>
+					    <td>${product.productTargetAudience}</td>
+					    <td>${authorName}</td>
+					    <td>${isbn}</td>
+					    <td>${publicationDate}</td>
+					    <td>${product.productCreateDate}</td>
+					    <td>${product.productUpdateDate}</td>
+					    <td>
+	                            <button class='update-btn' data-id='${product.productId}'>修改</button>
+	                            <button class='delete-btn' data-id='${product.productId}'>刪除</button>
+	                        </td>
+	                    </tr>
+	                `);
+			});
+		}
+
+		function queryProduct() {
+			var productId = $('#queryProductId').val();
+			if (!productId) {
+				alert('請輸入商品ID');
+				return;
+			}
+			$.ajax({
+				url: `/products/${productId}`,
+				method: 'GET',
+				success: function (product) {
+					renderProducts([product]);
+				},
+				error: function (xhr) {
+					alert('查詢不到指定的商品編號，錯誤訊息: ' + xhr.status);
+				}
+			});
+		}
+
+		function deleteProduct(productId) {
+			if (confirm('確定要刪除此商品嗎？')) {
+				$.ajax({
+					url: '/products/' + productId,
+					method: 'DELETE',
+					success: function () {
+						alert('商品成功刪除');
+						fetchProducts();
+					},
+					error: function (xhr) {
+						alert('刪除商品出錯，錯誤訊息: ' + xhr.status);
+					}
+				});
+			}
+		}
+	</script>
+	<!-- 動態加載Header -->
+	<script>
+		fetch("/mall/html/testiframe.html")
+			.then(response => {
+				if (response.ok) {
+					return response.text();
+				}
+			}).then(data => {
+				document.querySelector('#header').innerHTML = data;
+			})
+	</script>
 
 </body>
+
 </html>

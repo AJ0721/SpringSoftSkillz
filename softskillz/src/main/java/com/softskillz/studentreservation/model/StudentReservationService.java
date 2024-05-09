@@ -98,19 +98,6 @@ public class StudentReservationService {
 		return updatedTimeSlots.toString();
 	}
 
-//	// 轉換和合併學生時間段數據為全時間段數據，包含預約ID
-//	private String convertAndUpdateTimeSlots(String existingSlots, String newSlots, int reservationId) {
-//		StringBuilder updatedSlots = new StringBuilder(
-//				existingSlots == null ? new String(new char[24]).replace('\0', '0') : existingSlots);
-//
-//		for (int i = 0; i < newSlots.length(); i++) {
-//			if (newSlots.charAt(i) == '1') {
-//				updatedSlots.setCharAt(i, Character.forDigit(reservationId, 10)); // 使用預約ID標記時間段
-//			}
-//		}
-//		return updatedSlots.toString();
-//	}
-
 	private void updateStudentSchedule(StudentReservationBean reservation) {
 		// 從教師行事曆獲取開課日期
 		LocalDate courseDate = teacherScheduleRepository.findById(reservation.getTeacherScheduleID())
@@ -141,22 +128,6 @@ public class StudentReservationService {
 			System.out.println("全新資料" + newSchedule);
 		}
 	}
-
-//	private String formatTimeSlotsAll(StudentReservationBean reservation) {
-//		String slots = reservation.getStudentTimeSlots();
-//		StringBuilder formatted = new StringBuilder();
-//
-//		for (int i = 0; i < slots.length(); i++) {
-//			if (slots.charAt(i) == '1') {
-//				formatted.append(reservation.getStudentReservationID()); // 使用預約ID標記
-//			} else {
-//				formatted.append('0'); // 沒有預約的時段用'0'標記
-//			}
-//			if (i < slots.length() - 1)
-//				formatted.append('-'); // 添加分隔符
-//		}
-//		return formatted.toString();
-//	}
 
 	private String formatTimeSlotsAll(StudentReservationBean reservation) {
 		// 這裡需要改寫以包含預約編號和時段

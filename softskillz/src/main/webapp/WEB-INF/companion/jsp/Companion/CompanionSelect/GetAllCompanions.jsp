@@ -221,7 +221,7 @@ tr:hover {
 						<script>
 							const index = document.querySelector('.index')
 							index.addEventListener('click', function () {
-								location.href = "/index.html"
+								location.href = "/companionIndex.html"
 							})
 // 							const add = document.querySelector('#add')
 // 							add.addEventListener('click', function () {

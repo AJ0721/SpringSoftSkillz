@@ -30,36 +30,30 @@
 
 .menu {
     float: right;
+    list-style: none;
+    /* Removes default list style */
+}
 
-    li {
-        float: left;
-    }
+.menu>li {
+    float: left;
+    /* Horizontal alignment for top-level menu items */
+    position: relative;
+    /* Allows absolute positioning for submenus */
+}
 
-    a {
-        display: flex;
-        margin-right: 10px;
-        color: #ff8c00;
-        text-decoration: none;
-        line-height: 50px;
-        padding: 0 1em;
-    }
+.menu>li>a {
+    display: block;
+    /* Ensure top-level menu items are block-level */
+    color: #ff8c00;
+    text-decoration: none;
+    padding: 0 1em;
+    line-height: 50px;
+    /* Match height of the navbar */
+}
 
-    a:hover {
-        background-color: #ff8c00;
-        color: #faf0e6
-    }
-
-    i {
-        text-decoration: none;
-        line-height: 50px;
-        font-size: 24px;
-    }
-
-
-    .menu li:hover a i {
-        background-color: #ff8c00;
-        color: #faf0e6;
-    }
+.menu>li>a:hover {
+    background-color: #ff8c00;
+    color: #faf0e6;
 }
 
 .header {
@@ -124,4 +118,61 @@
 
 .content {
     margin-top: 20px;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    background-color: #faf0e6;
+    padding: 10px;
+    top: 50px;
+    left: 0;
+    z-index: 1;
+    min-width: 300px;
+    min-height: 500px;
+    overflow-y: auto;
+}
+
+.menu>li:hover .submenu {
+    display: block;
+}
+
+.submenu>li {
+    display: block;
+    padding: 5px;
+    margin: 10px;
+    height: 50px;
+    text-decoration: none;
+    background-color: white;
+    color: #ff8c00;
+    padding: 0.5em;
+    line-height: 50px;
+}
+
+
+
+.submenu>li:hover {
+    background-color: #ff8c00;
+    color: #faf0e6;
+}
+
+/* 子菜单内的布局 */
+.submenu div {
+    display: flex;
+    font-size: 20px;
+
+    justify-content: flex-start;
+    align-items: center;
+    float: left;
+}
+
+.submenu img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.submenu span {
+    display: inline-block;
 }

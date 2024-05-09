@@ -2,9 +2,12 @@ package com.softskillz.companion.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.companion.model.CompanionBean;
 import com.softskillz.companion.model.CompanionMatchBean;
 import com.softskillz.companion.model.CompanionMatchService;
+import com.softskillz.companion.model.CompanionService;
 
 @Controller
 public class CompanionMatchController {
@@ -24,6 +30,8 @@ public class CompanionMatchController {
 	@Autowired
 	private CompanionMatchService companionMatchService;
 
+	@Autowired
+	private CompanionService companionService;
 	// 查詢單筆 id
 //	@GetMapping("/GetCompanionMatchById")
 //	public ModelAndView getCompanionById(@RequestParam("fk_student_a_id") Integer studentAId) {
@@ -39,19 +47,25 @@ public class CompanionMatchController {
 //	}
 	// 查詢單筆 id
 	@GetMapping("/GetCompanionMatchById")
-	public ModelAndView getCompanionById(@RequestParam(name="fk_student_a_id",required = false) CompanionBean companionAId) {
+	public ModelAndView getCompanionById(@RequestParam("nickname")String studentNickname) {
 		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectMatchById.jsp");
 		ModelAndView view2 = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectByIdErr.jsp");
-		System.out.println(companionAId);
-	    if (companionAId == null) {
-	        // 如果缺少參數，導向到指定的視圖
+		System.out.println(studentNickname);
+	    if (studentNickname == null) {
 	        return view2;
 	    }
 		try {
-			List<CompanionMatchBean> companionMatch = companionMatchService.getByStudentAId(companionAId);
+			CompanionBean companionBeanA = companionService.getByName(studentNickname);
+			Set<CompanionMatchBean> companionMatch = companionBeanA.getCompanionMatchA();
 			
-				view.addObject("companionMatch", companionMatch);
-			
+			List<CompanionMatchBean> companionMatches = new ArrayList<CompanionMatchBean>();
+			for (CompanionMatchBean match : companionMatch) {
+		        if ("Yes".equals(match.getMatchRequest()) && !isMatchExist(companionMatches, match)) {
+		        	System.out.println(match.getMatchRequest());
+		        	companionMatches.add(match);
+		        }
+			}
+			view.addObject("companionMatch", companionMatches);
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
@@ -59,6 +73,27 @@ public class CompanionMatchController {
 		return view;
 
 	}
+	
+	// 檢查是否已存在相同的match在列表中
+	private boolean isMatchExist(List<CompanionMatchBean> companionMatches, CompanionMatchBean match) {
+	    for (CompanionMatchBean existingMatch : companionMatches) {
+	        if (existingMatch.getCompanionAId() == match.getCompanionAId() && existingMatch.getCompanionBId() == match.getCompanionBId()) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 
-
+	// 測試 查詢所有使用者已經遇到過的學伴(無論是按申請配對或隱藏學伴)
+	@GetMapping("/MR")
+	@ResponseBody
+	public void getAllCompanions() {
+		try {
+			List<CompanionBean> companions = companionMatchService.findByIHaveMetCompanion("Wendy");
+			System.out.println(companions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

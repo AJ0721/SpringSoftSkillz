@@ -89,17 +89,21 @@
 
 <body>
     <div class="login-container">
-        <img src="images/softskillz_logo.png" alt="Softskillz Logo" class="logo">
-        <form id="loginForm" action="your_login_endpoint" method="POST">
-            <input type="text" id="username" name="username" placeholder="Username or Email" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
+        <img src="/images/softskillz_logo.png" alt="Softskillz Logo" class="logo">
+        <form id="loginForm" action="/student/student-login" method="POST">
+        <!--  皆資料是用mame-->
+            <input type="text" id="usernameOrEmail" name="usernameOrEmail" placeholder="Username or Email" required>
+            <input type="password" id="studentPassword" name="studentPassword" placeholder="studentPassword" required>
             <button type="submit">Login</button>
         </form>
         <div class="links">
-            <a href="register.html">註冊</a>
+            <a href="/student/student-createPage">註冊</a>
             <span>|</span>
             <a href="forgot_password.html">忘記密碼</a>
         </div>
+         <br />
+         <div>${loginMsg}</div>
+        <div>${createMsg}</div>
     </div>
 </body>
 

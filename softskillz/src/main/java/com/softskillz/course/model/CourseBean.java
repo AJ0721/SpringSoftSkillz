@@ -6,6 +6,9 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 
@@ -50,12 +53,13 @@ public class CourseBean implements Serializable {
 
 	@JoinColumn(name = "teacher_id", insertable = false, updatable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference("course-teacher")
 	private TeacherBean teacherBean;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "courseBean", cascade = CascadeType.ALL)
+	@JsonManagedReference("course-studentReservation")
 	private Set<StudentReservationBean> studentReservationBean = new HashSet<StudentReservationBean>();
 
-	// 圖片長度關係以下省略建構子、Getter Setter
 	public CourseBean() {
 	}
 

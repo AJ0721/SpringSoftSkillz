@@ -1,115 +1,87 @@
 @charset "UTF-8";
 
-body {
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	text-align: center;
-	margin: 0;
-	padding: 0;
-}
-
-header {
-	background-color: #425169;
-	color: #fff;
-	padding: 10px 0;
-	text-align: center;
-}
-
-h2 {
-	font-size: 34px;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	margin: 20px;
-	color: #425169;
-}
-
 form {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 input[type="text"],
 select {
-	border: 2px solid #425169;
-	border-radius: 10px;
-	padding: 10px;
-	margin: 5px;
-	font-size: 16px;
-	width: 80%;
-	max-width: 400px;
+  border: 2px solid #425169;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+  width: 80%;
+  max-width: 400px;
 }
 
 input[type="date"] {
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	border-radius: 10px;
-	font-size: 16px;
-	padding: 5px;
-	font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 5px;
+  font-size: 20px;
 }
 
 input[type="button"],
 input[type="submit"] {
-	font-weight: bolder;
-	font-family: serif;
-	border-radius: 10px;
-	font-size: 20px;
-	margin: 5px;
-	text-align: center;
-	background-color: #FFFFFF;
-	/* 預設顏色 */
+  font-weight: bolder;
+  font-family: serif;
+  border-radius: 10px;
+  font-size: 20px;
+  margin: 5px;
+  text-align: center;
+  background-color: #ffffff;
+  /* 預設顏色 */
 }
 
 input[type="button"].selected,
 input[type="submit"].selected {
-	background-color: #CCCCCC;
-	/* 點擊後顏色 */
+  background-color: #cccccc;
+  /* 點擊後顏色 */
 }
 
 p {
-	font-size: 20px;
-	font-family: serif;
+  font-size: 20px;
+  font-family: serif;
 }
 
 /* 時段的容器外框 */
 .timeSlotContainer {
-	border: 2px solid #7D91A6;
-	/* 外框樣式 */
-	border-radius: 10px;
-	padding: 20px;
-	/* 內間距 */
-	margin-bottom: 20px;
-	/* 加上間距 */
-	display: inline-block;
-	/* 讓外框大小剛好包住內容 */
+  border: 2px solid #7d91a6;
+  /* 外框樣式 */
+  border-radius: 10px;
+  padding: 20px;
+  /* 內間距 */
+  margin-bottom: 20px;
+  /* 加上間距 */
+  display: inline-block;
+  /* 讓外框大小剛好包住內容 */
 }
 
 /* 時段的預設樣式 */
 .timeSlot {
-	display: block;
-	/* 改為 block，使元素垂直排列 */
-	margin-bottom: 5px;
-	/* 加上間距 */
+  display: block;
+  /* 改為 block，使元素垂直排列 */
+  margin-bottom: 5px;
+  /* 加上間距 */
 }
 
 /* 開放預約的時段的樣式 */
 .selectedTimeSlot {
- background-color: #C5D0E2;
+  background-color: #c5d0e2;
 }
 
 /* 已被預約的時段的樣式 */
 .teachedTimeSlot {
- background-color: #bfbab0;
+  background-color: #bfbab0;
 }
 
 div.row {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 div.column {
-	margin: 10px;
-}
-
-header h1 a {
-	color: #fff;
-	/* 保持文字白色 */
-	text-decoration: none;
-	/* 去除下劃線 */
+  margin: 10px;
 }

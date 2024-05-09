@@ -6,6 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -105,6 +110,20 @@ public class CourseOrderController {
 	public List<ItemInfo> getItem(@PathVariable("oid") String orderID) {
 		List<ItemInfo> items = coService.getItem(orderID);
 		return items;
+	}
+
+	@GetMapping("/order")
+	@ResponseBody
+	public Page<Order> pageOrder(@RequestParam(value = "pid", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sort", defaultValue = "orderID") String sort,
+			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection) {
+		
+		Direction direction = Direction.fromString(sortDirection);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
+		Page<Order> pageOrder = coService.getPageOrder(pageable);
+		System.out.println(pageOrder.getContent());
+		return pageOrder;
 	}
 
 }

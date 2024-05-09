@@ -8,8 +8,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -209,6 +212,27 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 			CorderBean corderBean = coRepo.findById(orderID).get();
 			delayQueue.remove(corderBean);
 		return coRepo.updateStatus(orderID, status, method);
+	}
+
+	@Override
+	public Page<Order> getPageOrder(Pageable pageable) {
+		 Page<CorderBean> result = coRepo.findAll(pageable);
+		 Page<Order> page = result.map(new Function<CorderBean, Order>() {
+			@Override
+			public Order apply(CorderBean o) {
+				Order order = new Order();
+				order.setOrderID(o.getOrderID());
+				order.setStudentID(o.getStudentID());
+				order.setOrderPrice(o.getOrderPrice());
+				order.setOrderDate(o.getOrderDate());
+				order.setCancelDate(o.getCancelDate());
+				order.setPaymentMethod(o.getMethod());
+				order.setOrderStatus(o.getStatus());				
+				return order;
+			}
+			 
+		});
+		 return page;
 	}
 
 }

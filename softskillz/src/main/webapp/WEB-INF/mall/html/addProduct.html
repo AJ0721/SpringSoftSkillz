@@ -1,128 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
+
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增商品</title>
-	
-    <!-- 引入 jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-            crossorigin="anonymous"></script>
-			<!-- 引入自定義 CSS 樣式表 -->
-			<link rel="stylesheet" type="text/css" href="../css/style.css">		
-			 <link rel="stylesheet" type="text/css" href="../css/styles3.css">
-		
+	<title>新增商品</title>
+	<!-- 引入 jQuery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+			integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<!-- 引入自定義 CSS 樣式表 -->
+	<link rel="stylesheet" type="text/css" href="/mall/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/mall/css/styles3.css">
 </head>
 
 <body>
-	<!-- header區塊 -->
-	<div id="header"></div> 
-	
-	<div id="info" style="margin-top: 50px;">
-	
-    <form id="addProductForm" enctype="multipart/form-data">
-        <!-- 商品分類名稱 -->
-        <label for="productCategory">商品分類名稱:</label>
-        <select id="productCategory" name="productCategory">
-        </select>
-        <br>
-        <!-- 商品名稱 -->
-        <label for="productName">商品名稱:</label>
-        <input type="text" id="productName" name="productName" required>
-        <br>
-        <!-- 商品描述 -->
-        <label for="productDescription">商品描述:</label>
-        <textarea id="productDescription" name="productDescription" required></textarea>
-        <br>
-        <!-- 商品價格 -->
-        <label for="productPrice">商品價格:</label>
-        <input type="number" id="productPrice" name="productPrice" min="0" required>
-        <br>
-        <!-- 商品庫存 -->
-        <label for="productStock">商品庫存:</label>
-        <input type="number" id="productStock" name="productStock" min="0" required>
-        <br>
-        <!-- 目標受眾 -->
-        <label for="productTargetAudience">目標受眾:</label>
-        <input type="text" id="productTargetAudience" name="productTargetAudience">
-        <br>
-        <!-- 新增商品按鈕 -->
-        <button id="addProductBtn" type="submit">新增商品</button>
-    </form>
-	</div>
+<!-- 頁面頭部區塊 -->
+<div id="header"></div>
 
-	
-	<!-- 引入 JavaScript 腳本 -->
-	    <script src="../js/scripts.js"></script>
-	    <script src="../js/utils.js"></script>
-		
-    <script>
+<div id="info" style="margin-top: 50px;">
+	<form id="addProductForm" enctype="multipart/form-data">
+		<!-- 商品類型 -->
+		<label for="productType">商品類型:</label>
+		<select id="productType" name="productType" required></select>
+		<br>
+		<!-- 商品狀態 -->
+		<label for="productStatus">商品狀態:</label>
+		<select id="productStatus" name="productStatus" required></select>
+		<br>
+		<!-- 商品名稱 -->
+		<label for="productName">商品名稱:</label>
+		<input type="text" id="productName" name="productName" required>
+		<br>
+		<!-- 商品描述 -->
+		<label for="productDescription">商品描述:</label>
+		<textarea id="productDescription" name="productDescription" required></textarea>
+		<br>
+		<!-- 商品價格 -->
+		<label for="productPrice">商品價格:</label>
+		<input type="number" id="productPrice" name="productPrice" min="0" required>
+		<br>
+		<!-- 商品庫存 -->
+		<label for="productStock">商品庫存:</label>
+		<input type="number" id="productStock" name="productStock" min="0" required>
+		<br>
+		<!-- 目標受眾 -->
+		<label for="productTargetAudience">目標受眾:</label>
+		<input type="text" id="productTargetAudience" name="productTargetAudience">
+		<br>
+		<!-- 作者名稱 -->
+		<div id="authorSection" style="display: none;">
+			<label for="productAuthorName">作者名稱:</label>
+			<input type="text" id="productAuthorName" name="productAuthorName">
+			<br>
+			<!-- ISBN 編號 -->
+			<label for="productISBN">ISBN 編號:</label>
+			<input type="text" id="productISBN" name="productISBN">
+			<br>
+			<!-- 出版日期 -->
+			<label for="productPublicationDate">出版日期:</label>
+			<input type="date" id="productPublicationDate" name="productPublicationDate">
+		</div>
+		<br>
+		<!-- 新增商品按鈕 -->
+		<button id="addProductBtn" type="submit">新增商品</button>
+	</form>
+</div>
 
-		
-		$(document).ready(function() {
-		    // 填充商品分類下拉選單
-		    function fetchProductCategories() {
-		        $.get('/api/product-categories', function(data) {
-		            const select = $('#productCategory');
-		            data.forEach(category => {
-		                select.append(new Option(category.productCategoryName, category.productCategoryId));
-		            });
-		        }).fail(function(xhr) {
-		            console.error('Error fetching product categories:', xhr.status);
-		        });
-		    }
-		
-		    // 註冊表單提交事件
-		    $('#addProductForm').on('submit', function(event) {
-		        event.preventDefault();
-		        const productData = {
-		            productCategory: {
-		                productCategoryId: $('#productCategory').val() // 取得選中的分類 ID
-		            },
-		            productName: $('#productName').val(),
-		            productDescription: $('#productDescription').val(),
-		            productPrice: parseInt($('#productPrice').val(), 10),
-		            productStock: parseInt($('#productStock').val(), 10) === 0 ? null : parseInt($('#productStock').val(), 10),
-		            productTargetAudience: $('#productTargetAudience').val(),
-		        };
-		
-		        console.log(JSON.stringify(productData)); // 在控制台打印出發送的資料
-		
-		        $.ajax({
-		            url: '/api/products',
-		            type: 'POST',
-		            contentType: 'application/json',
-		            data: JSON.stringify(productData),
-		            success: function(data) {
-		                alert('商品新增成功');
-		                console.log('Success:', data);
-		                $('#addProductForm')[0].reset();
-						window.location.href = "/mall/index"; 
-		            },
-		            error: function(xhr) {
-		                alert('商品新增失敗: ' + xhr.status);
-		                console.error('Error:', xhr.responseText);
-		            }
-		        });
-		    });
-		
-		    fetchProductCategories();
+<!-- 引入 JavaScript 腳本 -->
+<script src="/mall/js/scripts.js"></script>
+<script src="/mall/js/utils.js"></script>
+
+<script>
+	$(document).ready(function () {
+		// 初始化商品類型和狀態下拉選單
+		fetchProductTypes();
+		fetchProductStatuses();
+
+		// 註冊表單提交事件，處理新增商品
+		$('#addProductForm').on('submit', function (event) {
+			event.preventDefault();
+			const productData = {
+				productType: { productTypeId: $('#productType').val() },
+				productStatus: { productStatusId: $('#productStatus').val() },
+				productName: $('#productName').val(),
+				productDescription: $('#productDescription').val(),
+				productPrice: parseFloat($('#productPrice').val()),
+				productStock: parseInt($('#productStock').val(), 10),
+				productTargetAudience: $('#productTargetAudience').val(),
+				productCreateDate: formatDate(new Date())  // 使用自定義函數格式化日期
+			};
+
+			// 只有當相應的欄位有值時，才將其包含進去
+			if ($('#productAuthorName').val()) {
+				productData.productAuthorName = $('#productAuthorName').val();
+			}
+			if ($('#productISBN').val()) {
+				productData.productISBN = $('#productISBN').val();
+			}
+			if ($('#productPublicationDate').val()) {
+				productData.productPublicationDate = $('#productPublicationDate').val();
+			}
+
+			console.log(JSON.stringify(productData));
+
+			$.ajax({
+				url: '/products',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(productData),
+				success: function (data) {
+					alert('商品新增成功');
+					window.location.href = "/mall/html/index.html";
+				},
+				error: function (xhr, textStatus, errorThrown) {
+					alert('商品新增失敗: ' + xhr.status + ', ' + errorThrown);
+					console.error('Error:', xhr.responseText);
+				}
+			});
 		});
 
-		
+		// 監聽商品類型選擇變化，動態顯示或隱藏作者資訊
+		$('#productType').on('change', toggleAuthorFields);
+	});
 
-    </script>
-	<!-- 動態加載Header -->
-	    <script>
-	        fetch("/html/backtest.html")
-	            .then(response => {
-	                if (response.ok) {
-	                    return response.text();
-	                }
-	            }).then(data => {
-	                document.querySelector('#header').innerHTML = data;
-	            })
-	    </script>
+	function formatDate(date) {
+		const d = new Date(date);
+		function pad(n) { return n < 10 ? '0' + n : n }
+		return d.getFullYear() + '-' +
+				pad(d.getMonth() + 1) + '-' +
+				pad(d.getDate()) + ' ' +
+				pad(d.getHours()) + ':' +
+				pad(d.getMinutes()) + ':' +
+				pad(d.getSeconds());
+	}
+
+
+	function fetchProductTypes() {
+		$.get('/product-types', function (data) {
+			const select = $('#productType');
+			data.forEach(type => {
+				select.append(new Option(type.productTypeName, type.productTypeId));
+			});
+			select.prepend(new Option('請選擇', '', true, true)); // 預設選項
+		}).fail(function (xhr) {
+			alert('加載商品類型失敗: ' + xhr.status);
+		});
+	}
+
+	function fetchProductStatuses() {
+		$.get('/product-statuses', function (data) {
+			const select = $('#productStatus');
+			select.append(new Option('未指定', 'default', true, true)); // 預設狀態
+			data.forEach(status => {
+				select.append(new Option(status.productStatusName, status.productStatusId));
+			});
+		}).fail(function (xhr) {
+			alert('加載商品狀態失敗: ' + xhr.status);
+		});
+	}
+
+	function toggleAuthorFields() {
+		const isPhysical = $('#productType').find(':selected').text() === '實體教材';
+		$('#authorSection').toggle(isPhysical);
+	}
+</script>
+
+<!-- 動態加載Header -->
+<script>
+	fetch("/mall/html/testiframe.html")
+			.then(response => {
+				if (response.ok) {
+					return response.text();
+				}
+			}).then(data => {
+		document.querySelector('#header').innerHTML = data;
+	});
+</script>
 </body>
+
 </html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室範例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .content {
+            margin-bottom: 20px;
+        }
+
+        .chat-box {
+            width: 300px;
+            /* 限制寬度 */
+            height: 400px;
+            /* 限制高度 */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f9f9;
+        }
+
+        .chat-window {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+
+        .chat-message {
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            max-width: 80%;
+            /* 防止訊息過寬 */
+            word-wrap: break-word;
+        }
+
+        .chat-message.user {
+            background-color: #e0f7fa;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .chat-message.other {
+            background-color: #cfd8dc;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #e0e0e0;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            background-color: #0288d1;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #0277bd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h2>嵌入的聊天室範例</h2>
+        <p>這個聊天室窗口是網頁中的一部分，可以在其他內容旁邊顯示。</p>
+    </div>
+    <div class="chat-box">
+        <div class="chat-window" id="chat-window">
+            <!-- 聊天訊息將顯示在這裡 -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="輸入訊息..." />
+            <button id="send-button">發送</button>
+        </div>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+
+        function sendMessage(message, isUser) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.classList.add(isUser ? 'user' : 'other');
+            messageElement.textContent = message;
+            chatWindow.appendChild(messageElement);
+
+            // Scroll to the bottom to see the latest message
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                sendMessage(message, true);  // 使用者訊息
+                chatInput.value = '';  // 清除輸入框
+
+                // 模擬自動回覆
+                setTimeout(() => {
+                    sendMessage('自動回覆: ' + message, false);
+                }, 1000);
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+    </script>
+</body>
+
+</html>

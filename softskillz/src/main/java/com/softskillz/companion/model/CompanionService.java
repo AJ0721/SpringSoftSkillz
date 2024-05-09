@@ -49,7 +49,7 @@ public class CompanionService {
 		return null;
 	}
 	
-	public List<CompanionBean> getByInterest(
+	public List<CompanionBean> getByMatchRequirement(
 			String companionLearningInterest,
 			String companionGender,
 			String companionFirstLanguage,

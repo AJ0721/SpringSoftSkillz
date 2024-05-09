@@ -77,21 +77,4 @@ public class CompanionMatchBean {
 		this.matchRequest = matchRequest;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("CompanionMatchBean [matchId=");
-		builder.append(matchId);
-		builder.append(", companionAId=");
-		builder.append(companionAId);
-		builder.append(", companionBId=");
-		builder.append(companionBId);
-		builder.append(", matchRequest=");
-		builder.append(matchRequest);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	
-
 }

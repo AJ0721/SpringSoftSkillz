@@ -1,13 +1,14 @@
-window.onload = () => {
-    // const orders = sessionStorage.getItem("orders");
-    const orders = "";
-    if (orders) {
-        appendorder(JSON.parse(orders));
-    } else {
-        getAllOrders();
-    }
-}
-
+fetch("/courseorder")
+    .then(response => {
+        console.log(response);
+        if (response.ok) {
+            return response.json();
+        }
+    }).then(order => {
+        let orders = JSON.stringify(order);
+        sessionStorage.setItem("orders", orders)
+        appendorder(order);
+    })
 function getAllOrders() {
     fetch("/courseorder")
         .then(response => {

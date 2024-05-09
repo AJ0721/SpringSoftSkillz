@@ -36,6 +36,23 @@ public class CourseService {
 	// 更新課程
 	// 先檢查傳入的CourseBean是否為非空,且其 ID 是否有效（即資料庫中已存在此 ID 的課程）
 	// 如果是，使用save()更新課程。
+//	public CourseBean updateCourse(CourseBean course) {
+//	    if (course != null && course.getCourseID() != null && courseRepository.existsById(course.getCourseID())) {
+//	        // 從資料庫中獲取現有課程
+//	        CourseBean existingCourse = courseRepository.findById(course.getCourseID()).orElse(null);
+//	        if (existingCourse != null) {
+//	            // 複製要更新的屬性到現有課程中
+//	            existingCourse.setCourseCategory(course.getCourseCategory());
+//	            existingCourse.setCourseName(course.getCourseName());
+//	            existingCourse.setCourseInfo(course.getCourseInfo());
+//	            existingCourse.setCoursePrice(course.getCoursePrice());
+//	            
+//	            // 保存更新後的課程
+//	            return courseRepository.save(existingCourse);
+//	        }
+//	    }
+//	    return null;
+//	}
 	public CourseBean updateCourse(CourseBean course) {
 		if (course != null && course.getCourseID() != null && courseRepository.existsById(course.getCourseID())) {
 			return courseRepository.save(course);

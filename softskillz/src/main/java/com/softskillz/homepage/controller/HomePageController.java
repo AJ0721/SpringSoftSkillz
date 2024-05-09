@@ -2,13 +2,14 @@ package com.softskillz.homepage.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/softskillz")
 public class HomePageController {
 	
-	@GetMapping("/homepage")
-	public String courseAllPage() {
-		// 在這裡添加任何需要的模型屬性
-		return "/pages/backendPage.jsp";
+	@GetMapping("/newhomepage")
+	public String homePage() {
+		return "/dist/index.html";
 	}
 }

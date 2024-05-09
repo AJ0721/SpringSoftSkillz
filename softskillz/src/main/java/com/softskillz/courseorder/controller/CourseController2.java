@@ -36,6 +36,7 @@ public class CourseController2 {
 	@GetMapping("/{courseID}")
 	public String getCourseById(@PathVariable("courseID") Integer courseID, Model m) {
 		Course2 course = cService.getCourseById(courseID);
+		System.out.println(course.getTeacherID());
 		m.addAttribute("course", course);
 		return "courseorder/jsp/CourseDetail.jsp";
 	}

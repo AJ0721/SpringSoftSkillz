@@ -3006,6 +3006,11 @@ fieldset:disabled .btn {
   --bs-btn-disabled-bg: #425169;
   --bs-btn-disabled-border-color: #425169;
 }
+.btn-time-disabled {
+  background-color: #6c757d; /* 按鈕背景顏色 */
+  color: #fff; /* 文字顏色 */
+  cursor: not-allowed; /* 鼠標樣式 */
+}
 .btn-secondary {
   --bs-btn-color: #fff;
   --bs-btn-bg: #6c757d;

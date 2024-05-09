@@ -81,7 +81,7 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS
 		<script>
 			const index = document.querySelector('.index')
 			index.addEventListener('click', function() {
-				location.href = "/index.html"
+				location.href = "/companionIndex.html"
 			})
 		</script>
 	</div>

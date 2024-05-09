@@ -1,6 +1,6 @@
 package com.softskillz.account.model.bean;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softskillz.companion.model.CompanionBean;
 import com.softskillz.forum.model.model.ForumThreadModel;
 import com.softskillz.studentreservation.model.StudentReservationBean;
@@ -23,6 +24,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "student")
@@ -85,13 +87,16 @@ public class StudentBean {
 	@Column(name = "learning_frequency")
 	private String learningFrequency;
 
-	@Column(name = "student_id_formatted")
+//	@Transient
+	@Column(name = "student_id_formatted",insertable = false,updatable = false)
 	private String studentIdFormatted;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
+	@JsonManagedReference("student-studentReservation")
 	private Set<StudentReservationBean> studentReservation = new HashSet<StudentReservationBean>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
+	@JsonManagedReference("student-studentSchedule")
 	private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
 
 	//任萱forum

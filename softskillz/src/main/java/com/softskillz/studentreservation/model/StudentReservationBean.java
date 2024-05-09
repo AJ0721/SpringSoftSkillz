@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
@@ -51,14 +52,17 @@ public class StudentReservationBean implements Serializable {
 	private int totalHours;
 
 	@JoinColumn(name = "course_id", insertable = false, updatable = false)
+	@JsonBackReference("course-studentReservation")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CourseBean courseBean;
 
 	@JoinColumn(name = "student_id", insertable = false, updatable = false)
+	@JsonBackReference("student-studentReservation")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private StudentBean studentBean;
 
 	@JoinColumn(name = "teacher_schedule_id", insertable = false, updatable = false)
+	@JsonBackReference("teacherSchedule-studentReservation")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TeacherScheduleBean teacherScheduleBean;
 

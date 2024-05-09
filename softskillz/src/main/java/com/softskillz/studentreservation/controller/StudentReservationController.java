@@ -1,8 +1,11 @@
 package com.softskillz.studentreservation.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.service.StudentService;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
@@ -38,17 +43,9 @@ public class StudentReservationController {
 	@Autowired
 	private StudentService studentService;
 
-
-	// 學生預約課程CRUD頁面
-	@GetMapping("/studentReservationPage/studentReservationAllPage")
-	public String studentReservationAllPage() {
-		// 在這裡添加任何需要的模型屬性
-		return "/studentReservation/studentReservationPage/studentReservationAllPage.jsp";
-	}
-
-	// 新增學生預約的頁面
-	@PostMapping("/insert")
-	public String insertStudentReservationPage(Model model) {
+	// 模版新增學生預約CRUD頁面
+	@GetMapping("/insertPage")
+	public String studentReservationInsertPage(Model model) {
 		List<CourseBean> courses = courseService.findAllCourses();
 		model.addAttribute("courses", courses);
 
@@ -57,89 +54,64 @@ public class StudentReservationController {
 
 		List<StudentBean> students = studentService.findAllStudents();
 		model.addAttribute("students", students);
-		return "/studentReservation/studentReservationPage/studentReservationInsert.jsp";
+		return "/dist/studentReservation/studentReservationInsert.jsp";
 	}
-
+	
 	@PostMapping("/add")
-	public String addStudentReservation(@ModelAttribute StudentReservationBean studentReservationBean,
-			RedirectAttributes redirectAttributes) throws ReservationException {
-
-		StudentReservationBean newStudentReservation = studentReservationService
-				.insertStudentReservation(studentReservationBean);
-		if (newStudentReservation != null && newStudentReservation.getTeacherScheduleID() > 0) {
-			redirectAttributes.addFlashAttribute("message", "學生預約新增成功");
-		} else {
-			redirectAttributes.addFlashAttribute("error", "學生預約新增失敗");
+	@ResponseBody
+	public ResponseEntity<?> addStudentReservation(@ModelAttribute StudentReservationBean studentReservationBean) {
+		try {
+			StudentReservationBean newStudentReservation = studentReservationService.insertStudentReservation(studentReservationBean);
+			if (newStudentReservation != null && newStudentReservation.getTeacherScheduleID() > 0) {
+				return ResponseEntity.ok().body(new HashMap<String, Object>() {
+					{
+						put("success", true);
+						put("message", "學生預約新增成功");
+					}
+				});
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<String, Object>() {
+					{
+						put("success", false);
+						put("message", "學生預約新增失敗");
+					}
+				});
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<String, Object>() {
+				{
+					put("success", false);
+					put("message", "處理請求時發生錯誤");
+				}
+			});
 		}
-		return "/studentReservation/studentReservationPage/studentReservationInsertSuccessed.jsp"; // 這裡填寫成功頁面的路徑
-	}
-
-	// 根據學生預約編號查詢單筆學生預約資料的頁面
-	@GetMapping("/select")
-	public String selectStudentReservationPage(Model model) {
-		List<StudentReservationBean> reservations = studentReservationService.findAllStudentReservations();
-		System.out.println("------------");
-		model.addAttribute("reservations", reservations);
-		System.out.println("測試"+reservations);
-		return "/studentReservation/studentReservationPage/studentReservationSelect.jsp";
-	}
-
-	@GetMapping("/oneStudentReservation")
-	public String getStudentReservation(@RequestParam("studentReservationID") int studentReservationID, Model model) {
-		StudentReservationBean reservations = studentReservationService
-				.findStudentReservationById(studentReservationID);
-		model.addAttribute("reservations", reservations);
-		return "/studentReservation/studentReservationPage/studentReservationSelectSuccessed.jsp"; // 指向查詢成功的頁面
 	}
 
 	// 根據學生編號查詢該學生所有預約的頁面
-	@GetMapping("/selectAll")
+	@GetMapping("/selectAllPage")
 	public String selectAllTeacherSchedulePage(Model model) {
 		List<StudentBean> student = studentService.findAllStudents();
 		model.addAttribute("student", student);
-		return "/studentReservation/studentReservationPage/studentReservationSelectAll.jsp";
+		return "/dist/studentReservation/studentReservationSelect.jsp";
 	}
 
 	@GetMapping("/allReservations")
 	public String getStudentReservations(@RequestParam("studentId") int studentId, Model model) {
 		List<StudentReservationBean> reservations = studentReservationService.getStudentReservationsById(studentId);
 		model.addAttribute("reservations", reservations);
-		return "/studentReservation/studentReservationPage/studentReservationSelectAllById.jsp";
-	}
-
-	// 刪除學生預約的頁面
-	@PostMapping("/delete")
-	public String deleteStudentReservationPage(Model model) {
-		List<StudentReservationBean> reservations = studentReservationService.findAllStudentReservations();
-		model.addAttribute("reservations", reservations);
-		return "/studentReservation/studentReservationPage/studentReservationDelete.jsp";
+		return "/dist/studentReservation/studentReservationSelectAll.jsp";
 	}
 
 	// 處理刪除學生預約的請求
 	@PostMapping("/deleted")
-	public String deleteStudentReservation(@RequestParam("studentReservationID") Integer studentReservationID,
-			RedirectAttributes redirectAttributes) {
-		studentReservationService.deleteByStudentReservationId(studentReservationID);
-		redirectAttributes.addFlashAttribute("message", "預約刪除成功");
-		return "/studentReservation/studentReservationPage/studentReservationDeleteSuccessed.jsp";
+	@ResponseBody
+	public ResponseEntity<?> deleteStudentReservation(@RequestParam("studentReservationID") Integer studentReservationID) {
+		try {
+			studentReservationService.deleteByStudentReservationId(studentReservationID);
+			return ResponseEntity.ok().body("學生預約刪除成功");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("學生預約刪除失敗");
+		}
 	}
-
-	
-//	@GetMapping("/insertSelect")
-//	public String insertSelectStudentReservationPage(@RequestParam("courseID") int courseID,
-//			@RequestParam("teacherScheduleID") int teacherScheduleID, Model model) {
-////		List<CourseBean> courses = courseService.findAllCourses();
-////		model.addAttribute("courses", courses);
-////
-////		List<TeacherScheduleBean> teacherSchedules = teacherScheduleService.findAllTeacherSchedules();
-////		model.addAttribute("teacherSchedules", teacherSchedules);
-//
-//		TeacherScheduleBean schedule = teacherScheduleService.findTeacherScheduleById(teacherScheduleID);
-//
-//		List<StudentBean> students = studentService.findAllStudents();
-//		model.addAttribute("teacherSchedule", schedule);
-//		model.addAttribute("students", students);
-//		return "/studentReservation/studentReservationPage/studentReservationInsertEdit";
-//	}
 
 }

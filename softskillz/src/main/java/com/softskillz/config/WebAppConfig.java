@@ -66,7 +66,7 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/courseorder/css/**").addResourceLocations("/WEB-INF/courseorder/css/");
 		registry.addResourceHandler("/courseorder/js/**").addResourceLocations("/WEB-INF/courseorder/js/");
 		registry.addResourceHandler("/courseorder/html/**").addResourceLocations("/WEB-INF/courseorder/html/");
-		registry.addResourceHandler("/courseorder/admin/**").addResourceLocations("/WEB-INF/admin/");
+		registry.addResourceHandler("/courseorder/admin/**").addResourceLocations("/WEB-INF/courseorder/admin/");
 
 		registry.addResourceHandler("/Companion/CompanionImg/**")
 				.addResourceLocations("/WEB-INF/companion/jsp/Companion/CompanionImg/");
@@ -88,24 +88,57 @@ public class WebAppConfig implements WebMvcConfigurer {
 		// 模版css
 		registry.addResourceHandler("/assets/compiled/css/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/css/");
+		// Data Tables css
+		registry.addResourceHandler("/assets/extensions/datatables.net-bs5/css/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/datatables.net-bs5/css/");
+		// Date Picker
+		registry.addResourceHandler("/assets/extensions/flatpickr/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/flatpickr/");
+
+		registry.addResourceHandler("/assets/extensions/simple-datatables/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/simple-datatables/");
+
 		// 模版js
+		registry.addResourceHandler("/assets/static/js/**")
+				.addResourceLocations("/WEB-INF/dist/assets/static/js/");
+
+
+		// 模版js
+
+
 		registry.addResourceHandler("/assets/static/js/components/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/js/components/");
-		
+
+		registry.addResourceHandler("/assets/static/js/**")
+		.addResourceLocations("/WEB-INF/dist/assets/static/js/");
+
 		registry.addResourceHandler("/assets/static/js/pages/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/js/pages/");
-		
+
 		registry.addResourceHandler("/assets/extensions/perfect-scrollbar/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/perfect-scrollbar/");
-		
-		registry.addResourceHandler("/assets/compiled/js/**").addResourceLocations("/WEB-INF/dist/assets/compiled/js/");
-		
+
 		registry.addResourceHandler("/assets/extensions/sweetalert2/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/sweetalert2/");
-		
+
 		registry.addResourceHandler("/assets/extensions/apexcharts/**")
-		.addResourceLocations("/WEB-INF/dist/assets/extensions/apexcharts/");
-		
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/apexcharts/");
+
+		registry.addResourceHandler("/assets/extensions/jquery/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/jquery/");
+
+		registry.addResourceHandler("/assets/extensions/datatables.net/js/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/datatables.net/js/");
+
+		registry.addResourceHandler("/assets/extensions/datatables.net-bs5/js/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/datatables.net-bs5/js/");
+
+
+		registry.addResourceHandler("/assets/extensions/simple-datatables/umd/js/**")
+				.addResourceLocations("/WEB-INF/dist/assets/extensions/simple-datatables/umd/js/");
+
+		registry.addResourceHandler("/assets/compiled/js/**").addResourceLocations("/WEB-INF/dist/assets/compiled/js/");
+
 		// 模版jpg
 		registry.addResourceHandler("/assets/compiled/jpg/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/jpg/");

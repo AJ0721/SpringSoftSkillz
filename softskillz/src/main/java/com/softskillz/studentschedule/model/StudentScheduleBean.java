@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 
@@ -43,6 +44,7 @@ public class StudentScheduleBean implements Serializable {
 	private String studentTimeSlotsAll;
 
 	@JoinColumn(name = "student_id", insertable = false, updatable = false)
+	@JsonBackReference("student-studentSchedule")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private StudentBean studentBean;
 
@@ -114,15 +116,3 @@ public class StudentScheduleBean implements Serializable {
 	}
 
 }
-
-//	// 測試用 測完關掉
-//	public void setCourseDate(LocalDate now) {
-//		// TODO Auto-generated method stub
-//
-//	}
-//
-//	// 測試用 測完關掉
-//	public Object[] getCourseDate() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}

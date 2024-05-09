@@ -1,141 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>修改商品</title>
-	<!-- 引入 jQuery -->
-	    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-	            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-	            crossorigin="anonymous"></script>
-				<!-- 引入自定義 CSS 樣式表 -->
-				<link rel="stylesheet" type="text/css" href="../css/style.css">		
-				 <link rel="stylesheet" type="text/css" href="../css/styles4.css">
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- 引入自定義 CSS 樣式表 -->
+    <link rel="stylesheet" type="text/css" href="/mall/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/mall/css/styles4.css">
 </head>
 
 <body>
-	<!-- header區塊 -->
-		<div id="header"></div> 
-		
-		<div id="info" style="margin-top: 50px;">
-			
-    <form id="updateProductForm" enctype="multipart/form-data">
-        <!-- 商品編號 -->
-        <input type="hidden" id="productId" name="productId">
-        <!-- 商品名稱 -->
-        <label for="productName">商品名稱:</label>
-        <input type="text" id="productName" name="productName" required>
-        <br>
-        <!-- 商品描述 -->
-        <label for="productDescription">商品描述:</label>
-        <textarea id="productDescription" name="productDescription" required></textarea>
-        <br>
-        <!-- 商品價格 -->
-        <label for="productPrice">商品價格:</label>
-        <input type="number" id="productPrice" name="productPrice" min="0" required>
-        <br>
-        <!-- 商品庫存 -->
-        <label for="productStock">商品庫存:</label>
-        <input type="number" id="productStock" name="productStock" min="0" required>
-        <br>
-        <!-- 目標受眾 -->
-        <label for="productTargetAudience">目標受眾:</label>
-        <input type="text" id="productTargetAudience" name="productTargetAudience">
-        <br>
-        <!-- 修改商品按鈕 -->
-        <button id="updateProductBtn" type="submit">修改商品</button>
-    </form>
-	</div>
-	
-	<!-- 引入 JavaScript 腳本 -->
-		    <script src="../js/scripts.js"></script>
-		    <script src="../js/utils.js"></script>
-			
-			
+    <!-- header區塊 -->
+    <div id="header"></div>
+    <!-- 主要資訊區 -->
+    <div id="info" style="margin-top: 50px;">
+        <form id="updateProductForm" enctype="multipart/form-data">
+            <!-- 商品編號，用於識別要更新的商品 -->
+            <input type="hidden" id="productId" name="productId">
+            <!-- 商品類型ID，用於更新商品類型 -->
+            <input type="hidden" id="productTypeId" name="productTypeId">
+            <!-- 商品狀態ID，用於更新商品狀態 -->
+            <input type="hidden" id="productStatusId" name="productStatusId">
+            <!-- 商品創建日期，用於更新商品創建日期 -->
+            <input type="hidden" id="productCreateDate" name="productCreateDate">
+            <!-- 商品名稱 -->
+            <label for="productName">商品名稱:</label>
+            <input type="text" id="productName" name="productName" required>
+            <br>
+            <!-- 商品描述 -->
+            <label for="productDescription">商品描述:</label>
+            <textarea id="productDescription" name="productDescription" required></textarea>
+            <br>
+            <!-- 商品類型 -->
+            <label for="productType">商品類型:</label>
+            <input type="text" id="productType" name="productType" required>
+            <br>
+            <!-- 商品狀態 -->
+            <label for="productStatus">商品狀態:</label>
+            <input type="text" id="productStatus" name="productStatus" required>
+            <br>
+            <!-- 商品價格 -->
+            <label for="productPrice">商品價格:</label>
+            <input type="number" id="productPrice" name="productPrice" min="0" required>
+            <br>
+            <!-- 商品庫存 -->
+            <label for="productStock">商品庫存:</label>
+            <input type="number" id="productStock" name="productStock" min="0">
+            <br>
+            <!-- 目標受眾 -->
+            <label for="productTargetAudience">目標受眾:</label>
+            <input type="text" id="productTargetAudience" name="productTargetAudience">
+            <br>
+            <!-- 作者名稱 -->
+            <label for="productAuthorName">作者名稱:</label>
+            <input type="text" id="productAuthorName" name="productAuthorName">
+            <br>
+            <!-- ISBN 編號 -->
+            <label for="productISBN">ISBN 編號:</label>
+            <input type="text" id="productISBN" name="productISBN">
+            <br>
+            <!-- 出版日期 -->
+            <label for="productPublicationDate">出版日期:</label>
+            <input type="date" id="productPublicationDate" name="productPublicationDate">
+            <br>
+            <!-- 修改商品按鈕 -->
+            <button id="updateProductBtn" type="submit">修改商品</button>
+        </form>
+    </div>
+
+    <!-- 引入 JavaScript 腳本 -->
+    <script src="/mall/js/scripts.js"></script>
+    <script src="/mall/js/utils.js"></script>
 
     <script>
-		$(document).ready(function() {
-		    // 解析URL以獲取商品ID
-		    function getProductIdFromUrl() {
-		        const params = new URLSearchParams(window.location.search);
-		        return params.get('productId');
-		    }
-		
-		    // 加載商品詳細資料並填充表單
-		    function fetchProductDetails() {
-		        const productId = getProductIdFromUrl();
-		        if (!productId) {
-		            alert('商品ID未提供！');
-		            return;
-		        }
-		
-		        $.ajax({
-		            url: `/api/products/${productId}`,
-		            type: 'GET',
-		            success: function(product) {
-		                $('#productId').val(product.productId);
-		                $('#productName').val(product.productName);
-		                $('#productDescription').val(product.productDescription);
-		                $('#productPrice').val(product.productPrice);
-		                $('#productStock').val(product.productStock);
-		                $('#productTargetAudience').val(product.productTargetAudience);
-		            },
-		            error: function(xhr) {
-		                alert('加載商品資料失敗: ' + xhr.status);
-		            }
-		        });
-		    }
-		
-		    // 註冊表單提交事件
-		    $('#updateProductForm').on('submit', function(event) {
-		        event.preventDefault();
-		        const productId = $('#productId').val();
-		
-		        const productData = {
-		            productId: $('#productId').val(),
-		            productName: $('#productName').val(),
-		            productDescription: $('#productDescription').val(),
-		            productPrice: parseInt($('#productPrice').val(), 10),
-		            productStock: parseInt($('#productStock').val(), 10),
-		            productTargetAudience: $('#productTargetAudience').val(),
-		        };
-		
-		        // 使用 jQuery AJAX 發送更新請求
-		        $.ajax({
-		            url: `/api/products/${productId}`,
-		            type: 'PUT',
-		            contentType: 'application/json',
-		            data: JSON.stringify(productData),
-		            success: function(data) {
-		                alert('商品修改成功');
-		                console.log('Success:', data);
-						   // 修改完回商品首頁
-						window.location.href = "/mall/index"; 
-		            },
-		            error: function(xhr, status, error) {
-		                alert('商品修改失敗: ' + xhr.status);
-		                console.error('Error:', xhr.responseText);
-		            }
-		        });
-		    });
-		
-		    fetchProductDetails(); // 僅需呼叫一次
-		});
+        $(document).ready(function () {
+
+            function formatDate(date) {
+                const d = new Date(date);
+                function pad(n) { return n < 10 ? '0' + n : n }
+                return d.getFullYear() + '-' +
+                    pad(d.getMonth() + 1) + '-' +
+                    pad(d.getDate()) + ' ' +
+                    pad(d.getHours()) + ':' +
+                    pad(d.getMinutes()) + ':' +
+                    pad(d.getSeconds());
+            }
+
+            // 解析URL以獲取商品ID
+            function getProductIdFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('productId');
+            }
+
+            // 加載商品詳細資料並填充表單
+            function fetchProductDetails() {
+                const productId = getProductIdFromUrl();
+                if (!productId) {
+                    alert('商品ID未提供！');
+                    return;
+                }
+
+                $.ajax({
+                    url: `/products/${productId}`,
+                    type: 'GET',
+                    success: function (product) {
+                        $('#productId').val(product.productId);
+                        $('#productName').val(product.productName);
+                        $('#productDescription').val(product.productDescription);
+                        $('#productTypeId').val(product.productType.productTypeId);
+                        $('#productType').val(product.productType.productTypeName);
+                        $('#productStatusId').val(product.productStatus.productStatusId);
+                        $('#productStatus').val(product.productStatus.productStatusName);
+                        $('#productPrice').val(product.productPrice);
+                        $('#productStock').val(product.productStock);
+                        $('#productTargetAudience').val(product.productTargetAudience);
+                        $('#productAuthorName').val(product.productAuthorName || '');
+                        $('#productISBN').val(product.productISBN || '');
+                        $('#productPublicationDate').val(product.productPublicationDate ? product.productPublicationDate.substring(0, 10) : '');
+                        $('#productCreateDate').val(product.productCreateDate); // 確保加載原創建日期
+                    },
+                    error: function (xhr) {
+                        alert('加載商品資料失敗，錯誤訊息: ' + xhr.status);
+                    }
+                });
+            }
+
+            // 註冊表單提交事件，更新商品
+            $('#updateProductForm').on('submit', function (event) {
+                event.preventDefault();
+                const productData = {
+                    productId: $('#productId').val(),
+                    productName: $('#productName').val(),
+                    productDescription: $('#productDescription').val(),
+                    productType: { productTypeId: $('#productTypeId').val(), productTypeName: $('#productType').val() },
+                    productStatus: { productStatusId: $('#productStatusId').val(), productStatusName: $('#productStatus').val() },
+                    productPrice: parseFloat($('#productPrice').val()),
+                    productStock: parseInt($('#productStock').val(), 10),
+                    productTargetAudience: $('#productTargetAudience').val(),
+                    productAuthorName: $('#productAuthorName').val(),
+                    productISBN: $('#productISBN').val(),
+                    productPublicationDate: $('#productPublicationDate').val(),
+                    productCreateDate: $('#productCreateDate').val(),  // 重新提交原創建日期
+                    productUpdateDate: formatDate(new Date())  // 新增或更新商品更新日期
+                };
+
+                // 使用 jQuery AJAX 發送更新請求
+                $.ajax({
+                    url: `/products/${productData.productId}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(productData),
+                    success: function (data) {
+                        alert('商品修改成功');
+                        window.location.href = "/mall/html/index.html";
+                    },
+                    error: function (xhr, status, error) {
+                        alert('商品修改失敗，錯誤訊息: ' + xhr.status);
+                    }
+                });
+            });
+
+            fetchProductDetails(); // 僅需呼叫一次，當頁面加載時執行
+        });
     </script>
-	
-	</script>
-		<!-- 動態加載Header -->
-		    <script>
-		        fetch("/html/backtest.html")
-		            .then(response => {
-		                if (response.ok) {
-		                    return response.text();
-		                }
-		            }).then(data => {
-		                document.querySelector('#header').innerHTML = data;
-		            })
-		    </script>
+
+    <!-- 動態加載Header -->
+    <script>
+        fetch("/mall/html/testiframe.html")
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+            }).then(data => {
+                document.querySelector('#header').innerHTML = data;
+            });
+    </script>
 </body>
 
 </html>
