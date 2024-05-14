@@ -70,7 +70,29 @@ public class CompanionService {
 		return companionRepos.findAll();
 	}
 
-	public Page<CompanionBean> findAllByPage(Pageable pageable){
-		return companionRepos.findAll(pageable);
+//	public Page<CompanionBean> findAllByPage(Pageable pageable){
+//		return companionRepos.findAll(pageable);
+//	}
+	
+	public Page<CompanionDTO> findAllByPage(Pageable pageable) {
+	    Page<CompanionBean> companionPage = companionRepos.findAll(pageable);
+	    return companionPage.map(this::mapToDTO);
 	}
+
+    private CompanionDTO mapToDTO(CompanionBean companionBean) {
+        CompanionDTO companionDTO = new CompanionDTO();
+        companionDTO.setCompanionId(companionBean.getCompanionId());
+        companionDTO.setCompanionFirstLanguage(companionBean.getCompanionFirstLanguage());
+        companionDTO.setCompanionSpeakingLanguage(companionBean.getCompanionSpeakingLanguage());
+        companionDTO.setCompanionLearningInterest(companionBean.getCompanionLearningInterest());
+        companionDTO.setCompanionLearningFrequency(companionBean.getCompanionLearningFrequency());
+        companionDTO.setCompanionAboutMe(companionBean.getCompanionAboutMe());
+        // 如果有其他需要映射的屬性，可以在這裡添加
+        companionDTO.setStudentId(companionBean.getStudentBeanID().getStudentId());
+        companionDTO.setStudentNickname(companionBean.getStudentBeanID().getStudentNickname());
+        companionDTO.setStudentGender(companionBean.getStudentBeanID().getStudentGender());
+        companionDTO.setStudentBirth(companionBean.getStudentBeanID().getStudentBirth());
+        companionDTO.setStudentPhoto(companionBean.getStudentBeanID().getStudentPhoto());
+        return companionDTO;
+    }
 }

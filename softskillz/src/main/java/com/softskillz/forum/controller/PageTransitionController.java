@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.softskillz.account.model.bean.AdminBean;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
 

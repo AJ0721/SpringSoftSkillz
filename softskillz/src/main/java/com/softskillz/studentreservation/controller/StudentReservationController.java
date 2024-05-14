@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.softskillz.account.model.bean.StudentBean;
-import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.service.StudentService;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
-import com.softskillz.studentreservation.model.ReservationException;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 import com.softskillz.studentreservation.model.StudentReservationService;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
@@ -56,12 +53,13 @@ public class StudentReservationController {
 		model.addAttribute("students", students);
 		return "/dist/studentReservation/studentReservationInsert.jsp";
 	}
-	
+
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<?> addStudentReservation(@ModelAttribute StudentReservationBean studentReservationBean) {
 		try {
-			StudentReservationBean newStudentReservation = studentReservationService.insertStudentReservation(studentReservationBean);
+			StudentReservationBean newStudentReservation = studentReservationService
+					.insertStudentReservation(studentReservationBean);
 			if (newStudentReservation != null && newStudentReservation.getTeacherScheduleID() > 0) {
 				return ResponseEntity.ok().body(new HashMap<String, Object>() {
 					{
@@ -105,12 +103,24 @@ public class StudentReservationController {
 	// 處理刪除學生預約的請求
 	@PostMapping("/deleted")
 	@ResponseBody
-	public ResponseEntity<?> deleteStudentReservation(@RequestParam("studentReservationID") Integer studentReservationID) {
+	public ResponseEntity<?> deleteStudentReservation(
+			@RequestParam("studentReservationID") Integer studentReservationID) {
 		try {
-			studentReservationService.deleteByStudentReservationId(studentReservationID);
-			return ResponseEntity.ok().body("學生預約刪除成功");
+			// 調用更新後的刪除預約及更新行事曆方法
+			studentReservationService.deleteStudentReservationAndUpdateSchedules(studentReservationID);
+			return ResponseEntity.ok().body(new HashMap<String, Object>() {
+				{
+					put("success", true);
+					put("message", "學生預約刪除成功");
+				}
+			});
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("學生預約刪除失敗");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<String, Object>() {
+				{
+					put("success", false);
+					put("message", "學生預約刪除失敗: " + e.getMessage());
+				}
+			});
 		}
 	}
 

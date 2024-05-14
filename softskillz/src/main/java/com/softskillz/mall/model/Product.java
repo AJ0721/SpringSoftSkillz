@@ -1,15 +1,15 @@
 package com.softskillz.mall.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.softskillz.mall.serializer.ProductStockSerializer;
-
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 
 /**
@@ -70,6 +70,14 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
     private Coupon coupon; // 關聯的優惠券
+
+    // 關聯操作(當一個 Product 被刪除時，其相關的所有 ProductImage 實體也會被自動刪除。)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ProductImage> images;
+
+    // 關聯操作(當一個 Product 被刪除時，其相關的所有 ProductVideo 實體也會被自動刪除。)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ProductVideo> videos;
 
     // 無參數建構子
     public Product() {

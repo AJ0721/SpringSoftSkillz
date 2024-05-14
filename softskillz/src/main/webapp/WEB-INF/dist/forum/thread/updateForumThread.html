@@ -45,7 +45,7 @@
                 })
                 .then(data => {
                     console.log(data);
-                    document.getElementById('category').innerHTML = data.forumCategoryName;
+                    document.getElementById('category').innerHTML = data.forumCategory.forumCategoryName;
                     document.getElementById('threadTitle').value = data.threadTitle;
                     document.getElementById('threadContent').value = data.threadContent;
                 })

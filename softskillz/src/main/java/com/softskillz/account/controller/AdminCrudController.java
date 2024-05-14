@@ -35,7 +35,7 @@ public class AdminCrudController {
 	@GetMapping("/admin-loginPage")
 	public String processLoginAction() {
 		System.out.println("aaaa");
-		return "account/admin/AdminLogin_back.jsp";
+		return "/dist/account/admin/AdminLoginBack.jsp";
 	}
 
 	// post沒辦法在網址頁輸入
@@ -46,25 +46,25 @@ public class AdminCrudController {
 		boolean result = adminService.checkLogin(new AdminBean(adminAccount, adminPassword));
 		if (result) {
 			model.addAttribute("adminAccount", adminAccount);
-			return "redirect:/softskillz/homepage"; // 驗證成功，重定向到首頁
+			return "/dist/index.html"; // 驗證成功，重定向到首頁
 		} else {
 
 			model.addAttribute("errMsg", "請輸入正確的帳號密碼");
 
 		}
-		return "account/admin/AdminLogin_back.jsp"; // 錯誤，重新返回登入頁面
+		return "/dist/account/admin/AdminLoginBack.jsp"; // 錯誤，重新返回登入頁面
 	}
 
 	// 管理員頁面
 	@GetMapping("/admin-account")
 	public String goToAccountPage() {
-		return "account/admin/AdminHomepageCRUD.jsp";
+		return "/dist/account/admin/adminCrudPage.jsp";
 	}
 
 	// 註冊頁面
 	@GetMapping("/admin-createPage")
 	public String goToAdminCreatePage() {
-		return "account/admin/AdminCreate.jsp";
+		return "/dist/account/admin/AdminCreate.jsp";
 	}
 
 	// 新增
@@ -82,7 +82,7 @@ public class AdminCrudController {
 		} else {
 			model.addAttribute("errMsg", "帳號創建成功");
 		}
-		return "account/admin/AdminLogin_back.jsp";
+		return "/dist/account/admin/AdminLoginBack.jsp";
 	}
 
 	// 查詢用GetMapping
@@ -104,7 +104,7 @@ public class AdminCrudController {
 		}
 
 		System.out.println(resultBean);
-		return "account/admin/AdminHomepageCRUD.jsp";
+		return "/dist/account/admin/adminCrudPage.jsp";
 
 	}
 
@@ -122,7 +122,7 @@ public class AdminCrudController {
 		request.getSession().setAttribute("totalElements", page.getTotalElements());
 		request.getSession().setAttribute("totalPages", page.getTotalPages()); // 從Page對象獲取總頁數
 
-		return "/account/admin/AdminHomepageCRUD.jsp";
+		return "/dist/account/admin/adminCrudPage.jsp";
 	}
 
 	@GetMapping("/AdminQueryByPage/{pageNo}")

@@ -2,9 +2,11 @@ package com.softskillz.productorder.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
-
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "orders")
@@ -27,8 +29,9 @@ public class Order {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime shipment_date;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<OrderItem> orderItems;
+	private Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
 	public Integer getOrder_id() {
 		return order_id;

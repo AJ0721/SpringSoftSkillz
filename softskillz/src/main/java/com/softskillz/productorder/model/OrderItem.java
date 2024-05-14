@@ -2,6 +2,7 @@ package com.softskillz.productorder.model;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "orderitem")
 public class OrderItem {
@@ -15,6 +16,7 @@ public class OrderItem {
     private Integer product_price;
     private Integer sub_total;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id", insertable = false, updatable = false)
     private Order order;

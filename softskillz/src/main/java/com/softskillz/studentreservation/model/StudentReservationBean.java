@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.course.model.CourseBean;
-import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 
 import jakarta.persistence.Column;

@@ -62,7 +62,8 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/img/**").addResourceLocations("/WEB-INF/courseorder/img/");
+
+		// 網頁串到模版之後這邊都要刪掉喔
 		registry.addResourceHandler("/courseorder/css/**").addResourceLocations("/WEB-INF/courseorder/css/");
 		registry.addResourceHandler("/courseorder/js/**").addResourceLocations("/WEB-INF/courseorder/js/");
 		registry.addResourceHandler("/courseorder/html/**").addResourceLocations("/WEB-INF/courseorder/html/");
@@ -71,8 +72,6 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/Companion/CompanionImg/**")
 				.addResourceLocations("/WEB-INF/companion/jsp/Companion/CompanionImg/");
 
-		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/css/");
-		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/js/");
 		registry.addResourceHandler("/html/**").addResourceLocations("/WEB-INF/html/");
 		registry.addResourceHandler("/forum/js/**").addResourceLocations("/WEB-INF/forum/js/");
 		registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/account/images/");
@@ -82,35 +81,29 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/mall/html/**").addResourceLocations("/WEB-INF/mall/html/");
 		registry.addResourceHandler("/mall/jsp/**").addResourceLocations("/WEB-INF/mall/jsp/");
 
-		// 模版html
+		// 後台模版html
 		registry.addResourceHandler("/dist/**").addResourceLocations("/WEB-INF/dist/");
-		registry.addResourceHandler("/dist/course/**").addResourceLocations("/WEB-INF/dist/course/");
-		// 模版css
+
+		// 後台模版css
 		registry.addResourceHandler("/assets/compiled/css/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/css/");
-		// Data Tables css
+		// 後台 Data Tables css
 		registry.addResourceHandler("/assets/extensions/datatables.net-bs5/css/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/datatables.net-bs5/css/");
-		// Date Picker
+		// 後台 Date Picker
 		registry.addResourceHandler("/assets/extensions/flatpickr/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/flatpickr/");
 
 		registry.addResourceHandler("/assets/extensions/simple-datatables/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/simple-datatables/");
 
-		// 模版js
-		registry.addResourceHandler("/assets/static/js/**")
-				.addResourceLocations("/WEB-INF/dist/assets/static/js/");
-
-
-		// 模版js
-
+		// 後台模版js
+		registry.addResourceHandler("/assets/static/js/**").addResourceLocations("/WEB-INF/dist/assets/static/js/");
 
 		registry.addResourceHandler("/assets/static/js/components/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/js/components/");
 
-		registry.addResourceHandler("/assets/static/js/**")
-		.addResourceLocations("/WEB-INF/dist/assets/static/js/");
+		registry.addResourceHandler("/assets/static/js/**").addResourceLocations("/WEB-INF/dist/assets/static/js/");
 
 		registry.addResourceHandler("/assets/static/js/pages/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/js/pages/");
@@ -133,20 +126,42 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/assets/extensions/datatables.net-bs5/js/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/datatables.net-bs5/js/");
 
-
 		registry.addResourceHandler("/assets/extensions/simple-datatables/umd/js/**")
 				.addResourceLocations("/WEB-INF/dist/assets/extensions/simple-datatables/umd/js/");
 
 		registry.addResourceHandler("/assets/compiled/js/**").addResourceLocations("/WEB-INF/dist/assets/compiled/js/");
 
-		// 模版jpg
+		// 後台模版jpg
 		registry.addResourceHandler("/assets/compiled/jpg/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/jpg/");
-		// 模版svg
+		// 後台模版svg
 		registry.addResourceHandler("/assets/static/images/**")
 				.addResourceLocations("/WEB-INF/dist/assets/static/images/");
 		registry.addResourceHandler("/assets/compiled/svg/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/svg/");
+
+		// 前台模版html
+		registry.addResourceHandler("/elearning/**").addResourceLocations("/WEB-INF/elearning/");
+
+		// 前台模版 Img
+		registry.addResourceHandler("/img/**").addResourceLocations("/WEB-INF/elearning/img/");
+
+		// 前台模版 Libraries Stylesheet
+		registry.addResourceHandler("/lib/animate/**").addResourceLocations("/WEB-INF/elearning/lib/animate/");
+		registry.addResourceHandler("/lib/owlcarousel/assets/**")
+				.addResourceLocations("/WEB-INF/elearning/lib/owlcarousel/assets/");
+
+		// 前台模版 Customized Bootstrap Stylesheet + Template Stylesheet
+		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/elearning/css/");
+
+		// 前台模版 JavaScript Libraries
+		registry.addResourceHandler("/lib/wow/**").addResourceLocations("/WEB-INF/elearning/lib/wow/");
+		registry.addResourceHandler("/lib/easing/**").addResourceLocations("/WEB-INF/elearning/lib/easing/");
+		registry.addResourceHandler("/lib/waypoints/**").addResourceLocations("/WEB-INF/elearning/lib/waypoints/");
+		registry.addResourceHandler("/lib/owlcarousel/**").addResourceLocations("/WEB-INF/elearning/lib/owlcarousel/");
+
+		// 前台模版 Template Javascript
+		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/elearning/js/");
 
 	}
 
@@ -157,8 +172,12 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 		registry.addViewController("/softskillz/homepage").setViewName("pages/backendPage.jsp");
 
-		// 模版首頁index.html
+		// 後台模版首頁index.html
 		registry.addViewController("/softskillz/newhomepage").setViewName("dist/index.html");
+		registry.addViewController("/softskillz/fhomepage").setViewName("elearning/test.html");
+
+		// 前台模版首頁index.html
+		registry.addViewController("/softskillz/fhomepage").setViewName("elearning/index.html");
 
 		registry.addViewController("/match.do").setViewName("companion/companion/backendPage.jsp");
 	}

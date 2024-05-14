@@ -6,11 +6,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.softskillz.account.model.bean.AdminBean;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.forum.model.StatusEnum;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,13 +28,12 @@ import jakarta.persistence.Table;
 @Entity
 @Component
 @Table(name = "forum_post")
-public class ForumPostModel{
-	
+public class ForumPostModel {
 
 	@Id
 	@Column(name = "post_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int postId;
+	private Integer postId;
 
 	@Column(name = "post_content")
 	private String postContent;
@@ -43,52 +47,58 @@ public class ForumPostModel{
 	@Column(name = "post_created_time", insertable = false, updatable = false)
 	private Timestamp postCreatedTime;
 
-	@Column(name = "post_status")
-	private String postStatus = "VISIBLE";
+	
+	@Column(name = "post_status") @Enumerated(EnumType.STRING)
+	private StatusEnum postStatus = StatusEnum.VISIBLE;
 
-	@ManyToOne
-	@JoinColumn(name = "post_student_id", referencedColumnName = "student_id", insertable = false, updatable = false, nullable = true)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "post_student_id", referencedColumnName = "student_id", insertable = true, updatable = false, nullable = true)
 	private StudentBean studentBean;
 
-	@ManyToOne
-	@JoinColumn(name = "post_teacher_id", referencedColumnName = "teacher_id", insertable = false, updatable = false, nullable = true)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "post_teacher_id", referencedColumnName = "teacher_id", insertable = true, updatable = false, nullable = true)
 	private TeacherBean teacherBean;
-
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "post_admin_id", referencedColumnName = "admin_id", insertable = true, updatable = false, nullable = true)
+	private AdminBean adminBean;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "thread_id")
+	@JoinColumn(name = "thread_id", insertable = true, updatable = false, nullable = false)
 	private ForumThreadModel forumThreadModel;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_post_id")
+	@JoinColumn(name = "parent_post_id", insertable = true, updatable = false, nullable = true)
 	private ForumPostModel forumPostModel;
 
-	@OneToMany(mappedBy = "forumPostModel")
-	private List<ForumPostModel> childPost = new ArrayList<>();
-
-	@OneToMany(mappedBy = "forumPostModel")
-	private List<ForumImageModel> forumImageModels = new ArrayList<ForumImageModel>();
+	@OneToMany(mappedBy = "forumPostModel", cascade = CascadeType.REMOVE)
+	private List<ForumImageModel> forumImageModel = new ArrayList<ForumImageModel>();
 
 	public ForumPostModel() {
 
 	}
 
-	// for new post insertion
+	// update post
 	public ForumPostModel(String postContent) {
 		this.postContent = postContent;
 	}
 
-	// for existing post update
-	public ForumPostModel(int postId, String postContent) {
-		super();
+	// update post status
+	public ForumPostModel(StatusEnum postStatus) {
+		this.postStatus = postStatus;
+	}
+
+	// insert post
+	public ForumPostModel(Integer postId, String postContent) {
 		this.postId = postId;
 		this.postContent = postContent;
 	}
 
-	public int getPostId() {
+	public Integer getPostId() {
 		return postId;
 	}
 
-	public void setPostId(int postId) {
+	public void setPostId(Integer postId) {
 		this.postId = postId;
 	}
 
@@ -124,11 +134,11 @@ public class ForumPostModel{
 		this.postCreatedTime = postCreatedTime;
 	}
 
-	public String getPostStatus() {
+	public StatusEnum getPostStatus() {
 		return postStatus;
 	}
 
-	public void setPostStatus(String postStatus) {
+	public void setPostStatus(StatusEnum postStatus) {
 		this.postStatus = postStatus;
 	}
 
@@ -148,52 +158,38 @@ public class ForumPostModel{
 		this.teacherBean = teacherBean;
 	}
 
-	public ForumThreadModel getForumThreadId() {
-		return forumThreadModel;
+	public AdminBean getAdminBean() {
+		return adminBean;
 	}
 
-	public void setForumThreadId(ForumThreadModel forumThreadId) {
-		this.forumThreadModel = forumThreadId;
-	}
-
-	public ForumPostModel getParentPostId() {
-		return forumPostModel;
-	}
-
-	public void setParentPostId(ForumPostModel forumPostModel) {
-		this.forumPostModel = forumPostModel;
-	}
-
-	public List<ForumPostModel> getChildPost() {
-		return childPost;
-	}
-
-	public void setChildPost(List<ForumPostModel> childPost) {
-		this.childPost = childPost;
+	public void setAdminBean(AdminBean adminBean) {
+		this.adminBean = adminBean;
 	}
 
 	public ForumThreadModel getForumThreadModel() {
 		return forumThreadModel;
 	}
 
-	public void setForumThreadBean(ForumThreadModel forumThreadModel) {
+	public void setForumThreadModel(ForumThreadModel forumThreadModel) {
 		this.forumThreadModel = forumThreadModel;
 	}
 
-	public ForumPostModel getForumPostBean() {
+	public ForumPostModel getForumPostModel() {
 		return forumPostModel;
 	}
 
-	public void setForumPostBean(ForumPostModel forumPostModel) {
+	public void setForumPostModel(ForumPostModel forumPostModel) {
 		this.forumPostModel = forumPostModel;
 	}
 
-	public List<ForumImageModel> getForumImageModels() {
-		return forumImageModels;
+	
+	public List<ForumImageModel> getForumImageModel() {
+		return forumImageModel;
 	}
 
-	public void setForumImageModels(List<ForumImageModel> forumImageModels) {
-		this.forumImageModels = forumImageModels;
+	public void setForumImageModel(List<ForumImageModel> forumImageModel) {
+		this.forumImageModel = forumImageModel;
 	}
 
+	
 }

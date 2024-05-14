@@ -1,15 +1,14 @@
 package com.softskillz.mall.controller;
 
-import java.util.List;
-
+import com.softskillz.mall.model.ProductStatus;
+import com.softskillz.mall.service.ProductStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.softskillz.mall.model.ProductStatus;
-import com.softskillz.mall.service.ProductStatusService;
+import java.util.List;
 
 /**
  * 商品狀態控制器
@@ -32,7 +31,7 @@ public class ProductStatusController {
      */
     @GetMapping
     public ResponseEntity<List<ProductStatus>> getAllProductStatuses() {
-        List<ProductStatus> statuses = productStatusService.getAllProductStatuses();
+        List<ProductStatus> statuses = productStatusService.findAllProductStatuses();
         return ResponseEntity.ok(statuses);
     }
 }

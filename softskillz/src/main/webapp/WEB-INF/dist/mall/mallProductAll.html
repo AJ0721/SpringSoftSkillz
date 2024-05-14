@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SoftSkillz - 後台管理</title>
+    <title>SoftSkillz - 商品管理</title>
 
     <link
       rel="shortcut icon"
@@ -25,49 +25,50 @@
   <body>
     <script src="/assets/static/js/initTheme.js"></script>
     <div id="app">
+      <!-- 側邊欄的 HTML 內容 -->
       <div id="sidebar">
         <div class="sidebar-wrapper active">
           <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
               <!-- 左上角Logo -->
               <div class="logo">
-                <a href="index.html"
-                  ><img
-                    src="/assets/compiled/jpg/logo1.jpg"
-                    alt="Logo"
-                    srcset=""
+                <a href="/softskillz/newhomepage"
+                ><img
+                        src="/assets/compiled/jpg/logo1.jpg"
+                        alt="Logo"
+                        srcset=""
                 /></a>
               </div>
               <!-- 切換日間夜間模式 -->
               <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                 <!-- 日間模式圖片 -->
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  aria-hidden="true"
-                  role="img"
-                  class="iconify iconify--system-uicons"
-                  width="20"
-                  height="20"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="0 0 21 21"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="iconify iconify--system-uicons"
+                        width="20"
+                        height="20"
+                        preserveAspectRatio="xMidYMid meet"
+                        viewBox="0 0 21 21"
                 >
                   <g
-                    fill="none"
-                    fill-rule="evenodd"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                          fill="none"
+                          fill-rule="evenodd"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
                   >
                     <path
-                      d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-                      opacity=".3"
+                            d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                            opacity=".3"
                     ></path>
                     <g transform="translate(-210 -1)">
                       <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
                       <circle cx="220.5" cy="11.5" r="4"></circle>
                       <path
-                        d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"
+                              d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"
                       ></path>
                     </g>
                   </g>
@@ -75,34 +76,34 @@
                 <!-- 切換按鈕 -->
                 <div class="form-check form-switch fs-6">
                   <input
-                    class="form-check-input me-0"
-                    type="checkbox"
-                    id="toggle-dark"
-                    style="cursor: pointer"
+                          class="form-check-input me-0"
+                          type="checkbox"
+                          id="toggle-dark"
+                          style="cursor: pointer"
                   />
                   <label class="form-check-label"></label>
                 </div>
                 <!-- 夜間模式圖片 -->
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  aria-hidden="true"
-                  role="img"
-                  class="iconify iconify--mdi"
-                  width="20"
-                  height="20"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="iconify iconify--mdi"
+                        width="20"
+                        height="20"
+                        preserveAspectRatio="xMidYMid meet"
+                        viewBox="0 0 24 24"
                 >
                   <path
-                    fill="currentColor"
-                    d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"
+                          fill="currentColor"
+                          d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"
                   ></path>
                 </svg>
               </div>
               <div class="sidebar-toggler x">
                 <a href="#" class="sidebar-hide d-xl-none d-block"
-                  ><i class="bi bi-x bi-middle"></i
+                ><i class="bi bi-x bi-middle"></i
                 ></a>
               </div>
             </div>
@@ -124,7 +125,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/admin/admin-account" class="submenu-link">管理員帳號</a>
                   </li>
                 </ul>
               </li>
@@ -135,7 +136,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/teacher/teacher-account" class="submenu-link">教師帳號</a>
                   </li>
                 </ul>
               </li>
@@ -146,7 +147,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/student/student-account" class="submenu-link">學生帳號</a>
                   </li>
                 </ul>
               </li>
@@ -159,20 +160,14 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a
-                      href="/course/coursePage/courseAllPage"
-                      class="submenu-link"
-                      >所有課程功能</a
+                    <a href="/course/insertPage" class="submenu-link"
+                    >新增課程</a
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增課程</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢課程</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">修改課程</a>
+                    <a href="/course/selectAllPage" class="submenu-link"
+                    >查詢課程</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -183,20 +178,16 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a
-                      href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
-                      class="submenu-link"
-                      >所有教師行事曆功能</a
+                    <a href="/teacherSchedule/insertPage" class="submenu-link"
+                    >新增教師行事曆</a
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增教師行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢教師行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">修改教師行事曆</a>
+                    <a
+                            href="/teacherSchedule/selectAllPage"
+                            class="submenu-link"
+                    >查詢教師行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -208,16 +199,17 @@
                 <ul class="submenu">
                   <li class="submenu-item">
                     <a
-                      href="/studentReservation/studentReservationPage/studentReservationAllPage"
-                      class="submenu-link"
-                      >所有學生預約功能</a
+                            href="/studentReservation/insertPage"
+                            class="submenu-link"
+                    >新增學生預約</a
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增學生預約</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢學生預約</a>
+                    <a
+                            href="/studentReservation/selectAllPage"
+                            class="submenu-link"
+                    >查詢學生預約</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -231,7 +223,11 @@
                     <a href="#" class="submenu-link">新增學生行事曆</a>
                   </li>
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢學生行事曆</a>
+                    <a
+                            href="/studentSchedule/selectAllPage"
+                            class="submenu-link"
+                    >查詢學生行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -245,7 +241,7 @@
                 <ul class="submenu">
                   <li class="submenu-item">
                     <a href="/adminorder/adorder.do" class="submenu-link"
-                      >課程訂單管理</a
+                    >課程訂單管理</a
                     >
                   </li>
                 </ul>
@@ -258,7 +254,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/mall/index" class="submenu-link">商品管理</a>
+                    <a href="/mall/mallProductAll" class="submenu-link">商品管理</a>
                   </li>
                 </ul>
               </li>
@@ -282,8 +278,8 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/companion/index.html" class="submenu-link"
-                      >學伴資料管理</a
+                    <a href="/companionIndex.html" class="submenu-link"
+                    >學伴資料管理</a
                     >
                   </li>
                 </ul>
@@ -316,6 +312,7 @@
         <div class="page-heading">
           <h3>SoftSkillz - 所有商品頁面</h3>
         </div>
+
         <div class="page-content">
           <!-- Basic Tables start -->
           <section class="section">
@@ -382,7 +379,7 @@
     <script src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
     <script src="/assets/static/js/pages/datatables.js"></script>
 
-    <!-- 我的js(商品) -->
+<!--     我的js(商品) -->
     <script>
       $(document).ready(function () {
         // 初始化並獲取所有商品資訊
@@ -460,58 +457,57 @@
       });
     </script>
 
-    // 分頁js(待修改)
+<!--    // 分頁js-->
 <!--    <script>-->
 <!--      $(document).ready(function () {-->
-<!--        var table;-->
-
-<!--        if ($.fn.dataTable.isDataTable('#table1')) {-->
-<!--          table = $('#table1').DataTable();-->
-<!--        } else {-->
-<!--          table = $('#table1').DataTable({-->
+<!--        if (!$.fn.DataTable.isDataTable('#table1')) {-->
+<!--          $('#table1').DataTable({-->
 <!--            "processing": true,-->
 <!--            "serverSide": true,-->
 <!--            "ajax": {-->
 <!--              "url": "/products/list",-->
-<!--              "type": "POST",-->
-<!--              "data": function (d) {-->
-<!--              // 可以添加更多參數傳遞到後端-->
-<!--            }-->
-<!--          },-->
-<!--          "columns": [-->
-<!--            { "data": "productId" },-->
-<!--            { "data": "productName" },-->
-<!--            { "data": "productType.productTypeName" },-->
-<!--            { "data": "productStatus.productStatusName" },-->
-<!--            { "data": "productPrice" },-->
-<!--            { "data": "productStock" },-->
-<!--            { "data": "productTargetAudience" },-->
-<!--            { "data": "productAuthorName" },-->
-<!--            { "data": "productISBN" },-->
-<!--            { "data": "productPublicationDate" },-->
-<!--            { "data": "productCreateDate" },-->
-<!--            { "data": "productUpdateDate" },-->
-<!--            {-->
-<!--              "data": null,-->
-<!--              "render": function (data, type, row) {-->
-<!--                return "<button class='update-btn' data-id='" + row.productId + "'>修改</button>" +-->
-<!--                        "<button class='delete-btn' data-id='" + row.productId + "'>刪除</button>";-->
+<!--              "type": "GET",-->
+<!--              "dataSrc": "content"-->
+<!--            },-->
+<!--            "columns": [-->
+<!--              { "data": "productId" },-->
+<!--              { "data": "productName" },-->
+<!--              { "data": "productType.productTypeName" },-->
+<!--              { "data": "productStatus.productStatusName" },-->
+<!--              { "data": "productPrice" },-->
+<!--              {-->
+<!--                "data": "productStock",-->
+<!--                "render": function (data, type, row) {-->
+<!--                  return data === null ? '無限' : data === 0 ? '無庫存' : data;-->
+<!--                }-->
+<!--              },-->
+<!--              { "data": "productTargetAudience" },-->
+<!--              { "data": "productAuthorName", "defaultContent": "" },-->
+<!--              { "data": "productISBN", "defaultContent": "" },-->
+<!--              { "data": "productPublicationDate", "defaultContent": "" },-->
+<!--              { "data": "productCreateDate" },-->
+<!--              { "data": "productUpdateDate" },-->
+<!--              {-->
+<!--                "data": null,-->
+<!--                "render": function (data, type, row) {-->
+<!--                  return "<button class='update-btn' data-id='" + row.productId + "'>修改</button>" +-->
+<!--                          "<button class='delete-btn' data-id='" + row.productId + "'>刪除</button>";-->
+<!--                }-->
 <!--              }-->
+<!--            ],-->
+<!--            "pageLength": 10,-->
+<!--            "language": {-->
+<!--              "url": "/assets/extensions/datatables.net-bs5/zh_TW.json"-->
 <!--            }-->
-<!--          ],-->
-<!--          "pageLength": 10,-->
-<!--          "language": {-->
-<!--            "url": "/assets/extensions/datatables.net-bs5/zh_TW.json"-->
-<!--          }-->
-<!--        });-->
+<!--          });-->
+<!--        }-->
 
-<!--        // 綁定按鈕事件-->
-<!--        $('#table1 tbody').on('click', 'button.update-btn', function () {-->
+<!--        $('#table1').on('click', '.update-btn', function () {-->
 <!--          var productId = $(this).data('id');-->
 <!--          window.location.href = "/mall/html/updateProduct.html?productId=" + productId;-->
 <!--        });-->
 
-<!--        $('#table1 tbody').on('click', 'button.delete-btn', function () {-->
+<!--        $('#table1').on('click', '.delete-btn', function () {-->
 <!--          var productId = $(this).data('id');-->
 <!--          if (confirm('確定要刪除此商品嗎？')) {-->
 <!--            $.ajax({-->
@@ -519,17 +515,16 @@
 <!--              method: 'DELETE',-->
 <!--              success: function () {-->
 <!--                alert('商品成功刪除');-->
-<!--                table.ajax.reload();-->
+<!--                $('#table1').DataTable().ajax.reload();-->
 <!--              },-->
 <!--              error: function (xhr) {-->
 <!--                alert('刪除商品出錯，錯誤訊息: ' + xhr.status);-->
 <!--              }-->
 <!--            });-->
-<!--            }-->
-<!--            });-->
-<!--            }-->
-<!--            });-->
+<!--          }-->
+<!--        });-->
+<!--      });-->
 <!--    </script>-->
-  
+
   </body>
 </html>

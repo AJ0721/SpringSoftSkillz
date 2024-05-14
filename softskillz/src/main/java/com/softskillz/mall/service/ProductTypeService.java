@@ -1,28 +1,30 @@
 package com.softskillz.mall.service;
 
-import java.util.List;
-
 import com.softskillz.mall.model.ProductType;
 
+import java.util.List;
+
 /**
- * 產品類型服務介面
- * 這個介面定義了所有與產品類型相關的業務邏輯方法
+ * 商品類型服務介面，定義所有與商品類型相關的業務操作。
+ * 這個介面提供方法來獲取所有商品類型和根據ID查詢特定的商品類型。
  */
 public interface ProductTypeService {
 
     /**
-     * 獲取所有產品類型
+     * 獲取所有商品類型。
+     * 這個方法返回所有現有的商品類型，可用於商品分類選擇界面。
      *
-     * @return 一個包含所有產品類型的列表
+     * @return 包含所有商品類型的列表，每個商品類型包括其ID和描述。
      */
-    List<ProductType> getAllProductTypes();
+    List<ProductType> findAllProductTypes();
 
     /**
-     * 根據ID獲取產品類型
+     * 根據商品類型ID獲取具體的商品類型。
+     * 這個方法用於當需要根據用戶選擇的類型ID來獲取詳細信息時。
      *
-     * @param id 產品類型的ID
-     * @return 與ID匹配的產品類型，如果找不到則返回null
+     * @param id 商品類型的唯一標識符
+     * @return 與提供的ID對應的商品類型，若無匹配則返回null。
      */
-    ProductType getProductTypeById(Integer id);
+    ProductType findProductTypeById(Integer id);
 
 }

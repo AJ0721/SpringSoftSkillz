@@ -5,15 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Component;
 
 import com.softskillz.account.model.bean.AdminBean;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.forum.model.StatusEnum;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,13 +30,12 @@ import jakarta.persistence.Table;
 @Entity
 @Component
 @Table(name = "forum_thread")
-public class ForumThreadModel{
-
+public class ForumThreadModel {
 
 	@Id
 	@Column(name = "thread_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int threadId;
+	private Integer threadId;
 
 	@Column(name = "thread_title")
 	private String threadTitle;
@@ -48,35 +52,32 @@ public class ForumThreadModel{
 	@Column(name = "thread_response_count")
 	private int threadResponseCount = 0;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "thread_status")
-	private String threadStatus = "VISIBLE";
+	private StatusEnum threadStatus = StatusEnum.VISIBLE;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "forum_category_id", referencedColumnName = "forum_category_id")
 	private ForumCategoryModel forumCategoryModel;
-	
 
 	@OneToMany(mappedBy = "forumThreadModel", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ForumPostModel> forumPostModel = new ArrayList<>();
 
-	@ManyToOne(optional = true) 
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "thread_student_id", referencedColumnName = "student_id", insertable = true, updatable = false, nullable = true)
 	private StudentBean studentBean;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "thread_teacher_id", referencedColumnName = "teacher_id", insertable = true, updatable = false, nullable = true)
 	private TeacherBean teacherBean;
-	
-	@ManyToOne(optional = true)
+
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "thread_admin_id", referencedColumnName = "admin_id", insertable = true, updatable = false, nullable = true)
 	private AdminBean adminBean;
-	
 
 	@OneToMany(mappedBy = "forumThreadModel", cascade = CascadeType.REMOVE)
 	private List<ForumImageModel> forumImageModel = new ArrayList<ForumImageModel>();
 
-	
-	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -87,7 +88,8 @@ public class ForumThreadModel{
 		return Objects.equals(threadContent, that.threadContent);
 	}
 
-	//any two objects considered equal according to equals() will have the same hash code
+	// any two objects considered equal according to equals() will have the same
+	// hash code
 	@Override
 	public int hashCode() {
 		return Objects.hash(threadContent);
@@ -98,23 +100,24 @@ public class ForumThreadModel{
 	}
 
 	// for new thread insertion
-	public ForumThreadModel(ForumCategoryModel forumCategoryModel,String threadTitle, String threadContent ) {
+	public ForumThreadModel(ForumCategoryModel forumCategoryModel, String threadTitle, String threadContent) {
 		this.forumCategoryModel = forumCategoryModel;
 		this.threadTitle = threadTitle;
 		this.threadContent = threadContent;
-		
-	}
-	
 
-//for existing thread update
-	public ForumThreadModel(int threadId, String threadTitle, String threadContent) {
+	}
+
+	// for existing thread update
+	public ForumThreadModel(Integer threadId, String threadTitle, String threadContent) {
 		this.threadId = threadId;
 		this.threadTitle = threadTitle;
 		this.threadContent = threadContent;
 	}
-	
-	
 
+	// for existing thread status update
+	public ForumThreadModel(StatusEnum threadStatus) {
+		this.threadStatus = threadStatus;
+	}
 
 	public AdminBean getAdminBean() {
 		return adminBean;
@@ -124,11 +127,11 @@ public class ForumThreadModel{
 		this.adminBean = adminBean;
 	}
 
-	public int getThreadId() {
+	public Integer getThreadId() {
 		return threadId;
 	}
 
-	public void setThreadId(int threadId) {
+	public void setThreadId(Integer threadId) {
 		this.threadId = threadId;
 	}
 
@@ -172,11 +175,11 @@ public class ForumThreadModel{
 		this.threadResponseCount = threadResponseCount;
 	}
 
-	public String getThreadStatus() {
+	public StatusEnum getThreadStatus() {
 		return threadStatus;
 	}
 
-	public void setThreadStatus(String threadStatus) {
+	public void setThreadStatus(StatusEnum threadStatus) {
 		this.threadStatus = threadStatus;
 	}
 
@@ -187,7 +190,6 @@ public class ForumThreadModel{
 	public void setForumCategoryModel(ForumCategoryModel forumCategoryModel) {
 		this.forumCategoryModel = forumCategoryModel;
 	}
-
 
 	public List<ForumPostModel> getForumPostModel() {
 		return forumPostModel;
@@ -221,5 +223,4 @@ public class ForumThreadModel{
 		this.forumImageModel = forumImageModel;
 	}
 
-	
 }

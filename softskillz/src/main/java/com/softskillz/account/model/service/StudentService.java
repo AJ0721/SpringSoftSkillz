@@ -16,7 +16,7 @@ public class StudentService {
 	@Autowired
 	private StudentRepository studentRepository;
 	
-	//帳號登入
+	//學生帳號登入
 	public StudentBean usernameCheckLogin(String studentUsername, String studentPassword){
 		Optional<StudentBean> resultOptional = studentRepository.findByUsername(studentUsername,studentPassword);
 		
@@ -29,7 +29,7 @@ public class StudentService {
 		return null;
 	}
 	
-	//信箱登入
+	//學生信箱登入
 	public StudentBean emailCheckLogin(String studentEmail, String studentPassword){
 		Optional<StudentBean> resultOptional = studentRepository.findByEmail(studentEmail,studentPassword);
 		
@@ -61,6 +61,7 @@ public class StudentService {
 		return null;
 	}
 
+	// 找單筆學生
 	public StudentBean findById(Integer studentId) {
 		Optional<StudentBean> op1 = studentRepository.findById(studentId);
 		if (op1.isPresent()) {

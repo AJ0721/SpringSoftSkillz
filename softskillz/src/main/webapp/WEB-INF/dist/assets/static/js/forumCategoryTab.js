@@ -14,8 +14,9 @@ window.fetchCategories = function () {
 //CATEGORY HTML
 window.createCategoryHtml = function (category) {
     return `
-        <tr>
-            <td><input type="checkbox"></td>
+        <tr class="text-nowrap">
+    
+            <td><input class="form-check-input" type="checkbox"></td>
             <td>${category.forumCategoryId}</td>
             <td><a href="/forum/category/detailpage/${category.forumCategoryId}">${category.forumCategoryName}</a></td>
             <td>${category.forumCategoryDescription}</td>
@@ -23,7 +24,7 @@ window.createCategoryHtml = function (category) {
             
         </tr>
     `;
-};
+}
 
 //FUNCTION: DISPLAY CATEGORY IN TAB 
 window.displayCategoriesTab = function (categories) {
@@ -78,7 +79,7 @@ $(document).ready(function () {
                 });
 
                 $.ajax({
-                    url: '/forum/category/deleteall',
+                    url: '/forum/category/delete-all',
                     type: 'DELETE',
                     data: JSON.stringify({ forumCategoryIds: categoryIds }),
                     contentType: 'application/json',
@@ -97,8 +98,9 @@ $(document).ready(function () {
 
 
                     },
-                    error: function (xhr, status, error) {
-                        Swal.fire('刪除失敗', '請重新整理' + error, 'error');
+                    error: function (error) {
+                        console.log("error: " + error);
+                        Swal.fire('刪除失敗', '請重新整理', 'error');
                     }
                 });
             }

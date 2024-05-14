@@ -3,6 +3,7 @@ package com.softskillz.teacherschedule.controller;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,11 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.service.TeacherService;
@@ -120,7 +123,6 @@ public class TeacherScheduleController {
 	// 更新教師行事曆
 	@PostMapping("/updated")
 	public ResponseEntity<?> updateTeacherSchedule(@RequestBody TeacherScheduleBean teacherScheduleBean) {
-		System.out.println(teacherScheduleBean.getTeacherScheduleID());
 		try {
 			TeacherScheduleBean updatedSchedule = teacherScheduleService.updateTeacherSchedule(teacherScheduleBean);
 			if (updatedSchedule != null && updatedSchedule.getTeacherScheduleID() != 0) {
@@ -132,5 +134,4 @@ public class TeacherScheduleController {
 			return ResponseEntity.internalServerError().body("教師行事曆修改過程中發生錯誤: " + e.getMessage());
 		}
 	}
-
 }

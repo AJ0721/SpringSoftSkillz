@@ -2,17 +2,17 @@ package com.softskillz.forum.model.dto;
 
 public class TeacherDto {
     private int teacherId;
-    private String teacherUsername;
-    private String country;
+    private String teacherUserName;
+    private String teacherCountry;
 
     public TeacherDto() {
     }
 
-	public TeacherDto(int teacherId, String teacherUsername, String country) {
+	public TeacherDto(int teacherId, String teacherUserName, String teacherCountry) {
 		super();
 		this.teacherId = teacherId;
-		this.teacherUsername = teacherUsername;
-		this.country = country;
+		this.teacherUserName = teacherUserName;
+		this.teacherCountry = teacherCountry;
 	}
 
 	public int getTeacherId() {
@@ -23,21 +23,24 @@ public class TeacherDto {
 		this.teacherId = teacherId;
 	}
 
-	public String getTeacherUsername() {
-		return teacherUsername;
+
+	public String getTeacherUserName() {
+		return teacherUserName;
 	}
 
-	public void setTeacherUsername(String teacherUsername) {
-		this.teacherUsername = teacherUsername;
+	public void setTeacherUserName(String teacherUserName) {
+		this.teacherUserName = teacherUserName;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getTeacherCountry() {
+		return teacherCountry;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setTeacherCountry(String teacherCountry) {
+		this.teacherCountry = teacherCountry;
 	}
+
+
     
     
 

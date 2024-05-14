@@ -40,7 +40,9 @@
 
                 // Store input values in an object
                 var threadData = {
-                    forumCategoryId: forumCategory,
+                    forumCategory: {
+                        "forumCategoryId": forumCategory
+                    },
                     threadTitle: threadTitle,
                     threadContent: threadContent,
                 };

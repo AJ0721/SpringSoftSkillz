@@ -132,7 +132,9 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/admin/admin-account" class="submenu-link"
+                      >管理員帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -143,7 +145,9 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/teacher/teacher-account" class="submenu-link"
+                      >教師帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -154,7 +158,9 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/student/student-account" class="submenu-link"
+                      >學生帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -206,13 +212,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 <ul class="submenu">
                   <li class="submenu-item">
                     <a
-                      href="/studentReservation/studentReservationPage/studentReservationAllPage"
-                      class="submenu-link"
-                      >所有學生預約功能</a
-                    >
-                  </li>
-                  <li class="submenu-item">
-                    <a
                       href="/studentReservation/insertPage"
                       class="submenu-link"
                       >新增學生預約</a
@@ -234,10 +233,11 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增學生行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢學生行事曆</a>
+                    <a
+                      href="/studentSchedule/selectAllPage"
+                      class="submenu-link"
+                      >查詢學生行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -288,7 +288,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/companion/index.html" class="submenu-link"
+                    <a href="/companionIndex.html" class="submenu-link"
                       >學伴資料管理</a
                     >
                   </li>
@@ -323,7 +323,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
         </div>
         <div class="page-content">
           <section class="row">
-            <div class="col-12 col-lg-9">
+            <div class="col-12 col-lg-10">
               <!-- 查詢預約 -->
               <div class="card">
                 <h3 class="card-header">查詢學生預約資料</h3>
@@ -378,23 +378,10 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                   </div>
                 </div>
               </div>
-
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4>Profile Visit</h4>
-                    </div>
-                    <div class="card-body">
-                      <div id="chart-profile-visit"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <!-- 右方第一個卡片列表 -->
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-lg-2">
               <div class="card">
                 <div class="card-body py-4 px-4">
                   <div class="d-flex align-items-center">

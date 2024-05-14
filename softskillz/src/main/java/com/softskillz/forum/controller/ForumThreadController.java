@@ -3,6 +3,7 @@ package com.softskillz.forum.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,51 +14,75 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softskillz.forum.model.StatusEnum;
+import com.softskillz.forum.model.dto.AdminDto;
 import com.softskillz.forum.model.dto.ForumThreadDto;
 import com.softskillz.forum.model.service.IForumThreadService;
 
 @RestController
-@RequestMapping("/forum/thread/")
+@RequestMapping("/forum/thread")
 public class ForumThreadController {
 	@Autowired
 	private IForumThreadService forumThreadService;
 
-	//find threads by username
-	
-	
+	// find threads by username
+
+	// find threads by category
+
 	@PostMapping("/insert")
-	public ForumThreadDto insertThread(@RequestBody ForumThreadDto threadDto) {
-		//hardcode admin
-	
-		System.out.println(threadDto);
-		threadDto.setAdminId(1);  //
-	    
-	    return forumThreadService.insertForumThread(threadDto);
+	public ResponseEntity<ForumThreadDto> insertThread(@RequestBody ForumThreadDto threadDto) {
+		// Hardcode the admin ID
+		if (threadDto.getAdmin() == null) {
+		    AdminDto adminDto = new AdminDto();
+		    adminDto.setAdminId(1);  
+		    threadDto.setAdmin(adminDto);  
+		    threadDto.getAdmin().setAdminId(1);  
+		} 
+
+		ForumThreadDto createdThread = forumThreadService.insertForumThread(threadDto);
+	    if (createdThread != null) {
+	        return ResponseEntity.ok(createdThread);  
+	    } else {
+	        return ResponseEntity.badRequest().build();  
+	    }
 
 	}
-	
 
+//update thread by ID
 	@PutMapping("/update/{threadId}")
-	public ForumThreadDto updateThread(@PathVariable int threadId, @RequestBody ForumThreadDto threadDto) {
+	public ForumThreadDto updateThread(@PathVariable("threadId") Integer threadId,
+			@RequestBody ForumThreadDto threadDto) {
 
 		ForumThreadDto updatedThread = forumThreadService.updateForumThreadById(threadId, threadDto);
 		return updatedThread;
 	}
 
+	// update thread status
+	@PutMapping("/update/id/{threadId}")
+	public StatusEnum updateThreadStatus(@PathVariable Integer threadId, @RequestParam("status") StatusEnum newSatus) {
+		StatusEnum updatedStatus = forumThreadService.updateForumThreadStatus(threadId, newSatus);
+		return updatedStatus;
+	}
+
 	// Delete a thread by ID
 	@DeleteMapping("/delete/{threadId}")
-	public void deleteThread(@PathVariable int threadId) {
+	public String deleteThread(@PathVariable int threadId) {
 
 		forumThreadService.deleteForumThreadById(threadId);
+		return "Deleted thread ID:" + threadId;
 
 	}
-	
-	@DeleteMapping("/deleteall")
-	public void deleteAllThreads(@RequestBody ForumThreadDto threadDtos) {
-		ForumThreadDto idToBeDelete = threadDtos;
-		forumThreadService.deleteAllForumThreads(idToBeDelete.getThreadIds());
-		System.out.println(idToBeDelete);
+
+	@DeleteMapping("/delete-all")
+	public String deleteAllThreads(@RequestBody List<Integer> threadIds) {
 		
+		if (threadIds == null || threadIds.isEmpty()) {
+			throw new IllegalArgumentException("No thread IDs provided for deletion.");
+		}
+		forumThreadService.deleteAllForumThreads(threadIds);
+		
+		return "Deleted thread ID: "+threadIds;
+
 	}
 
 	// Find all threads

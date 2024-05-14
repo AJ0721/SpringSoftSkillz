@@ -3,7 +3,7 @@ package com.softskillz.forum.model.dto;
 public class StudentDto {
     private int studentId;
     private String studentUsername;
-    private String country;
+    private String studentCountry;
 
     public StudentDto() {
     }
@@ -14,11 +14,11 @@ public class StudentDto {
 	
 	
 
-	public StudentDto(int studentId, String studentUsername, String country) {
+	public StudentDto(int studentId, String studentUsername, String studentCountry) {
 		super();
 		this.studentId = studentId;
 		this.studentUsername = studentUsername;
-		this.country = country;
+		this.studentCountry = studentCountry;
 	}
 
 	public void setStudentId(int studentId) {
@@ -33,14 +33,15 @@ public class StudentDto {
 		this.studentUsername = studentUsername;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getStudentCountry() {
+		return studentCountry;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setStudentCountry(String studentCountry) {
+		this.studentCountry = studentCountry;
 	}
-    
+
+
     
 
 }

@@ -34,7 +34,7 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
 	@Autowired
 	private CourseOrderReporistory coRepo;
-	
+
 	@Autowired
 	private DelayQueue<CorderBean> delayQueue;
 
@@ -59,13 +59,12 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 	@PostConstruct
 	@Transactional
 	public void init() {
-		coRepo.updateOverdueOrder(new Date(),"已取消");
+		coRepo.updateOverdueOrder(new Date(), "已取消");
 		System.out.println(new Date());
 		List<CorderBean> orderList = coRepo.findNoOverdueOrder("未付款");
 		delayQueue.addAll(orderList);
 	}
-	
-	
+
 	@Override
 	public CorderBean insertORD(CorderBean order, Map<Integer, CartItem> cart) {
 		ItemBean itemBean = null;
@@ -80,7 +79,7 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 			orderItems.add(itemBean);
 		}
 		order.setOrderItem(orderItems);
-		CorderBean corderBean =  coRepo.save(order);
+		CorderBean corderBean = coRepo.save(order);
 		delayQueue.add(corderBean);
 		return corderBean;
 
@@ -209,15 +208,15 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
 	@Override
 	public Integer payOrder(String orderID, String status, String method) {
-			CorderBean corderBean = coRepo.findById(orderID).get();
-			delayQueue.remove(corderBean);
+		CorderBean corderBean = coRepo.findById(orderID).get();
+		delayQueue.remove(corderBean);
 		return coRepo.updateStatus(orderID, status, method);
 	}
 
 	@Override
 	public Page<Order> getPageOrder(Pageable pageable) {
-		 Page<CorderBean> result = coRepo.findAll(pageable);
-		 Page<Order> page = result.map(new Function<CorderBean, Order>() {
+		Page<CorderBean> result = coRepo.findAll(pageable);
+		Page<Order> page = result.map(new Function<CorderBean, Order>() {
 			@Override
 			public Order apply(CorderBean o) {
 				Order order = new Order();
@@ -227,12 +226,36 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 				order.setOrderDate(o.getOrderDate());
 				order.setCancelDate(o.getCancelDate());
 				order.setPaymentMethod(o.getMethod());
-				order.setOrderStatus(o.getStatus());				
+				order.setOrderStatus(o.getStatus());
 				return order;
 			}
-			 
+
 		});
-		 return page;
+		return page;
 	}
 
+	@Override
+	public Page<Order> getPageOrderByDate(Pageable pageable, String date1String, String date2String) {
+		Date date1 = Util.dateUtil(date1String);
+		Date date = Util.dateUtil(date2String);
+		Long oneday = (long) (24 * 60 * 60 * 1000);
+		Date date2 = new Date(date.getTime()+oneday);
+		Page<CorderBean> result = coRepo.getPageOrderByDate(date1, date2,pageable);
+		Page<Order> page = result.map(new Function<CorderBean, Order>() {
+			@Override
+			public Order apply(CorderBean o) {
+				Order order = new Order();
+				order.setOrderID(o.getOrderID());
+				order.setStudentID(o.getStudentID());
+				order.setOrderPrice(o.getOrderPrice());
+				order.setOrderDate(o.getOrderDate());
+				order.setCancelDate(o.getCancelDate());
+				order.setPaymentMethod(o.getMethod());
+				order.setOrderStatus(o.getStatus());
+				return order;
+			}
+		});
+		
+		return page;
+	}
 }

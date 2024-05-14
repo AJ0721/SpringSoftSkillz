@@ -301,7 +301,6 @@
 
                                 <!-- search bar -->
                                 <div class="card">
-
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="search-bar">
@@ -309,8 +308,8 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">搜尋條件</span>
                                                     </div>
-                                                    <select class="form-control" id="searchConditionSelect">
-                                                        <option value="">請選擇搜尋條件</option>
+                                                    <select class="form-control form-select" id="searchConditionSelect">
+                                                        <option selected>請選擇搜尋條件</option>
                                                         <option value="categoryKeyword">[看板] 關鍵字</option>
                                                         <option value="categoryId">[看板] ID編號</option>
                                                         <option value="threadKeyword">[文章] 關鍵字</option>
@@ -407,8 +406,8 @@
                                                     <table class="table table-bordered table-hover mb-0">
                                                         <thead>
                                                             <tr class="text-nowrap">
-                                                                <th><input type="checkbox" id="selectAllCategories"
-                                                                        name="categoryMainBox">
+                                                                <th><input class="form-check-input" type="checkbox"
+                                                                        id="selectAllCategories" name="categoryMainBox">
                                                                 </th>
                                                                 <th>編號</th>
                                                                 <th>看板名稱</th>
@@ -434,18 +433,15 @@
                                                     <table class="table table-bordered table-hover">
                                                         <thead>
                                                             <tr class="text-nowrap">
-                                                                <th><input type="checkbox" id="selectAllThreads"
-                                                                        name="threadMainBox"></th>
+                                                                <th><input class="form-check-input" type="checkbox"
+                                                                        id="selectAllThreads" name="threadMainBox"></th>
                                                                 <th>編號</th>
                                                                 <th>標題</th>
-                                                                <th>分類看板</th>
-                                                                <th>學生編號</th>
-                                                                <th>老師編號</th>
-                                                                <th>管理員編號</th>
+                                                                <th>分類</th>
+                                                                <th>使用者</th>
+                                                                <th>喜歡</th>
+                                                                <th>留言</th>
                                                                 <th>創建時間</th>
-                                                                <th>內文</th>
-                                                                <th>讚數</th>
-                                                                <th>留言總數</th>
                                                                 <th>狀態</th>
                                                                 <th>編輯</th>
                                                             </tr>
@@ -461,31 +457,30 @@
                                             <div class="tab-pane fade" id="nav-post" role="tabpanel"
                                                 aria-labelledby="nav-posts-tab">
                                                 <button class="btn btn-success mb-3" id="createNewPost">新增留言</button>
-                                                <button class="btn btn-danger mb-3"
-                                                    id="deleteSelectedPosts">全部刪除</button>
+                                                <button class="btn btn-danger mb-3" id="deleteSelectedPosts">刪除</button>
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover">
                                                         <thead>
                                                             <tr class="text-nowrap">
-                                                                <th><input type="checkbox" id="selectAllPosts"></th>
+                                                                <th><input class="form-check-input" type="checkbox"
+                                                                        id="selectAllPosts"></th>
                                                                 <th>編號</th>
-                                                                <th>文章編號</th>
-                                                                <th>學生編號</th>
-                                                                <th>老師編號</th>
-                                                                <th>上層文章編號</th>
-                                                                <th>內文</th>
-                                                                <th>讚數</th>
-                                                                <th>留言總數</th>
+                                                                <th>原文</th> <!-- 文章標題(ID) -->
+                                                                <th>上層留言</th>
+                                                                <th>使用者</th> <!-- 使用者身分+ID -->
+                                                                <th>內容</th>
+                                                                <th>喜歡</th>
+                                                                <th>留言</th>
                                                                 <th>創建時間</th>
                                                                 <th>狀態</th>
-                                                                <th>編輯</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <!-- Post rows will be dynamically populated here -->
                                                         <tbody>
                                                             <tr>
-                                                                <td><input type="checkbox" class="selectPost"></td>
+                                                                <td><input type="checkbox"
+                                                                        class="form-check-input selectPost"></td>
                                                                 <td>1</td>
                                                                 <td>1</td>
                                                                 <td>1</td>

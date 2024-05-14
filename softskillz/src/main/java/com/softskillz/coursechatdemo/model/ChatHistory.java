@@ -2,7 +2,6 @@ package com.softskillz.coursechatdemo.model;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

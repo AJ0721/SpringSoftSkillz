@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.softskillz.courseorder.model.bean.DiscountBean;
@@ -22,20 +24,19 @@ public class DiscountServiceImpl implements DiscountService {
 	private DiscountRepository disRepo;
 
 	@Override
-    @CacheEvict(value = "discountMap", allEntries = true)
+	@CacheEvict(value = "discountMap", allEntries = true)
 	public DiscountBean addDiscount(DiscountBean discountBean) {
 		return disRepo.save(discountBean);
 	}
 
 	@Override
-    @CacheEvict(value = "discountMap", key = "#disID")
+	@CacheEvict(value = "discountMap", key = "#disID")
 	public void deleteDiscount(Integer disID) {
 		disRepo.deleteById(disID);
 	}
-	
-	
+
 	@Override
-    @CacheEvict(value = "discountMap", allEntries = true)
+	@CacheEvict(value = "discountMap", allEntries = true)
 	public DiscountBean updateDiscount(DiscountBean discountBean) {
 		return disRepo.save(discountBean);
 	}
@@ -59,5 +60,18 @@ public class DiscountServiceImpl implements DiscountService {
 	public List<DiscountBean> allDiscount() {
 		return disRepo.findAll();
 	}
-	
+
+	@Override
+	public Page<DiscountBean> getDiscountPage(Pageable pageable) {
+		Page<DiscountBean> page = disRepo.findAll(pageable);
+		return page;
+	}
+
+	@Override
+	public DiscountBean getByID(Integer disID) {
+
+		DiscountBean discountBean = disRepo.findById(disID).get();
+		return discountBean;
+	}
+
 }

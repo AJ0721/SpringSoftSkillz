@@ -2,14 +2,11 @@ package com.softskillz.studentschedule.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.softskillz.account.model.bean.StudentBean;
-import com.softskillz.studentreservation.model.StudentReservationBean;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +16,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -48,6 +44,9 @@ public class StudentScheduleBean implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private StudentBean studentBean;
 
+	// 新增的屬性用於儲存格式化後的時段資訊
+	private transient String formattedSchedule;
+
 	public StudentScheduleBean() {
 	}
 
@@ -60,7 +59,7 @@ public class StudentScheduleBean implements Serializable {
 		this.studentCourseDate = studentCourseDate;
 		this.studentTimeSlotsAll = studentTimeSlotsAll;
 		this.studentBean = studentBean;
-		
+
 	}
 
 	// 沒id
@@ -71,7 +70,7 @@ public class StudentScheduleBean implements Serializable {
 		this.studentCourseDate = studentCourseDate;
 		this.studentTimeSlotsAll = studentTimeSlotsAll;
 		this.studentBean = studentBean;
-		
+
 	}
 
 	// getter setter
@@ -113,6 +112,14 @@ public class StudentScheduleBean implements Serializable {
 
 	public void setStudentBean(StudentBean studentBean) {
 		this.studentBean = studentBean;
+	}
+
+	public String getFormattedSchedule() {
+		return formattedSchedule;
+	}
+
+	public void setFormattedSchedule(String formattedSchedule) {
+		this.formattedSchedule = formattedSchedule;
 	}
 
 }

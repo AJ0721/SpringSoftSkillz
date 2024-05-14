@@ -327,7 +327,7 @@ var barOptions = {
   plotOptions: {
     bar: {
       horizontal: false,
-      columnWidth: "55%",
+      columnWidth: "60%",
       endingShape: "rounded",
     },
   },

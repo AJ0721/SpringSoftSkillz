@@ -1,8 +1,9 @@
 package com.softskillz.mall.service.impl;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+import com.softskillz.mall.exception.EntityNotFoundException;
+import com.softskillz.mall.model.Product;
+import com.softskillz.mall.repos.ProductRepository;
+import com.softskillz.mall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,12 +11,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.softskillz.mall.model.Product;
-import com.softskillz.mall.repos.ProductRepository;
-import com.softskillz.mall.service.ProductService;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * 商品服務實現類
+ * 商品服務的實現類，提供商品的增刪查改操作。
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -28,52 +28,81 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
-    // 儲存商品資訊
+    /**
+     * 獲取所有商品列表。
+     * @return 返回所有商品的列表。
+     */
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    // 刪除指定 ID 的商品
-    @Override
-    public void deleteProduct(Integer productId) {
-        productRepository.deleteById(productId);
-    }
-
-    // 修改商品資訊
-    @Override
-    public Product updateProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    // 根據 ID 獲取商品資訊，如果找不到則返回 null
-    @Override
-    public Product getProductById(Integer productId) {
-        return productRepository.findById(productId).orElse(null);
-    }
-
-    // 獲取所有商品資訊
-    @Override
-    public List<Product> getAllProducts() {
+    public List<Product> findAllProducts() {
         return productRepository.findAll();
     }
 
-    // 根據商品狀態 ID 獲取商品資訊
+    /**
+     * 根據商品ID獲取商品信息，如果商品不存在則拋出 EntityNotFoundException。
+     * @param productId 商品的ID
+     * @return 包含商品信息的Optional對象。
+     */
     @Override
-    public List<Product> getProductsByStatusId(Integer statusId) {
-        return productRepository.findByProductStatusProductStatusId(statusId);
+    public Optional<Product> findProductById(Integer productId) {
+        return Optional.ofNullable(productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product", productId)));
     }
 
-    // 根據價格範圍獲取商品資訊
+    /**
+     * 新增商品信息。
+     * @param product 商品對象
+     * @return 儲存後的商品對象。
+     */
     @Override
-    public List<Product> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        return productRepository.findByPriceRange(minPrice, maxPrice);
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
     }
 
-    // 根據條件查詢商品
+    /**
+     * 更新指定ID的商品信息，如果商品不存在則拋出 EntityNotFoundException。
+     * @param productId 商品ID
+     * @param product 更新後的商品信息
+     * @return 更新後的商品對象
+     */
     @Override
-    public Page<Product> findProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Product updateProduct(Integer productId, Product product) {
+        return productRepository.findById(productId)
+                .map(existingProduct -> {
+                    existingProduct.setProductName(product.getProductName());
+                    existingProduct.setProductDescription(product.getProductDescription());
+                    existingProduct.setProductPrice(product.getProductPrice());
+                    existingProduct.setProductType(product.getProductType());
+                    existingProduct.setProductStatus(product.getProductStatus());
+                    existingProduct.setProductStock(product.getProductStock());
+                    existingProduct.setProductTargetAudience(product.getProductTargetAudience());
+                    existingProduct.setProductAuthorName(product.getProductAuthorName());
+                    existingProduct.setProductISBN(product.getProductISBN());
+                    existingProduct.setProductPublicationDate(product.getProductPublicationDate());
+                    return productRepository.save(existingProduct);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Product", productId));
     }
 
+    /**
+     * 根據商品ID刪除商品，如果商品不存在則拋出 EntityNotFoundException。
+     * @param productId 商品ID
+     */
+    @Override
+    public void deleteProduct(Integer productId) {
+        if (!productRepository.existsById(productId)) {
+            throw new EntityNotFoundException("Product", productId);
+        }
+        productRepository.deleteById(productId);
+    }
+
+    /**
+     * 分頁查詢商品，支持條件過濾。
+     * @param spec 查詢條件
+     * @param pageable 分頁參數
+     * @return 符合條件的商品頁面
+     */
+    @Override
+    public Page<Product> findProducts(Specification<Product> spec, Pageable pageable) {
+        return productRepository.findAll(spec, pageable);
+    }
 }

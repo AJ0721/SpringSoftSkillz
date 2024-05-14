@@ -6,13 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.softskillz.account.model.bean.StudentBean;
-import com.softskillz.account.model.bean.TeacherBean;
-import com.softskillz.coursechatdemo.model.ChatRoomUser;
 import com.softskillz.courseorder.model.service.impl.StudentServiceImpl;
 
 import jakarta.servlet.http.HttpSession;

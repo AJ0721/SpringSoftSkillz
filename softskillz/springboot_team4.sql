@@ -89,6 +89,11 @@ VALUES
     (3, '進階Java', '從入門到放棄','Java', 3000);
 
 SELECT * FROM course;
+DROP TABLE course;
+
+SELECT course_category, COUNT(*) AS category_count
+FROM course
+GROUP BY course_category;
 
 -- 教師開課課程行事曆資料表(一天一筆資料=一個日期對應一個開課時段)
 CREATE TABLE teacher_schedule
@@ -143,6 +148,22 @@ VALUES
 SELECT * FROM student_reservation;
 DROP TABLE student_reservation;
 
+SELECT 
+    YEAR(reservation_date) AS year, 
+    MONTH(reservation_date) AS month, 
+    SUM(total_hours) AS total_hours
+FROM 
+    student_reservation
+WHERE 
+    student_id = 1  -- 這裡的問號應替換為實際的學生 ID
+GROUP BY 
+    YEAR(reservation_date), 
+    MONTH(reservation_date)
+ORDER BY 
+    YEAR(reservation_date), 
+    MONTH(reservation_date);
+
+
 -- 學生行事曆資料表(選完課之後呈現的不同課程時段集合資料表)
 -- 同一個上課日期可能有不同課程
 -- 一個日期一筆資料
@@ -151,10 +172,9 @@ CREATE TABLE student_schedule
     student_schedule_id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     student_id INT NOT NULL,
     student_course_date DATE NOT NULL,--學生上課日期 做判斷 如果該學生編號在學生行事曆資料表沒有該筆日期(抓教師行事曆的課程日期)，就新增一筆，
-    student_time_slots_all VARCHAR(24) NOT NULL,--當天不同課程總上課時段
-    --0:沒預約 1:已預約 
-    --000000001111001111100000
-    --預約14:00~17:59、20:00~23:59的時段
+    student_time_slots_all VARCHAR(MAX) NOT NULL,--當天不同課程總上課時段
+    --'0-0-0-0-0-0-0-0-0-0-0-0-2-2-4-4-0-0-0-0-0-0-0-0'
+    --不等於的部分是reservation-id
     FOREIGN KEY (student_id) REFERENCES student(student_id)
 );
 
@@ -165,6 +185,7 @@ VALUES
     (2, '2024-05-02', '0-0-0-0-0-0-0-0-0-0-0-0-3-3-0-0-0-0-0-0-0-0-0-0');
 
 SELECT * FROM student_schedule;
+DROP TABLE student_schedule;
 
 --課程訂單
 CREATE TABLE corder(
@@ -626,7 +647,7 @@ CREATE TABLE forum_thread (
     thread_content NVARCHAR(4000) NOT NULL,
     thread_upvote_count INT,
     thread_response_count INT,
-    thread_status VARCHAR(20) CHECK (thread_status IN ('VISIBLE', 'LOCKED', 'DELETED')) NOT NULL,
+    thread_status VARCHAR(20) CHECK (thread_status IN ('VISIBLE', 'EDITED', 'LOCKED', 'DELETED')) NOT NULL,
 	CONSTRAINT FK_thread_category FOREIGN KEY(forum_category_id) REFERENCES forum_category(forum_category_id),
     CONSTRAINT FK_thread_student FOREIGN KEY(thread_student_id) REFERENCES student(student_id),
     CONSTRAINT FK_thread_teacher FOREIGN KEY(thread_teacher_id) REFERENCES teacher(teacher_id),
@@ -713,13 +734,13 @@ CREATE TABLE forum_post (
 	post_student_id INT NULL,
 	post_teacher_id INT NULL,
 	post_admin_id INT NULL,
-	thread_id INT,
-    parent_post_id INT,
+	thread_id INT NOT NULL,
+    parent_post_id INT NULL,
     post_content NVARCHAR(1200) NOT NULL,
     post_upvote_count INT,
 	post_response_count INT, 
     post_created_time DATETIME2 DEFAULT SYSDATETIME() NOT NULL,
-    post_status VARCHAR(10) CHECK (post_status IN ('VISIBLE', 'MODERATED', 'DELETED')) NOT NULL,
+    post_status VARCHAR(10) CHECK (post_status IN ('VISIBLE', 'EDITED', 'LOCKED', 'DELETED')) NOT NULL,
     CONSTRAINT FK_thread_id FOREIGN KEY(thread_id) REFERENCES forum_thread(thread_id),
 	CONSTRAINT FK_post_creator1 FOREIGN KEY(post_student_id) REFERENCES student(student_id),
     CONSTRAINT FK_post_creator2 FOREIGN KEY(post_teacher_id) REFERENCES teacher(teacher_id),

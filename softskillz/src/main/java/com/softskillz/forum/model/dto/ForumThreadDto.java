@@ -1,90 +1,58 @@
 package com.softskillz.forum.model.dto;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.softskillz.forum.model.StatusEnum;
 
 public class ForumThreadDto {
 
-    private Integer threadId;
-    private String threadTitle;
-    private Timestamp threadCreatedTime;
-    private String threadContent;
-    private int threadUpvoteCount=0;
-    private int threadResponseCount=0;
-    private String threadStatus = "VISIBLE";
-    private int forumCategoryId; 
-    private String forumCategoryName;
-    private Integer studentId;    
-    private Integer teacherId;  
-    private Integer adminId;    
-    private List<Integer> threadIds;
-    
-    
-    
+	private Integer threadId;
+	private String threadTitle;
+	private Timestamp threadCreatedTime;
+	private String threadContent;
+	private int threadUpvoteCount = 0;
+	private int threadResponseCount = 0;
+	private StatusEnum threadStatus = StatusEnum.VISIBLE;
+	private ForumCategoryDto forumCategory;
+	private StudentDto student;
+	private TeacherDto teacher;
+	private AdminDto admin;
+	private List<Integer> threadIds = new ArrayList<>();
 
-    public ForumThreadDto() {
-    }
-    
 
-    //update thread
+	public ForumThreadDto() {
+	}
+
+	// update thread
 	public ForumThreadDto(Integer threadId, String threadTitle, String threadContent) {
-		super();
 		this.threadId = threadId;
 		this.threadTitle = threadTitle;
 		this.threadContent = threadContent;
 	}
 
-	//insert new thread
-	public ForumThreadDto(String threadTitle, String threadContent, int forumCategoryId) {
+	// update status
+	public ForumThreadDto(StatusEnum threadStatus) {
+		this.threadStatus = threadStatus;
+	}
+
+	// insert new thread
+
+	public ForumThreadDto(String threadTitle, String threadContent, ForumCategoryDto categoryDto) {
 		super();
 		this.threadTitle = threadTitle;
 		this.threadContent = threadContent;
-		this.forumCategoryId = forumCategoryId;
+		this.forumCategory = forumCategory;
 	}
-	
-	
-	
-
-
-
-
-
-
-
-	public String getForumCategoryName() {
-		return forumCategoryName;
-	}
-
-
-	public void setForumCategoryName(String forumCategoryName) {
-		this.forumCategoryName = forumCategoryName;
-	}
-
 
 	public List<Integer> getThreadIds() {
 		return threadIds;
 	}
 
-
 	public void setThreadIds(List<Integer> threadIds) {
 		this.threadIds = threadIds;
 	}
-
-
-
-	
-
-
-	public Integer getAdminId() {
-		return adminId;
-	}
-
-
-	public void setAdminId(Integer adminId) {
-		this.adminId = adminId;
-	}
-
-
 
 	public Integer getThreadId() {
 		return threadId;
@@ -134,37 +102,47 @@ public class ForumThreadDto {
 		this.threadResponseCount = threadResponseCount;
 	}
 
-	public String getThreadStatus() {
+	public StatusEnum getThreadStatus() {
 		return threadStatus;
 	}
 
-	public void setThreadStatus(String threadStatus) {
+	public void setThreadStatus(StatusEnum threadStatus) {
 		this.threadStatus = threadStatus;
 	}
 
-	public int getForumCategoryId() {
-		return forumCategoryId;
+
+	public ForumCategoryDto getForumCategory() {
+		return forumCategory;
 	}
 
-	public void setForumCategoryId(int forumCategoryId) {
-		this.forumCategoryId = forumCategoryId;
+	public void setForumCategory(ForumCategoryDto forumCategory) {
+		this.forumCategory = forumCategory;
 	}
 
-	public Integer getStudentId() {
-		return studentId;
+	public StudentDto getStudent() {
+		return student;
 	}
 
-	public void setStudentId(Integer studentId) {
-		this.studentId = studentId;
+	public void setStudent(StudentDto student) {
+		this.student = student;
 	}
 
-	public Integer getTeacherId() {
-		return teacherId;
+	public TeacherDto getTeacher() {
+		return teacher;
 	}
 
-	public void setTeacherId(Integer teacherId) {
-		this.teacherId = teacherId;
+	public void setTeacher(TeacherDto teacher) {
+		this.teacher = teacher;
 	}
-    
-    
+
+	public AdminDto getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(AdminDto admin) {
+		this.admin = admin;
+	}
+
+	
+
 }

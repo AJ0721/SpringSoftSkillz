@@ -2,22 +2,45 @@
 
 //THREAD HTML
 window.createThreadHtml = function (thread) {
+
+    //VIEW REVISION
+
+    let userId, userType;
+    if (thread.student) {
+        userId = (thread.student.studentId);
+        userType = '學生';
+    } else if (thread.teacher) {
+        userId = (thread.teacher.teacherId);
+        userType = '老師';
+    } else if (thread.admin) {
+        userId = (thread.admin.adminId);
+        userType = '管理員';
+    }
+
+
+    // Format date to show only YYYY-MM-DD
+    let formattedDate = thread.threadCreatedTime.split('T')[0];
+    let status = thread.threadStatus;
+
     return `
-        <tr>
-                  <td><input type="checkbox"></td>
-                  <td>${thread.threadId}</td>
-                  <td><a href="/forum/thread/detailpage/${thread.threadId}" class="thread-link"> ${thread.threadTitle}</a></td>
-                  <td>${thread.forumCategoryId}</td>
-                  <td>${thread.studentId}</td>
-                  <td>${thread.teacherId}</td>
-                  <td>${thread.adminId}</td>
-                  <td>${thread.threadCreatedTime}</td>
-                  <td>${thread.threadContent}</td>
-                  <td>${thread.threadUpvoteCount}</td>
-                  <td>${thread.threadResponseCount}</td>
-                  <td>${thread.forumThreadStatus}</td>
-                  <td id="updateThread" class="edit btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></td>
-        </tr>
+    <tr class="text-nowrap">
+        <td><input class="form-check-input" type="checkbox"></td>
+        <td>${thread.threadId}</td>
+        <td><a href="/forum/thread/detailpage/${thread.threadId}" class="thread-link">${thread.threadTitle}</a></td>
+        <td>${thread.forumCategory.forumCategoryName}</td>
+        <td>${userType}-${userId}</td>
+        <td>${thread.threadUpvoteCount}</td>
+        <td>${thread.threadResponseCount}</td>
+        <td>${formattedDate}</td> 
+        <td>
+            <select class="status-dropdown" data-thread-id="${thread.threadId}">
+                <option value="VISIBLE" ${status === 'VISIBLE' ? 'selected' : ''}>正常</option>
+                <option value="LOCKED" ${status === 'LOCKED' ? 'selected' : ''}>待審</option>
+                <option value="DELETED" ${status === 'DELETED' ? 'selected' : ''}>刪除</option>
+            </select>
+        </td>
+        <td id="updateThread" class="edit btn btn-sm icon btn-primary text-nowrap"><i class="bi bi-pencil"></i></td>
+    </tr>
         `
         ;
 }
@@ -95,7 +118,7 @@ $(document).ready(function () {
                 console.log(threadIds); //debug ok
 
                 $.ajax({
-                    url: '/forum/thread/deleteall',
+                    url: '/forum/thread/delete-all',
                     type: 'DELETE',
                     data: JSON.stringify({ threadIds: threadIds }),
                     contentType: 'application/json',
@@ -144,65 +167,6 @@ $(document).ready(function () {
     }
     );
 
-
-    // FUNCTION: SEARCH BAR (KEYWORD/ID)
-    function searchThreadsByKeyword() {
-        var keyword = $('#searchInput').val().trim();
-
-        if (!keyword) {
-            $('#threadList').html('<tr><td colspan="13">請輸入搜索關鍵字。</td></tr>');
-            return;
-        }
-
-        $.ajax({
-            url: '/forum/thread/search',
-            method: 'GET',
-            data: { keyword: keyword },
-            dataType: 'json',
-            success: function (threads) {
-
-                if (threads.length === 0) {
-                    $('#threadList').empty();
-                    $('#threadList').append(`
-                    <tr><td colspan="13">查無資訊，請重新輸入</td></tr >
-                    `)
-                } else {
-                    $('#threadList').empty();
-                    threads.forEach(function (thread) {
-                        $('#threadList').append(createThreadHtml(thread));
-                    });
-                }
-            },
-            error: function (error) {
-                console.error('Error searching threads:', error);
-            }
-        });
-
-
-    }
-    function searchThreadsById() {
-        var threadId = $('#searchInput').val();
-        console.log('threadId: ' + threadId);
-
-        $.ajax({
-            url: '/forum/thread/find/id/' + threadId,
-            method: 'GET',
-            dataType: 'json',
-            success: function (thread) {
-                $('#threadList').empty();
-                $('#threadList').append(createThreadHtml(thread));
-
-            },
-            error: function (error) {
-                $('#threadList').empty();
-                $('#threadList').append(`
-                <tr><td colspan="13">查無資訊，請重新輸入</td></tr >
-                `);
-                console.error('Error searching threads:', error);
-            }
-        });
-    };
-
     //ACTION:DISPLAY CATEGORY IN TAB WHEN LOAD
     $('#nav-threads-tab').click(function (e) {
         e.preventDefault();
@@ -218,7 +182,126 @@ $(document).ready(function () {
     });
 
 
+    //UPDATE STATUS
+
+    // Listen for focus to capture the original value before change
+    $(document).on('focus', '.status-dropdown', function () {
+        // Store the original value
+        $(this).data('current', $(this).val());
+    });
+
+
+    document.body.addEventListener('change', function (e) {
+        if (e.target.classList.contains('status-dropdown')) {
+            const threadId = e.target.dataset.threadId;
+            const newStatus = e.target.value;
+
+            // Show confirmation dialog
+            Swal.fire({
+                title: '是否更新文章狀態?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: '取消',
+                confirmButtonText: '確認'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send the update to the server
+                    fetch(`/forum/thread/update/id/${threadId}?status=${newStatus}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ threadStatus: newStatus })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            Swal.fire(
+                                '更新成功!',
+                                '',
+                                'success'
+                            );
+                        })
+                        .catch(error => {
+                            console.error('Error updating status:', error);
+                            Swal.fire(
+                                '更新失敗',
+                                '請檢查網路連線並重新整理',
+                                'error'
+                            );
+                            dropdown.val(originalStatus);
+                        });
+                } else {
+                    // User clicked 'Cancel', restore the original status
+                    $(e.target).val($(e.target).data('current'));
+                }
+            });
+        }
+    });
+});
+
+
+// FUNCTION: SEARCH BAR (KEYWORD/ID)
+function searchThreadsByKeyword() {
+    var keyword = $('#searchInput').val().trim();
+
+    if (!keyword) {
+        $('#threadList').html('<tr><td colspan="13">請輸入搜索關鍵字。</td></tr>');
+        return;
+    }
+
+    $.ajax({
+        url: '/forum/thread/search',
+        method: 'GET',
+        data: { keyword: keyword },
+        dataType: 'json',
+        success: function (threads) {
+
+            if (threads.length === 0) {
+                $('#threadList').empty();
+                $('#threadList').append(`
+                    <tr><td colspan="13">查無資訊，請重新輸入</td></tr >
+                    `)
+            } else {
+                $('#threadList').empty();
+                threads.forEach(function (thread) {
+                    $('#threadList').append(createThreadHtml(thread));
+                });
+            }
+        },
+        error: function (error) {
+            console.error('Error searching threads:', error);
+        }
+    });
+
+
+}
+
+function searchThreadsById() {
+    var threadId = $('#searchInput').val();
+    console.log('threadId: ' + threadId);
+
+    $.ajax({
+        url: '/forum/thread/find/id/' + threadId,
+        method: 'GET',
+        dataType: 'json',
+        success: function (thread) {
+            $('#threadList').empty();
+            $('#threadList').append(createThreadHtml(thread));
+
+        },
+        error: function (error) {
+            $('#threadList').empty();
+            $('#threadList').append(`
+                <tr><td colspan="13">查無資訊，請重新輸入</td></tr >
+                `);
+            console.error('Error searching threads:', error);
+        }
+    });
+};
 
 
 
-})
+
+
+

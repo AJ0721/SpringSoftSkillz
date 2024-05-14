@@ -1,56 +1,52 @@
 package com.softskillz.mall.service;
 
-import java.util.List;
-
 import com.softskillz.mall.model.Coupon;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
- * 優惠券服務介面
+ * 優惠券服務接口，定義所有與優惠券相關的業務邏輯操作。
  */
 public interface CouponService {
 
     /**
-     * 創建優惠券
-     *
-     * @param coupon 優惠券實體
-     * @return 創建成功的優惠券實體
+     * 查詢所有優惠券。
+     * @return 所有優惠券的列表。
+     */
+    List<Coupon> findAllCoupons();
+
+    /**
+     * 根據優惠券ID查詢單個優惠券。
+     * @param couponId 優惠券的唯一標識符。
+     * @return 包含優惠券的 Optional 實例，如果找不到則為空。
+     */
+    Optional<Coupon> findCouponById(Integer couponId);
+
+    /**
+     * 創建一個新的優惠券。
+     * @param coupon 優惠券實體。
+     * @return 創建後的優惠券實體。
      */
     Coupon createCoupon(Coupon coupon);
 
     /**
-     * 根據ID刪除優惠券
-     *
-     * @param couponId 優惠券ID
-     */
-    void deleteCoupon(Integer couponId);
-
-    /**
-     * 更新優惠券
-     *
-     * @param coupon 優惠券實體
-     * @return 更新成功的優惠券實體
+     * 更新現有優惠券的信息。
+     * @param coupon 更新後的優惠券實體。
+     * @return 更新後的優惠券實體。
      */
     Coupon updateCoupon(Coupon coupon);
 
     /**
-     * 根據ID獲取優惠券
-     *
-     * @param couponId 優惠券ID
-     * @return 優惠券實體,若不存在則返回null
+     * 根據優惠券ID刪除優惠券。
+     * @param couponId 優惠券的唯一標識符。
      */
-    Coupon getCouponById(Integer couponId);
+    void deleteCoupon(Integer couponId);
 
     /**
-     * 獲取所有優惠券
-     *
-     * @return 所有優惠券列表
+     * 查詢當前有效的優惠券。
+     * @return 當前有效的優惠券列表。
      */
-    List<Coupon> getAllCoupons();
-
-    /**
-     * 獲取當前有效的優惠券
-     *
-     * @return 有效的優惠券列表
-     */
-    List<Coupon> getActiveCoupons();
+    List<Coupon> findActiveCoupons();
 }
+

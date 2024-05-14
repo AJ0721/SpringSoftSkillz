@@ -115,7 +115,6 @@
                   <span>首頁</span>
                 </a>
               </li>
-
               <li class="sidebar-title">用戶管理</li>
               <li class="sidebar-item has-sub">
                 <a href="#" class="sidebar-link">
@@ -124,7 +123,9 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/admin/admin-account" class="submenu-link"
+                      >管理員帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -135,7 +136,9 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/teacher/teacher-account" class="submenu-link"
+                      >教師帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -146,7 +149,9 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/student/student-account" class="submenu-link"
+                      >學生帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -198,13 +203,6 @@
                 <ul class="submenu">
                   <li class="submenu-item">
                     <a
-                      href="/studentReservation/studentReservationPage/studentReservationAllPage"
-                      class="submenu-link"
-                      >所有學生預約功能</a
-                    >
-                  </li>
-                  <li class="submenu-item">
-                    <a
                       href="/studentReservation/insertPage"
                       class="submenu-link"
                       >新增學生預約</a
@@ -226,10 +224,11 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增學生行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢學生行事曆</a>
+                    <a
+                      href="/studentSchedule/selectAllPage"
+                      class="submenu-link"
+                      >查詢學生行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -256,7 +255,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/mall/index" class="submenu-link">商品管理</a>
+                    <a href="/mall/mallProductAll" class="submenu-link">商品管理</a>
                   </li>
                 </ul>
               </li>
@@ -315,7 +314,99 @@
         </div>
         <div class="page-content">
           <section class="row">
-            <div class="col-12 col-lg-9">
+            <div class="col-12 col-lg-10">
+              <div class="row">
+                <div class="col-12 col-lg-4 col-md-6">
+                  <div class="card">
+                    <div class="card-body px-4 py-4-5">
+                      <div class="row mb-2">
+                        <div class="col-12">
+                          <h5
+                            class="text-muted font-semibold d-flex justify-content-center"
+                          >
+                            線上教學年度銷售額
+                          </h5>
+                        </div>
+                      </div>
+                      <div id="onlineCoursesChart"></div>
+                      <!-- 圖表位置 -->
+                      <div class="row mt-2">
+                        <div
+                          class="col-12 d-flex justify-content-center align-items-baseline"
+                        >
+                          <h6 class="text-muted font-semibold me-3">
+                            總銷售額
+                          </h6>
+                          <h6
+                            id="totalSalesValue"
+                            class="font-extrabold mb-0"
+                          ></h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-md-6">
+                  <div class="card">
+                    <div class="card-body px-4 py-4-5">
+                      <div class="row mb-2">
+                        <div class="col-12">
+                          <h5
+                            class="text-muted font-semibold d-flex justify-content-center"
+                          >
+                            商城年度銷售額
+                          </h5>
+                        </div>
+                      </div>
+                      <div id="mallChart"></div>
+                      <!-- 圖表位置 -->
+                      <div class="row mt-2">
+                        <div
+                          class="col-12 d-flex justify-content-center align-items-baseline"
+                        >
+                          <h6 class="text-muted font-semibold me-3">
+                            總銷售額
+                          </h6>
+                          <h6
+                            id="mallTotalSalesValue"
+                            class="font-extrabold mb-0"
+                          ></h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-4 col-md-6">
+                  <div class="card">
+                    <div class="card-body px-4 py-4-5">
+                      <div class="row mb-2">
+                        <div class="col-12">
+                          <h5
+                            class="text-muted font-semibold d-flex justify-content-center"
+                          >
+                            年度訪客數
+                          </h5>
+                        </div>
+                      </div>
+                      <div id="visitorsChart"></div>
+                      <div class="row mt-2">
+                        <div
+                          class="col-12 d-flex justify-content-center align-items-baseline"
+                        >
+                          <h6 class="text-muted font-semibold me-3">
+                            總訪客數
+                          </h6>
+                          <h6
+                            id="visitorsTotalValue"
+                            class="font-extrabold mb-0"
+                          ></h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-6 col-lg-3 col-md-6">
                   <div class="card">
@@ -544,7 +635,7 @@
             </div>
 
             <!-- 右方第一個卡片列表 -->
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-lg-2">
               <div class="card">
                 <div class="card-body py-4 px-4">
                   <div class="d-flex align-items-center">
@@ -631,5 +722,171 @@
     <!-- Need: Apexcharts -->
     <script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
     <script src="/assets/static/js/pages/dashboard.js"></script>
+    <script src="/assets/static/js/pages/ui-apexchart.js"></script>
+
+    <script>
+      // 線上課程銷售圖表
+      var salesData = [
+        45000, 52000, 60000, 61000, 58000, 63000, 68000, 69000, 65000, 67000,
+        63000, 66000,
+      ];
+      var totalSales = salesData.reduce((total, current) => total + current, 0);
+
+      var onlineCoursesOptions = {
+        series: [
+          {
+            name: "銷售額",
+            data: salesData,
+          },
+        ],
+        chart: {
+          type: "line",
+          height: 350,
+        },
+        xaxis: {
+          categories: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+          ],
+        },
+        tooltip: {
+          y: {
+            formatter: function (value) {
+              return "$" + value.toLocaleString();
+            },
+          },
+        },
+      };
+
+      var chart = new ApexCharts(
+        document.querySelector("#onlineCoursesChart"),
+        onlineCoursesOptions
+      );
+      chart.render();
+
+      document.getElementById("totalSalesValue").innerText =
+        "$" + totalSales.toLocaleString();
+
+      //商城銷售圖表
+
+      var mallSalesData = [
+        30000, 40000, 70000, 55000, 60000, 45000, 68000, 69000, 65000, 67000,
+        63000, 66000,
+      ];
+      var mallTotalSales = mallSalesData.reduce(
+        (total, current) => total + current,
+        0
+      );
+
+      var mallOptions = {
+        series: [
+          {
+            name: "商城銷售額",
+            data: mallSalesData,
+          },
+        ],
+        chart: {
+          type: "line",
+          height: 350,
+        },
+        xaxis: {
+          categories: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+          ],
+        },
+        tooltip: {
+          y: {
+            formatter: function (value) {
+              return "$" + value.toLocaleString();
+            },
+          },
+        },
+      };
+
+      var chart = new ApexCharts(
+        document.querySelector("#mallChart"),
+        mallOptions
+      );
+      chart.render();
+
+      document.getElementById("mallTotalSalesValue").innerText =
+        "$" + mallTotalSales.toLocaleString();
+
+      //訪客數圖表
+
+      var vistorsData = [
+        1000, 2500, 2800, 2900, 1800, 2500, 3400, 3000, 3900, 4100, 3500, 5000,
+      ];
+      var vistorsTotal = vistorsData.reduce(
+        (total, current) => total + current,
+        0
+      );
+
+      var visutorsOptions = {
+        series: [
+          {
+            name: "訪客數",
+            data: vistorsData,
+          },
+        ],
+        chart: {
+          type: "line",
+          height: 350,
+        },
+        xaxis: {
+          categories: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+          ],
+        },
+        tooltip: {
+          y: {
+            formatter: function (value) {
+              return "$" + value.toLocaleString();
+            },
+          },
+        },
+      };
+
+      var chart = new ApexCharts(
+        document.querySelector("#visitorsChart"),
+        visutorsOptions
+      );
+      chart.render();
+
+      document.getElementById("visitorsTotalValue").innerText =
+        vistorsTotal.toLocaleString() + " 人次";
+    </script>
   </body>
 </html>

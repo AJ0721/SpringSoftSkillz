@@ -12,4 +12,9 @@ public class HomePageController {
 	public String homePage() {
 		return "/dist/index.html";
 	}
+	
+	@GetMapping("/fhomepage")
+	public String fhomePage() {
+		return "/elearning/index.html";
+	}
 }

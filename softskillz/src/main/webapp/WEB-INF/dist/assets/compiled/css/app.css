@@ -2199,13 +2199,13 @@ progress {
   margin-inline-end: 1rem;
 }
 textarea.form-control {
-  min-height: calc(1.5em + 0.75rem + 2px);
+  min-height: calc(1.5em + 0.5rem + 10px); /* 增加了 10px 的高度 */
 }
 textarea.form-control-sm {
-  min-height: calc(1.5em + 0.5rem + 2px);
+  min-height: calc(1.5em + 0.5rem + 10px); /* 增加了 10px 的高度 */
 }
 textarea.form-control-lg {
-  min-height: calc(1.5em + 1rem + 2px);
+  min-height: calc(1.5em + 1rem + 10px); /* 增加了 10px 的高度 */
 }
 .form-control-color {
   width: 3rem;
@@ -2529,8 +2529,8 @@ textarea.form-control-lg {
   top: 0;
   left: 0;
   z-index: 2;
-  height: 100%;
-  padding: 1rem 0.75rem;
+  height: auto;
+  padding: 0.5rem 0.5rem;
   overflow: hidden;
   text-align: start;
   text-overflow: ellipsis;
@@ -2550,7 +2550,7 @@ textarea.form-control-lg {
 .form-floating > .form-control-plaintext {
   height: calc(4rem + 2px); /* 增加輸入框的高度 */
   min-height: calc(4rem + 2px); /* 可選，設定最小高度 */
-  line-height: 1.25;
+  line-height: 2;
   padding-top: 2rem; /* 增加上方內邊距以容納標籤 */
 }
 .form-floating > .form-control::placeholder,

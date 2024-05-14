@@ -1,6 +1,7 @@
 package com.softskillz.productorder.model;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import com.softskillz.mall.model.Product;
 
@@ -17,6 +18,9 @@ public class ProductCartItem implements Serializable {
     public ProductCartItem(Product product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
+    }
+
+    public ProductCartItem(Optional<Product> product, Integer quantity) {
     }
 
     public Product getProduct() {

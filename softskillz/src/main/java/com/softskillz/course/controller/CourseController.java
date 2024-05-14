@@ -30,7 +30,7 @@ public class CourseController {
 	@Autowired
 	private TeacherService teacherService;
 
-	// 模版新增課程CRUD頁面
+	// 新增課程CRUD頁面
 	@GetMapping("/insertPage")
 	public String courseInsertPage(Model model) {
 		List<TeacherBean> teachers = teacherService.findAllTeachers();

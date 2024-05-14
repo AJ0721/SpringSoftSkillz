@@ -33,14 +33,14 @@ public class StudentCrudController {
 	// 登入
 	// 網址頁登入一定要用get方法
 	@GetMapping("/student-loginPage")
-	public String StudentLoginAction() {
-		return "account/student/StudentLoginFront.jsp";
+	public String StudentLoginPage() {
+		return "/dist/account/student/StudentLoginFront.jsp";
 	}
 
 	// 登入action
 	@PostMapping("/student-login")
 	public String studentLoginAction(@RequestParam("usernameOrEmail") String usernameOrEmail,
-			@RequestParam("studentPassword") String studentPassword, HttpSession session) {
+			@RequestParam("studentPassword") String studentPassword, HttpSession session, Model m) {
 		
 		StudentBean studentData = null;
 
@@ -53,24 +53,24 @@ public class StudentCrudController {
 
 		if (studentData != null) {
 			session.setAttribute("studentData", studentData);
-			return "/account/homepage/FrontPage.jsp";
+			return "/dist/index.html";
 		} else {
 			//redirect只能叫controller，其他時候直接輸入網址
-			session.setAttribute("loginMsg", "Invalid username or email.");
-			return "/account/student/StudentLoginFront.jsp";
+			m.addAttribute("loginMsg", "錯誤的帳號或密碼");
+			return "/dist/account/student/StudentLoginFront.jsp";
 		}
 	}
 
 	// 學生後台頁面
 	@GetMapping("/student-account")
 	public String StudentCrudPage() {
-		return "account/student/StudentCrudPage.jsp";
+		return "/dist/account/student/studentCrudPage.jsp";
 	}
 
 	// 註冊頁面
 	@GetMapping({ "/student-createPage" })
 	public String goToStudentCreatePage() {
-		return "account/student/StudentCreate.jsp";
+		return "/dist/account/student/StudentCreate.jsp";
 	}
 
 	// 新增頁面，印舊資料
@@ -80,7 +80,7 @@ public class StudentCrudController {
 		StudentBean oldStudentBean = studentService.findById(studentId);
 		m.addAttribute("student", oldStudentBean);
 
-		return "account/student/StudentUpdate.jsp";
+		return "/dist/account/student/StudentUpdate.jsp";
 	}
 
 	// 新增, 學生註冊
@@ -116,7 +116,7 @@ public class StudentCrudController {
 		} else {
 			m.addAttribute("createMsg", "帳號創建成功");
 		}
-		return "account/student/StudentLoginFront.jsp";
+		return "/dist/account/student/StudentLoginFront.jsp";
 	}
 
 	// 查詢全部
@@ -126,7 +126,7 @@ public class StudentCrudController {
 		System.out.println(students);
 		m.addAttribute("students", students);
 
-		return "/account/student/StudentCrudPage.jsp";
+		return "/dist/account/student/studentCrudPage.jsp";
 	}
 
 	// 查詢單筆
@@ -143,7 +143,7 @@ public class StudentCrudController {
 			m.addAttribute("rowMsg", "找不到此id");
 		}
 		System.out.println(result);
-		return "/account/student/StudentCrudPage.jsp";
+		return "/dist/account/student/studentCrudPage.jsp";
 
 	}
 
@@ -156,7 +156,8 @@ public class StudentCrudController {
 			m.addAttribute("rowMsg", "已刪除一筆資料");
 		}
 
-		return "/account/student/StudentCrudPage.jsp";
+		//return "/account/student/StudentCrudPage.jsp";
+		return "redirect:/student/student-account";
 
 	}
 
@@ -193,6 +194,6 @@ public class StudentCrudController {
 		// 把東西丟到頁面
 		m.addAttribute("rowMsg", "已更新學生帳號");
 
-		return "/account/student/StudentCrudPage.jsp";
+		return "redirect:/student/student-account";
 	}
 }

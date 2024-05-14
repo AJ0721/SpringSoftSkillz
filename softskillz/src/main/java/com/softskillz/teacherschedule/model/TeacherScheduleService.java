@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softskillz.studentreservation.model.JsonUtil;
 
 @Service
 @Transactional
@@ -17,8 +16,6 @@ public class TeacherScheduleService {
 
 	@Autowired
 	private TeacherScheduleRepository teacherScheduleRepository;
-
-	private ObjectMapper objectMapper = new ObjectMapper();
 
 	// 檢查是否存在相同教師編號和課程日期的行事曆
 	public boolean existsByTeacherIDAndCourseDate(int teacherID, LocalDate courseDate) {
@@ -33,9 +30,7 @@ public class TeacherScheduleService {
 		// 解析 JSON 字串為時間段列表
 		List<String> timeSlotsList;
 		try {
-			timeSlotsList = objectMapper.readValue(teacherScheduleBean.getTeacherTimeSlots(),
-					new TypeReference<List<String>>() {
-					});
+			timeSlotsList = JsonUtil.parseTimeSlots(teacherScheduleBean.getTeacherTimeSlots());
 		} catch (IOException e) {
 			throw new RuntimeException("解析時間段 JSON 失敗", e);
 		}

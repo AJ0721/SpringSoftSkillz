@@ -2,6 +2,9 @@ package com.softskillz.companion.model;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,10 +27,12 @@ public class CompanionMatchBean {
 	
 	@ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_student_a_id")
+	@JsonIgnore
 	private CompanionBean companionAId;
 	
 	@ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_student_b_id")
+	@JsonIgnore
 	private CompanionBean companionBId;
 
 	@Column(name = "match_request")

@@ -3,6 +3,8 @@ package com.softskillz.courseorder.model.repository;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,5 +41,6 @@ public interface CourseOrderReporistory extends JpaRepository<CorderBean, String
 	List<CorderBean> findNoOverdueOrder(@Param("ss") String status);
 	
 	
-	
+	@Query("from CorderBean o where o.orderDate >= :date1 AND o.orderDate <= :date2")
+	Page<CorderBean> getPageOrderByDate(@Param("date1") Date date1, @Param("date2") Date date2,Pageable pageable);
 }

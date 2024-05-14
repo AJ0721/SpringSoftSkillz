@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.studentschedule.model.StudentScheduleRepository;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
@@ -30,8 +28,6 @@ public class StudentReservationService {
 	@Autowired
 	private TeacherScheduleRepository teacherScheduleRepository;
 
-	private ObjectMapper objectMapper = new ObjectMapper();
-
 	// 新增學生預約
 	public StudentReservationBean insertStudentReservation(StudentReservationBean studentReservationBean)
 			throws ReservationException {
@@ -39,9 +35,7 @@ public class StudentReservationService {
 		// 解析 JSON 字串為時間段列表
 		List<String> timeSlotsList;
 		try {
-			timeSlotsList = objectMapper.readValue(studentReservationBean.getStudentTimeSlots(),
-					new TypeReference<List<String>>() {
-					});
+			timeSlotsList = JsonUtil.parseTimeSlots(studentReservationBean.getStudentTimeSlots());
 		} catch (IOException e) {
 			throw new RuntimeException("解析時間段 JSON 失敗", e);
 		}
@@ -197,8 +191,57 @@ public class StudentReservationService {
 		return reservations;
 	}
 
-	// 刪除單筆學生預約
-	public void deleteByStudentReservationId(Integer studentReservationID) {
+	// 刪除單筆學生預約並更新相關行事曆
+	public void deleteStudentReservationAndUpdateSchedules(Integer studentReservationID) throws Exception {
+		StudentReservationBean reservation = studentReservationRepository.findById(studentReservationID)
+				.orElseThrow(() -> new IllegalStateException("預約不存在"));
+
+		// 獲取相關的教師行事曆
+		TeacherScheduleBean teacherSchedule = teacherScheduleRepository.findById(reservation.getTeacherScheduleID())
+				.orElseThrow(() -> new IllegalStateException("教師行事曆不存在"));
+
+		// 更新教師行事曆時段，把已被預約的「2」改為「1」
+		updateTeacherScheduleTimeSlotsForCancellation(teacherSchedule, reservation.getStudentTimeSlots());
+
+		// 更新學生行事曆，把預約時段改為「0」
+		updateStudentScheduleForCancellation(reservation);
+
+		// 刪除學生預約
 		studentReservationRepository.deleteById(studentReservationID);
 	}
+
+	// 更新教師行事曆時段
+	private void updateTeacherScheduleTimeSlotsForCancellation(TeacherScheduleBean teacherSchedule,
+			String studentTimeSlots) {
+		char[] slots = teacherSchedule.getTeacherTimeSlots().toCharArray();
+		for (int i = 0; i < studentTimeSlots.length(); i++) {
+			if (studentTimeSlots.charAt(i) == '1') {
+				if (slots[i] == '2') {
+					slots[i] = '1'; // 預約取消，更新為開放預約
+				}
+			}
+		}
+		teacherSchedule.setTeacherTimeSlots(new String(slots));
+		teacherScheduleRepository.save(teacherSchedule);
+	}
+
+	// 更新學生行事曆
+	private void updateStudentScheduleForCancellation(StudentReservationBean reservation) {
+		LocalDate courseDate = teacherScheduleRepository.findById(reservation.getTeacherScheduleID())
+				.orElseThrow(() -> new IllegalStateException("教師行事曆數據缺失")).getCourseDate();
+
+		StudentScheduleBean studentSchedule = studentScheduleRepository
+				.findByStudentIDAndCourseDate(reservation.getStudentID(), courseDate)
+				.orElseThrow(() -> new IllegalStateException("學生行事曆不存在"));
+
+		String[] slots = studentSchedule.getStudentTimeSlotsAll().split("-");
+		for (int i = 0; i < slots.length; i++) {
+			if (slots[i].equals(String.valueOf(reservation.getStudentReservationID()))) {
+				slots[i] = "0"; // 預約取消，更新時段為「0」
+			}
+		}
+		studentSchedule.setStudentTimeSlotsAll(String.join("-", slots));
+		studentScheduleRepository.save(studentSchedule);
+	}
+
 }

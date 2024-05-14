@@ -20,5 +20,6 @@ public class ProductViewController {
     public String showIndexPage() {
         return "/mall/html/index.html";
     }
-    
+
+
 }

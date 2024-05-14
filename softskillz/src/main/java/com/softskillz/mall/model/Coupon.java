@@ -1,11 +1,11 @@
 package com.softskillz.mall.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.*;
+import java.util.Set;
 
 /**
  * 優惠券實體類
@@ -51,6 +51,10 @@ public class Coupon {
     @Column(name = "coupon_end_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime couponEndDate; // 優惠券結束日期
+
+    // 關聯操作(當一個 Coupon 被刪除時，其相關的所有 CouponTypeRelations 實體也會被自動刪除。)
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CouponTypeRelations> couponTypeRelations;
 
     // 無參數建構子
     public Coupon() {

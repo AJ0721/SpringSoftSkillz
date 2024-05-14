@@ -34,4 +34,6 @@ public interface CourseOrderService {
 	Integer payOrder(String orderID, String status, String method);
 
 	Page<Order> getPageOrder(Pageable pageable);
+
+	Page<Order> getPageOrderByDate(Pageable pageable, String date1String, String date2String);
 }

@@ -65,7 +65,7 @@ public class ForumCategoryController {
 		iforumCategoryService.deleteForumCategoryById(categoryId);
 		
 	}
-	@DeleteMapping("/deleteall")
+	@DeleteMapping("/delete-all")
 	public void deleteAllCategory(@RequestBody ForumCategoryDto categoryListDtos) {
 		iforumCategoryService.deleteForumCategoryByIds(categoryListDtos.getForumCategoryIds());
 		

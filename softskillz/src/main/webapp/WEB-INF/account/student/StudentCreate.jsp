@@ -16,9 +16,9 @@
             密碼：<input type="password" name="studentPassword" required><br>
             電子信箱：<input type="email" name="studentEmail" required><br>
             性別：<select name="studentGender" required>
-                <option value="Male">男性</option>
-                <option value="Female">女性</option>
-                <option value="Unspecified">不顯示</option>
+                <option value="男性">男性</option>
+                <option value="女性">女性</option>
+                <option value="不顯示">不顯示</option>
             </select><br>
             出生日期：<input type="date" name="studentBirth" required><br>
             <label for="country">國家：</label>
@@ -77,7 +77,7 @@
                         <option value="小學">小學</option>
                         <option value="國中">國中</option>
                         <option value="高中">高中</option>
-                        <option value="大學">大學</option>
+                        <option value="大學" selected>大學</option>
                         <option value="碩士">碩士</option>
                         <option value="博士">博士</option>
                         <option value="博士后">博士后</option>

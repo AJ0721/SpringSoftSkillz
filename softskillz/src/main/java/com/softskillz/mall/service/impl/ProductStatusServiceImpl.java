@@ -1,17 +1,17 @@
 package com.softskillz.mall.service.impl;
 
-import java.util.List;
-
+import com.softskillz.mall.model.ProductStatus;
+import com.softskillz.mall.repos.ProductStatusRepository;
+import com.softskillz.mall.service.ProductStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.softskillz.mall.model.ProductStatus;
-import com.softskillz.mall.repos.ProductStatusRepository;
-import com.softskillz.mall.service.ProductStatusService;
+import java.util.List;
 
 /**
- * 商品狀態服務實現類
+ * 實現商品狀態相關的業務邏輯。
+ * 提供商品狀態的查詢功能。
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -25,11 +25,11 @@ public class ProductStatusServiceImpl implements ProductStatusService {
     }
 
     /**
-     * 獲取所有商品狀態的方法
-     * @return 返回所有商品狀態的列表
+     * 獲取所有商品狀態列表。
+     * @return 返回一個包含所有商品狀態的列表，這有助於在用戶界面上進行狀態管理或顯示。
      */
     @Override
-    public List<ProductStatus> getAllProductStatuses() {
+    public List<ProductStatus> findAllProductStatuses() {
         return productStatusRepository.findAll();
     }
 }

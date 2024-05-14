@@ -23,7 +23,6 @@ charset=UTF-8" pageEncoding="UTF-8"%>
 
     <!-- Datatable -->
     <link rel="stylesheet" href="/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css"/>
-
     <link rel="stylesheet" href="/assets/compiled/css/table-datatable-jquery.css"/>
 
     <!-- 固定網頁css -->
@@ -139,7 +138,9 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/admin/admin-account" class="submenu-link"
+                      >管理員帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -150,7 +151,9 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/teacher/teacher-account" class="submenu-link"
+                      >教師帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -161,7 +164,9 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">Horizontal Menu</a>
+                    <a href="/student/student-account" class="submenu-link"
+                      >學生帳號</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -174,10 +179,14 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/course/insertPage" class="submenu-link">新增課程</a>
+                    <a href="/course/insertPage" class="submenu-link"
+                      >新增課程</a
+                    >
                   </li>
                   <li class="submenu-item">
-                    <a href="/course/selectAllPage" class="submenu-link">查詢課程</a>
+                    <a href="/course/selectAllPage" class="submenu-link"
+                      >查詢課程</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -188,10 +197,16 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/teacherSchedule/insertPage" class="submenu-link">新增教師行事曆</a>
+                    <a href="/teacherSchedule/insertPage" class="submenu-link"
+                      >新增教師行事曆</a
+                    >
                   </li>
                   <li class="submenu-item">
-                    <a href="/teacherSchedule/selectAllPage" class="submenu-link">查詢教師行事曆</a>
+                    <a
+                      href="/teacherSchedule/selectAllPage"
+                      class="submenu-link"
+                      >查詢教師行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -203,16 +218,17 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 <ul class="submenu">
                   <li class="submenu-item">
                     <a
-                      href="/studentReservation/studentReservationPage/studentReservationAllPage"
+                      href="/studentReservation/insertPage"
                       class="submenu-link"
-                      >所有學生預約功能</a
+                      >新增學生預約</a
                     >
                   </li>
                   <li class="submenu-item">
-                    <a href="/studentReservation/insertPage" class="submenu-link">新增學生預約</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="/studentReservation/selectAllPage" class="submenu-link">查詢學生預約</a>
+                    <a
+                      href="/studentReservation/selectAllPage"
+                      class="submenu-link"
+                      >查詢學生預約</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -223,10 +239,11 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="#" class="submenu-link">新增學生行事曆</a>
-                  </li>
-                  <li class="submenu-item">
-                    <a href="#" class="submenu-link">查詢學生行事曆</a>
+                    <a
+                      href="/studentSchedule/selectAllPage"
+                      class="submenu-link"
+                      >查詢學生行事曆</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -277,7 +294,7 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/companion/index.html" class="submenu-link"
+                    <a href="/companionIndex.html" class="submenu-link"
                       >學伴資料管理</a
                     >
                   </li>
@@ -312,13 +329,13 @@ charset=UTF-8" pageEncoding="UTF-8"%>
         </div>
         <div class="page-content">
           <section class="row">
-            <div class="col-12 col-lg-9">
+            <div class="col-12 col-lg-10">
               <!-- 查詢課程 -->
               <div class="card">
                 <h3 class="card-header">查詢課程資料</h3>
                 <div class="card-body">
                   <div class="row justify-content-center">
-                    <table class="table" id="table1">
+                    <table class="table" id="courseTable">
                         <thead>
                             <tr>
                                 <th>課程編號</th>
@@ -359,29 +376,27 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                             %>
                         </tbody>
                     </table>
-                    <h4>
-                        共<%=courses.size()%>筆課程資料
-                    </h4>
                   </div>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4>Profile Visit</h4>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>課程數量統計表</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="chart"></div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                      <div id="chart-profile-visit"></div>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
+              
             </div>
 
             <!-- 右方第一個卡片列表 -->
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-lg-2">
               <div class="card">
                 <div class="card-body py-4 px-4">
                   <div class="d-flex align-items-center">
@@ -463,6 +478,7 @@ charset=UTF-8" pageEncoding="UTF-8"%>
     <!-- Need: Apexcharts -->
     <script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
     <script src="/assets/static/js/pages/dashboard.js"></script>
+    <script src="/assets/static/js/pages/ui-apexchart.js"></script>
 
     <!-- ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -576,9 +592,71 @@ charset=UTF-8" pageEncoding="UTF-8"%>
     }
 });
 
+//課程計數圖表
+// 計算百分比的函數
+function calculatePercentages(counts) {
+  const maxCount = Math.max(...counts);
+  return counts.map(count => (count / maxCount) * 100);
+}
+
+// 根據百分比生成顏色的函數
+function generateColors(percentages) {
+  return percentages.map(percentage => {
+    if (percentage >= 80) return '#FF4560'; // 百分比大於等於 80%
+    if (percentage >= 50) return '#425169'; // 百分比大於等於 50%
+    return '#008FFB'; // 其他情況
+  });
+}
+
+// 發送請求，生成圖表
+fetch('/api/course/courseCount')
+  .then(response => response.json())
+  .then(data => {
+    var categories = data.map(item => item[0]);
+    var counts = data.map(item => item[1]);
+    var percentages = calculatePercentages(counts);
+    var colors = generateColors(percentages);
+
+    var chartOptions = {
+      series: [{
+        name: "課程數量",
+        data: counts
+      }],
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      colors: colors,
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: categories
+      },
+      yaxis: {
+        tickAmount: 10,
+        title: {
+          text: '開課數量'
+        }
+      }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
+    chart.render();
+  })
+  .catch(error => console.error('Error fetching data:', error));
+
+
 $(document).ready(function() {
     // 初始化DataTable
-    $('#table1').DataTable({
+    $('#courseTable').DataTable({
         "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"  // 使用中文介面
         },

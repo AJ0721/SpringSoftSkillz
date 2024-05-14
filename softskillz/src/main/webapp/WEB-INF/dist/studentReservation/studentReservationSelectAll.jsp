@@ -99,119 +99,196 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 				<!-- 側邊欄 -->
 				<div class="sidebar-menu">
 					<ul class="menu">
-						<li class="sidebar-item active"><a
-							href="/softskillz/newhomepage" class="sidebar-link"> <i
-								class="bi bi-grid-fill"></i> <span>首頁</span>
-						</a></li>
-						<li class="sidebar-title">用戶管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>管理員</span>
+					  <li class="sidebar-item active">
+						<a href="/softskillz/newhomepage" class="sidebar-link">
+						  <i class="bi bi-grid-fill"></i>
+						  <span>首頁</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">Horizontal
-										Menu</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師</span>
+					  </li>
+					  <li class="sidebar-title">用戶管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>管理員</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">Horizontal
-										Menu</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/admin/admin-account" class="submenu-link"
+							  >管理員帳號</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>教師</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">Horizontal
-										Menu</a></li>
-							</ul></li>
-
-						<li class="sidebar-title">課程管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/teacher/teacher-account" class="submenu-link"
+							  >教師帳號</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>學生</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/course/insertPage"
-									class="submenu-link">新增課程</a></li>
-								<li class="submenu-item"><a href="/course/selectAllPage"
-									class="submenu-link">查詢課程</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師行事曆</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/student/student-account" class="submenu-link"
+							  >學生帳號</a
+							>
+						  </li>
+						</ul>
+					  </li>
+		
+					  <li class="sidebar-title">課程管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>課程</span>
 						</a>
-							<ul class="submenu">								
-								<li class="submenu-item"><a
-									href="/teacherSchedule/insertPage" class="submenu-link">新增教師行事曆</a>
-								</li>
-								<li class="submenu-item"><a
-									href="/teacherSchedule/selectAllPage" class="submenu-link">查詢教師行事曆</a>
-								</li>
-							</ul>
-                        </li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生預約</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/course/insertPage" class="submenu-link"
+							  >新增課程</a
+							>
+						  </li>
+						  <li class="submenu-item">
+							<a href="/course/selectAllPage" class="submenu-link"
+							  >查詢課程</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>教師行事曆</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/studentReservation/studentReservationPage/studentReservationAllPage"
-									class="submenu-link">所有學生預約功能</a></li>
-								<li class="submenu-item"><a href="/studentReservation/insertPage" class="submenu-link">新增學生預約</a>
-								</li>
-								<li class="submenu-item"><a href="/studentReservation/selectAllPage" class="submenu-link">查詢學生預約</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生行事曆</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/teacherSchedule/insertPage" class="submenu-link"
+							  >新增教師行事曆</a
+							>
+						  </li>
+						  <li class="submenu-item">
+							<a
+							  href="/teacherSchedule/selectAllPage"
+							  class="submenu-link"
+							  >查詢教師行事曆</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>學生預約</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">新增學生行事曆</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生行事曆</a>
-								</li>
-							</ul></li>
-
-						<li class="sidebar-title">課程訂單管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程訂單管理</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a
+							  href="/studentReservation/insertPage"
+							  class="submenu-link"
+							  >新增學生預約</a
+							>
+						  </li>
+						  <li class="submenu-item">
+							<a
+							  href="/studentReservation/selectAllPage"
+							  class="submenu-link"
+							  >查詢學生預約</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>學生行事曆</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/adminorder/adorder.do"
-									class="submenu-link">課程訂單管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">商品管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品管理</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a
+							  href="/studentSchedule/selectAllPage"
+							  class="submenu-link"
+							  >查詢學生行事曆</a
+							>
+						  </li>
+						</ul>
+					  </li>
+		
+					  <li class="sidebar-title">課程訂單管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>課程訂單管理</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/mall/index"
-									class="submenu-link">商品管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">商品訂單管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品訂單管理</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/adminorder/adorder.do" class="submenu-link"
+							  >課程訂單管理</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-title">商品管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>商品管理</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/order"
-									class="submenu-link">商品訂單管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">學伴資料管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學伴資料管理</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/mall/index" class="submenu-link">商品管理</a>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-title">商品訂單管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>商品訂單管理</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/companion/index.html"
-									class="submenu-link">學伴資料管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">論壇管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>論壇管理</span>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/order" class="submenu-link">商品訂單管理</a>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-title">學伴資料管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>學伴資料管理</span>
 						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/forum/adminhome"
-									class="submenu-link">論壇管理</a></li>
-							</ul></li>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/companionIndex.html" class="submenu-link"
+							  >學伴資料管理</a
+							>
+						  </li>
+						</ul>
+					  </li>
+					  <li class="sidebar-title">論壇管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>論壇管理</span>
+						</a>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/forum/adminhome" class="submenu-link">論壇管理</a>
+						  </li>
+						</ul>
+					  </li>
 					</ul>
-				</div>
+				  </div>
 			</div>
 		</div>
 
@@ -227,7 +304,7 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 			</div>
 			<div class="page-content">
 				<section class="row">
-					<div class="col-12 col-lg-9">
+					<div class="col-12 col-lg-10">
 						<!-- 查詢學生預約 -->
 						<div class="card">
 							<h3 class="card-header">查詢學生預約資料</h3>
@@ -296,10 +373,10 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 							<div class="col-12">
 								<div class="card">
 									<div class="card-header">
-										<h4>Profile Visit</h4>
+										<h4>學生預約時數統計表</h4>
 									</div>
 									<div class="card-body">
-										<div id="chart-profile-visit"></div>
+										<div id="reservationChart"></div>
 									</div>
 								</div>
 							</div>
@@ -307,7 +384,7 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 					</div>
 
 					<!-- 右方第一個卡片列表 -->
-					<div class="col-12 col-lg-3">
+					<div class="col-12 col-lg-2">
 						<div class="card">
 							<div class="card-body py-4 px-4">
 								<div class="d-flex align-items-center">
@@ -430,6 +507,40 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
             }
         });
     });
+
+	document.addEventListener("DOMContentLoaded", function() {
+    var studentId = `${studentId}`;  // 從 Spring MVC 模型獲得的 studentId
+
+    fetch('/api/monthlyHours?studentId=' + studentId)
+        .then(response => response.json())
+        .then(data => {
+            var categories = data.map(item => item[0] + '-' + item[1]); // "年-月"
+            var seriesData = data.map(item => item[2]); // totalHours
+
+            var reservationOptions = {
+                chart: {
+                    type: "line",
+                },
+                series: [{
+                    name: "Total Hours",
+                    data: seriesData,
+                }],
+                xaxis: {
+                    categories: categories,
+                },
+                yaxis: {
+                    title: {
+                        text: 'Total Hours'
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#reservaionChart"), reservationOptions);
+            chart.render();
+        })
+        .catch(error => console.error('Error loading the chart data:', error));
+});
+
 
     $(document).ready(function() {
     // 初始化DataTable
