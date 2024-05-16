@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.coursechatdemo.model.ChatHistory;
+import com.softskillz.coursechatdemo.model.ChatHistoryServiceImpl;
 import com.softskillz.coursechatdemo.model.ChatRoom;
 import com.softskillz.coursechatdemo.model.ChatRoomServiceImpl;
 import com.softskillz.coursechatdemo.model.ChatRoomUser;
@@ -28,11 +36,20 @@ public class ChatController {
 	private ChatRoomServiceImpl crService;
 
 	@Autowired
+	private ChatHistoryServiceImpl chService;
+
+	@Autowired
 	private StudentServiceImpl stService;
 
 	@Autowired
 	private TeacherServiceImpl tService;
 
+	@GetMapping("/coursechat.do")
+	public String courseChat() {
+		return "/dist/chat/coursechat.html";
+	}
+	
+	
 	@GetMapping("/teacherList/{userID}")
 	@ResponseBody
 	public List<ChatRoomUser> charList(@PathVariable("userID") String userID) {
@@ -56,7 +73,7 @@ public class ChatController {
 		System.out.println(chatList);
 		return chatList;
 	}
-	
+
 	@GetMapping("/studentList/{userID}")
 	@ResponseBody
 	public List<ChatRoomUser> charSList(@PathVariable("userID") String userID) {
@@ -123,4 +140,29 @@ public class ChatController {
 		return user;
 	}
 
+	@GetMapping
+	@ResponseBody
+	public Page<ChatRoom> getChatRoom(@RequestParam(value = "pid", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sort", defaultValue = "lastTime") String sort,
+			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection) {
+		Direction direction = Direction.fromString(sortDirection);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
+		Page<ChatRoom> pageChatroom = crService.chatRoomListPage(pageable);
+		return pageChatroom;
+	}
+
+	@GetMapping("/{chatid}")
+	@ResponseBody
+	public Page<ChatHistory> getHistory(@PathVariable("chatid")String chatRoomID, @RequestParam(value = "pid", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sort", defaultValue = "sendTime") String sort,
+			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection) {
+		System.out.println(chatRoomID);
+		
+		Direction direction = Direction.fromString(sortDirection);
+		Pageable pageable = PageRequest.of(page-1,size,Sort.by(direction,sort));
+		Page<ChatHistory> pageHistory = chService.getHistory(pageable,chatRoomID);
+		return pageHistory;
+	}
 }

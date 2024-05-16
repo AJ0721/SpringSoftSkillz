@@ -137,8 +137,18 @@ public class ForumPostService implements IForumPostService {
 	@Override
 	public List<ForumPostDto> findAllPosts() {
 		List<ForumPostModel> posts = forumPostRepository.findAll();
+		return posts.stream()
+				.map(IDtoConverter.INSTANCE::toForumPostDto)
+				.collect(Collectors.toList());
+	}
 
-		return posts.stream().map(IDtoConverter.INSTANCE::toForumPostDto).collect(Collectors.toList());
+	@Override
+	public List<ForumPostDto> findPostsByThreadId(Integer threadId) {
+		List<ForumPostModel> posts = forumPostRepository.findPostsByThreadId(threadId);
+
+		return posts.stream()
+				.map(IDtoConverter.INSTANCE::toForumPostDto)
+				.collect(Collectors.toList());
 	}
 
 	@Override

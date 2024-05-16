@@ -40,7 +40,7 @@
         <div class="col-12 col-lg-9">
           <!-- 卡片中放你的功能內容 -->
           <div class="card col-12" style="min-height:900px;">
-            <h3 class=" card-header">課程訂單</h3>
+            <h3 class=" card-header">課程訊息</h3>
             <div class="card-body">
 
               <div class="col-12 d-flex justify-content-start align-items-center">
@@ -51,28 +51,24 @@
                   <option value="20">20</option>
                   <option value="50">50</option>
                 </select>
-                <button class="btn btn-outline-primary ms-3" id="allord">全部訂單</button>
+                <!-- <button class="btn btn-outline-primary ms-3" id="allord">全部訂單</button> -->
               </div>
               <br>
-              <div class="col-6 d-flex justify-content-start">
+              <!-- <div class="col-6 d-flex justify-content-start">
                 <label class="form-label  fs-5" style="height: 40px">時間:</label>
                 <input type="date" class="form-control flatpickr-range " placeholder="Select date.."
                   style="width: 250px; height: 30px;" />
-              </div><br>
+              </div><br> -->
               <div class="table-responsive">
                 <table class="table mb-0 ">
                   <thead>
                     <tr>
-                      <th class="text-center">訂單編號</th>
-                      <th class="text-center">購買人</th>
-                      <th class="text-center">總金額</th>
-                      <th class="text-center">購買時間</th>
-                      <th class="text-center">付款期限</th>
-                      <th class="text-center">付款方式</th>
-                      <th class="text-center">訂單狀態</th>
-                      <th class="text-center">詳細資料</th>
-                      <th class="text-center">操作</th>
-                      <th class="text-center">操作</th>
+                      <th class="text-center">聊天室編號</th>
+                      <th class="text-center">使用者</th>
+                      <th class="text-center">使用者</th>
+                      <th class="text-center">最後時間</th>
+                      <th class="text-center">最後時間</th>
+
                     </tr>
                   </thead>
 
@@ -115,26 +111,23 @@
               <div class="modal-body table-responsive">
                 <table class="table mb-0">
                   <thead>
-                    <th class="text-center">訂單編號</th>
-                    <th class="text-center">教師名稱</th>
-                    <th class="text-center">課程名稱</th>
-                    <th class="text-center">課程類別</th>
-                    <th class="text-center">課程單價</th>
-                    <th class="text-center">購買堂數</th>
-                    <th class="text-center">小記</th>
-                    <th class="text-center">使用狀態</th>
+                    <th class="text-center">編號</th>
+                    <th class="text-center">聊天室編號</th>
+                    <th class="text-center">傳送人</th>
+                    <th class="text-center">訊息</th>
+                    <th class="text-center">傳送時間</th>
                   </thead>
-                  <tbody id="orderitem">
+                  <tbody id="chathistory">
 
                   </tbody>
                 </table>
               </div>
-              <div class="modal-footer">
 
-                <button type="button" class="btn btn-primary ms-1" data-bs-dismiss="modal">
-                  <i class="bx bx-check d-block d-sm-none"></i>
-                  <span class="d-none d-sm-block">確定</span>
-                </button>
+              <div class="modal-footer">
+                <div class="col-md-12 d-flex justify-content-center  ">
+                  <ul class="pagination " id="hispagination">
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -227,7 +220,209 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-  <script src="/dist/courseorder/js/courseorder.js"></script>
+
+  <script>
+    let pageNo = "";
+    let size = "";
+    window.onload = () => {
+      const chatroom = sessionStorage.getItem("chatroom");
+      if (chatroom) {
+        appendChat(JSON.parse(chatroom));
+      } else {
+        getAllChatRoom();
+      }
+    }
+
+    function getAllChatRoom() {
+      fetch("/chat?" + "pid=" + pageNo)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+        }).then(data => {
+          console.log(data);
+          let chatroom = JSON.stringify(data);
+          sessionStorage.setItem("chatroom", chatroom)
+          appendChat(data);
+        })
+    }
+
+    function appendChat(data) {
+      let tbody = document.querySelector("tbody");
+      tbody.innerHTML = "";
+      let content = data.content;
+      console.log(content);
+      for (let key in content) {
+        let tr = document.createElement("tr");
+        let lastTime = new Date(content[key].lastTime)
+        tr.innerHTML =
+          "<td class='text-center chatRoomID'>" + content[key].chatRoomID + "</td>" +
+          "<td class='text-center'>" + content[key].user1 + "</td>" +
+          "<td class='text-center'>" + content[key].user2 + "</td>" +
+          "<td class='text-center'>" + lastTime.toLocaleString('sv') + "</td>" +
+          "<td class='text-center'><button class='btn btn-primary block chathistory'  data-bs-toggle='modal' data-bs-target='#border-less' >詳細</button></td>";
+        tbody.appendChild(tr);
+
+        let chathistory = tr.querySelector('.chathistory');
+        chathistory.addEventListener('click', getHistory);
+      }
+      let page = data.totalPages;
+      let pagination = document.querySelector(".pagination");
+      let pageNumber = data.pageable.pageNumber;
+      console.log("pageNumber" + pageNumber);
+
+      pagination.innerHTML = "";
+      let previousLi = document.createElement("li");
+      previousLi.className = "page-item";
+      previousLi.innerHTML = `<a class="page-link" href="#" aria-label="Previous" id="previous"><span aria-hidden="true">&laquo;</span></a>`
+      pagination.appendChild(previousLi);
+      let previous = document.querySelector("#previous");
+      previous.addEventListener("click", (e) => {
+        console.log(pageNumber);
+        e.preventDefault();
+        if (pageNumber > 0) {
+          pageNo = pageNumber;
+          getAllChatRoom();
+        }
+      });
+      for (let i = 0; i < page; i++) {
+        let li = document.createElement("li");
+        li.className = "page-item";
+        let a = document.createElement("a");
+        if (pageNumber == i) {
+          a.className = "page-link active";
+        } else {
+          a.className = "page-link";
+        }
+
+        a.href = "#";
+        a.textContent = i + 1;
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          pageNo = parseInt(e.target.textContent, 10);
+          getAllChatRoom();
+        })
+        li.appendChild(a);
+        pagination.append(li);
+      }
+      let NextLi = document.createElement("li");
+      NextLi.className = "page-item";
+      NextLi.innerHTML = `<a class="page-link" href="#" aria-label="Next" id="next"><span aria-hidden="true" >&raquo;</span></a>`
+      pagination.appendChild(NextLi);
+
+      let next = document.querySelector("#next");
+      next.addEventListener("click", (e) => {
+        console.log(123);
+        e.preventDefault();
+        if (pageNumber + 1 < page) {
+          pageNo = pageNumber + 2
+          getAllChatRoom();
+        }
+      });
+
+    }
+
+    pagesize = document.querySelector("#pagesize");
+    pagesize.addEventListener("change", (e) => {
+      size = e.target.value;
+      console.log(size);
+      pageNo = "";
+      getAllChatRoom();
+    })
+    let id = "";
+    function getHistory(e) {
+      let tr = e.target.closest("tr");
+      id = tr.querySelector(".chatRoomID").textContent;
+      console.log(id);
+      let title = document.querySelector(".modal-title");
+      title.innerHTML = "聊天室編號:" + id;
+      history(id);
+    }
+
+    function history(id) {
+      fetch("/chat/" + id + "?pid=" + pageNo)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+        }).then(data => {
+          showHistory(data);
+        })
+    }
+
+    function showHistory(data) {
+      let tbody = document.querySelector("#chathistory");
+      tbody.innerHTML = "";
+      let content = data.content;
+      console.log(content);
+      for (let key in content) {
+        let tr = document.createElement("tr");
+        let sendTime = new Date(content[key].sendTime)
+        tr.innerHTML =
+          "<td class='text-center '>" + content[key].id + "</td>" +
+          "<td class='text-center chatRoomID'>" + content[key].chatRoomId + "</td>" +
+          "<td class='text-center'>" + content[key].sendOutUser + "</td>" +
+          "<td class='text-center'>" + content[key].msg + "</td>" +
+          "<td class='text-center'>" + sendTime.toLocaleString('sv') + "</td>";
+        tbody.appendChild(tr);
+      }
+      let page = data.totalPages;
+      let hispagination = document.querySelector("#hispagination");
+      let pageNumber = data.pageable.pageNumber;
+      console.log("pageNumber" + pageNumber);
+
+      hispagination.innerHTML = "";
+      let previousLi = document.createElement("li");
+      previousLi.className = "page-item";
+      previousLi.innerHTML = `<a class="page-link" href="#" aria-label="Previous" id="previoushis"><span aria-hidden="true">&laquo;</span></a>`
+      hispagination.appendChild(previousLi);
+      let previous = document.querySelector("#previoushis");
+      previous.addEventListener("click", (e) => {
+        console.log(pageNumber);
+        e.preventDefault();
+        if (pageNumber > 0) {
+          pageNo = pageNumber;
+          history(id);
+        }
+      });
+      for (let i = 0; i < page; i++) {
+        let li = document.createElement("li");
+        li.className = "page-item";
+        let a = document.createElement("a");
+        if (pageNumber == i) {
+          a.className = "page-link active";
+        } else {
+          a.className = "page-link";
+        }
+
+        a.href = "#";
+        a.textContent = i + 1;
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          pageNo = parseInt(e.target.textContent, 10);
+          history(id);
+        })
+        li.appendChild(a);
+        hispagination.append(li);
+      }
+      let NextLi = document.createElement("li");
+      NextLi.className = "page-item";
+      NextLi.innerHTML = `<a class="page-link" href="#" aria-label="Next" id="nexthis"><span aria-hidden="true" >&raquo;</span></a>`
+      hispagination.appendChild(NextLi);
+
+      let next = document.querySelector("#nexthis");
+      next.addEventListener("click", (e) => {
+        console.log(123);
+        e.preventDefault();
+        if (pageNumber + 1 < page) {
+          pageNo = pageNumber + 2
+          history(id);
+        }
+      });
+
+    }
+
+  </script>
 </body>
 
 

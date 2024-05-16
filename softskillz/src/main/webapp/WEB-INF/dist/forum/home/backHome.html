@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="/assets/compiled/css/app-dark.css" />
     <link rel="stylesheet" href="/assets/compiled/css/iconly.css" />
 
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css"> -->
+
+    <link rel="stylesheet" href="/assets/compiled/css/table-datatable.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
@@ -299,29 +302,32 @@
                             <!--  HTML INSERT HERE   -->
                             <main role="main" class=" ml-sm-auto px-4">
 
-                                <!-- search bar -->
+
                                 <div class="card">
                                     <div class="card-body">
+
+
+                                        <!-- search bar -->
                                         <div class="card">
                                             <div class="search-bar">
-                                                <div class="input-group mb-0">
+                                                <div class="input-group mb-0 dataTable-search">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">搜尋條件</span>
                                                     </div>
-                                                    <select class="form-control form-select" id="searchConditionSelect">
+                                                    <select class="form-control form-select dataTable-input"
+                                                        id="searchConditionSelect">
                                                         <option selected>請選擇搜尋條件</option>
-                                                        <option value="categoryKeyword">[看板] 關鍵字</option>
                                                         <option value="categoryId">[看板] ID編號</option>
+                                                        <option value="categoryKeyword">[看板] 關鍵字</option>
+                                                        <option value="threadId">[文章] ID編號</option>
                                                         <option value="threadKeyword">[文章] 關鍵字</option>
                                                         <option value="threadUsername">[文章] 使用者名稱</option>
-                                                        <option value="threadId">[文章] ID編號</option>
-                                                        <option value="postKeyword">[留言] 關鍵字</option>
-                                                        <option value="postUsername">[留言] 使用者名稱</option>
                                                         <option value="postId">[留言] ID編號</option>
+                                                        <option value="postUsername">[留言] 使用者名稱</option>
                                                     </select>
 
-                                                    <input type="text" class="form-control" placeholder="搜尋"
-                                                        id="searchInput">
+                                                    <input type="text" class="form-control dataTable-input"
+                                                        placeholder="搜尋" id="searchInput">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-primary" type="button" id="searchbtn"><i
                                                                 class="fas fa-search"></i>
@@ -402,13 +408,16 @@
                                                     id="createNewCategory">新增分類</button>
                                                 <button class="btn btn-danger mb-3"
                                                     id="deleteSelectedCategories">刪除</button>
+
+
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover mb-0">
+                                                    <table class="nav-table table table-bordered table-hover mb-0">
                                                         <thead>
-                                                            <tr class="text-nowrap">
+                                                            <tr class="text-nowrap text-center ">
                                                                 <th><input class="form-check-input" type="checkbox"
                                                                         id="selectAllCategories" name="categoryMainBox">
                                                                 </th>
+
                                                                 <th>編號</th>
                                                                 <th>看板名稱</th>
                                                                 <th>看板說明</th>
@@ -423,6 +432,7 @@
                                                 </div>
                                             </div>
 
+
                                             <!-- Threads Tab -->
                                             <div class="tab-pane fade" id="nav-thread" role="tabpanel"
                                                 aria-labelledby="nav-threads-tab">
@@ -432,13 +442,14 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover">
                                                         <thead>
-                                                            <tr class="text-nowrap">
+                                                            <tr class="text-nowrap text-center">
                                                                 <th><input class="form-check-input" type="checkbox"
-                                                                        id="selectAllThreads" name="threadMainBox"></th>
+                                                                        id="selectAllThreads" name="threadMainBox">
+                                                                </th>
                                                                 <th>編號</th>
+                                                                <th>作者</th>
                                                                 <th>標題</th>
                                                                 <th>分類</th>
-                                                                <th>使用者</th>
                                                                 <th>喜歡</th>
                                                                 <th>留言</th>
                                                                 <th>創建時間</th>
@@ -456,57 +467,28 @@
                                             <!-- Posts Tab -->
                                             <div class="tab-pane fade" id="nav-post" role="tabpanel"
                                                 aria-labelledby="nav-posts-tab">
-                                                <button class="btn btn-success mb-3" id="createNewPost">新增留言</button>
+
                                                 <button class="btn btn-danger mb-3" id="deleteSelectedPosts">刪除</button>
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover">
                                                         <thead>
-                                                            <tr class="text-nowrap">
+                                                            <tr class="text-nowrap text-center">
                                                                 <th><input class="form-check-input" type="checkbox"
                                                                         id="selectAllPosts"></th>
                                                                 <th>編號</th>
-                                                                <th>原文</th> <!-- 文章標題(ID) -->
+                                                                <th>作者</th> <!-- 使用者身分+ID -->
+                                                                <th>原文(ID)</th> <!-- 文章標題(ID) -->
+                                                                <th>留言內容</th>
                                                                 <th>上層留言</th>
-                                                                <th>使用者</th> <!-- 使用者身分+ID -->
-                                                                <th>內容</th>
                                                                 <th>喜歡</th>
                                                                 <th>留言</th>
                                                                 <th>創建時間</th>
                                                                 <th>狀態</th>
+                                                                <th>編輯</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody id="postList">
                                                             <!-- Post rows will be dynamically populated here -->
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><input type="checkbox"
-                                                                        class="form-check-input selectPost"></td>
-                                                                <td>1</td>
-                                                                <td>1</td>
-                                                                <td>1</td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td><a href="#" data-toggle="modal"
-                                                                        data-target="#viewPostModal">Post
-                                                                        Content 1
-                                                                        (s1)</a></td>
-                                                                <td>10</td>
-                                                                <td>0</td>
-                                                                <td>2023-04-23 10:30:00</td>
-                                                                <td>VISIBLE</td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-primary btn-sm"
-                                                                        data-toggle="modal"
-                                                                        data-target="#editPostModal"><i
-                                                                            class="fas fa-edit"></i>編輯</a>
-                                                                    <a href="#" class="btn btn-danger btn-sm"
-                                                                        data-toggle="modal"
-                                                                        data-target="#deletePostModal"><i
-                                                                            class="fas fa-trash"></i> 刪除</a>
-                                                                </td>
-                                                            </tr>
-                                                            <!-- Add more rows for other posts here -->
-                                                        </tbody>
 
                                                         </tbody>
                                                     </table>
@@ -520,12 +502,45 @@
                                             </div>
                                         </div>
 
+
                                     </div>
                                 </div>
 
                             </main>
 
 
+                        </div>
+                    </div>
+
+
+                    <!--Post Modal -->
+                    <div class="modal fade text-left" id="post-modal" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel1">留言內容</h5>
+                                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        <!-- dynamic post content -->
+                                    <p><strong>留言編號：</strong> <span id="modalPostId"></span></p>
+                                    <p><strong>作者：</strong> <span id="modalUserId"></span></p>
+                                    <p><strong></strong> <span id="modalPostContent"></span></p>
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn" data-bs-dismiss="modal">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -609,11 +624,13 @@
     <script src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="/assets/compiled/js/app.js"></script>
 
+    <!-- datatable -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script> -->
 
 
-
-
-
+    <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -627,41 +644,68 @@
 
         $(document).ready(function () {
 
+            // new DataTable('table.nav-table', {
+            //     scrollX: true,
+            //     columnDefs: [
+            //         { orderable: false, targets: [0, 4] } // Disable sorting on checkbox and edit columns
+            //     ]
+            // });
+
+            // // Update DataTable on tab click
+            // $('#nav-category-tab').on('click', function () {
+            //     $('#categoryList').empty();
+            //     fetchCategories().done(function (categories) {
+            //         displayCategoriesTab(categories);
+            //         dataTable.columns.adjust().draw(); // Adjust columns and redraw DataTable
+            //     }).fail(function (error) {
+            //         console.error("Error fetching categories:", error);
+            //         $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+            //     });
+            // });
+
             // Redirect to assigned tab based on hash in URL
             var hash = window.location.hash;
             console.log(`tabhash:${hash}`);
 
             $('.nav-tabs a[href="' + hash + '"]').tab('show');
 
+
             switch (hash) {
                 case '#nav-category':
                     $('#categoryList').empty();
-                    fetchCategories().done(function (categories) { //jquery syntax: done/fail
-                        displayCategoriesTab(categories);
-                    }).fail(function (error) {
-                        console.error("Error fetching categories:", error);
-                        $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
-                    });
+                    fetchCategories()
+                        .then(categories => {
+                            displayCategoriesTab(categories);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching categories:", error);
+                            $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+                        });
                     break;
                 case '#nav-thread':
                     $('#threadList').empty();
-                    fetchThreads().done(function (threads) {
-                        displayThreadsTab(threads);
-                    }).fail(function (error) {
-                        console.error("Error fetching threads:", error);
-                        $('#threadList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
-                    });
+                    fetchThreads()
+                        .then(threads => {
+                            displayThreadsTab(threads);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching threads:", error);
+                            $('#threadList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
+                        });
                     break;
                 case '#nav-post':
                     $('#postList').empty();
-                    fetchPosts().done(function (posts) {
-                        displayPostsTab(posts);
-                    }).fail(function (error) {
-                        console.error("Error fetching posts:", error);
-                        $('#postList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
-                    });
+                    fetchPosts()
+                        .then(posts => {
+                            displayPostsTab(posts);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching posts:", error);
+                            $('#postList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
+                        });
                     break;
             }
+
 
 
             //CLICK: SYNC TAB WITH HASH

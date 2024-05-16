@@ -3,10 +3,16 @@
 
 //FUNCTION: FETCH ALL CATEGORIES (returns a jQuery promise)
 window.fetchCategories = function () {
-    return $.ajax({
-        url: '/forum/category/findall',
+    return fetch('/forum/category/find-all', {
         method: 'GET',
-        dataType: 'json',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
     });
 };
 
@@ -20,8 +26,10 @@ window.createCategoryHtml = function (category) {
             <td>${category.forumCategoryId}</td>
             <td><a href="/forum/category/detailpage/${category.forumCategoryId}">${category.forumCategoryName}</a></td>
             <td>${category.forumCategoryDescription}</td>
-            <td class="edit btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></td>
-            
+            <td id="updatePost" class="align-middle text-center">
+            <button class="btn btn-sm btn-primary">
+            <i class="bi bi-pencil align-middle">
+            </i></button></td>            
         </tr>
     `;
 }
@@ -43,7 +51,12 @@ $(document).ready(function () {
     $('#nav-category-tab').click(function (e) {
         e.preventDefault();
         $('#categoryList').empty();
-        fetchCategories();
+        fetchCategories()
+            .then(categories => displayCategoriesTab(categories))
+            .catch(function (error) {
+                console.error("Error fetching categories:", error);
+                $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+            });
     })
 
 
@@ -53,7 +66,7 @@ $(document).ready(function () {
     });
 
 
-    //SWEET ALERT
+    //BULK DELETE ACTION
     $('#deleteSelectedCategories').click(function () {
         var selectedCheckboxes = $('#categoryList :checkbox:checked');
         if (selectedCheckboxes.length === 0) {
@@ -78,31 +91,38 @@ $(document).ready(function () {
                     categoryIds.push(categoryId);
                 });
 
-                $.ajax({
-                    url: '/forum/category/delete-all',
-                    type: 'DELETE',
-                    data: JSON.stringify({ forumCategoryIds: categoryIds }),
-                    contentType: 'application/json',
-                    success: function (response) {
-                        Swal.fire('刪除成功', '', 'success');
-                        $('#categoryList').empty();
-                        console.log('emptied');
-                        fetchCategories().done(function (categories) { //jquery syntax: done/fail 
-                            console.log('fetched');
-                            displayCategoriesTab(categories);
-                            console.log('displayed');
-                        }).fail(function (error) {
+
+                fetch('/forum/category/delete-all'), {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(categoryIds)
+                }.then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.text();
+                }).then(data => {
+                    console.log(data);
+                    Swal.fire("刪除成功", "", "success");
+                    $('#categoryList').empty();
+                    fetchCategories().done(function (categories) {
+                        displayCategoriesTab(categories);
+                    }).fail(
+                        function (error) {
                             console.error("Error fetching categories:", error);
                             $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
-                        });
+                        }
+                    ).catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        Swal.fire('刪除失敗', '請檢查連線並重新整理', 'error');
+                    });
 
+                }
 
-                    },
-                    error: function (error) {
-                        console.log("error: " + error);
-                        Swal.fire('刪除失敗', '請重新整理', 'error');
-                    }
-                });
+                )
+
             }
         });
     });

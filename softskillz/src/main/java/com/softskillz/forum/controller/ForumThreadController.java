@@ -86,7 +86,7 @@ public class ForumThreadController {
 	}
 
 	// Find all threads
-	@GetMapping("/findall")
+	@GetMapping("/find-all")
 	public List<ForumThreadDto> findAllThreads() {
 		return forumThreadService.findAllThreads();
 	}

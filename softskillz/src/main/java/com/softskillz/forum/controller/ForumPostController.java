@@ -68,9 +68,9 @@ public class ForumPostController {
 
 	// Read all posts
 	@GetMapping("/find-all")
-	public ForumPostDto findAllPosts(List<Integer> postIdsList) {
+	public List<ForumPostDto> findAllPosts() {
+		return forumPostService.findAllPosts();
 
-		return null;
 	}
 
 	// Read by post ID
@@ -80,6 +80,14 @@ public class ForumPostController {
 		return postDto;
 	}
 
+	//Read post by thread ID
+	@GetMapping("/find-all/thread")
+	public List<ForumPostDto> findAllPosts(@RequestParam("id") Integer threadId) {
+		return forumPostService.findPostsByThreadId(threadId);
+
+	}
+	
+	
 	// Read posts by username
 
 }

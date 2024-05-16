@@ -32,7 +32,7 @@ public class ForumCategoryController {
 	}
 
 
-	@GetMapping("/findall")
+	@GetMapping("/find-all")
 	public List<ForumCategoryDto> findAllCategories() {
 		return iforumCategoryService.findAllCategories();
 	}
@@ -66,8 +66,8 @@ public class ForumCategoryController {
 		
 	}
 	@DeleteMapping("/delete-all")
-	public void deleteAllCategory(@RequestBody ForumCategoryDto categoryListDtos) {
-		iforumCategoryService.deleteForumCategoryByIds(categoryListDtos.getForumCategoryIds());
+	public void deleteAllCategory(@RequestBody List<Integer>categoryIds) {
+		iforumCategoryService.deleteForumCategoryByIds(categoryIds);
 		
 	}
 	

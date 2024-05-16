@@ -26,9 +26,9 @@ window.createThreadHtml = function (thread) {
     <tr class="text-nowrap">
         <td><input class="form-check-input" type="checkbox"></td>
         <td>${thread.threadId}</td>
-        <td><a href="/forum/thread/detailpage/${thread.threadId}" class="thread-link">${thread.threadTitle}</a></td>
+         <td>${userType}-${userId}</td>
+        <td class="text-nowrap text-truncate" style="max-width: 200px "><a href="/forum/thread/detailpage/${thread.threadId}" class="thread-link">${thread.threadTitle}</a></td>
         <td>${thread.forumCategory.forumCategoryName}</td>
-        <td>${userType}-${userId}</td>
         <td>${thread.threadUpvoteCount}</td>
         <td>${thread.threadResponseCount}</td>
         <td>${formattedDate}</td> 
@@ -39,7 +39,10 @@ window.createThreadHtml = function (thread) {
                 <option value="DELETED" ${status === 'DELETED' ? 'selected' : ''}>刪除</option>
             </select>
         </td>
-        <td id="updateThread" class="edit btn btn-sm icon btn-primary text-nowrap"><i class="bi bi-pencil"></i></td>
+        <td id="updateThread" class="align-middle text-center">
+        <button class="btn btn-sm btn-primary">
+        <i class="bi bi-pencil align-middle">
+        </i></button></td>
     </tr>
         `
         ;
@@ -48,12 +51,19 @@ window.createThreadHtml = function (thread) {
 
 //FUCTION: FETCH ALL THREADS
 window.fetchThreads = function () {
-    return $.ajax({
-        url: '/forum/thread/findall',
+    return fetch('/forum/thread/find-all', {
         method: 'GET',
-        dataType: 'json',
-    });
-
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            } else {
+                return response.json();
+            }
+        })
 }
 
 
@@ -79,10 +89,12 @@ $(document).ready(function () {
     $('#nav-threads-tab').click(function (e) {
         e.preventDefault();
         $('#threadList').empty();
-        fetchThreads().done(displayThreadsTab).fail(function (error) {
-            console.error("Error fetching threads:", error);
-            $('#threadList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
-        });
+        fetchThreads()
+            .then(threads => displayThreadsTab(threads))
+            .catch(function (error) {
+                console.error("Error fetching threads:", error);
+                $('#threadList').html('<tr><td colspan="9">資料載入失敗，請重新整理。</td></tr>');
+            });
     });
 
     //SELECT 'DELETE ALL CHECKBOX'
@@ -90,7 +102,7 @@ $(document).ready(function () {
         $('#threadList :checkbox').prop('checked', $(this).prop('checked'));
     });
 
-    //SWEET ALERT
+    //BULK DELETE SCTION
     $('#deleteSelectedThreads').click(function () {
         var selectedCheckboxes = $('#threadList :checkbox:checked');
         if (selectedCheckboxes.length === 0) {
@@ -120,20 +132,22 @@ $(document).ready(function () {
                 $.ajax({
                     url: '/forum/thread/delete-all',
                     type: 'DELETE',
-                    data: JSON.stringify({ threadIds: threadIds }),
+                    data: JSON.stringify(threadIds),
                     contentType: 'application/json',
                     success: function (response) {
+                        console.log(response);
                         Swal.fire('刪除成功', '', 'success');
                         $('#threadList').empty();
                         fetchThreads().done(function (threads) {
                             displayThreadsTab(threads);
                         }).fail(function (error) {
                             console.error("Error fetching threads:", error);
-                            $('#threadList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
+                            $('#threadList').html('<tr><td colspan="9">資料載入失敗，請重新整理。</td></tr>');
                         });
                     },
                     error: function (xhr, status, error) {
-                        Swal.fire('刪除失敗', '請檢查連線並重新整理' + error + xhr.responseText, 'error');
+                        console.log(status + error + xhr.responseText);
+                        Swal.fire('刪除失敗', '請檢查連線並重新整理', 'error');
                     }
                 });
             }
@@ -175,7 +189,7 @@ $(document).ready(function () {
             displayThreadsTab(threads);
         }).fail(function (error) {
             console.error("Error fetching threads:", error);
-            $('#threadList').html('<tr><td colspan="5">載入資料失敗，請重新整理</td></tr>');
+            $('#threadList').html('<tr><td colspan="9">載入資料失敗，請重新整理</td></tr>');
         });
 
 
@@ -246,7 +260,7 @@ function searchThreadsByKeyword() {
     var keyword = $('#searchInput').val().trim();
 
     if (!keyword) {
-        $('#threadList').html('<tr><td colspan="13">請輸入搜索關鍵字。</td></tr>');
+        $('#threadList').html('<tr><td colspan="9">請輸入搜索關鍵字。</td></tr>');
         return;
     }
 
@@ -293,7 +307,7 @@ function searchThreadsById() {
         error: function (error) {
             $('#threadList').empty();
             $('#threadList').append(`
-                <tr><td colspan="13">查無資訊，請重新輸入</td></tr >
+                <tr><td colspan="9">查無資訊，請重新輸入</td></tr >
                 `);
             console.error('Error searching threads:', error);
         }

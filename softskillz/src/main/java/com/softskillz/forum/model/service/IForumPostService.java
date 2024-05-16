@@ -24,5 +24,6 @@ public interface IForumPostService {
 	List<ForumPostDto> findAllPosts();
 	List<ForumPostDto> findPostsByTeacherId(Integer teacherId);
 	List<ForumPostDto> findPostsByStudentId(Integer studentId);
+	List<ForumPostDto> findPostsByThreadId(Integer threadId);
 	
 }

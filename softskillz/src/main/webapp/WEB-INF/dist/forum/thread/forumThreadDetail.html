@@ -18,7 +18,15 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <style>
+        .comment {
+            margin-left: 0;
+        }
 
+        .comment .child-comments {
+            margin-left: 20px;
+        }
+    </style>
 
 
 </head>
@@ -299,15 +307,24 @@
                             <!-- INSERT CARD HERE -->
                             <div class="card">
                                 <div class="card-header">
-                                    <label for="category">分類: </label>
-                                    <span class=" p-2 " style="user-select: text;" id="category" readonly>
-                                    </span>
+                                    <div class="form-group mb-0">
+                                        <button type="button" class="btn icon border-0  btn-lg" id="cancel">
+                                            <i class="bi bi-arrow-left-circle fa-2x " style="color:#5585b5"></i>
+                                        </button>
+
+
+                                    </div>
+
                                 </div>
 
                                 <div class="card-body">
                                     <form>
-                                        <div class="mb-5">
-                                            <label for="username">使用者名稱:</label>
+
+                                        <label for="category">分類: </label>
+                                        <span class=" p-2 mb-3 " style="user-select: text;" id="category" readonly>
+                                        </span>
+                                        <div class="mb-3">
+                                            <label for="username">作者:</label>
                                             <span class="p-2" id="username"></span>
                                         </div>
                                         <div class="form-group">
@@ -322,15 +339,23 @@
                                                 id="threadContent" readonly>
                                             </h6>
                                         </div>
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-secondary" id="cancel">返回</button>
+
+                                        <!-- Comments Section -->
+                                        <div class="card-body">
+                                            <h5>留言</h5>
+                                            <div id="commentsSection">
+                                                <!-- Comments will be dynamically populated here -->
+                                            </div>
                                         </div>
+
 
                                     </form>
                                 </div>
                             </div>
                         </main>
                     </div>
+
+
 
                     <!-- LEFTBAR -->
                     <div class="col-12 col-lg-3" id="leftbar">
@@ -414,9 +439,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/dist/assets/static/js/forumThreadDetail.js"></script>
 
     <!-- FORUM JS -->
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             const pathname = window.location.pathname;
             const parts = pathname.split("/");
@@ -443,8 +469,12 @@
                     document.getElementById('username').innerHTML = username;
                     document.getElementById('threadTitle').innerHTML = data.threadTitle;
                     document.getElementById('threadContent').innerHTML = data.threadContent;
+
+                    // Fetch comments for the thread
+                    fetchComments(threadId);
                 })
                 .catch(error => console.error('Error fetching thread details:', error));
+
 
 
             //PAGE REDIRECT
@@ -454,7 +484,83 @@
 
         });
 
-    </script>
+        // Fetch comments function
+        function fetchComments(threadId) {
+            fetch("/forum/post/find-all/thread?id=" + threadId)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch comments");
+                    }
+                    return response.json();
+                })
+                .then(posts => {
+                    // Display comments
+                    displayComments(posts);
+                })
+                .catch(error => console.error('Error fetching comments:', error));
+        }
+
+        // Display comments function
+        function displayComments(posts) {
+            const commentsSection = document.getElementById('commentsSection');
+            commentsSection.innerHTML = ''; // Clear any existing comments
+
+            // Sort posts by creation time in descending order
+            posts.sort((a, b) => new Date(b.postCreatedTime) - new Date(a.postCreatedTime));
+
+            // Create a map of comments by their IDs
+            const commentMap = new Map();
+            posts.forEach(post => {
+                commentMap.set(post.postId, post);
+            });
+
+            // Function to create a comment HTML
+            function createCommentHtml(post, level = 0) {
+                let userId, userName, userType;
+                if (post.student) {
+                    userId = post.student.studentId;
+                    userName = post.student.studentUsername;
+                    userType = '學生';
+                } else if (post.teacher) {
+                    userId = post.teacher.teacherId;
+                    userName = post.teacher.teacherUsername;
+                    userType = '老師';
+                } else if (post.admin) {
+                    userId = post.admin.adminId;
+                    userName = post.admin.adminUsername;
+                    userType = '管理員';
+                }
+
+                const formattedDate = new Date(post.postCreatedTime).toLocaleString();
+
+                return `
+            <div class="comment border p-2 mb-2" data-post-id="${post.postId}" style="margin-left: ${level * 20}px;">
+                <p><strong>${userType}-${userName} (${userId})</strong></p>
+                <p>${post.postContent}</p>
+                <p class="text-muted"><small>${formattedDate}</small></p>
+                <div class="child-comments"></div>
+            </div>
+            `;
+            }
+
+            // Recursive function to append comments to their respective parents or the root
+            function appendComments(posts, parentPost, level = 0) {
+                posts.forEach(comment => {
+                    const commentHtml = createCommentHtml(comment, level);
+                    parentPost.innerHTML += commentHtml;
+                    const commentElement = parentPost.querySelector(`[data-post-id="${comment.postId}"] .child-comments`);
+                    const childComments = posts.filter(c => c.parentPostId === comment.postId);
+                    if (childComments.length > 0) {
+                        appendComments(childComments, commentElement, level + 1);
+                    }
+                });
+            }
+
+            const rootComments = posts.filter(post => !post.parentPostId);
+            appendComments(rootComments, commentsSection);
+        }
+
+    </script> -->
 
 
     <!-- Need: Apexcharts -->
