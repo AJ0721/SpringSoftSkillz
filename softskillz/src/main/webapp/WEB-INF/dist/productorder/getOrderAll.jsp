@@ -82,220 +82,329 @@
 						</div>
 					</div>
 				</div>
-				<!-- 側邊欄 -->
-				<div class="sidebar-menu">
-					<ul class="menu">
-						<li class="sidebar-item active"><a
-							href="/softskillz/newhomepage" class="sidebar-link"> <i
-								class="bi bi-grid-fill"></i> <span>首頁</span>
-						</a></li>
-						<li class="sidebar-title">用戶管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>管理員</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">Horizontal
-										Menu</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">Horizontal
-										Menu</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">Horizontal
-										Menu</a></li>
-							</ul></li>
+ <!-- 側邊欄 -->
+        <div class="sidebar-menu">
+          <ul class="menu">
+            <li class="sidebar-item active">
+              <a href="/softskillz/newhomepage" class="sidebar-link">
+                <i class="bi bi-grid-fill"></i>
+                <span>首頁</span>
+              </a>
+            </li>
+            <li class="sidebar-title">用戶管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>管理員</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/admin/admin-account" class="submenu-link">管理員帳號</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>教師</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/teacher/teacher-account" class="submenu-link">教師帳號</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>學生</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/student/student-account" class="submenu-link">學生帳號</a>
+                </li>
+              </ul>
+            </li>
 
-						<li class="sidebar-title">課程管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/course/coursePage/courseAllPage" class="submenu-link">所有課程功能</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增課程</a>
-								</li>
-								<li class="submenu-item"><a href="/course/selectAllPage" class="submenu-link">查詢課程</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">修改課程</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師行事曆</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
-									class="submenu-link">所有教師行事曆功能</a></li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增教師行事曆</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢教師行事曆</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">修改教師行事曆</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生預約</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/studentReservation/studentReservationPage/studentReservationAllPage"
-									class="submenu-link">所有學生預約功能</a></li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增學生預約</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生預約</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生行事曆</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">新增學生行事曆</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生行事曆</a>
-								</li>
-							</ul></li>
+            <li class="sidebar-title">課程管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>課程</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/course/insertPage" class="submenu-link">新增課程</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/course/selectAllPage" class="submenu-link">查詢課程</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>教師行事曆</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/teacherSchedule/insertPage" class="submenu-link">新增教師行事曆</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/teacherSchedule/selectAllPage" class="submenu-link">查詢教師行事曆</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>學生預約</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/studentReservation/insertPage" class="submenu-link">新增學生預約</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/studentReservation/selectAllPage" class="submenu-link">查詢學生預約</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>學生行事曆</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/studentSchedule/selectAllPage" class="submenu-link">查詢學生行事曆</a>
+                </li>
+              </ul>
+            </li>
 
-						<li class="sidebar-title">課程訂單管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程訂單管理</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/adminorder/adorder.do"
-									class="submenu-link">課程訂單管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">商品管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品管理</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/mall/index"
-									class="submenu-link">商品管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">商品訂單管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品訂單管理</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">商品訂單管理</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增商品訂單</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-title">學伴資料管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學伴資料管理</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/companion/index.html"
-									class="submenu-link">學伴資料管理</a></li>
-							</ul></li>
-						<li class="sidebar-title">論壇管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>論壇管理</span>
-						</a>
-							<ul class="submenu">
-								<li class="submenu-item"><a href="/forum/adminhome"
-									class="submenu-link">論壇管理</a></li>
-							</ul></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- 中間內容部分 -->
-		<div id="main">
-			<header class="mb-3">
-				<a href="#" class="burger-btn d-block d-xl-none"> <i
-					class="bi bi-justify fs-3"></i>
-				</a>
-			</header>
+            <li class="sidebar-title">課程訂單管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>課程訂單管理</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/adminorder/adorder.do" class="submenu-link">課程訂單管理</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/coursediscount/discount.do" class="submenu-link">課程折扣管理</a>
+                </li>
+              </ul>
+            </li>
 
-			<div id="main" style="margin-left: 0;">
-				<div class="page-heading">
-					<h3>SoftSkillz - 商品訂單管理</h3>
-				</div>
+            <li class="sidebar-title">商品管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>商品管理</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/mall/mallProductAll" class="submenu-link">商品管理</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-title">商品訂單管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>商品訂單管理</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/order" class="submenu-link">商品訂單管理</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/order/create" class="submenu-link">新增商品訂單</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-title">學伴資料管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>學伴資料管理</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/companionIndex.html" class="submenu-link">學伴資料管理</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-title">論壇管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>論壇管理</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/forum/adminhome" class="submenu-link">論壇管理</a>
+                </li>
+              </ul>
+            <li class="sidebar-title">課程訂單管理</li>
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>訊息訂單管理</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/chat/coursechat.do" class="submenu-link">訊息管理</a>
+                </li>
+              </ul>
+            </li>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+	<!-- 中間內容部分 -->
+<div id="main">
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
 
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title">商品訂單列表</h5>
-						</div>
-						<div class="card-body">
-						   <div class="row justify-content-center">
-							<table class="table" id="orders">
-								<thead>
-									<tr>
-										<th>訂單編號</th>
-										<th>會員編號</th>
-										<th>優惠券編號</th>
-										<th>訂單日期</th>
-										<th>總金額</th>
-										<th>訂單狀態</th>
-										<th>付款方式</th>
-										<th>出貨日期</th>
-										<th>出貨狀態</th>
-										<th>收貨地址</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-									List<Order> orders = (List<Order>) request.getAttribute("orders");
-									for (Order currentOrder : orders) {
-									%>
-									<tr>
-										<td><%=currentOrder.getOrder_id()%></td>
-										<td><%=currentOrder.getStudent_id()%></td>
-										<td><%=currentOrder.getCoupon_id() != null ? currentOrder.getCoupon_id() : "無"%></td>
-										<td><%=currentOrder.getOrder_date() != null ? currentOrder.getOrder_date().format(formatter) : "未設定"%></td>
-										<td><%=currentOrder.getTotal_amount()%></td>
-										<td><%=currentOrder.getOrder_status()%></td>
-										<td><%=currentOrder.getPayment_method()%></td>
-										<td><%=currentOrder.getShipment_date() != null ? currentOrder.getShipment_date().format(formatter) : "未出貨"%></td>
-										<td><%=currentOrder.getShipment_status() != null ? currentOrder.getShipment_status() : "未出貨"%></td>
-										<td><%=currentOrder.getShipping_address()%></td>
-										<td>
-											<form method="get"
-												action="/order/searchforupdate/<%=currentOrder.getOrder_id()%>"
-												onsubmit="return confirm('您確定要變更訂單嗎?');">
-												<button type="button" class="btn btn-primary edit-btn" data-order-id="<%=currentOrder.getOrder_id()%>" data-bs-toggle="modal" data-bs-target="#updateOrderModal">
-    										<i class="bi bi-pencil-square"></i>
-											</button>
+  <div class="page-heading">
+    <h3>SoftSkillz - 商品訂單管理</h3>
+  </div>
 
-											</form>
-											<form method="post"
-												action="/order/delete/<%=currentOrder.getOrder_id()%>"
-												onsubmit="return confirm('您確定要刪除這個訂單嗎?');">
-												<input type="hidden" name="_method" value="delete" />
-												<button type="submit" class="btn btn-danger delete-btn">
-   												 <i class="bi bi-trash3"></i>
-												</button>
-											</form>
-										</td>
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-						</div>
-					</div>
-			</div></div>
+  <div class="page-content">
+    <div class="row">
+      <div class="col-12 col-lg-10">
+        <div class="card">
+          <h5 class="card-header">商品訂單列表</h5>
+          <div class="card-body">
+            <div class="row justify-content-center">
+              <table class="table" id="orders">
+                <thead>
+                  <tr>
+                    <th>訂單編號</th>
+                    <th>會員編號</th>
+                    <th>優惠券編號</th>
+                    <th>訂單日期</th>
+                    <th>總金額</th>
+                    <th>訂單狀態</th>
+                    <th>付款方式</th>
+                    <th>出貨日期</th>
+                    <th>出貨狀態</th>
+                    <th>收貨地址</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    List<Order> orders = (List<Order>) request.getAttribute("orders");
+                    for (Order currentOrder : orders) {
+                  %>
+                  <tr>
+                    <td><%=currentOrder.getOrder_id()%></td>
+                    <td><%=currentOrder.getStudent_id()%></td>
+                    <td><%=currentOrder.getCoupon_id() != null ? currentOrder.getCoupon_id() : "無"%></td>
+                    <td><%=currentOrder.getOrder_date() != null ? currentOrder.getOrder_date().format(formatter) : "未設定"%></td>
+                    <td><%=currentOrder.getTotal_amount()%></td>
+                    <td><%=currentOrder.getOrder_status()%></td>
+                    <td><%=currentOrder.getPayment_method()%></td>
+                    <td><%=currentOrder.getShipment_date() != null ? currentOrder.getShipment_date().format(formatter) : "未出貨"%></td>
+                    <td><%=currentOrder.getShipment_status() != null ? currentOrder.getShipment_status() : "未出貨"%></td>
+                    <td><%=currentOrder.getShipping_address()%></td>
+                    <td>
+                      <form method="get" action="/order/searchforupdate/<%=currentOrder.getOrder_id()%>" onsubmit="return confirm('您確定要變更訂單嗎?');">
+                        <button type="button" class="btn btn-primary edit-btn" data-order-id="<%=currentOrder.getOrder_id()%>" data-bs-toggle="modal" data-bs-target="#updateOrderModal">
+                          <i class="bi bi-pencil-square"></i>
+                        </button>
+                      </form>
+                      <form method="post" action="/order/delete/<%=currentOrder.getOrder_id()%>">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="btn btn-danger delete-btn">
+                          <i class="bi bi-trash3"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <%
+                    }
+                  %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 右方的卡片部分 -->
+      <div class="col-12 col-lg-2">
+        <div class="card">
+          <div class="card-body py-4 px-4">
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xl">
+                <img src="/assets/compiled/jpg/1.jpg" alt="Face 1" />
+              </div>
+              <div class="ms-3 name">
+                <h5 class="font-bold">管理員名稱</h5>
+                <h6 class="text-muted mb-0">管理員帳號</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h4>Recent Messages</h4>
+          </div>
+          <div class="card-content pb-4">
+            <div class="recent-message d-flex px-4 py-3">
+              <div class="avatar avatar-lg">
+                <img src="/assets/compiled/jpg/4.jpg" />
+              </div>
+              <div class="name ms-4">
+                <h5 class="mb-1">Hank Schrader</h5>
+                <h6 class="text-muted mb-0">@johnducky</h6>
+              </div>
+            </div>
+            <div class="recent-message d-flex px-4 py-3">
+              <div class="avatar avatar-lg">
+                <img src="/assets/compiled/jpg/5.jpg" />
+              </div>
+              <div class="name ms-4">
+                <h5 class="mb-1">Dean Winchester</h5>
+                <h6 class="text-muted mb-0">@imdean</h6>
+              </div>
+            </div>
+            <div class="recent-message d-flex px-4 py-3">
+              <div class="avatar avatar-lg">
+                <img src="/assets/compiled/jpg/1.jpg" />
+              </div>
+              <div class="name ms-4">
+                <h5 class="mb-1">John Dodol</h5>
+                <h6 class="text-muted mb-0">@dodoljohn</h6>
+              </div>
+            </div>
+            <div class="px-4">
+              <button class="btn btn-block btn-xl btn-outline-primary font-bold mt-3">
+                Start Conversation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer clearfix mb-0 text-muted">
+      <div class="float-start">
+        <p>2024 &copy; Soft Skillz</p>
+      </div>
+    </div>
+  </footer>
+</div>
 
-			<footer>
-				<div class="footer clearfix mb-0 text-muted">
-					<div class="float-start">
-						<p>2024 &copy; Soft Skillz</p>
-					</div>
-				</div>
-			</footer>
 			<!-- 模態框 -->
 		<div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -304,7 +413,7 @@
                 <h5 class="modal-title" id="updateOrderModalLabel">更新訂單</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-						<form method="post" action="/order/update"
+						<form method="post" action="/order/update" id="updateOrderForm"
 							>
 							<div class="modal-body">
 								<input type="hidden" name="_method" value="put">
@@ -385,7 +494,7 @@
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-bs-dismiss="modal">關閉</button>
-								<button type="submit" class="btn btn-primary">保存變更</button>
+								<button type="submit" class="btn btn-primary" id="confirmUpdateBtn">保存變更</button>
 							</div>
 						</form>
 					</div>
@@ -393,10 +502,12 @@
 			</div>
 			<script src="/assets/static/js/components/dark.js"></script>
 			<script src="/assets/compiled/js/app.js"></script>
-			   <script src="/assets/extensions/jquery/jquery.min.js"></script>
+			<script src="/assets/extensions/jquery/jquery.min.js"></script>
     <script src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
     <script src="/assets/static/js/pages/datatables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 <script>
 $(document).ready(function() {
 	 $('#orders').DataTable({
@@ -412,16 +523,17 @@ $(document).ready(function() {
          "responsive": true  // 啟用響應式布局
      });
 	
-    // 监听编辑按钮的点击事件
-    $('.edit-btn').click(function() {
-    var orderId = $(this).data('order-id');  // 从按钮获取订单ID
-    console.log('Fetching details for order ID:', orderId);
-    $.ajax({
-        url: '/order/searchforupdate/' + orderId,  // 正确使用路径参数发送订单ID
-        method: 'GET',
-        success: function(order) {
-            // 成功获取数据后，将数据填充到模态框中
-            	$('#updateOrderModal #id').val(order.order_id);
+	// 監聽更新按鈕的事件
+	 $('.edit-btn').click(function(e) {
+		 e.preventDefault(); 
+	     var orderId = $(this).data('order-id');  // 從按鈕獲取訂單ID
+	     console.log('Fetching details for order ID:', orderId);
+	     $.ajax({
+	         url: '/order/searchforupdate/' + orderId,
+	         method: 'GET',
+	         success: function(order) {
+	             // 成功獲取數據後，填充到模態框中
+	            $('#updateOrderModal #id').val(order.order_id);
             	$('#updateOrderModal #student').val(order.student_id);
             	$('#updateOrderModal #coupon').val(order.coupon_id);
                 $('#updateOrderModal #date').val(order.order_date);
@@ -432,28 +544,61 @@ $(document).ready(function() {
                 $('#updateOrderModal #shipmentStatus').val(order.shipment_status);
                 $('#updateOrderModal #address').val(order.shipping_address);
 
-                // 显示模态框
-                $('#updateOrderModal').modal('show');
-            },
-            error: function(xhr, status, error) {
-                // 处理错误
-                console.error('Failed to fetch order details:', error);
-                alert('无法获取订单详情，请稍后重试。');
-            }
-        });
-    });
- 	// 監聽刪除按钮的事件 
+	             // 顯示模態框
+	             $('#updateOrderModal').modal('show');
+	         },
+	         error: function(xhr, status, error) {
+	             console.error('Failed to fetch order details:', error);
+	             alert('無法獲取訂單詳情，請稍後重試。');
+	         }
+	     });
+	 });
+
+	 // 在模態框中綁定更新確認按鈕事件
+	 $('#confirmUpdateBtn').click(function(e) {
+		 e.preventDefault();
+	     // 使用SweetAlert顯示確認提示
+	     Swal.fire({
+	         title: '確定要更新嗎?',
+	         text: "確認後將會更新此訂單資料。",
+	         icon: 'warning',
+	         showCancelButton: true,
+	         confirmButtonColor: '#3085d6',
+	         cancelButtonColor: '#d33',
+	         cancelButtonText: '取消',
+	         confirmButtonText: '確認更新'
+	     }).then((result) => {
+	            if (result.isConfirmed) {
+	                 // 发送AJAX请求更新订单
+	            	var form = $('#updateOrderForm'); // 確保你的表單有一個ID
+	                $.ajax({
+	                    url: form.attr('action'), // 使用表單的 action 属性作為 URL
+	                    type: 'PUT', // 或 'PUT' 根據你的伺服器需求
+	                    data: form.serialize(), // 序列化表單數據
+	                    success: function(response) {
+	                        Swal.fire('更新成功', '', 'success');
+	                        window.location.href="/order"
+	                    },
+	                    error: function(xhr) {
+	                        Swal.fire('更新失敗', '', 'error');
+	                    }
+	                });
+	            }
+	        });
+	    });
+ 	// 監聽刪除按鈕的事件 
 	 $('.delete-btn').click(function(e) {
-	        e.preventDefault(); // Prevent the default form submission
-	        var form = $(this).closest('form'); // Get the form closest to the delete button
+	        e.preventDefault(); 
+	        var form = $(this).closest('form'); 
 	        Swal.fire({
-	            title: 'Are you sure?',
-	            text: "You won't be able to revert this!",
+	            title: '確定要刪除嗎?',
+	            text: "刪除後將無法復原",
 	            icon: 'warning',
 	            showCancelButton: true,
 	            confirmButtonColor: '#3085d6',
 	            cancelButtonColor: '#d33',
-	            confirmButtonText: 'Yes, delete it!'
+	            cancelButtonText: '取消刪除',
+	            confirmButtonText: '刪除'
 	        }).then((result) => {
 	            if (result.isConfirmed) {
 	                form.submit(); // Submit the form if the user confirms
@@ -461,17 +606,17 @@ $(document).ready(function() {
 	        });
 	    });
 
-    // 处理表单提交逻辑
+    // 處理表單提交邏輯
     $('#updateOrderForm').on('submit', function(e) {
-        e.preventDefault(); // 阻止表单默认提交
+        e.preventDefault(); // 阻止默認提交
 
         var formData = $(this).serialize(); // 序列化表单数据为查询字符串
 
         // 发送AJAX请求更新订单
         $.ajax({
-            url: $(this).attr('action'), // 表单的action值，提交地址
-            type: 'POST', // 提交类型
-            data: formData + '&_method=PUT', // 表单数据，附加PUT方法覆盖
+            url: $(this).attr('action'), // 表單的action值，提交地址
+            type: 'POST', 
+            data: formData + '&_method=PUT', // 表單數據，附加PUT方法覆蓋
             success: function(order) {
                 console.log("Received order data:", order);
             },
@@ -486,7 +631,6 @@ $(document).ready(function() {
 });
 
 </script>
-
 			
 </body>
 </html>

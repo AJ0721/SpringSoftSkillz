@@ -43,8 +43,8 @@ public class CourseService {
 		return null;
 	}
 
-	// 課程前台 同時載入教師和課程資料
-	public List<CourseBean> findAllCoursesWithTeachers() {
-		return courseRepository.findAllWithTeachers();
+	// 根據類別查詢課程
+	public List<CourseBean> findCoursesByCategory(String category) {
+		return courseRepository.findByCourseCategory(category);
 	}
 }

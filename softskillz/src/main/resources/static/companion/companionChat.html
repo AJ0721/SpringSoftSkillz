@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Client 1</title>
+    <script type="text/javascript">
+        var socket = new WebSocket("ws://localhost:8080/companionChat2.html");
+
+        socket.onopen = function (event) {
+            console.log("WebSocket 連接已建立");
+        };
+
+        socket.onmessage = function (event) {
+            console.log("收到服務器訊息：" + event.data);
+            handleReceivedMessage(event.data);
+        };
+
+        socket.onclose = function (event) {
+            console.log("WebSocket 連接已關閉");
+        };
+
+        function sendMessage() {
+            var message = document.getElementById("message1").value;
+            socket.send(message);
+            console.log("已發送訊息：" + message);
+        }
+
+        function handleReceivedMessage(message) {
+            // 在這裡處理接收到的訊息，例如將訊息顯示在頁面上
+            var messageElement = document.createElement("div");
+            messageElement.textContent = message;
+            document.getElementById("received-messages").appendChild(messageElement);
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" id="message1" placeholder="輸入訊息">
+    <button onclick="sendMessage()">發送訊息</button>
+    <div id="received-messages">
+        <!-- 這裡顯示接收到的訊息 -->
+    </div>
+</body>
+
+</html>

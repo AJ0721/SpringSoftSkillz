@@ -14,14 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.softskillz.productorder.model.Order;
 import com.softskillz.productorder.model.OrderService;
 
+import jakarta.annotation.Resource;
+
 
 @Controller
 @RequestMapping("/order")
+//@SessionAttributes(names = {"order"})
 public class OrderController {
 
 	private final OrderService orderService;
@@ -29,11 +34,6 @@ public class OrderController {
 	public OrderController(OrderService orderService) {
 		this.orderService = orderService;
 	}
-	
-    @GetMapping("/demo")
-    public String showDemo1Page() {
-        return "/dist/demo.html";
-    }
 	
 //	// 顯示搜尋框頁面
 //    @GetMapping
@@ -69,7 +69,7 @@ public class OrderController {
 
     // 這裡是新添加的處理創建訂單的方法
     @PostMapping("/create")
-    public String createOrder(@ModelAttribute Order order, RedirectAttributes redirectAttributes) {
+    public String createOrder(@ModelAttribute Order order, RedirectAttributes redirectAttributes,Model m) {
         Order newOrder = orderService.insertOrder(order);
         redirectAttributes.addFlashAttribute("order", newOrder);
         return "redirect:/order"; // 創建後重定向到所有訂單的頁面
@@ -96,6 +96,7 @@ public class OrderController {
     
  // 更新訂單
     @PutMapping("/update")
+    @ResponseBody
     public String updateOrder(@RequestParam("order_id") Integer orderId,
                               @RequestParam("student_id") Integer studentId,
                               @RequestParam("coupon_id") Integer couponId,
@@ -122,5 +123,12 @@ public class OrderController {
         orderService.updateOrder(order);
         redirectAttributes.addFlashAttribute("successMessage", "訂單更新成功！");
         return "redirect:/order";
+    }
+    
+    @GetMapping("/orderHistory")
+    public String orderHistory(Model model) {
+        // 获取用户订单历史数据
+        // model.addAttribute("orders", orderService.getOrdersByUser(userId));
+        return "elearning/productorder/orderhistory.html";
     }
 }

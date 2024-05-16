@@ -11,5 +11,5 @@ public interface TeacherScheduleRepository extends JpaRepository<TeacherSchedule
 
 	List<TeacherScheduleBean> findByTeacherID(int teacherID);
 
-	Optional<TeacherScheduleBean> findById(int id); // 添加此方法以便根據ID查找
+	Optional<TeacherScheduleBean> findById(int id); // 添加此方法以便根據教師行事曆ID查找
 }

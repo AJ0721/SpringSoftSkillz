@@ -62,11 +62,12 @@ CREATE TABLE teacher (
  teacher_id_formatted AS ('t' + CAST(teacher_id AS NVARCHAR(10))),
 );
 
-INSERT INTO teacher VALUES('汶安','熊','123456','20200101','male','19950402','091234567','123@123','123456','彎彎','img/gege.jpg','全',4,'full_time','國中','無','50','少一個腎',0,0)
-INSERT INTO teacher VALUES('惠民','郭','000000','19991201','male','19750802','090000000','456@456','000000','桃園','img/guo.jpg','全',20,'full_time','大學','有','100','愛念',0,0)
-INSERT INTO teacher VALUES('建輝','李','111111','20001101','male','19850302','091111111','789@789','111111','台北','img/gary.jpg','全',10,'full_time','大學','有','80','啥都不會',0,0)
+INSERT INTO teacher VALUES('汶安','熊','teacherBear','20200101','male','19950402','091234567','teacherBear@mail.com','123456','彎彎','teacher01.jpg','全',4,'full_time','國中','無','50','少一個腎',0,0)
+INSERT INTO teacher VALUES('Taro','莊','cutietaro','19991201','male','19750802','090000000','cutietaro@mail.com','000000','桃園','teacher02.jpg','全',20,'full_time','大學','有','100','愛念',0,0)
+INSERT INTO teacher VALUES('Jingle','莊','dr.huluhulu','20001101','male','19850302','091111111','dr.huluhulu@mail.com','111111','桃園','teacher03.jpg','全',10,'full_time','大學','有','80','啥都不會',0,0)
 
 SELECT * FROM teacher;
+DROP TABLE teacher;
 
 --課程
 
@@ -255,9 +256,6 @@ senduser nvarchar(50) NOT NULL,
 msg nvarchar(max)  not null,
 sendtime DATETIME2(3) not null
 )
-
-
-
 
 
 
@@ -519,6 +517,7 @@ SELECT * FROM coupon_type;
 SELECT * FROM coupon;
 SELECT * FROM coupon_type_relations;
 
+DROP TABLE teacher;
 
 --商城訂單
 
@@ -541,7 +540,15 @@ VALUES
     (1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
 	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
 	(3, 3, '2024-04-29 11:54:00', 600, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
-
+	(1, 1, '2024-03-20 08:00:00', 10000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
+	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
+	(3, 3, '2024-04-29 11:54:00', 900, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
+	(1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
+	(2, 2, '2024-01-17 15:28:00', 3000, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
+	(3, 3, '2024-04-29 11:54:00', 6000, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
+	(1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
+	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
+	(3, 3, '2024-04-29 11:54:00', 7990, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
 --商品訂單項目
 CREATE TABLE orderitem (
     order_item_id INT PRIMARY KEY IDENTITY(1, 1),
@@ -559,6 +566,8 @@ VALUES
 (1, 1, 1, 5, 500, 2500),  
 (2, 2, 2, 1, 1500, 1500), 
 (2, 3, 3, 3, 300, 900);  
+
+DROP TABLE orderitem;
 
 --學伴
 
@@ -634,6 +643,7 @@ VALUES
 
 SELECT*FROM forum_category
 ORDER BY forum_category_id;
+DROP TABLE forum_category;
 
 
 CREATE TABLE forum_thread (
@@ -693,7 +703,7 @@ VALUES
 (5, 1, '數學線上輔導服務', '為了支持學生在數學學習中的需求，我們推出了線上輔導服務。這項服務將提供個別輔導和答疑。', 'VISIBLE', 10, 0);
 
 SELECT* FROM forum_thread;
-
+DROP TABLE forum_thread;
 
 GO
 

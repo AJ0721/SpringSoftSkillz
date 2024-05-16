@@ -24,9 +24,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "course")
 @Component
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "courseID")
 public class CourseBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +58,7 @@ public class CourseBean implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonBackReference("course-teacher")
 	private TeacherBean teacherBean;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "courseBean", cascade = CascadeType.ALL)
 	@JsonManagedReference("course-studentReservation")
 	private Set<StudentReservationBean> studentReservationBean = new HashSet<StudentReservationBean>();
@@ -138,6 +141,13 @@ public class CourseBean implements Serializable {
 
 	public void setTeacherBean(TeacherBean teacherBean) {
 		this.teacherBean = teacherBean;
+	}
+
+	@Override
+	public String toString() {
+		return "CourseBean{" + "courseID=" + courseID + ", courseCategory='" + courseCategory + '\'' + ", courseName='"
+				+ courseName + '\'' + ", courseInfo='" + courseInfo + '\'' + ", coursePrice=" + coursePrice
+				+ ", teacherId=" + teacherID + '}';
 	}
 
 }

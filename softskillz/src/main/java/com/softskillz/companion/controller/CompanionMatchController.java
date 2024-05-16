@@ -40,8 +40,8 @@ public class CompanionMatchController {
 	// 查詢單筆 id
 	@GetMapping("/GetCompanionMatchById")
 	public ModelAndView getCompanionById(@RequestParam("nickname")String studentNickname) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectMatchById.jsp");
-		ModelAndView view2 = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectByIdErr.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/selectMatchById.jsp");
+		ModelAndView view2 = new ModelAndView("dist/companion/CompanionSelect/selectByIdErr.jsp");
 		System.out.println(studentNickname);
 	    if (studentNickname == null) {
 	        return view2;

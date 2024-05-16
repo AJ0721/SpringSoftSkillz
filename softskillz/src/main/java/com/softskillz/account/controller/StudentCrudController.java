@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.service.StudentService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,7 +42,7 @@ public class StudentCrudController {
 	@PostMapping("/student-login")
 	public String studentLoginAction(@RequestParam("usernameOrEmail") String usernameOrEmail,
 			@RequestParam("studentPassword") String studentPassword, HttpSession session, Model m) {
-		
+
 		StudentBean studentData = null;
 
 		// 檢查輸入是否包含 '@'，如果有，則視為電子郵件
@@ -55,10 +56,25 @@ public class StudentCrudController {
 			session.setAttribute("studentData", studentData);
 			return "/dist/index.html";
 		} else {
-			//redirect只能叫controller，其他時候直接輸入網址
+			// redirect只能叫controller，其他時候直接輸入網址
 			m.addAttribute("loginMsg", "錯誤的帳號或密碼");
 			return "/dist/account/student/StudentLoginFront.jsp";
 		}
+	}
+
+	// 登出功能
+	@PostMapping("/student-logout")
+	public String logoutAction(HttpServletRequest request) {
+		
+		// 獲取當前會話，不創建新會話
+		//true就是如果你沒有，就叫舊的session，false就是會叫對話過的session
+		HttpSession session = request.getSession(false); 
+		
+		//session != null是對話過的
+		if (session != null) {
+			session.invalidate(); // 使會話失效
+		}
+		return "redirect:/student/student-loginPage"; // 重定向到登入頁面
 	}
 
 	// 學生後台頁面
@@ -92,10 +108,14 @@ public class StudentCrudController {
 			@RequestParam("studentGender") String studentGender, @RequestParam("studentBirth") String studentBirth,
 			@RequestParam("studentCountry") String studentCountry, @RequestParam("studentMobile") String studentMobile,
 			@RequestParam("studentEducation") String studentEducation,
-			@RequestParam("learningFrequency") String learningFrequency, Model m) throws ParseException {
+			@RequestParam("learningFrequency") String learningFrequency,@RequestParam("firstLanguage") String firstLanguage, Model m) throws ParseException {
 
+		Date now = new Date();
+
+		// 解析生日日期
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = simpleDateFormat.parse(studentBirth);
+
 		StudentBean insertBean = new StudentBean();
 		insertBean.setStudentLastName(studentLastName);
 		insertBean.setStudentFirstName(studentFirstName);
@@ -108,6 +128,8 @@ public class StudentCrudController {
 		insertBean.setStudentMobile(studentMobile);
 		insertBean.setStudentEducation(studentEducation);
 		insertBean.setLearningFrequency(learningFrequency);
+		insertBean.setFirstLanguage(firstLanguage);
+		insertBean.setStudentRegistrationDate(now);   // 設置註冊日期為當前日期
 
 		StudentBean resultBean = studentService.insert(insertBean);
 
@@ -156,7 +178,7 @@ public class StudentCrudController {
 			m.addAttribute("rowMsg", "已刪除一筆資料");
 		}
 
-		//return "/account/student/StudentCrudPage.jsp";
+		// return "/account/student/StudentCrudPage.jsp";
 		return "redirect:/student/student-account";
 
 	}

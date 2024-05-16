@@ -140,6 +140,10 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/assets/compiled/svg/**")
 				.addResourceLocations("/WEB-INF/dist/assets/compiled/svg/");
 
+		// 教師照片
+		registry.addResourceHandler("/teacher/images/**")
+				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/teacher/images/");
+
 		// 前台模版html
 		registry.addResourceHandler("/elearning/**").addResourceLocations("/WEB-INF/elearning/");
 

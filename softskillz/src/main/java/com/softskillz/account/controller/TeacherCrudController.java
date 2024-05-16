@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.service.TeacherService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +59,16 @@ public class TeacherCrudController {
 	@GetMapping("/teacher-account")
 	public String TeacherCrudPage() {
 		return "/dist/account/teacher/teacherCrudPage.jsp";
+	}
+	
+	// 登出功能
+	@PostMapping("/teacher-logout")
+	public String logoutAction(HttpServletRequest request) {
+	    HttpSession session = request.getSession(false); // 獲取當前會話，不創建新會話
+	    if (session != null) {
+	        session.invalidate(); // 使會話失效
+	    }
+	    return "redirect:/teacher/teacher-loginPage"; // 重定向到登入頁面
 	}
 	
 	// 查詢單筆

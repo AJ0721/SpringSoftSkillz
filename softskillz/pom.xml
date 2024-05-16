@@ -152,6 +152,11 @@
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

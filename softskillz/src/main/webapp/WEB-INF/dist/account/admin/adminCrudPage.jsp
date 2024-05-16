@@ -6,6 +6,15 @@
 <html lang="en">
 
 <head>
+<style>
+#adminList th, #adminList td {
+	writing-mode: horizontal-tb; /* 設定文字水平顯示 */
+	transform: rotate(0deg); /* 確保沒有旋轉 */
+	white-space: nowrap; /* 防止文字折行 */
+	text-align: center; /* 水平置中文本 */
+	vertical-align: middle; /* 垂直置中內容 */
+}
+</style>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SoftSkillz - 管理員帳號管理</title>
@@ -247,29 +256,31 @@
 									<table class="table" id="adminList">
 										<thead>
 											<tr>
-												<th style="vertical-align: middle; text-align: center;">管理員id</th>
-												<th style="vertical-align: middle; text-align: center;">管理員帳號</th>
-												<th style="vertical-align: middle; text-align: center;">管理員密碼</th>
-												<th style="vertical-align: middle; text-align: center;">管理員層級</th>
-												<th style="vertical-align: middle; text-align: center;">修改</th>
-												<th style="vertical-align: middle; text-align: center;">刪除</th>
+												<th>ID</th>
+												<th>管理員帳號</th>
+												<th>管理員密碼</th>
+												<th>管理員層級</th>
+												<th>修改</th>
+												<th>刪除</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:forEach items="${admin}" var="admin">
 												<tr>
-													<td  style="vertical-align: middle; text-align: center;">${admin.adminId}</td>
-													<td  style="vertical-align: middle; text-align: center;">${admin.adminAccount}</td>
-													<td  style="vertical-align: middle; text-align: center;"><input type="password"
-														value="${admin.adminPassword}" disabled="disabled"
+													<td>${admin.adminId}</td>
+													<td>${admin.adminAccount}</td>
+													<td><input
+														type="password" value="${admin.adminPassword}"
+														disabled="disabled"
 														style="border: none; background-color: transparent;">
 													</td>
-													<td  style="vertical-align: middle; text-align: center;">${admin.adminLevel}</td>
-													<td   style="vertical-align: middle; text-align: center;">
+													<td>${admin.adminLevel}</td>
+													<td>
 														<form action="/admin/AdminUpdate" method="post">
 															<input type="hidden" name="_method" value="put">
 															<input type="hidden" name="adminId"
-																value="${admin.adminId}" /> <select class="form-select" name="adminLevel">
+																value="${admin.adminId}" /> <select class="form-select"
+																name="adminLevel">
 																<option value="1">Level 1</option>
 																<option value="2">Level 2</option>
 																<option value="4">Level 4</option>
@@ -277,15 +288,18 @@
 																<option value="5">Level 5</option>
 																<option value="6">Level 6</option>
 																<option value="7">Level 7</option>
-															</select> <button class="btn" type="submit" style="color: white; background-color: #808cbc;">修改層級</button>
+															</select>
+															<button class="btn" type="submit"
+																style="color: white; background-color: #808cbc;">修改層級</button>
 														</form>
 													</td>
-													<td   style="vertical-align: middle; text-align: center;">
+													<td>
 														<form action="/admin/AdminDelete" method="post">
 															<input type="hidden" name="_method" value="delete">
 															<input type="hidden" name="adminId"
 																value="${admin.adminId}" />
-															<button class="btn" type="submit" style="color: white; background-color: #eaaac4;">刪除</button>
+															<button class="btn" type="submit"
+																style="color: white; background-color: #eaaac4;">刪除</button>
 														</form>
 													</td>
 												</tr>

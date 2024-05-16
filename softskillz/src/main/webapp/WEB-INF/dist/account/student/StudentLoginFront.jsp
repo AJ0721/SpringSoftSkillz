@@ -15,7 +15,7 @@
 
 body {
 	font-family: Arial, sans-serif;
-	background-image: url(AccountPhoto/s_login.png);
+	background-image: url(/dist/account/images/student_login01.jpg);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-attachment: fixed;
@@ -87,7 +87,7 @@ button:hover {
 
 <body>
 	<div class="login-container">
-		<img src="/images/softskillz_logo.png" alt="Softskillz Logo"
+		<img src="/dist/account/images/softskillz_logo.png" alt="Softskillz Logo"
 			class="logo">
 		<form id="loginForm" action="/student/student-login" method="POST">
 			<!--  接資料是用mame-->

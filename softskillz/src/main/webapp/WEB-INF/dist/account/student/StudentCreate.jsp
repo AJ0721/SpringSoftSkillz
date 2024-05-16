@@ -1,96 +1,209 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>學生註冊</title>
-    </head>
+<head>
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 30px;
+        }
 
-    <body>
-        <h2>學生帳號註冊</h2>
-        <form action="/student/student-create" method="post">
-            姓：<input type="text" name="studentLastName" required><br>
-            名：<input type="text" name="studentFirstName" required><br>
-            帳號：<input type="text" name="studentUsername" required><br>
-            密碼：<input type="password" name="studentPassword" required><br>
-            電子信箱：<input type="email" name="studentEmail" required><br>
-            性別：<select name="studentGender" required>
-                <option value="Male">男性</option>
-                <option value="Female">女性</option>
-                <option value="Unspecified">不顯示</option>
-            </select><br>
-            出生日期：<input type="date" name="studentBirth" required><br>
-            <label for="country">國家：</label>
-            <select id="country" name="studentCountry">
-                <option value="阿富汗">阿富汗</option>
-                <option value="阿爾巴尼亞">阿爾巴尼亞</option>
-                <option value="阿爾及利亞">阿爾及利亞</option>
-                <option value="安道爾">安道爾</option>
-                <option value="安哥拉">安哥拉</option>
-                <option value="安提瓜和巴布達">安提瓜和巴布達</option>
-                <option value="阿根廷">阿根廷</option>
-                <option value="亞美尼亞">亞美尼亞</option>
-                <option value="澳大利亞">澳大利亞</option>
-                <option value="奧地利">奧地利</option>
-                <option value="阿塞拜疆">阿塞拜疆</option>
-                <option value="巴哈馬">巴哈馬</option>
-                <option value="巴林">巴林</option>
-                <option value="孟加拉國">孟加拉國</option>
-                <option value="巴巴多斯">巴巴多斯</option>
-                <option value="白俄羅斯">白俄羅斯</option>
-                <option value="比利時">比利時</option>
-                <option value="貝寧">貝寧</option>
-                <option value="不丹">不丹</option>
-                <option value="玻利維亞">玻利維亞</option>
-                <option value="波斯尼亞和黑塞哥維那">波斯尼亞和黑塞哥維那</option>
-                <option value="博茨瓦納">博茨瓦納</option>
-                <option value="巴西">巴西</option>
-                <option value="保加利亞">保加利亞</option>
-                <option value="布基納法索">布基納法索</option>
-                <option value="布隆迪">布隆迪</option>
-                <option value="柬埔寨">柬埔寨</option>
-                <option value="喀麥隆">喀麥隆</option>
-                <option value="台灣" selected>台灣</option>
-                <option value="加拿大">加拿大</option>
-                <option value="佛得角">佛得角</option>
-                <option value="中非共和國">中非共和國</option>
-                <option value="查德">查德</option>
-                <option value="智利">智利</option>
-                <option value="中國">中國</option>
-                <option value="哥倫比亞">哥倫比亞</option>
-                <option value="科摩羅">科摩羅</option>
-                <option value="剛果（布）">剛果（布）</option>
-                <option value="剛果（金）">剛果（金）</option>
-                <option value="哥斯達黎加">哥斯達黎加</option>
-                <option value="克羅地亞">克羅地亞</option>
-                <option value="古巴">古巴</option>
-                <option value="塞浦路斯">塞浦路斯</option>
-                <option value="捷克共和國">捷克共和國</option>
-                <option value="丹麥">丹麥</option>
-                <option value="吉布提">吉布提</option>
-            </select><br>
-            手機號碼：<input type="text" name="studentMobile" required><br>
-             <label for="studentEducation">教育程度：</label>
-                    <select id="studentEducation" name="studentEducation">
-                        <option value="幼稚園">幼稚園</option>
-                        <option value="小學">小學</option>
-                        <option value="國中">國中</option>
-                        <option value="高中">高中</option>
-                        <option value="大學">大學</option>
-                        <option value="碩士">碩士</option>
-                        <option value="博士">博士</option>
-                        <option value="博士后">博士后</option>
-                    </select><br>
-            <label for="learningFrequency">學習頻率：</label>
-            <select id="learningFrequency" name="learningFrequency">
-                <option value="一週小於14小時">一週小於14小時</option>
-                <option value="一週約14到28小時">一週約14到28小時</option>
-                <option value="一週約28到42小時">一週約28到42小時</option>
-                <option value="一週大於42小時">一週大於42小時</option>
-            </select><br>
-            <input type="submit" value="提交">
-        </form>
-    </body>
+        .button-container input {
+            width: auto;
+            margin-right: 20px;
 
-    </html>
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>學生註冊</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/compiled/css/app.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + (dd - 1); // 將日期減去一天
+            document.getElementById("studentBirth").setAttribute("max", today);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">學生註冊</h2>
+            </div>
+            <div class="card-body">
+                <form action="/student/student-create" method="post">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentLastName" class="form-label">姓氏</label>
+                                <input type="text" id="studentLastName" class="form-control" placeholder="Last Name"
+                                    name="studentLastName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentFirstName" class="form-label">名字</label>
+                                <input type="text" id="studentFirstName" class="form-control" placeholder="First Name"
+                                    name="studentFirstName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentUsername" class="form-label">帳號</label>
+                                <input type="text" id="studentUsername" class="form-control" placeholder="Username"
+                                    name="studentUsername" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentPassword" class="form-label">密碼</label>
+                                <input type="password" id="studentPassword" class="form-control" placeholder="Password"
+                                    name="studentPassword" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentBirth" class="form-label">出生日期</label>
+                                <input type="date" id="studentBirth" class="form-control" name="studentBirth" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentGender" class="form-label">性別</label>
+                                <select id="studentGender" class="form-control" name="studentGender" required>
+                                    <option value="Male">男性</option>
+                                    <option value="Female">女性</option>
+                                    <option value="Unspecified">不顯示</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentEmail" class="form-label">電子信箱</label>
+                                <input type="email" id="studentEmail" class="form-control" placeholder="Email"
+                                    name="studentEmail" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mandatory">
+                                <label for="studentMobile" class="form-label">手機號碼</label>
+                                <input type="text" id="studentMobile" class="form-control" placeholder="Mobile Number"
+                                    name="studentMobile" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="country" class="form-label">國家</label>
+                                <select id="country" class="form-control" name="studentCountry">
+                                    <option value="阿富汗">阿富汗</option>
+                                    <option value="阿爾巴尼亞">阿爾巴尼亞</option>
+                                    <option value="阿爾及利亞">阿爾及利亞</option>
+                                    <option value="安道爾">安道爾</option>
+                                    <option value="安哥拉">安哥拉</option>
+                                    <option value="安提瓜和巴布達">安提瓜和巴布達</option>
+                                    <option value="阿根廷">阿根廷</option>
+                                    <option value="亞美尼亞">亞美尼亞</option>
+                                    <option value="澳大利亞">澳大利亞</option>
+                                    <option value="奧地利">奧地利</option>
+                                    <option value="阿塞拜疆">阿塞拜疆</option>
+                                    <option value="巴哈馬">巴哈馬</option>
+                                    <option value="巴林">巴林</option>
+                                    <option value="孟加拉國">孟加拉國</option>
+                                    <option value="巴巴多斯">巴巴多斯</option>
+                                    <option value="白俄羅斯">白俄羅斯</option>
+                                    <option value="比利時">比利時</option>
+                                    <option value="貝寧">貝寧</option>
+                                    <option value="不丹">不丹</option>
+                                    <option value="玻利維亞">玻利維亞</option>
+                                    <option value="波斯尼亞和黑塞哥維那">波斯尼亞和黑塞哥維那</option>
+                                    <option value="博茨瓦納">博茨瓦納</option>
+                                    <option value="巴西">巴西</option>
+                                    <option value="保加利亞">保加利亞</option>
+                                    <option value="布基納法索">布基納法索</option>
+                                    <option value="布隆迪">布隆迪</option>
+                                    <option value="柬埔寨">柬埔寨</option>
+                                    <option value="喀麥隆">喀麥隆</option>
+                                    <option value="台灣" selected>台灣</option>
+                                    <option value="加拿大">加拿大</option>
+                                    <option value="佛得角">佛得角</option>
+                                    <option value="中非共和國">中非共和國</option>
+                                    <option value="查德">查德</option>
+                                    <option value="智利">智利</option>
+                                    <option value="中國">中國</option>
+                                    <option value="哥倫比亞">哥倫比亞</option>
+                                    <option value="科摩羅">科摩羅</option>
+                                    <option value="剛果（布）">剛果（布）</option>
+                                    <option value="剛果（金）">剛果（金）</option>
+                                    <option value="哥斯達黎加">哥斯達黎加</option>
+                                    <option value="克羅地亞">克羅地亞</option>
+                                    <option value="古巴">古巴</option>
+                                    <option value="塞浦路斯">塞浦路斯</option>
+                                    <option value="捷克共和國">捷克共和國</option>
+                                    <option value="丹麥">丹麥</option>
+                                    <option value="吉布提">吉布提</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="firstLanguage" class="form-label">母語</label>
+                                <select id="firstLanguage" class="form-control" name="firstLanguage">
+                                    <option value="無語">無語</option>
+                                    <option value="好言好語">好言好語</option>
+                                    <option value="語重心長">語重心長</option>
+                                    <option value="無與倫比">無與倫比</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="studentEducation" class="form-label">教育程度</label>
+                                <select id="studentEducation" class="form-control" name="studentEducation">
+                                    <option value="幼稚園">幼稚園</option>
+                                    <option value="小學">小學</option>
+                                    <option value="國中">國中</option>
+                                    <option value="高中">高中</option>
+                                    <option value="大學" selected>大學</option>
+                                    <option value="碩士">碩士</option>
+                                    <option value="博士">博士</option>
+                                    <option value="博士后">博士后</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="learningFrequency" class="form-label">學習頻率</label>
+                                <select id="learningFrequency" class="form-control" name="learningFrequency">
+                                    <option value="一週小於14小時">一週小於14小時</option>
+                                    <option value="一週約14到28小時">一週約14到28小時</option>
+                                    <option value="一週約28到42小時">一週約28到42小時</option>
+                                    <option value="一週大於42小時">一週大於42小時</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="button-container">
+                            <input type="submit" value="提交" class="btn btn-primary">
+                            <input type="reset" value="清除" class="btn btn-secondary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

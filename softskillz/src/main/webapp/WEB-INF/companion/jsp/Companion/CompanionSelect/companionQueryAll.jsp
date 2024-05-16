@@ -22,256 +22,214 @@
           width: 130px;
           height: auto;
         }
-        
+#companionTable{
+overflow-x: auto; /* 水平溢出時顯示滾動條 */
+}
+    .table-no-wrap {
+      white-space: nowrap; /* 文字不換行 */
+      overflow-x: auto; /* 水平滾動 */
+      max-width: 100%; /* 最大寬度不超過容器寬度 */
+    }
+
         #showproduct th {
-    	text-align: center;
-  		}
-        
+          text-align: center;
+        }
+
         #showproduct tr td {
-    	text-align: center;
-  		}
-  		
-  		#showproduct th {
-    vertical-align: middle;
-  }
-  		
-  		#showproduct tr td {
-    vertical-align: middle;
-  }
+          text-align: center;
+        }
+
+        #showproduct th {
+          vertical-align: middle;
+        }
+
+        #showproduct tr td {
+          vertical-align: middle;
+        }
       </style>
     </head>
 
     <body>
-      <script src="/assets/static/js/initTheme.js"></script>
-      <div id="app">
-        <div id="sidebar">
-          <div class="sidebar-wrapper active">
-            <div class="sidebar-header position-relative">
-              <div class="d-flex justify-content-between align-items-center">
-                <!-- 左上角Logo -->
-                <div class="logo">
-                  <a href="index.html"><img src="/assets/compiled/jpg/logo1.jpg" alt="Logo" srcset="" /></a>
-                </div>
-                <!-- 切換日間夜間模式 -->
-                <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
-                  <!-- 日間模式圖片 -->
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                    role="img" class="iconify iconify--system-uicons" width="20" height="20"
-                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
-                    <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
-                      stroke-linejoin="round">
-                      <path
-                        d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-                        opacity=".3"></path>
-                      <g transform="translate(-210 -1)">
-                        <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
-                        <circle cx="220.5" cy="11.5" r="4"></circle>
-                        <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
-                      </g>
-                    </g>
-                  </svg>
-                  <!-- 切換按鈕 -->
-                  <div class="form-check form-switch fs-6">
-                    <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer" />
-                    <label class="form-check-label"></label>
-                  </div>
-                  <!-- 夜間模式圖片 -->
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                    role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
-                    viewBox="0 0 24 24">
-                    <path fill="currentColor"
-                      d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
-                    </path>
-                  </svg>
-                </div>
-                <div class="sidebar-toggler x">
-                  <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                </div>
-              </div>
-            </div>
-            <!-- 側邊欄 -->
-            <div class="sidebar-menu">
-              <ul class="menu">
-                <li class="sidebar-item active">
-                  <a href="/softskillz/newhomepage" class="sidebar-link">
-                    <i class="bi bi-grid-fill"></i>
-                    <span>首頁</span>
-                  </a>
-                </li>
-                <li class="sidebar-title">用戶管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>管理員</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">Horizontal Menu</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>教師</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">Horizontal Menu</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>學生</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">Horizontal Menu</a>
-                    </li>
-                  </ul>
-                </li>
+	<script src="/assets/static/js/initTheme.js"></script>
+	<div id="app">
+		<div id="sidebar">
+			<div class="sidebar-wrapper active">
+				<div class="sidebar-header position-relative">
+					<div class="d-flex justify-content-between align-items-center">
+						<!-- 左上角Logo -->
+						<div class="logo">
+							<a href="index.html"><img
+								src="/assets/compiled/jpg/logo1.jpg" alt="Logo" srcset="" /></a>
+						</div>
+						<!-- 切換日間夜間模式 -->
+						<div class="theme-toggle d-flex gap-2 align-items-center mt-2">
+							<!-- 日間模式圖片 -->
+							<svg xmlns="http://www.w3.org/2000/svg"
+								xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+								role="img" class="iconify iconify--system-uicons" width="20"
+								height="20" preserveAspectRatio="xMidYMid meet"
+								viewBox="0 0 21 21">
+										<g fill="none" fill-rule="evenodd" stroke="currentColor"
+									stroke-linecap="round" stroke-linejoin="round">
+											<path
+									d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+									opacity=".3"></path>
+											<g transform="translate(-210 -1)">
+												<path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+												<circle cx="220.5" cy="11.5" r="4"></circle>
+												<path
+									d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2">
+												</path>
+											</g>
+										</g>
+									</svg>
+							<!-- 切換按鈕 -->
+							<div class="form-check form-switch fs-6">
+								<input class="form-check-input me-0" type="checkbox"
+									id="toggle-dark" style="cursor: pointer" /> <label
+									class="form-check-label"></label>
+							</div>
+							<!-- 夜間模式圖片 -->
+							<svg xmlns="http://www.w3.org/2000/svg"
+								xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+								role="img" class="iconify iconify--mdi" width="20" height="20"
+								preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+										<path fill="currentColor"
+									d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
+										</path>
+									</svg>
+						</div>
+						<div class="sidebar-toggler x">
+							<a href="#" class="sidebar-hide d-xl-none d-block"><i
+								class="bi bi-x bi-middle"></i></a>
+						</div>
+					</div>
+				</div>
+				<!-- 側邊欄 -->
+				<div class="sidebar-menu">
+					<ul class="menu">
+						<li class="sidebar-item active"><a
+							href="/softskillz/newhomepage" class="sidebar-link"> <i
+								class="bi bi-grid-fill"></i> <span>首頁</span>
+						</a></li>
+						<li class="sidebar-title">用戶管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>管理員</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/admin/admin-account"
+									class="submenu-link">管理員帳號</a></li>
+							</ul></li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/teacher/teacher-account"
+									class="submenu-link"> 教師帳號</a></li>
+							</ul></li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/student/student-account"
+									class="submenu-link">學生帳號</a></li>
+							</ul></li>
 
-                <li class="sidebar-title">課程管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>課程</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/course/coursePage/courseAllPage" class="submenu-link">所有課程功能</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">新增課程</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">查詢課程</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">修改課程</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>教師行事曆</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
-                        class="submenu-link">所有教師行事曆功能</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">新增教師行事曆</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">查詢教師行事曆</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">修改教師行事曆</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>學生預約</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/studentReservation/studentReservationPage/studentReservationAllPage"
-                        class="submenu-link">所有學生預約功能</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">新增學生預約</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">查詢學生預約</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>學生行事曆</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">新增學生行事曆</a>
-                    </li>
-                    <li class="submenu-item">
-                      <a href="#" class="submenu-link">查詢學生行事曆</a>
-                    </li>
-                  </ul>
-                </li>
+						<li class="sidebar-title">課程管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a
+									href="/course/coursePage/courseAllPage" class="submenu-link">所有課程功能</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">新增課程</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">查詢課程</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">修改課程</a>
+								</li>
+							</ul></li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師行事曆</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a
+									href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
+									class="submenu-link">所有教師行事曆功能</a></li>
+								<li class="submenu-item"><a href="#" class="submenu-link">新增教師行事曆</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">查詢教師行事曆</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">修改教師行事曆</a>
+								</li>
+							</ul></li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生預約</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a
+									href="/studentReservation/studentReservationPage/studentReservationAllPage"
+									class="submenu-link">所有學生預約功能</a></li>
+								<li class="submenu-item"><a href="#" class="submenu-link">新增學生預約</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生預約</a>
+								</li>
+							</ul></li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生行事曆</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="#" class="submenu-link">新增學生行事曆</a>
+								</li>
+								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生行事曆</a>
+								</li>
+							</ul></li>
 
-                <li class="sidebar-title">課程訂單管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>課程訂單管理</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/adminorder/adorder.do" class="submenu-link">課程訂單管理</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-title">商品管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>商品管理</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/mall/index" class="submenu-link">商品管理</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-title">商品訂單管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>商品訂單管理</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/order" class="submenu-link">商品訂單管理</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-title">學伴資料管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>學伴資料管理</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/companion/index.html" class="submenu-link">學伴資料管理</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="sidebar-title">論壇管理</li>
-                <li class="sidebar-item has-sub">
-                  <a href="#" class="sidebar-link">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>論壇管理</span>
-                  </a>
-                  <ul class="submenu">
-                    <li class="submenu-item">
-                      <a href="/forum/adminhome" class="submenu-link">論壇管理</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+						<li class="sidebar-title">課程訂單管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程訂單管理</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/adminorder/adorder.do"
+									class="submenu-link">課程訂單管理</a></li>
+							</ul></li>
+						<li class="sidebar-title">商品管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品管理</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/mall/index"
+									class="submenu-link">商品管理</a></li>
+							</ul></li>
+						<li class="sidebar-title">商品訂單管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品訂單管理</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/order"
+									class="submenu-link">商品訂單管理</a></li>
+							</ul></li>
+						<li class="sidebar-title">學伴資料管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學伴資料管理</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/companion/index.html"
+									class="submenu-link">學伴資料管理</a></li>
+							</ul></li>
+						<li class="sidebar-title">論壇管理</li>
+						<li class="sidebar-item has-sub"><a href="#"
+							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>論壇管理</span>
+						</a>
+							<ul class="submenu">
+								<li class="submenu-item"><a href="/forum/adminhome"
+									class="submenu-link">論壇管理</a></li>
+							</ul></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 
         <!-- 中間內容部分 -->
         <div id="main">
@@ -282,7 +240,7 @@
           </header>
 
           <div class="page-heading">
-            <h3>SoftSkillz - 你的功能</h3>
+            <h3>SoftSkillz - 學伴個人條件</h3>
           </div>
           <div class="page-content">
             <section class="row">
@@ -290,43 +248,41 @@
                 <!-- 卡片中放你的功能內容 -->
                 <section class="section">
                   <div class="card">
-                    <div class="card-header">
-                      <h5 class="card-title">
-                        學伴基本資料
-                      </h5>
-
-                      <a href="#" class="btn icon icon-left btn-primary"><svg xmlns="http://www.w3.org/2000/svg"
-                          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                          stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg> Primary</a>
-                      
-
-                    </div>
+                    
                     <div class="card-body">
 
 
                       <!-- 我的div -->
                       <div id="productListTitle" align="center">
-                        <h2>會員個人條件資料表</h2>
+                        <h2>學伴個人條件資料表</h2>
                       </div>
                       
-                      <table class="table table-striped table-hover table-responsive-sm justify-content-center">
-                      <tbody id="showproduct">
-                      </tbody>
+						<div id="companionTable">
+                      <table id="showCompanion" class="table table-striped table-hover table-responsive-sm justify-content-center table-no-wrap">
+                      <thead id="showproductHead" style="text-align: center;">
+                      </thead>
+                        <tbody id="showproduct">
+                        </tbody>
                       </table>
-                      
-                      <table id="showpage">
+						</div>
+						
+                      <table id="showpage" style="text-align: center;">
                         <tr>
-                          <td>Total Pages: ${totalPages} totalRecords: ${totalElements}</td>
-                          <td colspan="2" align="right">Previous
+                          <td >總共 ${totalPages} 頁 &nbsp 總共 ${totalElements} 筆資料</td>
+                          <td style="display: inline-block; margin-left: 70px"></td>
+                          <td style="text-align: center">
+                            <button class="btn btn-outline-primary" id="prevPage" type="button" style="display: inline-block;"
+                              onclick="changePage(-1)">上一頁</button>
                             <c:forEach var="i" begin="1" end="${totalPages}" step="1">
-                              <button class="btn btn-info" id="myPage" type="button" onclick="change(${i})">${i}</button>
-                            </c:forEach>Next
+                              <button class="btn btn-primary" id="myPage" type="button" style="display: inline-block;"
+                                onclick="change(${i})">${i}</button>
+                            </c:forEach>
+                            <button class="btn btn-outline-primary" id="nextPage" type="button" style="display: inline-block;"
+                              onclick="changePage(1)">下一頁</button>
                           </td>
                         </tr>
                       </table>
+                      
                       <div align="center" class="m-5">
                         <form method="get" action="../GetAllCompanions">
                           <button class="selectAll" type="submit">顯示全部資料</button>
@@ -337,25 +293,9 @@
                       <!-- 我的div -->
 
 
-
-
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="card">
-                        <div class="card-header">
-                          <h4>Profile Visit</h4>
-                        </div>
-                        <div class="card-body">
-                          <div id="chart-profile-visit"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div>
 
               <!-- 右方第一個卡片列表 -->
               <div class="col-12 col-lg-3">
@@ -425,18 +365,29 @@
           </footer>
         </div>
       </div>
+      
+      		<script
+			src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
-      <script src="/assets/extensions/jquery/jquery.min.js"></script>
-      <script src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
-      <script src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-      <script src="/assets/static/js/pages/datatables.js"></script>
+		<script src="/assets/compiled/js/app.js"></script>
+
+		<!-- Need: Apexcharts -->
+		<script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
+		<script src="/assets/static/js/pages/dashboard.js"></script>
+		<script src="/assets/static/js/components/dark.js"></script>
+		<script src="/assets/extensions/jquery/jquery.min.js"></script>
+		<script src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+		<script src="/assets/static/js/pages/datatables.js"></script>
       <script>
         $(document).ready(function () {
-          $('#table_id').DataTable();
+          $('#showCompanion').DataTable();
         });
 
-        $('#table_id').DataTable({
+        $('#showCompanion').DataTable({
           /*設定屬性(預設功能)區塊*/
+          "scrollX" : true,
+          "lengthChange" : false,
           "searching": false, // 預設為true 搜尋功能，若要開啟不用特別設定
           "paging": true, // 預設為true 分頁功能，若要開啟不用特別設定
           "ordering": true, // 預設為true 排序功能，若要開啟不用特別設定
@@ -475,6 +426,11 @@
           loadPage(indexPage);
         }
 
+        function changePage(step) {
+          indexPage += step;
+          loadPage(indexPage);
+        }
+
         function loadPage(indexPage) {
           console.log("loadPage");
           $.ajax({
@@ -483,14 +439,13 @@
             contentType: 'application/json',
             success: function (data) {
               console.log("data : " + data);
-
               $('#showproduct').empty("");
-
               if (data.length === 0) {
                 $('table').prepend('<tr><td>no result</td></tr>');
               } else {
+                var tableHead = $('#showproductHead');
                 var table = $('#showproduct');
-                table.append("<tr id='ptitle'>" + "<th>編號</th><th>學生會員編號</th><th>帳號暱稱</th><th>性別</th><th>生日</th><th>母語</th><th>會說語言</th><th>學習興趣</th><th>學習頻率</th><th>照片</th>");
+                tableHead.append("<tr id='ptitle'>" + "<th>編號</th><th>會員編號</th><th>暱稱</th><th>性別</th><th>生日</th><th>母語</th><th>會說語言</th><th>學習興趣</th><th>學習頻率</th><th>照片</th></tr>");
 
                 $.each(data, function (i, n) {
                   <!-- 使用 moment.js 在前端進行日期格式化 -->
@@ -500,10 +455,27 @@
                   table.append(tr);
                 });
               }
-            }
+              const prevButton = document.getElementById("prevPage");
+              const nextButton = document.getElementById("nextPage");
+              var totalPages = <%= session.getAttribute("totalPages") %>;
+
+          if (indexPage === 1) {
+            prevButton.disabled = true;
+          } else {
+            prevButton.disabled = false;
+          }
+
+          if (indexPage === totalPages) {
+        	  nextButton.disabled = true;
+          } else {
+        	  nextButton.disabled = false;
+          }
+        }
           });
+
         }
       </script>
+
     </body>
 
     </html>

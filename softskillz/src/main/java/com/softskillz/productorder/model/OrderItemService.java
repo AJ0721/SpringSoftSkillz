@@ -3,6 +3,7 @@ package com.softskillz.productorder.model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,12 @@ public class OrderItemService {
         return orderItemRepository.findAll();
     }
 
-    // 根據 ID 讀取單個訂單項目
+    // 根據訂單ID 讀取訂單項目並返回 List<OrderItem>
+    public List<OrderItem> findOrderItemsByOrderId(Integer orderId) {
+        return orderItemRepository.findByOrder_id(orderId);
+    }
+
+    // 根據訂單項目ID 讀取單個訂單項目
     public OrderItem findOrderItemById(Integer id) {
         Optional<OrderItem> orderItem = orderItemRepository.findById(id);
         return orderItem.orElse(null);

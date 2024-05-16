@@ -46,7 +46,12 @@ public class CompanionController {
 	
 	@GetMapping("/insertJSP")
 	public String insertJSP() {
-		return "/companion/jsp/Companion/CompanionInsert/insert.jsp";
+		return "dist/companion/CompanionInsert/insert.jsp";
+	};
+	
+	@GetMapping("/companionIndex")
+	public String companionIndex() {
+		return "dist/companion/companionIndex.jsp";
 	};
 	
 	// 新增
@@ -65,7 +70,7 @@ public class CompanionController {
 			HttpSession session
 //			,@RequestParam("companion_photo") String companionPhoto
 			) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/insertOK.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionInsert/insertOK.jsp");
 		try {
 			CompanionBean companionBean = new CompanionBean();
 //			StudentBean studentBean = (StudentBean)session.getAttribute("studentID");
@@ -99,7 +104,7 @@ public class CompanionController {
 			@RequestParam("like_or_dislike") String likeOrDislike,
 			@SessionAttribute("studentNickname") String studentNickname
 			) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/insertCompanion.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionInsert/insertCompanion.jsp");
 		try {
 			CompanionMatchBean companionMatch = new CompanionMatchBean();
 			CompanionBean companionBeanA = companionService.getByName(studentNickname);
@@ -126,7 +131,7 @@ public class CompanionController {
 	@DeleteMapping("/DeleteCompanionById")
 	@ResponseBody
 	public ModelAndView deleteCompanionById(@RequestParam("companion_id") Integer companionId) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/GetAllCompanions.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/GetAllCompanions.jsp");
 		try {
 			companionService.deleteById(companionId);
 			List<CompanionBean> companions = companionService.getAll();
@@ -142,7 +147,7 @@ public class CompanionController {
 	// 查詢欲修改學伴 單筆 id 
 	@GetMapping("/GetUpdateData")
 	public ModelAndView getUpdateData(@RequestParam("companion_id") Integer companionId) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionUpdate/updateData.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionUpdate/updateData.jsp");
 		try {
 			CompanionBean companion = companionService.getById(companionId);
 			view.addObject("companion", companion);
@@ -165,7 +170,7 @@ public class CompanionController {
 			@RequestParam("companion_about_me") String companionAboutMe,
 			HttpSession session
 			) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionUpdate/update.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionUpdate/update.jsp");
 		try {
 			CompanionBean companionBean = new CompanionBean();
 			
@@ -190,7 +195,7 @@ public class CompanionController {
 	// 查詢單筆 id
 	@GetMapping("/GetCompanionById")
 	public ModelAndView getCompanionById(@RequestParam("companion_id") Integer companionId) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectById.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/selectById.jsp");
 		try {
 			CompanionBean companion = companionService.getById(companionId);
 			view.addObject("companion", companion);
@@ -204,7 +209,7 @@ public class CompanionController {
 	// 查詢單筆 username
 	@GetMapping("/GetCompanionByName")
 	public ModelAndView getCompanionByName(@RequestParam("companion_username") String companionUsername) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/selectByName.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/selectByName.jsp");
 		try {
 			CompanionBean companion = companionService.getByName(companionUsername);
 			view.addObject("companion", companion);
@@ -225,7 +230,7 @@ public class CompanionController {
 			@RequestParam("companion_learning_interest") String companionLearningInterest,
 			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
 			HttpSession session) {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionInsert/CompanionByMatchRequirement.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionInsert/CompanionByMatchRequirement.jsp");
 		try {
 			List<CompanionBean> companions = companionService.getByMatchRequirement(companionLearningInterest,
 					companionGender, companionFirstLanguage, companionSpeakingLanguage, companionLearningFrequency,
@@ -257,7 +262,7 @@ public class CompanionController {
 	@GetMapping("/GetAllCompanions")
 //	@RequestMapping(value = "/GetAllCompanions", method = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT,RequestMethod.DELETE})
 	public ModelAndView getAllCompanions() {
-		ModelAndView view = new ModelAndView("/companion/jsp/Companion/CompanionSelect/GetAllCompanions.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/GetAllCompanions.jsp");
 		try {
 			List<CompanionBean> companions = companionService.getAll();
 			List<StudentBean> students = studentService.findAllStudents();
@@ -274,12 +279,12 @@ public class CompanionController {
 	// 返回取得資料的jsp
 	@GetMapping("/companionqueryallpage.controller")
 	public String processQueryAllPageAction() {
-		return "/companion/jsp/Companion/CompanionSelect/companionQueryAll.jsp";
+		return "dist/companion/CompanionSelect/companionQueryAll.jsp";
 	}
 	
 	@GetMapping("/queryByPage/{pageNo}")
 	@ResponseBody
-	public List<CompanionDTO> processQueryAllByPage(@PathVariable("pageNo") int pageNo, Model m, HttpServletRequest request){
+	public List<CompanionDTO> processQueryAllByPage(@PathVariable("pageNo") int pageNo, Model m, HttpSession session){
 	    int pageSize = 5;
 	    Pageable p1 = PageRequest.of(pageNo-1, pageSize);
 	    Page<CompanionDTO> page = companionService.findAllByPage(p1);
@@ -288,8 +293,6 @@ public class CompanionController {
 	    
 	    int totalPages = page.getTotalPages();
 	    long totalElements = page.getTotalElements();
-	    
-	    HttpSession session = request.getSession();
 	    
 	    session.setAttribute("totalPages", totalPages);
 	    session.setAttribute("totalElements", totalElements);

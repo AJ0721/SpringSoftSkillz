@@ -79,17 +79,16 @@ public class ShoppingCartController {
             session.setAttribute("cart", cart);
         }
         model.addAttribute("cart", cart);
-        return "/order/jsp/cartPage.jsp";
+        return "elearning/productorder/shoppingcart.html";
     }
 
     // 更新購物車項目
     @PostMapping("/update")
     public String updateCartItem(@RequestParam("productId") Integer productId, @RequestParam("quantity") Integer quantity, HttpSession session, RedirectAttributes redirectAttributes) {
-        Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
-        if (cart == null || !cart.containsKey(productId)) {
-            redirectAttributes.addFlashAttribute("error", "Cart item not found");
-            return "redirect:/errorCartPage";
-        }
+    
+    	
+    	Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
+        
 
         ProductCartItem item = cart.get(productId);
         item.setQuantity(quantity);
@@ -120,4 +119,11 @@ public class ShoppingCartController {
         session.removeAttribute("cart");
         return "redirect:view";
     }
+
+    // 結帳頁面
+    @GetMapping("/checkout")
+    public String checkout() {
+    	return "elearning/productorder/checkout.html";
+    }
 }
+

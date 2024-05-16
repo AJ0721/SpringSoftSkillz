@@ -22,6 +22,7 @@ import com.softskillz.account.model.bean.AdminBean;
 import com.softskillz.account.model.service.AdminService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,6 +37,16 @@ public class AdminCrudController {
 	public String processLoginAction() {
 		System.out.println("aaaa");
 		return "/dist/account/admin/AdminLoginBack.jsp";
+	}
+	
+	// 登出功能
+	@PostMapping("/admin-logout")
+	public String logoutAction(HttpServletRequest request) {
+	    HttpSession session = request.getSession(false); // 獲取當前會話，不創建新會話
+	    if (session != null) {
+	        session.invalidate(); // 使會話失效
+	    }
+	    return "redirect:/admin/admin-loginPage"; // 重定向到登入頁面
 	}
 
 	// post沒辦法在網址頁輸入

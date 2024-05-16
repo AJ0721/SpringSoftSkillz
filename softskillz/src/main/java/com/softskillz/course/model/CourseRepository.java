@@ -10,7 +10,6 @@ public interface CourseRepository extends JpaRepository<CourseBean, Integer> {
 	@Query("SELECT c.courseCategory as category, COUNT(c) as count FROM CourseBean c GROUP BY c.courseCategory")
 	List<Object[]> countCoursesByCategory();
 
-	//給課程前台用 同時載入教師和課程資料
-	@Query("SELECT c FROM CourseBean c JOIN FETCH c.teacherBean t")
-	List<CourseBean> findAllWithTeachers();
+	// 根據課程類別查詢課程
+	List<CourseBean> findByCourseCategory(String category);
 }

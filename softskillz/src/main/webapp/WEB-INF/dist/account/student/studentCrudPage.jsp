@@ -21,7 +21,7 @@ td.dataTables_empty {
 </style>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SoftSkillz - 管理員帳號管理</title>
+<title>SoftSkillz - 學生帳號管理</title>
 
 <link rel="shortcut icon" href="/assets/compiled/svg/favicon.svg"
 	type="image/x-icon" />
@@ -239,40 +239,45 @@ td.dataTables_empty {
 						<div class="card" align="center">
 							<h3 class="card-header">學生帳號管理</h3>
 							<div class="card-body">
-								<table>
-									<td>
-										<form method="get" action="StudentSelectOne">
-											學生ID搜尋：<input type="text" name="studentId"></input>&nbsp;&nbsp;<input
-												type="submit" class="btn btn-primary" value="搜尋"></input>
-										</form>
-									</td>
-									<td>
-										<form method="get" action="StudentSelectAll">
-											<input type="submit" class="btn btn-primary" value="搜尋全部"></input>
-										</form>
-									</td>
-								</table>
-								<table class="table" id="studentList">
+								<div>
+									<table class="" id="SearchTable">
+										<tr>
+											<td>
+												<form method="get" action="StudentSelectOne"
+													style="display: inline;">
+													學生ID搜尋：<input type="text" name="studentId"></input>&nbsp;&nbsp;<input
+														type="submit" class="btn btn-primary" value="搜尋"></input>
+												</form>
+											</td>
+											<td>
+												<form method="get" action="StudentSelectAll"
+													style="display: inline; margin-left: 20px;">
+													<input type="submit" class="btn btn-primary" value="搜尋全部"></input>
+												</form>
+											</td>
+										</tr>
+									</table>
+									<table class="table" id="studentList">
 									<thead>
 										<tr>
-											<th>學生編號</th>
+											<th>ID</th>
 											<th>姓氏</th>
 											<th>名字</th>
 											<th>帳號名稱</th>
+											<th>電子信箱</th>
 											<th>暱稱</th>
 											<th>帳號創建時間</th>
 											<th>性別</th>
 											<th>生日</th>
 											<th>手機號碼</th>
-											<th>電子信箱</th>
 											<th>密碼</th>
 											<th>國籍</th>
-											<th>照片</th>
 											<th>學歷</th>
-											<th>論壇會員狀態</th>
-											<th>課程狀態</th>
 											<th>母語</th>
 											<th>學習頻率</th>
+											<th>照片</th>
+											<th>論壇會員狀態</th>
+											<th>課程狀態</th>
 											<th hidden>學生s+id</th>
 											<th>修改</th>
 											<th>刪除</th>
@@ -286,20 +291,20 @@ td.dataTables_empty {
 												<td>${student.studentLastName}</td>
 												<td>${student.studentFirstName}</td>
 												<td>${student.studentUsername}</td>
+												<td>${student.studentEmail}</td>
 												<td>${student.studentNickname}</td>
 												<td>${student.studentRegistrationDate}</td>
 												<td>${student.studentGender}</td>
 												<td>${student.studentBirth}</td>
 												<td>${student.studentMobile}</td>
-												<td>${student.studentEmail}</td>
 												<td>${student.studentPassword}</td>
 												<td>${student.studentCountry}</td>
-												<td>${student.studentPhoto}</td>
 												<td>${student.studentEducation}</td>
-												<td>${student.studentForumStatus}</td>
-												<td>${student.studentCourseStatus}</td>
 												<td>${student.firstLanguage}</td>
 												<td>${student.learningFrequency}</td>
+												<td>${student.studentPhoto}</td>
+												<td>${student.studentForumStatus}</td>
+												<td>${student.studentCourseStatus}</td>
 												<td hidden>${student.studentIdFormatted}</td>
 												<td><a
 													href="student-update?studentId=${student.studentId}"
@@ -317,7 +322,8 @@ td.dataTables_empty {
 										</c:forEach>
 									</tbody>
 								</table>
-								<div>${rowMsg}</div>
+									<div>${rowMsg}</div>
+								</div>
 							</div>
 						</div>
 					</div>
