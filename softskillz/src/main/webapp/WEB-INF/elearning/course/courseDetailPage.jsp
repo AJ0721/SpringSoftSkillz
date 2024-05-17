@@ -67,110 +67,64 @@ pageEncoding="UTF-8"%>
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav
-      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
-    >
-      <a
-        href="/softskillz/fhomepage"
-        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-      >
-        <h2 class="m-0 text-primary">
-          <i class="fa fa-book me-3"></i>SoftSkillz
-        </h2>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+      <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+          <h2 class="m-0 text-primary">
+              <i class="fa fa-book me-3"></i>SoftSkillz
+          </h2>
       </a>
-      <button
-        type="button"
-        class="navbar-toggler me-4"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
+      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a href="/softskillz/fhomepage" class="nav-item nav-link active"
-            >首頁</a
-          >
-          <a href="about.html" class="nav-item nav-link">About</a>
-          <div class="nav-item dropdown">
-            <a
-              href="/courseFront/selectAllPage"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              >課程</a
-            >
-            <div class="dropdown-menu fade-down m-0">
-              <a href="/courseFront/selectAllPage" class="dropdown-item"
-                >所有課程</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=語言"
-                class="dropdown-item"
-                >語言</a
-              >
-              <a
-                href="t/courseFront/selectAllPage?category=程式設計"
-                class="dropdown-item"
-                >程式設計</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=藝術"
-                class="dropdown-item"
-                >藝術</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=影片剪輯"
-                class="dropdown-item"
-                >影片剪輯</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=科學"
-                class="dropdown-item"
-                >科學</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=商業"
-                class="dropdown-item"
-                >商業</a
-              >
-            </div>
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+              <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
+              <!-- 新增個人中心連結 -->
+              <c:if test="${loggedInUser == 'student'}">
+                <a href="/student/personal-center" class="nav-item nav-link">個人中心</a>
+            </c:if>
+              <a href="about.html" class="nav-item nav-link">About</a>
+              <div class="nav-item dropdown">
+                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">課程</a>
+                  <div class="dropdown-menu fade-down m-0">
+                      <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
+                      <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
+                      <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
+                      <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
+                      <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
+                      <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
+                      <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
+                  </div>
+              </div>
+              <a href="#" class="nav-item nav-link">論壇</a>
+              <a href="#" class="nav-item nav-link">學伴</a>
+              <a href="#" class="nav-item nav-link">商城</a>
+              <a href="contact.html" class="nav-item nav-link">Contact</a>
           </div>
-          <a href="#" class="nav-item nav-link">論壇</a>
-          <a href="#" class="nav-item nav-link">學伴</a>
-          <a href="#" class="nav-item nav-link">商城</a>
-          <a href="contact.html" class="nav-item nav-link">Contact</a>
-        </div>
-        <form
-          action="/student/student-loginPage"
-          method="get"
-          class="d-none d-lg-block"
-        >
-          <button
-            type="submit"
-            class="btn btn-primary py-4 px-lg-5"
-            style="
-              background-color: #3f6cba;
-              color: white;
-              border: 1px solid transparent;
-            "
-            onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
-            onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';"
-          >
-            學生登入
-          </button>
-        </form>
-        <form
-          action="/teacher/teacher-loginPage"
-          method="get"
-          class="d-none d-lg-block"
-        >
-          <button type="submit" class="btn btn-primary py-4 px-lg-5">
-            老師登入
-          </button>
-        </form>
+          <div class="navbar-nav p-4 p-lg-0">
+              <c:choose>
+                  <c:when test="${loggedInUser == 'guest'}">
+                      <div class="d-flex align-items-center">
+                          <form id="student-login-form" action="/student/student-loginPage" method="get" class="me-2">
+                              <button type="submit" class="btn btn-primary" style="background-color: #3f6cba; color: white; border: 1px solid transparent;">
+                                  學生登入
+                              </button>
+                          </form>
+                          <form id="teacher-login-form" action="/teacher/teacher-loginPage" method="get" class="me-2">
+                              <button type="submit" class="btn btn-primary">老師登入</button>
+                          </form>
+                      </div>
+                  </c:when>
+                  <c:otherwise>
+                      <form id="student-logout-form" action="/student/student-logout" method="post" class="me-2">
+                          <button type="submit" class="btn btn-primary">學生登出</button>
+                      </form>
+                  </c:otherwise>
+              </c:choose>
+          </div>
       </div>
-    </nav>
-    <!-- Navbar End -->
+  </nav>
+  <!-- Navbar End -->
 
     <!-- 課程詳情 -->
     <div class="container-xxl py-3">
@@ -268,11 +222,24 @@ pageEncoding="UTF-8"%>
     
       <!-- 浮動按鈕 -->
       <div id="floatingButtons" class="d-none d-lg-block position-fixed">
-        <a href="#" class="btn btn-primary btn-lg d-block mb-2" id="button1">1堂: NT$ <span id="price1"></span></a>
-        <a href="#" class="btn btn-primary btn-lg d-block mb-2" id="button5">5堂: NT$ <span id="price5"></span></a>
-        <a href="#" class="btn btn-primary btn-lg d-block mb-2" id="button10">10堂: NT$ <span id="price10"></span></a>
-        <a href="#" class="btn btn-primary btn-lg d-block" id="button20">20堂: NT$ <span id="price20"></span></a>
+        <c:choose>
+            <c:when test="${loggedInUser == 'guest'}">
+                <a href="#" class="btn btn-primary btn-lg d-block mb-2" id="button1">1堂: NT$ <span id="price1"></span></a>
+                <a href="#" class="btn btn-primary btn-lg d-block mb-2" id="button5">5堂: NT$ <span id="price5"></span></a>
+                <a href="#" class="btn btn-primary btn-lg d-block mb-2" id="button10">10堂: NT$ <span id="price10"></span></a>
+                <a href="#" class="btn btn-primary btn-lg d-block" id="button20">20堂: NT$ <span id="price20"></span></a>
+            </c:when>
+            <c:when test="${loggedInUser == 'student'}">
+                <a href="/coursecart/${course.courseID}/1" class="btn btn-primary btn-lg d-block mb-2 cartbtn" id="button1">1堂: NT$ <span id="price1"></span></a>
+                <a href="/coursecart/${course.courseID}/5" class="btn btn-primary btn-lg d-block mb-2 cartbtn" id="button5">5堂: NT$ <span id="price5"></span></a>
+                <a href="/coursecart/${course.courseID}/10" class="btn btn-primary btn-lg d-block mb-2 cartbtn" id="button10">10堂: NT$ <span id="price10"></span></a>
+                <a href="/coursecart/${course.courseID}/20" class="btn btn-primary btn-lg d-block cartbtn" id="button20">20堂: NT$ <span id="price20"></span></a>
+            </c:when>
+            
+        </c:choose>
     </div>
+
+
 
     <!-- Footer Start -->
     <div
@@ -456,6 +423,38 @@ pageEncoding="UTF-8"%>
                 }
             }).scroll();
         });
+      
+        let toCart =  document.querySelectorAll(".cartbtn");
+        toCart.forEach((ele)=>{
+          ele.addEventListener("click",(e)=>{
+            e.preventDefault();
+            let href = ele.getAttribute("href");
+            console.log(href);
+            addToCart(href)
+          })
+        })
+        function addToCart(href){
+        	console.log(href)
+        	fetch(href, {
+        	      method: "POST",
+        	      headers: {
+        	        "Content-Type": "application/json"
+        	      },
+        	      // 如果需要傳送 body，可以添加這一行，否則可以省略
+        	      // body: JSON.stringify({ /* your data here */ })
+        	    })
+        	    .then(response => {
+        	      if (response.ok) {
+        	        window.location.href = "/coursecart/cart.do";
+        	      } else {
+        	        console.error('Failed to add to cart:', response.statusText);
+        	      }
+        	    })
+        	    .catch(error => {
+        	      console.error('Error:', error);
+        	    });
+    
+        }
     </script>
 
   </body>

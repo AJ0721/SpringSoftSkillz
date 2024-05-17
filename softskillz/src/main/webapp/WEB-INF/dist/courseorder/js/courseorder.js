@@ -120,9 +120,12 @@ function appendorder(data) {
         row.innerHTML =
             "<td class='text-center orderID'>" + content[key].orderID + "</td>" +
             "<td class='text-center'>" + content[key].studentID + "</td>" +
-            "<td class='text-center'>" + content[key].orderPrice + "</td>" +
             "<td class='text-center'>" + date.toLocaleString("sv") + "</td>" +
             "<td class='text-center'>" + date2.toLocaleString('sv') + "</td>" +
+            "<td class='text-center'>" + content[key].orderPrice + "</td>" +
+            "<td class='text-center'>" + content[key].disNo + "</td>" +
+            "<td class='text-center'>" + content[key].disPercent + "</td>" +
+            "<td class='text-center'>" + content[key].afterPrice + "</td>" +
             "<td class='text-center'>" + content[key].paymentMethod + "</td>" +
             "<td class='text-center'>" + content[key].orderStatus + "</td>" +
             "<td class='text-center'><button class='btn btn-outline-primary block itembtn' data-bs-toggle='modal' data-bs-target='#border-less' >詳細</button></td>" +
@@ -269,13 +272,14 @@ function getItem(e) {
             for (let key in data) {
                 let row = document.createElement("tr");
                 row.innerHTML =
-                    "<td class='text-center'>" + data[key].orderID + "</td>" +
                     "<td class='text-center'>" + data[key].teacherName + "</td>" +
                     "<td class='text-center'>" + data[key].courseName + "</td>" +
                     "<td class='text-center'>" + data[key].courseCategory + "</td>" +
                     "<td class='text-center'>" + data[key].coursePrice + "</td>" +
                     "<td class='text-center'>" + data[key].qty + "</td>" +
-                    "<td class='text-center'>" + data[key].qty * data[key].coursePrice + "</td>" +
+                    "<td class='text-center'>" + data[key].disPercent + "</td>" +
+                    "<td class='text-center'>" + data[key].disPrice + "</td>" +
+                    "<td class='text-center'>" + data[key].subtotal + "</td>" +
                     "<td class='text-center'>" + data[key].status + "</td>";
                 orderitem.appendChild(row);
             }

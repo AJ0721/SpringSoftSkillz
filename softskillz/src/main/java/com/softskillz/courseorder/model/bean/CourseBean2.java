@@ -46,7 +46,7 @@ public class CourseBean2  {
 
 	@Column(name = "course_price")
 	private Integer coursePrice;
-
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "courseBean2")
 	private Set<ItemBean> orderItem = new HashSet<ItemBean>();
 

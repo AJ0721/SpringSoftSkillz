@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.softskillz.courseorder.model.bean.CartItem;
 import com.softskillz.courseorder.model.bean.CorderBean;
+import com.softskillz.courseorder.model.bean.DiscountBean;
 import com.softskillz.courseorder.model.bean.ItemBean;
 import com.softskillz.courseorder.model.bean.ItemInfo;
 import com.softskillz.courseorder.model.bean.Order;
@@ -43,13 +44,11 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
 	@Scheduled(fixedDelay = 1000) // 每秒检查一次
 	public void processDelayedOrders() {
-//		System.out.println("測試");
-		lock.lock(); // 确保线程安全
+		lock.lock();
 		try {
 			CorderBean order;
 			while ((order = delayQueue.poll()) != null) {
 				adminUpdateOrder(order.getOrderID(), "已取消"); // 处理超时订单
-				System.out.println("取消");
 			}
 		} finally {
 			lock.unlock(); // 释放锁
@@ -70,11 +69,18 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 		ItemBean itemBean = null;
 		Set<ItemBean> orderItems = new HashSet<>();
 		for (Map.Entry<Integer, CartItem> entry : cart.entrySet()) {
+			Double discountRate = Util.getDiscountRate(entry.getValue().getQuantity());
+			Integer cprice = entry.getValue().getCourse().getPrice();
+			Double price = (cprice * discountRate / 100);
+			Integer afterPrice = price.intValue();
 			itemBean = new ItemBean();
 			itemBean.setOrderID(order.getOrderID());
 			itemBean.setCourseID(entry.getValue().getCourse().getCourseID());
 			itemBean.setCoursePrice(entry.getValue().getCourse().getPrice());
 			itemBean.setQty(entry.getValue().getQuantity());
+			itemBean.setDisPercent(discountRate);
+			itemBean.setDisPrice(afterPrice);
+			itemBean.setSubtotal(afterPrice*entry.getValue().getQuantity());
 			itemBean.setItemStatus(0);
 			orderItems.add(itemBean);
 		}
@@ -99,6 +105,9 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 			order.setCancelDate(o.getCancelDate());
 			order.setPaymentMethod(o.getMethod());
 			order.setOrderStatus(o.getStatus());
+			order.setDisNo(o.getDisNo());
+			order.setDisPercent(o.getDisPercent());
+			order.setAfterPrice(o.getAfterPrice());
 			orders.add(order);
 		}
 
@@ -117,6 +126,9 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 		order.setCancelDate(resultBean.getCancelDate());
 		order.setPaymentMethod(resultBean.getMethod());
 		order.setOrderStatus(resultBean.getStatus());
+		order.setDisNo(resultBean.getDisNo());
+		order.setDisPercent(resultBean.getDisPercent());
+		order.setAfterPrice(resultBean.getAfterPrice());
 		return order;
 	}
 
@@ -132,22 +144,24 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
 	@Override
 	public List<Order> studentORD(Integer studentID) {
-		List<CorderBean> resultList = coRepo.findByStudentID(studentID);
-		List<Order> orders = new ArrayList<Order>();
-		Order order = null;
-		for (CorderBean o : resultList) {
-			order = new Order();
-			order.setOrderID(o.getOrderID());
-			order.setStudentID(o.getStudentID());
-			order.setOrderPrice(o.getOrderPrice());
-			order.setOrderDate(o.getOrderDate());
-			order.setCancelDate(o.getCancelDate());
-			order.setPaymentMethod(o.getMethod());
-			order.setOrderStatus(o.getStatus());
-			orders.add(order);
-		}
+//		List<CorderBean> resultList = coRepo.findById(studentID);
+//		List<Order> orders = new ArrayList<Order>();
+//		Order order = null;
+//		for (CorderBean o : resultList) {
+//			order = new Order();
+//			order.setOrderID(o.getOrderID());
+//			order.setStudentID(o.getStudentID());
+//			order.setOrderPrice(o.getOrderPrice());
+//			order.setOrderDate(o.getOrderDate());
+//			order.setCancelDate(o.getCancelDate());
+//			order.setPaymentMethod(o.getMethod());
+//			order.setOrderStatus(o.getStatus());
+//			orders.add(order);
+//		}
+//
+//		return orders;
 
-		return orders;
+		return null;
 	}
 
 	@Override
@@ -166,6 +180,9 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 			item.setQty(i.getQty());
 			item.setStatus(i.getItemStatus());
 			item.setCourseID(i.getCourseID());
+			item.setDisPercent(i.getDisPercent());
+			item.setDisPrice(i.getDisPrice());
+			item.setSubtotal(i.getSubtotal());
 			items.add(item);
 		}
 		return items;
@@ -196,6 +213,9 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 			order.setCancelDate(o.getCancelDate());
 			order.setPaymentMethod(o.getMethod());
 			order.setOrderStatus(o.getStatus());
+			order.setDisNo(o.getDisNo());
+			order.setDisPercent(o.getDisPercent());
+			order.setAfterPrice(o.getAfterPrice());
 			orders2.add(order);
 		}
 		return orders2;
@@ -207,10 +227,19 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 	}
 
 	@Override
-	public Integer payOrder(String orderID, String status, String method) {
+	public CorderBean payOrder(String orderID, String status, String method, DiscountBean discount) {
 		CorderBean corderBean = coRepo.findById(orderID).get();
 		delayQueue.remove(corderBean);
-		return coRepo.updateStatus(orderID, status, method);
+		String disID = discount.getDisID();
+		Double disPercent = discount.getDisPercent();
+		Double afterPrice = Math.ceil((corderBean.getOrderPrice() * discount.getDisPercent() / 100));
+		Integer newPrice = afterPrice.intValue();
+		corderBean.setDisNo(disID);
+		corderBean.setDisPercent(disPercent);
+		corderBean.setAfterPrice(newPrice);
+		corderBean.setStatus(status);
+		corderBean.setMethod(method);
+		return coRepo.save(corderBean);
 	}
 
 	@Override
@@ -227,6 +256,9 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 				order.setCancelDate(o.getCancelDate());
 				order.setPaymentMethod(o.getMethod());
 				order.setOrderStatus(o.getStatus());
+				order.setDisNo(o.getDisNo());
+				order.setDisPercent(o.getDisPercent());
+				order.setAfterPrice(o.getAfterPrice());
 				return order;
 			}
 
@@ -239,8 +271,8 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 		Date date1 = Util.dateUtil(date1String);
 		Date date = Util.dateUtil(date2String);
 		Long oneday = (long) (24 * 60 * 60 * 1000);
-		Date date2 = new Date(date.getTime()+oneday);
-		Page<CorderBean> result = coRepo.getPageOrderByDate(date1, date2,pageable);
+		Date date2 = new Date(date.getTime() + oneday);
+		Page<CorderBean> result = coRepo.getPageOrderByDate(date1, date2, pageable);
 		Page<Order> page = result.map(new Function<CorderBean, Order>() {
 			@Override
 			public Order apply(CorderBean o) {
@@ -252,10 +284,67 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 				order.setCancelDate(o.getCancelDate());
 				order.setPaymentMethod(o.getMethod());
 				order.setOrderStatus(o.getStatus());
+				order.setDisNo(o.getDisNo());
+				order.setDisPercent(o.getDisPercent());
+				order.setAfterPrice(o.getAfterPrice());
 				return order;
 			}
 		});
-		
+
+		return page;
+	}
+
+	@Override
+	public Page<Order> getPageByStudentID(Pageable pageable, Integer studentID, String status) {
+		Page<CorderBean> result = coRepo.findByStudentID(pageable, studentID, status);
+		Page<Order> page = result.map(new Function<CorderBean, Order>() {
+
+			@Override
+			public Order apply(CorderBean o) {
+				Order order = new Order();
+				order.setOrderID(o.getOrderID());
+				order.setStudentID(o.getStudentID());
+				order.setOrderPrice(o.getOrderPrice());
+				order.setOrderDate(o.getOrderDate());
+				order.setCancelDate(o.getCancelDate());
+				order.setPaymentMethod(o.getMethod());
+				order.setOrderStatus(o.getStatus());
+				order.setDisNo(o.getDisNo());
+				order.setDisPercent(o.getDisPercent());
+				order.setAfterPrice(o.getAfterPrice());
+				return order;
+			}
+		});
+
+		return page;
+	}
+
+	@Override
+	public Page<Order> getPageByStudentIDAndDate(Pageable pageable, String date1String, String date2String,
+			Integer studentID, String status) {
+		Date date1 = Util.dateUtil(date1String);
+		Date date = Util.dateUtil(date2String);
+		Long oneday = (long) (24 * 60 * 60 * 1000);
+		Date date2 = new Date(date.getTime() + oneday);
+		Page<CorderBean> result = coRepo.findByStudentIDAndOrderDate(pageable, date1, date2, studentID, status);
+		Page<Order> page = result.map(new Function<CorderBean, Order>() {
+
+			@Override
+			public Order apply(CorderBean o) {
+				Order order = new Order();
+				order.setOrderID(o.getOrderID());
+				order.setStudentID(o.getStudentID());
+				order.setOrderPrice(o.getOrderPrice());
+				order.setOrderDate(o.getOrderDate());
+				order.setCancelDate(o.getCancelDate());
+				order.setPaymentMethod(o.getMethod());
+				order.setOrderStatus(o.getStatus());
+				order.setDisNo(o.getDisNo());
+				order.setDisPercent(o.getDisPercent());
+				order.setAfterPrice(o.getAfterPrice());
+				return order;
+			}
+		});
 		return page;
 	}
 }

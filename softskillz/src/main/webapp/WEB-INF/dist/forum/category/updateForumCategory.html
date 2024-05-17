@@ -410,8 +410,9 @@
 
             // btn page transfer
             $('#cancel').click(function (e) {
-                window.location.href = '/forum/adminhome#nav-category';
-                //todo: go to category tab
+                window.history.go(-1);
+                return false;
+                // window.location.href = '/forum/adminhome#nav-category';
             });
 
 

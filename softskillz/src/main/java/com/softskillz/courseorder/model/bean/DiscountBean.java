@@ -18,7 +18,7 @@ public class DiscountBean {
 
 	@Id
 	@Column(name = "discount_id")
-	private Integer disID;
+	private String disID;
 
 	@Column(name = "discount_info")
 	private String disInfo;
@@ -29,7 +29,7 @@ public class DiscountBean {
 	@JsonFormat(timezone = "GMT+8")
 	@Column(name = "start_date")
 	private Date startDate;
-	
+
 	@JsonFormat(timezone = "GMT+8")
 	@Column(name = "end_date")
 	private Date endDate;
@@ -38,7 +38,7 @@ public class DiscountBean {
 		super();
 	}
 
-	public DiscountBean(Integer disID, String disInfo, Double disPercent, Date startDate, Date endDate) {
+	public DiscountBean(String disID, String disInfo, Double disPercent, Date startDate, Date endDate) {
 		super();
 		this.disID = disID;
 		this.disInfo = disInfo;
@@ -47,11 +47,11 @@ public class DiscountBean {
 		this.endDate = endDate;
 	}
 
-	public Integer getDisID() {
+	public String getDisID() {
 		return disID;
 	}
 
-	public void setDisID(Integer disID) {
+	public void setDisID(String disID) {
 		this.disID = disID;
 	}
 

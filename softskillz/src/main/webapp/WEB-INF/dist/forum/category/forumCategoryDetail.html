@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoftSkillz - 檢視文章</title>
+    <title>SoftSkillz - 檢視分類</title>
 
 
     <link rel="shortcut icon" href="/assets/compiled/svg/favicon.svg" type="image/x-icon" />
@@ -436,7 +436,9 @@
 
             //PAGE REDIRECT
             $('#cancel').click(function (e) {
-                window.location.href = '/forum/adminhome#nav-category';
+                window.history.go(-1);
+                return false;
+                // window.location.href = '/forum/adminhome#nav-category';
             });
 
         });

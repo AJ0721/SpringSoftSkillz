@@ -96,136 +96,200 @@ td.dataTables_empty {
 					</div>
 				</div>
 				<!-- 側邊欄 -->
-				<div class="sidebar-menu">
+							<div class="sidebar-menu">
 					<ul class="menu">
-						<li class="sidebar-item active"><a
-							href="/softskillz/newhomepage" class="sidebar-link"> <i
-								class="bi bi-grid-fill"></i> <span>首頁</span>
-						</a></li>
+						<li class="sidebar-item active">
+							<a href="/softskillz/newhomepage" class="sidebar-link">
+								<i class="bi bi-grid-fill"></i>
+								<span>首頁</span>
+							</a>
+						</li>
 						<li class="sidebar-title">用戶管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>管理員</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>管理員</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/admin/admin-account"
-									class="submenu-link">管理員帳號</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師</span>
-						</a>
+								<li class="submenu-item">
+									<a href="/admin/admin-account" class="submenu-link">管理員帳號</a>
+								</li>
+							</ul>
+						</li>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>教師</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/teacher/teacher-account"
-									class="submenu-link"> 教師帳號</a></li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生</span>
-						</a>
+								<li class="submenu-item">
+									<a href="/teacher/teacher-account" class="submenu-link">教師帳號</a>
+								</li>
+							</ul>
+						</li>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>學生</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/student/student-account"
-									class="submenu-link">學生帳號</a></li>
-							</ul></li>
+								<li class="submenu-item">
+									<a href="/student/student-account" class="submenu-link">學生帳號</a>
+								</li>
+							</ul>
+						</li>
 
 						<li class="sidebar-title">課程管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>課程</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/course/coursePage/courseAllPage" class="submenu-link">所有課程功能</a>
+								<li class="submenu-item">
+									<a href="/course/insertPage" class="submenu-link">新增課程</a>
 								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增課程</a>
+								<li class="submenu-item">
+									<a href="/course/selectAllPage" class="submenu-link">查詢課程</a>
 								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢課程</a>
-								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">修改課程</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>教師行事曆</span>
-						</a>
+							</ul>
+						</li>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>教師行事曆</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
-									class="submenu-link">所有教師行事曆功能</a></li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增教師行事曆</a>
+								<li class="submenu-item">
+									<a href="/teacherSchedule/insertPage" class="submenu-link">新增教師行事曆</a>
 								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢教師行事曆</a>
+								<li class="submenu-item">
+									<a href="/teacherSchedule/selectAllPage" class="submenu-link">查詢教師行事曆</a>
 								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">修改教師行事曆</a>
-								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生預約</span>
-						</a>
+							</ul>
+						</li>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>學生預約</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a
-									href="/studentReservation/studentReservationPage/studentReservationAllPage"
-									class="submenu-link">所有學生預約功能</a></li>
-								<li class="submenu-item"><a href="#" class="submenu-link">新增學生預約</a>
+								<li class="submenu-item">
+									<a href="/studentReservation/insertPage" class="submenu-link">新增學生預約</a>
 								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生預約</a>
+								<li class="submenu-item">
+									<a href="/studentReservation/selectAllPage" class="submenu-link">查詢學生預約</a>
 								</li>
-							</ul></li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學生行事曆</span>
-						</a>
+							</ul>
+						</li>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>學生行事曆</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="#" class="submenu-link">新增學生行事曆</a>
+								<li class="submenu-item">
+									<a href="/studentSchedule/selectAllPage" class="submenu-link">查詢學生行事曆</a>
 								</li>
-								<li class="submenu-item"><a href="#" class="submenu-link">查詢學生行事曆</a>
-								</li>
-							</ul></li>
+							</ul>
+						</li>
 
 						<li class="sidebar-title">課程訂單管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>課程訂單管理</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>課程訂單管理</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/adminorder/adorder.do"
-									class="submenu-link">課程訂單管理</a></li>
-							</ul></li>
+								<li class="submenu-item">
+									<a href="/adminorder/adorder.do" class="submenu-link">課程訂單管理</a>
+								</li>
+								<li class="submenu-item">
+									<a href="/coursediscount/discount.do" class="submenu-link">課程折扣管理</a>
+								</li>
+							</ul>
+						</li>
+
 						<li class="sidebar-title">商品管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品管理</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>商品管理</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/mall/index"
-									class="submenu-link">商品管理</a></li>
-							</ul></li>
+								<li class="submenu-item">
+									<a href="/mall/mallProductAll" class="submenu-link">商品管理</a>
+								</li>
+							</ul>
+						</li>
 						<li class="sidebar-title">商品訂單管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>商品訂單管理</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>商品訂單管理</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/order"
-									class="submenu-link">商品訂單管理</a></li>
-							</ul></li>
+								<li class="submenu-item">
+									<a href="/order" class="submenu-link">商品訂單管理</a>
+								</li>
+								<li class="submenu-item">
+									<a href="/order/create" class="submenu-link">新增商品訂單</a>
+								</li>
+							</ul>
+						</li>
 						<li class="sidebar-title">學伴資料管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>學伴資料管理</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>學伴資料管理</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/companion/index.html"
-									class="submenu-link">學伴資料管理</a></li>
-							</ul></li>
+								<li class="submenu-item">
+									<a href="/companionIndex.html" class="submenu-link">學伴資料管理</a>
+								</li>
+							</ul>
+						</li>
 						<li class="sidebar-title">論壇管理</li>
-						<li class="sidebar-item has-sub"><a href="#"
-							class="sidebar-link"> <i class="bi bi-grid-1x2-fill"></i> <span>論壇管理</span>
-						</a>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>論壇管理</span>
+							</a>
 							<ul class="submenu">
-								<li class="submenu-item"><a href="/forum/adminhome"
-									class="submenu-link">論壇管理</a></li>
-							</ul></li>
+								<li class="submenu-item">
+									<a href="/forum/adminhome" class="submenu-link">論壇管理</a>
+								</li>
+							</ul>
+						<li class="sidebar-title">課程訂單管理</li>
+						<li class="sidebar-item has-sub">
+							<a href="#" class="sidebar-link">
+								<i class="bi bi-grid-1x2-fill"></i>
+								<span>訊息訂單管理</span>
+							</a>
+							<ul class="submenu">
+								<li class="submenu-item">
+									<a href="/chat/coursechat.do" class="submenu-link">訊息管理</a>
+								</li>
+							</ul>
+						</li>
+						</li>
+						<br>
+						<form action="/admin/admin-logout" method="post" style="text-align: center; margin: 0 auto;">
+							<button type="submit" class="btn rounded-pill"
+								style="background-color: #3f6cba; color: white;">
+								<i class="bi bi-person-circle"></i>&nbsp;登出
+							</button>
+						</form>
+						<br>
 					</ul>
 				</div>
 			</div>
 		</div>
-
-		<!-- 中間內容部分 -->
-		<div id="main">
+<!-- 中間內容部分 -->
+							<div id="main">
 			<header class="mb-3">
 				<a href="#" class="burger-btn d-block d-xl-none"> <i
-					class="bi bi-justify fs-3"></i>
+										class="bi bi-justify fs-3"></i>
 				</a>
 			</header>
 
@@ -244,84 +308,89 @@ td.dataTables_empty {
 										<tr>
 											<td>
 												<form method="get" action="StudentSelectOne"
-													style="display: inline;">
+																		style="display: inline;">
 													學生ID搜尋：<input type="text" name="studentId"></input>&nbsp;&nbsp;<input
-														type="submit" class="btn btn-primary" value="搜尋"></input>
+																			type="submit" class="btn btn-primary" value="搜尋"></input>
 												</form>
 											</td>
 											<td>
 												<form method="get" action="StudentSelectAll"
-													style="display: inline; margin-left: 20px;">
+																		style="display: inline; margin-left: 20px;">
 													<input type="submit" class="btn btn-primary" value="搜尋全部"></input>
 												</form>
 											</td>
 										</tr>
 									</table>
 									<table class="table" id="studentList">
-									<thead>
-										<tr>
-											<th>ID</th>
-											<th>姓氏</th>
-											<th>名字</th>
-											<th>帳號名稱</th>
-											<th>電子信箱</th>
-											<th>暱稱</th>
-											<th>帳號創建時間</th>
-											<th>性別</th>
-											<th>生日</th>
-											<th>手機號碼</th>
-											<th>密碼</th>
-											<th>國籍</th>
-											<th>學歷</th>
-											<th>母語</th>
-											<th>學習頻率</th>
-											<th>照片</th>
-											<th>論壇會員狀態</th>
-											<th>課程狀態</th>
-											<th hidden>學生s+id</th>
-											<th>修改</th>
-											<th>刪除</th>
-										</tr>
-									</thead>
-									<tbody>
-										<!-- items="${students}" 是從controller傳來的信封的名字，然後去宣告變數var，從list裡一個一個拿出來 -->
-										<c:forEach items="${students}" var="student">
+										<thead>
 											<tr>
-												<td>${student.studentId}</td>
-												<td>${student.studentLastName}</td>
-												<td>${student.studentFirstName}</td>
-												<td>${student.studentUsername}</td>
-												<td>${student.studentEmail}</td>
-												<td>${student.studentNickname}</td>
-												<td>${student.studentRegistrationDate}</td>
-												<td>${student.studentGender}</td>
-												<td>${student.studentBirth}</td>
-												<td>${student.studentMobile}</td>
-												<td>${student.studentPassword}</td>
-												<td>${student.studentCountry}</td>
-												<td>${student.studentEducation}</td>
-												<td>${student.firstLanguage}</td>
-												<td>${student.learningFrequency}</td>
-												<td>${student.studentPhoto}</td>
-												<td>${student.studentForumStatus}</td>
-												<td>${student.studentCourseStatus}</td>
-												<td hidden>${student.studentIdFormatted}</td>
-												<td><a
-													href="student-update?studentId=${student.studentId}"
-													class="btn" style="color: white; background-color: #808cbc;">修改</a></td>
-												<td>
-													<form action="StudentDelete" method="post">
-														<input type="hidden" name="_method" value="delete">
-														<input type="hidden" name="studentId"
-															value="${student.studentId}" />
-														<button class="btn" type="submit"
-															style="color: white; background-color: #eaaac4;">刪除</button>
-													</form>
-												</td>
+												<th>ID</th>
+												<th>姓氏</th>
+												<th>名字</th>
+												<th>帳號名稱</th>
+												<th>電子信箱</th>
+												<th>暱稱</th>
+												<th>帳號創建時間</th>
+												<th>性別</th>
+												<th>生日</th>
+												<th>手機號碼</th>
+												<th>密碼</th>
+												<th>國籍</th>
+												<th>學歷</th>
+												<th>母語</th>
+												<th>學習頻率</th>
+												<th>照片</th>
+												<th>論壇會員狀態</th>
+												<th>課程狀態</th>
+												<th hidden>學生s+id</th>
+												<th>修改</th>
+												<th>刪除</th>
 											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
+										</thead>
+										<tbody>
+											<!-- items="${students}" 是從controller傳來的信封的名字，然後去宣告變數var，從list裡一個一個拿出來 -->
+											<c:forEach items="${students}" var="student">
+												<tr>
+													<td>${student.studentId}</td>
+													<td>${student.studentLastName}</td>
+													<td>${student.studentFirstName}</td>
+													<td>${student.studentUsername}</td>
+													<td>${student.studentEmail}</td>
+													<td>${student.studentNickname}</td>
+													<td>${student.studentRegistrationDate}</td>
+													<td>${student.studentGender}</td>
+													<td>${student.studentBirth}</td>
+													<td>${student.studentMobile}</td>
+													<td><input type="password"
+																			value="${student.studentPassword}"
+																			disabled="disabled"
+																			style="border: none; background-color: transparent;">
+													</td>
+													<td>${student.studentCountry}</td>
+													<td>${student.studentEducation}</td>
+													<td>${student.firstLanguage}</td>
+													<td>${student.learningFrequency}</td>
+													<td>${student.studentPhoto}</td>
+													<td>${student.studentForumStatus}</td>
+													<td>${student.studentCourseStatus}</td>
+													<td hidden>${student.studentIdFormatted}</td>
+													<td><a
+																			href="student-update?studentId=${student.studentId}"
+																			class="btn"
+																			style="color: white; background-color: #808cbc;">修改</a></td>
+													<td>
+														<form action="StudentDelete" method="post">
+															<input type="hidden" name="_method" value="delete">
+															<input type="hidden" name="studentId"
+																					value="${student.studentId}" />
+															<button class="btn" type="submit"
+																					style="color: white; background-color: #eaaac4;">刪除</button>
+														</form>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 									<div>${rowMsg}</div>
 								</div>
 							</div>
@@ -335,12 +404,13 @@ td.dataTables_empty {
 							</div>
 						</div>
 					</footer>
-			</div>
+			
+								</div>
 		</div>
 
 		<script src="/assets/static/js/components/dark.js"></script>
 		<script
-			src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+								src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
 		<script src="/assets/compiled/js/app.js"></script>
 
@@ -351,9 +421,9 @@ td.dataTables_empty {
 		<!-- DataTables -->
 		<script src="/assets/extensions/jquery/jquery.min.js"></script>
 		<script
-			src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+								src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
 		<script
-			src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+								src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
 		<script src="/assets/static/js/pages/datatables.js"></script>
 
 		<script>
@@ -380,6 +450,7 @@ td.dataTables_empty {
 												});
 							});
 		</script>
-</body>
+
+						</body>
 
 </html>

@@ -27,7 +27,7 @@ window.createCategoryHtml = function (category) {
             <td><a href="/forum/category/detailpage/${category.forumCategoryId}">${category.forumCategoryName}</a></td>
             <td>${category.forumCategoryDescription}</td>
             <td id="updatePost" class="align-middle text-center">
-            <button class="btn btn-sm btn-primary">
+            <button class=" edit btn btn-sm btn-primary">
             <i class="bi bi-pencil align-middle">
             </i></button></td>            
         </tr>
@@ -92,36 +92,38 @@ $(document).ready(function () {
                 });
 
 
-                fetch('/forum/category/delete-all'), {
+                fetch('/forum/category/delete-all', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(categoryIds)
-                }.then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.text();
-                }).then(data => {
-                    console.log(data);
-                    Swal.fire("刪除成功", "", "success");
-                    $('#categoryList').empty();
-                    fetchCategories().done(function (categories) {
-                        displayCategoriesTab(categories);
-                    }).fail(
-                        function (error) {
-                            console.error("Error fetching categories:", error);
-                            $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
                         }
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        Swal.fire("刪除成功", "", "success");
+                        $('#categoryList').empty();
+                        fetchCategories()
+                            .then(function (categories) {
+                                displayCategoriesTab(categories);
+                            })
+                            .catch(
+                                function (error) {
+                                    console.error("Error fetching categories:", error);
+                                    $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+                                }
+                            )
+                    }
                     ).catch(error => {
                         console.error('There was a problem with the fetch operation:', error);
                         Swal.fire('刪除失敗', '請檢查連線並重新整理', 'error');
                     });
-
-                }
-
-                )
 
             }
         });
@@ -205,19 +207,7 @@ $(document).ready(function () {
         });
     }
 
-    //ACTION:DISPLAY CATEGORY IN TAB WHEN LOAD
-    $('#nav-category-tab').click(function (e) {
-        e.preventDefault();
 
-        fetchCategories().done(function (categories) {
-            displayCategoriesTab(categories);
-        }).fail(function (error) {
-            console.error("Error fetching categories:", error);
-            $('#categoryList').html('<tr><td colspan="5">載入資料失敗，請重新整理</td></tr>');
-        });
-
-
-    });
 
 
 })

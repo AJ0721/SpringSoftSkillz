@@ -34,6 +34,15 @@ public class ItemBean {
 	@Column(name = "qty")
 	private Integer qty;
 
+	@Column(name = "discount_percent")
+	private Double disPercent;
+
+	@Column(name = "after_price")
+	private Integer disPrice;
+
+	@Column(name = "subtotal")
+	private Integer subtotal;
+
 	@Column(name = "item_status")
 	private Integer itemStatus;
 
@@ -87,6 +96,30 @@ public class ItemBean {
 
 	public void setQty(Integer qty) {
 		this.qty = qty;
+	}
+
+	public Double getDisPercent() {
+		return disPercent;
+	}
+
+	public void setDisPercent(Double disPercent) {
+		this.disPercent = disPercent;
+	}
+
+	public Integer getDisPrice() {
+		return disPrice;
+	}
+
+	public void setDisPrice(Integer disPrice) {
+		this.disPrice = disPrice;
+	}
+
+	public Integer getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(Integer subtotal) {
+		this.subtotal = subtotal;
 	}
 
 	public Integer getItemStatus() {

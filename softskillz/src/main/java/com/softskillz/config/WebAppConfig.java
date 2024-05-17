@@ -178,7 +178,6 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 		// 後台模版首頁index.html
 		registry.addViewController("/softskillz/newhomepage").setViewName("dist/index.html");
-		registry.addViewController("/softskillz/fhomepage").setViewName("elearning/test.html");
 
 		// 前台模版首頁index.html
 		registry.addViewController("/softskillz/fhomepage").setViewName("elearning/index.html");

@@ -12,4 +12,7 @@ public interface CourseRepository extends JpaRepository<CourseBean, Integer> {
 
 	// 根據課程類別查詢課程
 	List<CourseBean> findByCourseCategory(String category);
+
+	// 根據教師編號查詢課程
+	List<CourseBean> findByTeacherID(Integer teacherID);
 }

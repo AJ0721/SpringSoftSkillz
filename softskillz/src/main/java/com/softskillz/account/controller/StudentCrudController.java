@@ -54,7 +54,7 @@ public class StudentCrudController {
 
 		if (studentData != null) {
 			session.setAttribute("studentData", studentData);
-			return "/dist/index.html";
+			return "redirect:/courseFront/selectAllPage";
 		} else {
 			// redirect只能叫controller，其他時候直接輸入網址
 			m.addAttribute("loginMsg", "錯誤的帳號或密碼");
@@ -86,7 +86,7 @@ public class StudentCrudController {
 	// 註冊頁面
 	@GetMapping({ "/student-createPage" })
 	public String goToStudentCreatePage() {
-		return "/dist/account/student/StudentCreate.jsp";
+		return "/elearning/account/student/StudentCreate.jsp";
 	}
 
 	// 新增頁面，印舊資料

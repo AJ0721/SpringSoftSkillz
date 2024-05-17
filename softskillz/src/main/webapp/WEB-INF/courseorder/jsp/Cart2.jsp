@@ -64,7 +64,7 @@
 				</thead>
 				<tbody>
 
-					<c:forEach var="entry" items="${cart}">
+					<c:forEach var="entry" items="${coursecart}">
 						<tr>
 							<td><img src="../${entry.value.course.teacherPhoto}"></td>
 							<td>${entry.value.course.teacherName}</td>

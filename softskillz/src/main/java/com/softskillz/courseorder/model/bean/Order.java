@@ -3,6 +3,8 @@ package com.softskillz.courseorder.model.bean;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -11,7 +13,9 @@ public class Order implements Serializable {
 	private Integer orderPrice;
 	private Date orderDate;
 	private Date cancelDate;
-
+	private String disNo;
+	private Double disPercent;
+	private Integer afterPrice;
 	private String paymentMethod;
 	private String orderStatus;
 
@@ -19,13 +23,17 @@ public class Order implements Serializable {
 		super();
 	}
 
-	public Order(String orderID, Integer studentID, Integer orderPrice, Date orderDate, String paymentMethod,
-			String orderStatus) {
+	public Order(String orderID, Integer studentID, Integer orderPrice, Date orderDate, Date cancelDate, String disNo,
+			Double disPercent, Integer afterPrice, String paymentMethod, String orderStatus) {
 		super();
 		this.orderID = orderID;
 		this.studentID = studentID;
 		this.orderPrice = orderPrice;
 		this.orderDate = orderDate;
+		this.cancelDate = cancelDate;
+		this.disNo = disNo;
+		this.disPercent = disPercent;
+		this.afterPrice = afterPrice;
 		this.paymentMethod = paymentMethod;
 		this.orderStatus = orderStatus;
 	}
@@ -86,10 +94,36 @@ public class Order implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 
+	public String getDisNo() {
+		return disNo;
+	}
+
+	public void setDisNo(String disNo) {
+		this.disNo = disNo;
+	}
+
+	public Double getDisPercent() {
+		return disPercent;
+	}
+
+	public void setDisPercent(Double disPercent) {
+		this.disPercent = disPercent;
+	}
+
+	public Integer getAfterPrice() {
+		return afterPrice;
+	}
+
+	public void setAfterPrice(Integer afterPrice) {
+		this.afterPrice = afterPrice;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [orderID=" + orderID + ", studentID=" + studentID + ", orderPrice=" + orderPrice + ", orderDate="
-				+ orderDate + ", paymentMethod=" + paymentMethod + ", orderStatus=" + orderStatus + "]";
+				+ orderDate + ", cancelDate=" + cancelDate + ", disNo=" + disNo + ", disPercent=" + disPercent
+				+ ", afterPrice=" + afterPrice + ", paymentMethod=" + paymentMethod + ", orderStatus=" + orderStatus
+				+ "]";
 	}
 
 }

@@ -37,8 +37,8 @@ public class DiscountController {
 
 	@GetMapping("/testd")
 	@ResponseBody
-	public Map<Integer, Double> getDiscount() {
-		Map<Integer, Double> discount = disService.getDiscount();
+	public Map<String, Double> getDiscount() {
+		Map<String, Double> discount = disService.getDiscount();
 //		System.out.println(discount);
 		return discount;
 	}
@@ -68,7 +68,7 @@ public class DiscountController {
 
 	@DeleteMapping("/{disID}")
 	@ResponseBody
-	public String deleteDis(@PathVariable("disID") Integer disID) {
+	public String deleteDis(@PathVariable("disID") String disID) {
 		disService.deleteDiscount(disID);
 		return "";
 	}
@@ -78,8 +78,8 @@ public class DiscountController {
 	@ResponseBody
 	public Page<DiscountBean> getDiscountPage(@RequestParam(value = "pid", defaultValue = "1") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size,
-			@RequestParam(value = "sort", defaultValue = "disID") String sort,
-			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection) {
+			@RequestParam(value = "sort", defaultValue = "disPercent") String sort,
+			@RequestParam(value = "direction", defaultValue = "DESC") String sortDirection) {
 
 		Direction direction = Direction.fromString(sortDirection);
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
@@ -90,7 +90,7 @@ public class DiscountController {
 	
 	@GetMapping("/{disID}")
 	@ResponseBody
-	public DiscountBean getDis(@PathVariable("disID") Integer disID) {
+	public DiscountBean getDis(@PathVariable("disID") String disID) {
 		return disService.getByID(disID);
 	}
 

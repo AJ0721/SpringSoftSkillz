@@ -47,4 +47,9 @@ public class CourseService {
 	public List<CourseBean> findCoursesByCategory(String category) {
 		return courseRepository.findByCourseCategory(category);
 	}
+	
+	// 根據教師編號查詢課程
+	public List<CourseBean> findCoursesByTeacherID(Integer teacherID) {
+		return courseRepository.findByTeacherID(teacherID);
+	}
 }

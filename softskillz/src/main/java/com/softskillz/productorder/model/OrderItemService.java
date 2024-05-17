@@ -25,9 +25,9 @@ public class OrderItemService {
     }
 
     // 根據訂單ID 讀取訂單項目並返回 List<OrderItem>
-    public List<OrderItem> findOrderItemsByOrderId(Integer orderId) {
-        return orderItemRepository.findByOrder_id(orderId);
-    }
+//    public List<OrderItem> findOrderItemsByOrderId(Integer orderId) {
+//        return orderItemRepository.findByOrder_id(orderId);
+//    }
 
     // 根據訂單項目ID 讀取單個訂單項目
     public OrderItem findOrderItemById(Integer id) {

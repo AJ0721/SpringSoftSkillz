@@ -41,26 +41,25 @@ public class CourseOrderController {
 
 	@GetMapping("/order.do")
 	public String processAction() {
-		return "courseorder/html/ordertest.html";
+		return "/elearning/courseorder/courseorder.html";
 	}
 
-	@GetMapping("/pay")
+	@GetMapping("/orderdetail")
 	public String processPayAction() {
-		return "courseorder/html/paypage.html";
+		return "/elearning/courseorder/test.html";
 	}
 
-	@PostMapping
+	@PostMapping("/{tot}")
 	@ResponseBody
-	public String doOrder(@RequestBody Map<String, Integer> map, SessionStatus status, HttpSession session) {
+	public String doOrder(@PathVariable("tot")Integer total, HttpSession session) {
 
 		Integer studentID = 1;
-		StudentBean studentBean = (StudentBean) session.getAttribute("student");
-
-		studentID = studentBean.getStudentId();
+//		StudentBean studentBean = (StudentBean) session.getAttribute("student");
+//
+//		studentID = studentBean.getStudentId();
 
 		Long time = System.currentTimeMillis();
-		Integer total = map.get("total");
-		Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
+		Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("coursecart");
 		String orderID = LineUtil.getOrderID(time);
 		CorderBean corderBean = new CorderBean();
 		corderBean.setOrderID(orderID);
@@ -75,7 +74,7 @@ public class CourseOrderController {
 		return orderID;
 	}
 
-	@GetMapping
+//	@GetMapping
 	@ResponseBody
 	public List<Order> getOrder(HttpSession session) {
 		Integer studentID = 1;// 先頂著
@@ -110,18 +109,40 @@ public class CourseOrderController {
 		return items;
 	}
 
-	@GetMapping("/order")
+	@GetMapping
 	@ResponseBody
 	public Page<Order> pageOrder(@RequestParam(value = "pid", defaultValue = "1") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size,
 			@RequestParam(value = "sort", defaultValue = "orderID") String sort,
-			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection) {
-		
+			@RequestParam(value = "direction", defaultValue = "DESC") String sortDirection,
+			@RequestParam(value = "status", defaultValue = "已付款") String status) {
+		Integer studentID = 1;
 		Direction direction = Direction.fromString(sortDirection);
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
-		Page<Order> pageOrder = coService.getPageOrder(pageable);
+		Page<Order> pageOrder = coService.getPageByStudentID(pageable, studentID, status);
+		System.out.println(status);
 		System.out.println(pageOrder.getContent());
 		return pageOrder;
 	}
+
+	@GetMapping("/{d1}/{d2}")
+	@ResponseBody
+	public Page<Order> getPageOrderByDate(@PathVariable("d1") String date1,
+			@PathVariable(value = "d2", required = false) String date2,
+			@RequestParam(value = "pid", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sort", defaultValue = "orderDate") String sort,
+			@RequestParam(value = "direction", defaultValue = "DESC") String sortDirection,
+			@RequestParam(value = "status", defaultValue = "已付款") String status) {
+		System.out.println("d1:" + date1);
+		System.out.println("d2:" + date2);
+		Integer studentID = 1;
+		Direction direction = Direction.fromString(sortDirection);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
+		Page<Order> pageOrder = coService.getPageByStudentIDAndDate(pageable, date1, date2,studentID,status);
+		System.out.println(pageOrder.getContent());
+		return pageOrder;
+	}
+
 
 }

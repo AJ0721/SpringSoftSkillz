@@ -28,17 +28,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softskillz.courseorder.model.bean.CartItem;
 import com.softskillz.courseorder.model.bean.CorderBean;
+import com.softskillz.courseorder.model.bean.DiscountBean;
 import com.softskillz.courseorder.model.bean.ItemInfo;
 import com.softskillz.courseorder.model.bean.test.Citem;
 import com.softskillz.courseorder.model.bean.test.Item;
 import com.softskillz.courseorder.model.service.impl.CourseOrderServiceImpl;
+import com.softskillz.courseorder.model.service.impl.DiscountServiceImpl;
 import com.softskillz.util.LineUtil;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@SessionAttributes(names = { "cart", "total", "orderID" })
 public class LinePayTest {
 
 	@Autowired
@@ -46,6 +48,9 @@ public class LinePayTest {
 	
 	@Autowired
 	private CourseOrderServiceImpl coService;
+	
+	@Autowired
+	private DiscountServiceImpl disService;
 	
 	private static final String ChannelSecret = "4a91e36157b573b652b027d2b69935cb";
 	private static final String ChannelId = "2003913073";
@@ -126,11 +131,14 @@ public class LinePayTest {
 	
 	@PostMapping(path = "/LinePayReqAfter/{oid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> reqestByOrder(@PathVariable("oid") String orderID)
+	public ResponseEntity<String> reqestByOrder(@PathVariable("oid") String orderID,@RequestParam("dis")String disID,HttpSession session)
 			throws JsonProcessingException {
 		System.out.println(orderID);
+		DiscountBean discount = disService.getByID(disID);
+		System.out.println("dis:"+discount);
+		session.setAttribute("discount",discount);
 		List<ItemInfo> orederItem = coService.getItem(orderID);
-		Item item = LineUtil.getItemByOrder(orederItem);
+		Item item = LineUtil.getItemByOrder(orederItem,discount.getDisPercent());
 		String url = null;
 		String reqUrl = "https://sandbox-api-pay.line.me/v3/payments/request";
 		String requestUri = "/v3/payments/request";
@@ -156,12 +164,15 @@ public class LinePayTest {
 	}
 	
 	@GetMapping("/LinePayConByOrder")
-	public String confirmByOrder(@RequestParam("transactionId") String transactionId,@RequestParam("orderId") String orderID) throws JsonProcessingException {
+	public String confirmByOrder(@RequestParam("transactionId") String transactionId,@RequestParam("orderId") String orderID,HttpSession session) throws JsonProcessingException {
 		Integer orderPrice = coService.getORDByID(orderID).getOrderPrice();
-		
+		DiscountBean discount = (DiscountBean) session.getAttribute("discount");
+		Double price= Math.ceil((orderPrice*discount.getDisPercent()/100));
+		System.out.println(price);
+
 		String conUrl = "https://sandbox-api-pay.line.me/v3/payments/" + transactionId + "/confirm";
 		Citem citem = new Citem();
-		citem.setAmount(orderPrice);
+		citem.setAmount(price.intValue());
 		citem.setCurrency("TWD");
 
 		ObjectMapper om1 = new ObjectMapper();
@@ -179,8 +190,12 @@ public class LinePayTest {
 		System.out.println("--");
 		JsonNode jsonResponse = om1.readTree(repEntity.getBody());
 		String returnCode = jsonResponse.get("returnCode").asText();
+		System.out.println("123123");
+		System.out.println(jsonResponse);
 		if (returnCode.equals("0000") ){
-			coService.payOrder(orderID, "已付款", "LinePay");
+			System.out.println("你好");
+			coService.payOrder(orderID, "已付款", "LinePay",discount);
+			session.removeAttribute("discount");
 		}
 		return "forward:/courseorder/order.do";
 	}

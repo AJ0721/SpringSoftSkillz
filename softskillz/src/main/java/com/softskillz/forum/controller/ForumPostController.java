@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softskillz.forum.model.StatusEnum;
+import com.softskillz.forum.model.dto.AdminDto;
 import com.softskillz.forum.model.dto.ForumPostDto;
 import com.softskillz.forum.model.service.IForumPostService;
 
@@ -27,6 +28,14 @@ public class ForumPostController {
 	// insert
 	@PostMapping("/insert")
 	public ForumPostDto insertPost(@RequestBody ForumPostDto postDto) {
+		
+		// Hardcode the admin ID
+				if (postDto.getAdmin() == null) {
+				    AdminDto adminDto = new AdminDto();
+				    adminDto.setAdminId(1);  
+				    postDto.setAdmin(adminDto);  
+				    postDto.getAdmin().setAdminId(1);  
+				} 
 		return forumPostService.insertForumPost(postDto);
 
 	}

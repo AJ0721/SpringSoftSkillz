@@ -42,46 +42,20 @@ public class TeacherScheduleFrontController {
 	private CourseService courseService;
 
 	@Autowired
-	private TeacherService teacherService;
-
-	@Autowired
 	private TeacherScheduleService teacherScheduleService;
 
-	@PostMapping("/login")
-	public String login(@RequestParam String login, @RequestParam String password, HttpSession session) {
-		TeacherBean teacher = null;
-
-		// 使用帳號登入
-		teacher = teacherService.usernameCheckLogin(login, password);
-
-		// 如果帳號登入失敗，用信箱登入
-		if (teacher == null) {
-			teacher = teacherService.emailCheckLogin(login, password);
-		}
-
-		if (teacher != null) {
-			session.setAttribute("teacherData", teacher);
-			return "redirect:/teacherScheduleFront/schedule";
-		} else {
-			return "redirect:/teacherScheduleFront/login?error";
-		}
-	}
-
-	@GetMapping("/login")
-	public String showLoginPage() {
-		return "elearning/teacherSchedule/teacherLogin.html";
-	}
-
+	// 新增課程的頁面
 	@GetMapping("/teacherInsertCourse")
 	public String courseInsertPage(HttpSession session, Model model) {
 		TeacherBean teacher = (TeacherBean) session.getAttribute("teacherData");
 		if (teacher == null) {
-			return "redirect:/teacherScheduleFront/login"; // 如果session中沒有teacherData，重定向到登入頁面
+			return "redirect:/teacher-loginPage/teacher-login"; // 如果session中沒有teacherData，重定向到登入頁面
 		}
 		model.addAttribute("teacher", teacher);
 		return "elearning/teacherSchedule/courseInsert.jsp";
 	}
 
+	// 新增課程
 	@PostMapping("/addCourse")
 	@ResponseBody // 確保返回的是響應體而非視圖名
 	public ResponseEntity<?> addCourse(@ModelAttribute CourseBean courseBean, HttpSession session) {
@@ -99,6 +73,20 @@ public class TeacherScheduleFrontController {
 		}
 	}
 
+	// 查詢該教師所有課程的頁面
+	@GetMapping("/teacherSelectCourse")
+	public String courseSelectPage(HttpSession session, Model model) {
+		TeacherBean teacher = (TeacherBean) session.getAttribute("teacherData");
+		if (teacher == null) {
+			return "redirect:/teacher-loginPage/teacher-login"; // 如果session中沒有teacherData，重定向到登入頁面
+		}
+		List<CourseBean> courses = courseService.findCoursesByTeacherID(teacher.getTeacherId());
+		model.addAttribute("teacher", teacher);
+		model.addAttribute("courses", courses);
+		return "elearning/teacherSchedule/courseSelect.jsp";
+	}
+
+	// 新增教師行事曆的頁面
 	@GetMapping("/teacherInsertSchedule")
 	public String scheduleInsertPage(HttpSession session, Model model) {
 		TeacherBean teacher = (TeacherBean) session.getAttribute("teacherData");
@@ -109,6 +97,7 @@ public class TeacherScheduleFrontController {
 		return "elearning/teacherSchedule/scheduleInsert.jsp";
 	}
 
+	// 確認是否已有該筆教師行事曆
 	@GetMapping("/check")
 	@ResponseBody
 	public String checkDuplicate(@RequestParam("teacherID") int teacherID,
@@ -117,6 +106,7 @@ public class TeacherScheduleFrontController {
 		return String.valueOf(exists);
 	}
 
+	// 新增教師行事曆
 	@PostMapping("/addSchedule")
 	@ResponseBody // 標記為返回響應體
 	public ResponseEntity<?> addTeacherSchedule(@ModelAttribute TeacherScheduleBean teacherScheduleBean,
@@ -132,9 +122,6 @@ public class TeacherScheduleFrontController {
 				});
 			}
 			teacherScheduleBean.setTeacherID(teacher.getTeacherId());
-
-			// 打印teacherID檢查是否正確設置
-			System.out.println("Teacher ID: " + teacherScheduleBean.getTeacherID());
 
 			TeacherScheduleBean newTeacherSchedule = teacherScheduleService.insertTeacherSchedule(teacherScheduleBean);
 			if (newTeacherSchedule != null && newTeacherSchedule.getTeacherScheduleID() > 0) {
@@ -162,12 +149,13 @@ public class TeacherScheduleFrontController {
 		}
 	}
 
+	// 該教師所有教師行事曆的頁面
 	@GetMapping("/schedule")
 	public String showSchedule(HttpSession session, @RequestParam(value = "page", defaultValue = "1") int page,
 			Model model) {
 		TeacherBean teacher = (TeacherBean) session.getAttribute("teacherData");
 		if (teacher == null) {
-			return "redirect:/teacherScheduleFront/login";
+			return "redirect:/teacher-loginPage/teacher-login";
 		}
 
 		List<TeacherScheduleBean> teacherSchedules = teacherScheduleService

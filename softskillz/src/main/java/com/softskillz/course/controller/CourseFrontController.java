@@ -18,16 +18,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.service.TeacherService;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/courseFront")
@@ -42,9 +46,16 @@ public class CourseFrontController {
 	@Autowired
 	private TeacherScheduleService teacherScheduleService;
 
-	// 加載頁面
+	// 有學生登入後解開測試
 	@GetMapping("/selectAllPage")
-	public String loadCoursesPage() {
+	public String loadCoursesPage(HttpSession session, Model model) {
+		StudentBean student = (StudentBean) session.getAttribute("studentData");
+
+		String loggedInUser = (student != null) ? "student" : "guest";
+		model.addAttribute("loggedInUser", loggedInUser);
+		System.out.println("Logged in user: " + loggedInUser);
+
+		//return "redirect:/courseFront/selectAllPage?user=" + loggedInUser;
 		return "elearning/course/courseSelectPage.html";
 	}
 
@@ -64,10 +75,10 @@ public class CourseFrontController {
 	// 課程詳情頁面
 	@GetMapping("/courseDetail/{courseID}")
 	public String getCourseDetail(@PathVariable("courseID") Integer courseID,
-			@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+			@RequestParam(value = "page", defaultValue = "1") int page, HttpSession session, Model model) {
 		CourseBean course = courseService.findCourseById(courseID);
 		if (course == null) {
-			return "elearning/404.html"; // 錯誤頁面
+			return "elearning/404.html";
 		}
 		TeacherBean teacher = teacherService.findById(course.getTeacherID());
 		List<TeacherScheduleBean> teacherSchedules = teacherScheduleService
@@ -93,7 +104,7 @@ public class CourseFrontController {
 		Map<Integer, List<TeacherScheduleBean>> weeklySchedules = new HashMap<>();
 		Map<Integer, List<String>> weeklyFormattedDates = new HashMap<>();
 		int weekCounter = 0;
-		DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;// 週一開始
+		DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
 		List<TeacherScheduleBean> currentWeekSchedules = new ArrayList<>();
 		List<String> currentWeekDates = new ArrayList<>();
 
@@ -119,7 +130,8 @@ public class CourseFrontController {
 		// 分頁邏輯
 		int totalPages = weeklySchedules.size();
 		int currentPage = Math.min(page - 1, totalPages - 1);
-		if (currentPage < 0) currentPage = 0;
+		if (currentPage < 0)
+			currentPage = 0;
 
 		List<TeacherScheduleBean> paginatedSchedules = weeklySchedules.getOrDefault(currentPage, new ArrayList<>());
 		List<String> paginatedDates = weeklyFormattedDates.getOrDefault(currentPage, new ArrayList<>());
@@ -131,9 +143,17 @@ public class CourseFrontController {
 		model.addAttribute("teacher", teacher);
 		model.addAttribute("teacherSchedules", paginatedSchedules);
 		model.addAttribute("formattedDates", paginatedDates);
-		model.addAttribute("currentPage", currentPage + 1); // 分頁從1開始
+		model.addAttribute("currentPage", currentPage + 1);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("teacherPhotoPath", teacherPhotoPath);
+
+		StudentBean student = (StudentBean) session.getAttribute("studentData");
+
+		if (student != null) {
+			model.addAttribute("loggedInUser", "student");
+		} else {
+			model.addAttribute("loggedInUser", "guest");
+		}
 
 		return "elearning/course/courseDetailPage.jsp";
 	}

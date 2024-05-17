@@ -16,6 +16,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,6 +41,15 @@ public class CorderBean implements Serializable, Delayed {
 
 	@Column(name = "cancel_date")
 	private Date cancelDate;
+
+	@Column(name = "discount_id", columnDefinition = "")
+	private String disNo;
+
+	@Column(name = "discount_percent")
+	private Double disPercent;
+
+	@Column(name = "after_price")
+	private Integer afterPrice;
 
 	@Column(name = "payment_method")
 	private String method;
@@ -110,6 +120,30 @@ public class CorderBean implements Serializable, Delayed {
 		this.status = status;
 	}
 
+	public String getDisNo() {
+		return disNo;
+	}
+
+	public void setDisNo(String disNo) {
+		this.disNo = disNo;
+	}
+
+	public Double getDisPercent() {
+		return disPercent;
+	}
+
+	public void setDisPercent(Double disPercent) {
+		this.disPercent = disPercent;
+	}
+
+	public Integer getAfterPrice() {
+		return afterPrice;
+	}
+
+	public void setAfterPrice(Integer afterPrice) {
+		this.afterPrice = afterPrice;
+	}
+
 	public Set<ItemBean> getOrderItem() {
 		return orderItem;
 	}
@@ -118,11 +152,31 @@ public class CorderBean implements Serializable, Delayed {
 		this.orderItem = orderItem;
 	}
 
+	@PrePersist
+	public void prePersist() {
+
+		if (this.method == null) {
+			this.method = "";
+		}
+
+		if (this.disNo == null) {
+			this.disNo = "";
+		}
+		
+		if (this.disPercent == null) {
+			this.disPercent = 100.0;
+		}
+		if (this.afterPrice == null) {
+			this.afterPrice = orderPrice;
+		}
+	}
+
 	@Override
 	public String toString() {
-		return "OrderBean [orderID=" + orderID + ", studentID=" + studentID + ", orderPrice=" + orderPrice
-				+ ", orderDate=" + orderDate + ", method=" + method + ", status=" + status + ", orderItem=" + orderItem
-				+ "]";
+		return "CorderBean [orderID=" + orderID + ", studentID=" + studentID + ", orderPrice=" + orderPrice
+				+ ", orderDate=" + orderDate + ", cancelDate=" + cancelDate + ", disNo=" + disNo + ", disPercent="
+				+ disPercent + ", afterPrice=" + afterPrice + ", method=" + method + ", status=" + status
+				+ ", orderItem=" + orderItem + "]";
 	}
 
 	@Override
@@ -142,14 +196,16 @@ public class CorderBean implements Serializable, Delayed {
 
 	@Override
 	public int hashCode() {
-	    return Objects.hash(orderID);
+		return Objects.hash(orderID);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || getClass() != obj.getClass()) return false;
-	    CorderBean other = (CorderBean) obj;
-	    return Objects.equals(orderID, other.orderID);
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		CorderBean other = (CorderBean) obj;
+		return Objects.equals(orderID, other.orderID);
 	}
 }

@@ -197,10 +197,13 @@ order_date DATETIME2 NOT NULL,
 cancel_date DATETIME2 NOT NULL,
 payment_method VARCHAR(50)  NULL,
 order_status VARCHAR(50) NOT NULL,
+discount_id varchar(255),
+discount_percent DECIMAL(5,2) ,
+after_price int ,
 FOREIGN KEY (student_id) REFERENCES student(student_id),
 );
 
-
+select * from corder
 INSERT INTO corder VALUES('1','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
 INSERT INTO corder VALUES('2','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
 INSERT INTO corder VALUES('3','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
@@ -214,17 +217,20 @@ item_id INT IDENTITY(1,1) NOT NULL  PRIMARY KEY,
 order_id NVARCHAR(200) NOT NULL , 
 course_id INT NOT NULL,
 course_price INT NOT NULL,
---discount_price INT NOT NULL,
 qty INT NOT NULL,
+discount_percent DECIMAL(5,2) ,
+after_price INT,
+subtotal INT,
 item_status INT  NULL  DEFAULT 0,
 FOREIGN KEY (order_id) REFERENCES corder(order_id),
 FOREIGN KEY (course_id) REFERENCES course(course_id),
 );
 
+select * from corderitem
 --課程訂單折扣
 DROP TABLE IF EXISTS coursediscount
 CREATE TABLE coursediscount(
-discount_id INT PRIMARY KEY NOT NULL,
+discount_id varchar(255) PRIMARY KEY NOT NULL,
 discount_info VARCHAR(255) NOT NULL,
 discount_percent DECIMAL(5,2) NOT NULL CHECK(discount_percent>0 AND discount_percent <=100),
 start_date DATETIME2 NOT NULL,
@@ -539,13 +545,13 @@ INSERT INTO orders
 VALUES
     (1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
 	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
-	(3, 3, '2024-04-29 11:54:00', 600, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
+	(3, 3, '2024-04-29 11:54:00', 600, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3'),
 	(1, 1, '2024-03-20 08:00:00', 10000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
 	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
-	(3, 3, '2024-04-29 11:54:00', 900, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
+	(3, 3, '2024-04-29 11:54:00', 900, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3'),
 	(1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
 	(2, 2, '2024-01-17 15:28:00', 3000, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
-	(3, 3, '2024-04-29 11:54:00', 6000, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
+	(3, 3, '2024-04-29 11:54:00', 6000, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3'),
 	(1, 1, '2024-03-20 08:00:00', 1000, '支付成功', 'LINE PAY', '2024-03-25', '未出貨', '地址1'),
 	(2, 2, '2024-01-17 15:28:00', 2500, '支付成功', '綠界', '2024-01-20', '已出貨', '地址2'),
 	(3, 3, '2024-04-29 11:54:00', 7990, '支付成功', 'LINE PAY', '2024-04-30', '處理運送中', '地址3');
@@ -803,48 +809,14 @@ INSERT INTO forum_post (post_admin_id, thread_id, parent_post_id, post_content, 
 VALUES (1, 21, NULL, '歡迎大家查看更新後的資源，希望大家能喜歡。', 20, 2, 'VISIBLE');
 -- Child posts for parent post 1
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 3, NULL, '回文內容1 (s2)', 14, 0, 'VISIBLE');
+VALUES (2, 21, 13, '哇!推用心，管理員也太佛心了!', 14, 0, 'VISIBLE');
 
--- Second post for Thread ID 3
+-- Parent post 2
 INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 3, NULL, '回文內容2 (s2)', 17, 1, 'VISIBLE');
+VALUES (3, 21, 14, '真的，我的老師也有推薦我看這些，我覺得很實用!', 17, 0, 'VISIBLE');
 
--- Replies to the second post for Thread ID 3
-INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 3, 10, '回覆回文內容2 (s2)', 21, 1, 'VISIBLE');
 
-INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 3, 11, '二次回覆回文內容2 (s2)', 8, 0, 'VISIBLE');
 
--- First post for Thread ID 4
-INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 4, NULL, '回文內容1 (t2)', 13, 0, 'VISIBLE');
-
--- Second post for Thread ID 4
-INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 4, NULL, '回文內容2 (t2)', 16, 1, 'VISIBLE');
-
--- Replies to the second post for Thread ID 4
-INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 4, 14, '回覆回文內容2 (t2)', 19, 1, 'VISIBLE');
-
-INSERT INTO forum_post (post_teacher_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (2, 4, 15, '二次回覆回文內容2 (t2)', 6, 0, 'VISIBLE');
-
--- First post for Thread ID 5
-INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (3, 5, NULL, 'Post Content 1 (s3)', 11, 0, 'VISIBLE');
-
--- Second post for Thread ID 5
-INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (3, 5, NULL, 'Post Content 2 (s3)', 20, 1, 'VISIBLE');
-
--- Replies to the second post for Thread ID 5
-INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (3, 5, 18, 'Reply 1 to Post Content 2 (s3)', 23, 1, 'VISIBLE');
-
-INSERT INTO forum_post (post_student_id, thread_id, parent_post_id, post_content, post_upvote_count, post_response_count, post_status) 
-VALUES (3, 5, 19, 'Reply to Reply 1 to Post Content 2 (s3)', 10, 0, 'VISIBLE');
 
 
 SELECT* FROM forum_post;

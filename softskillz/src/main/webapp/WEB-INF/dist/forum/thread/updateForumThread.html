@@ -26,8 +26,9 @@
 
             //BUTTON PAGE TRANSFER
             $('#cancel').click(function (e) {
-
-                window.location.href = '/forum/adminhome#nav-thread';
+                window.history.go(-1);
+                return false;
+                // window.location.href = '/forum/adminhome#nav-thread';
             });
 
 

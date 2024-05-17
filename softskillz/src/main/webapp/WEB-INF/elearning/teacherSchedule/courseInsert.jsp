@@ -3,8 +3,6 @@ pageEncoding="UTF-8"%>
 <%@ page import="java.time.LocalDate"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.time.format.DateTimeFormatter"%>
-<%@ page
-	import="com.softskillz.teacherschedule.model.TeacherScheduleBean"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,7 +104,8 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
             >
             <div class="dropdown-menu fade-down m-0">
               <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
-              <a href="testimonial.html" class="dropdown-item">新增行事曆</a>
+              <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">查詢課程</a>
+              <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
             </div>
           </div>
           <a href="about.html" class="nav-item nav-link">About</a>

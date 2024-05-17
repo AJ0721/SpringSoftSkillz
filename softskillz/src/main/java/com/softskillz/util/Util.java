@@ -65,12 +65,32 @@ public class Util {
 		}
 		return null;
 	}
-	
+
 	public static String getOrderID(Long orderTime) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String formattedTime = sdf.format(orderTime);
 		String orderID = "order" + formattedTime;
-		
+
 		return orderID;
+	}
+
+	public static Double getDiscountRate(Integer quantity) {
+		Double discountRate = null;
+		switch (quantity) {
+		case 1:
+			discountRate = 100.0;
+			break;
+		case 5:
+			discountRate = 95.0;
+			break;
+		case 10:
+			discountRate = 90.0;
+			break;
+		case 20:
+			discountRate = 85.0;
+			break;
+
+		}
+		return discountRate;
 	}
 }

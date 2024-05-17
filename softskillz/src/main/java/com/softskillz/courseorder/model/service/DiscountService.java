@@ -12,15 +12,15 @@ public interface DiscountService {
 	
 	DiscountBean addDiscount(DiscountBean discountBean);
 	
-	void deleteDiscount(Integer disID);
+	void deleteDiscount(String disID);
 	
 	DiscountBean updateDiscount(DiscountBean discountBean);
 	
-	Map<Integer, Double> getDiscount();
+	Map<String, Double> getDiscount();
 	
 	List<DiscountBean> allDiscount();
 	
 	Page<DiscountBean> getDiscountPage(Pageable pageable);
 	
-	DiscountBean getByID(Integer disID);
+	DiscountBean getByID(String disID);
 }

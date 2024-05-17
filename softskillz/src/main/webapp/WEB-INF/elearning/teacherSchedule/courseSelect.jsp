@@ -1,8 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page
+	import="com.softskillz.course.model.CourseBean"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>SoftSkillz 登入後首頁（老師）</title>
+    <title>SoftSkillz 教師查詢課程
+    </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -40,6 +49,13 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet" />
+
+    <!-- Datatable -->
+    <link rel="stylesheet" href="/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="/assets/compiled/css/table-datatable-jquery.css"/>
+
+    <!-- Sweet alert -->
+    <link rel="stylesheet" href="/assets/extensions/sweetalert2/sweetalert2.min.css"/>
   </head>
 
   <body>
@@ -80,9 +96,22 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a href="/softskillz/fhomepage" class="nav-item nav-link active"
+          <a href="/teacherScheduleFront/schedule" class="nav-item nav-link active"
             >首頁</a
           >
+          <div class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              >課程</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
+              <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
+              <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
+            </div>
+          </div>
           <a href="about.html" class="nav-item nav-link">About</a>
 		      <a href="#" class="nav-item nav-link">個人中心</a>
           <a href="#" class="nav-item nav-link">論壇</a>
@@ -109,22 +138,50 @@
     </nav>
     <!-- Navbar End -->
 
-    <!-- 登入測試 -->
-    <div class="container">
-      <h2 class="mt-5">教師登入
-      </h2>
-      <form action="/teacherScheduleFront/login" method="post">
-          <div class="mb-3">
-              <label for="login" class="form-label">帳號名或是信箱</label>
-              <input type="text" class="form-control" id="login" name="login" required>
-          </div>
-          <div class="mb-3">
-              <label for="password" class="form-label">密碼</label>
-              <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary">登入</button>
-      </form>
-  </div>
+    <!-- 課程 -->
+    <div class="container-xxl py-3">
+        <div class="container">
+            <h2 class="display-8" id="courseSchedule">課程</h2>
+            <table class="table" id="courseTable">
+                <thead>
+                    <tr>
+                        <th>課程編號</th>
+                        <th>課程類別</th>
+                        <th>課程名稱</th>
+                        <th>課程介紹</th>
+                        <th>課程單價</th>
+                        <th>刪除</th>
+                        <th>修改</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    List<CourseBean> courses = (List<CourseBean>) request.getAttribute("courses");
+                    for (CourseBean course : courses) {
+                    %>
+                    <tr>
+                        <td><%= course.getCourseID().toString() %></td>
+                        <td><%= course.getCourseCategory() %></td>
+                        <td><%= course.getCourseName() %></td>
+                        <td><%= course.getCourseInfo() %></td>
+                        <td><%= course.getCoursePrice() %></td>
+                        <td>
+                            <button type="button" class="btn btn-danger deleteCourse" data-course-id="<%= course.getCourseID() %>">
+                                刪除
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary editCourse" data-course-id="<%= course.getCourseID() %>">修改</button>
+                        </td>
+                    </tr>
+                    <%
+                    }
+                    %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 
     <!-- Footer Start -->
     <div
@@ -271,5 +328,136 @@
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
+
+     <!-- sweet alert -->
+     <script src="/assets/static/js/pages/sweetalert2.js"></script>
+     <script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
+
+     <!-- DataTables -->
+    <script src="/assets/extensions/jquery/jquery.min.js"></script>
+    <script src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/assets/static/js/pages/datatables.js"></script>
+
+     <script>
+        $(document).on('click', '.deleteCourse', function () {
+      var courseID = $(this).data('course-id'); // 從按鈕獲取課程ID
+  
+      Swal.fire({
+          title: '確定要刪除這門課程嗎？',
+          text: '刪除後將無法恢復！',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '是的, 刪除它！',
+          cancelButtonText: '取消'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              $.ajax({
+                  url: "${pageContext.request.contextPath}/course/deleted",
+                  type: 'POST',
+                  data: { courseID: courseID },
+                  success: function (response) {
+                      Swal.fire(
+                          '刪除成功!',
+                          '課程已經被刪除。',
+                          'success'
+                      ).then((result) => {
+                          if (result.value) {
+                              window.location.reload(); // 刷新頁面
+                          }
+                      });
+                  },
+                  error: function () {
+                      Swal.fire(
+                          '錯誤!',
+                          '課程刪除失敗。',
+                          'error'
+                      );
+                  }
+              });
+          }
+      });
+  });
+  
+      // 處理點擊修改按鈕事件
+      document.addEventListener('click', async function(event) {
+      if (event.target.classList.contains('editCourse')) {
+          const tr = event.target.closest('tr');
+          const cells = tr.children;
+  
+          for (let i = 1; i < cells.length - 2; i++) {
+              const text = cells[i].innerText;
+              const htmlElement = `<input type="text" class="form-control" style="width: 100%;" />`
+              cells[i].innerHTML = htmlElement;
+              cells[i].querySelector("input").value = text;
+          }
+  
+          event.target.innerText = '保存';
+          event.target.classList.remove('editCourse');
+          event.target.classList.add('saveCourse');
+      } else if (event.target.classList.contains('saveCourse')) {
+          const result = await Swal.fire({
+              title: '確定要更新這門課程嗎？',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '更新',
+              cancelButtonText: '取消'
+          });
+          
+              if (!result.isConfirmed) {
+                return;
+              }
+                  const tr = event.target.closest('tr');
+                  const courseId = event.target.dataset.courseId;
+                  const updatedData = {
+                      courseID: courseId,
+                      courseCategory: tr.cells[1].querySelector('input').value,
+                      courseName: tr.cells[2].querySelector('input').value,
+                      courseInfo: tr.cells[3].querySelector('input').value,
+                      coursePrice: parseInt(tr.cells[4].querySelector('input').value, 10)
+                  };
+  
+                  console.log("修改資料：", updatedData);
+  
+                  const response = await fetch('/course/update', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(updatedData)  // 確保將對象轉換為 JSON 字符串
+                  })
+                  console.log(response)
+  
+                  if (response && response.ok) {
+                    Swal.fire('更新成功!', '', 'success').then(() => {
+                      window.location.reload();
+                    });
+                  } else {
+                    Swal.fire('更新失敗!', JSON.stringify(response.text()), 'error'); 
+                  }
+                }
+            });
+  
+  $(document).ready(function() {
+      // 初始化DataTable
+      $('#courseTable').DataTable({
+          "language": {
+              "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"  // 使用中文介面
+          },
+          "paging": true,    // 啟用表格分頁
+          "lengthChange": true,  // 允許用戶改變分頁設置
+          "searching": true,  // 啟用快速搜索
+          "ordering": true,  // 啟用排序
+          "info": true,      // 顯示頁腳信息
+          "autoWidth": false,  // 禁用自動調整列寬
+          "responsive": true  // 啟用響應式布局
+      });
+  });
+      </script>
+
   </body>
 </html>

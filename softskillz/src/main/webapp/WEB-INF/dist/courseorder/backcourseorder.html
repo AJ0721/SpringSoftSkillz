@@ -21,7 +21,7 @@
 <body>
   <script src="/assets/static/js/initTheme.js"></script>
   <div id="app">
-    <script src="/courseorder/js/backsidebar.js"></script>
+    <script src="/dist/courseorder/js/backsidebar.js"></script>
   </div>
 
   <!-- 中間內容部分 -->
@@ -37,7 +37,7 @@
     </div>
     <div class="page-content">
       <section class="row">
-        <div class="col-12 col-lg-9">
+        <div class="col-12 col-lg-12">
           <!-- 卡片中放你的功能內容 -->
           <div class="card col-12" style="min-height:900px;">
             <h3 class=" card-header">課程訂單</h3>
@@ -65,9 +65,12 @@
                     <tr>
                       <th class="text-center">訂單編號</th>
                       <th class="text-center">購買人</th>
-                      <th class="text-center">總金額</th>
                       <th class="text-center">購買時間</th>
                       <th class="text-center">付款期限</th>
+                      <th class="text-center">原始金額</th>
+                      <th class="text-center">優惠券</th>
+                      <th class="text-center">折扣</th>
+                      <th class="text-center">折後金額</th>
                       <th class="text-center">付款方式</th>
                       <th class="text-center">訂單狀態</th>
                       <th class="text-center">詳細資料</th>
@@ -115,12 +118,13 @@
               <div class="modal-body table-responsive">
                 <table class="table mb-0">
                   <thead>
-                    <th class="text-center">訂單編號</th>
                     <th class="text-center">教師名稱</th>
                     <th class="text-center">課程名稱</th>
                     <th class="text-center">課程類別</th>
                     <th class="text-center">課程單價</th>
                     <th class="text-center">購買堂數</th>
+                    <th class="text-center">折扣</th>
+                    <th class="text-center">折後單價</th>
                     <th class="text-center">小記</th>
                     <th class="text-center">使用狀態</th>
                   </thead>
@@ -143,7 +147,7 @@
 
 
         <!-- 右方第一個卡片列表 -->
-        <div class="col-12 col-lg-3">
+        <!-- <div class="col-12 col-lg-2">
           <div class="card">
             <div class="card-body py-4 px-4">
               <div class="d-flex align-items-center">
@@ -156,9 +160,9 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!-- 右方第二個Recent Messages -->
-          <div class="card">
+          </div> -->
+        <!-- 右方第二個Recent Messages -->
+        <!-- <div class="card">
             <div class="card-header">
               <h4>Recent Messages</h4>
             </div>
@@ -196,19 +200,16 @@
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
+          </div> -->
 
-    <footer>
-      <div class="footer clearfix mb-0 text-muted">
-        <div class="float-start">
-          <p>2024 &copy; Soft Skillz</p>
-        </div>
-      </div>
-    </footer>
-  </div>
+        <footer>
+          <div class="footer clearfix mb-0 text-muted">
+            <div class="float-start">
+              <p>2024 &copy; Soft Skillz</p>
+            </div>
+          </div>
+        </footer>
+    </div>
   </div>
 
   <script src="/assets/static/js/components/dark.js"></script>

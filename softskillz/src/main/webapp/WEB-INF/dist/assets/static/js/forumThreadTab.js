@@ -40,7 +40,7 @@ window.createThreadHtml = function (thread) {
             </select>
         </td>
         <td id="updateThread" class="align-middle text-center">
-        <button class="btn btn-sm btn-primary">
+        <button class="edit btn btn-sm btn-primary">
         <i class="bi bi-pencil align-middle">
         </i></button></td>
     </tr>
@@ -129,21 +129,61 @@ $(document).ready(function () {
 
                 console.log(threadIds); //debug ok
 
+
+                fetch('/forum/thread/delete-all', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(threadIds)
+                })
+                    .then(
+                        response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            return response.text();
+                        })
+                    .then(data => {
+                        console.log(data);
+                        Swal.fire('刪除成功', '', 'success');
+                        $('#threadList').empty();
+                        fetchThreads()
+                            .then(function (threads) {
+                                displayThreadsTab(threads);
+                            })
+                            .catch(function (error) {
+                                console.error("Error fetching threads:", error);
+                                $('#threadList').html('<tr><td colspan="9">資料載入失敗，請重新整理。</td></tr>');
+                            });
+                    }).catch(
+                        error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                            Swal.fire('刪除失敗', '請檢查連線並重新整理', 'error');
+                        }
+                    );
+
+
+
                 $.ajax({
                     url: '/forum/thread/delete-all',
                     type: 'DELETE',
                     data: JSON.stringify(threadIds),
                     contentType: 'application/json',
                     success: function (response) {
+
+
                         console.log(response);
                         Swal.fire('刪除成功', '', 'success');
                         $('#threadList').empty();
-                        fetchThreads().done(function (threads) {
-                            displayThreadsTab(threads);
-                        }).fail(function (error) {
-                            console.error("Error fetching threads:", error);
-                            $('#threadList').html('<tr><td colspan="9">資料載入失敗，請重新整理。</td></tr>');
-                        });
+                        fetchThreads()
+                            .then(function (threads) {
+                                displayThreadsTab(threads);
+                            })
+                            .catch(function (error) {
+                                console.error("Error fetching threads:", error);
+                                $('#threadList').html('<tr><td colspan="9">資料載入失敗，請重新整理。</td></tr>');
+                            });
                     },
                     error: function (xhr, status, error) {
                         console.log(status + error + xhr.responseText);
@@ -181,19 +221,6 @@ $(document).ready(function () {
     }
     );
 
-    //ACTION:DISPLAY CATEGORY IN TAB WHEN LOAD
-    $('#nav-threads-tab').click(function (e) {
-        e.preventDefault();
-
-        fetchThreads().done(function (threads) {
-            displayThreadsTab(threads);
-        }).fail(function (error) {
-            console.error("Error fetching threads:", error);
-            $('#threadList').html('<tr><td colspan="9">載入資料失敗，請重新整理</td></tr>');
-        });
-
-
-    });
 
 
     //UPDATE STATUS

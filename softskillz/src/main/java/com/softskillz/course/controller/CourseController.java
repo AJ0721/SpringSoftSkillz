@@ -40,7 +40,7 @@ public class CourseController {
 
 	// 處理添加課程的請求
 	@PostMapping("/add")
-	@ResponseBody // 確保返回的是響應體而非視圖名
+	@ResponseBody // 確保返回的是響應體
 	public ResponseEntity<?> addCourse(@ModelAttribute CourseBean courseBean) {
 		CourseBean newCourse = courseService.insertCourse(courseBean);
 		if (newCourse != null && newCourse.getCourseID() != null) {
@@ -89,5 +89,4 @@ public class CourseController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("課程刪除失敗");
 		}
 	}
-
 }

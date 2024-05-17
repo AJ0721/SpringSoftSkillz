@@ -2,6 +2,8 @@ package com.softskillz.courseorder.model.bean;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+
 public class ItemInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -12,21 +14,28 @@ public class ItemInfo implements Serializable {
 	private String courseCategory;
 	private Integer coursePrice;
 	private Integer qty;
+	private Double disPercent;
+	private Integer disPrice;
+	private Integer subtotal;
 	private Integer status;
 
 	public ItemInfo() {
 		super();
 	}
 
-	public ItemInfo(String orderID, String teacherName, String courseName, String courseCategory, Integer price,
-			Integer qty, Integer status) {
+	public ItemInfo(String orderID, String teacherName, Integer courseID, String courseName, String courseCategory,
+			Integer coursePrice, Integer qty, Double disPercent, Integer disPrice, Integer subtotal, Integer status) {
 		super();
 		this.orderID = orderID;
 		this.teacherName = teacherName;
+		this.courseID = courseID;
 		this.courseName = courseName;
 		this.courseCategory = courseCategory;
-		this.coursePrice = price;
+		this.coursePrice = coursePrice;
 		this.qty = qty;
+		this.disPercent = disPercent;
+		this.disPrice = disPrice;
+		this.subtotal = subtotal;
 		this.status = status;
 	}
 
@@ -76,6 +85,30 @@ public class ItemInfo implements Serializable {
 
 	public void setQty(Integer qty) {
 		this.qty = qty;
+	}
+
+	public Double getDisPercent() {
+		return disPercent;
+	}
+
+	public void setDisPercent(Double disPercent) {
+		this.disPercent = disPercent;
+	}
+
+	public Integer getDisPrice() {
+		return disPrice;
+	}
+
+	public void setDisPrice(Integer disPrice) {
+		this.disPrice = disPrice;
+	}
+
+	public Integer getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(Integer subtotal) {
+		this.subtotal = subtotal;
 	}
 
 	public Integer getStatus() {

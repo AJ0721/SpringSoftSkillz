@@ -270,12 +270,14 @@ $(document).ready(function () {
                                                 console.log(data);
                                                 Swal.fire('刪除成功', '', 'success');
                                                 $('#postList').empty();
-                                                fetchPosts().done(function (posts) {
-                                                        displayPostsTab(posts);
-                                                }).fail(function (error) {
-                                                        console.error("Error fetching posts:", error);
-                                                        $('#postList').html('<tr><td colspan="10">資料載入失敗，請重新整理。</td></tr>');
-                                                });
+                                                fetchPosts()
+                                                        .then(function (posts) {
+                                                                displayPostsTab(posts);
+                                                        })
+                                                        .catch(function (error) {
+                                                                console.error("Error fetching posts:", error);
+                                                                $('#postList').html('<tr><td colspan="10">資料載入失敗，請重新整理。</td></tr>');
+                                                        });
                                         })
                                         .catch(error => {
                                                 console.error('There was a problem with the fetch operation:', error);

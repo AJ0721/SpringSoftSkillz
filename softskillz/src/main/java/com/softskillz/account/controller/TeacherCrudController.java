@@ -47,7 +47,7 @@ public class TeacherCrudController {
 
 		if (teacherData != null) {
 			session.setAttribute("teacherData", teacherData);
-			return "/dist/index.html";
+			return "redirect:/teacherScheduleFront/schedule";
 		} else {
 			// redirect只能叫controller，其他時候直接輸入網址
 			m.addAttribute("loginMsg", "錯誤的帳號或密碼");
@@ -96,7 +96,7 @@ public class TeacherCrudController {
 		System.out.println(teachers);
 		m.addAttribute("teachers", teachers);
 
-		return "/account/teacher/teacherCrudPage.jsp";
+		return "/dist/account/teacher/teacherCrudPage.jsp";
 	}
 	
 	// 刪除

@@ -20,7 +20,6 @@ import com.softskillz.courseorder.model.bean.test.Packages;
 import com.softskillz.courseorder.model.bean.test.Products;
 import com.softskillz.courseorder.model.bean.test.RedirectUrls;
 
-
 public class LineUtil {
 
 	public static String getOrderID(Long orderTime) {
@@ -60,7 +59,7 @@ public class LineUtil {
 				HmacUtils.getInitializedMac(HmacAlgorithms.HMAC_SHA_256, keys.getBytes()).doFinal(data.getBytes()));
 	}
 
-	public static HttpHeaders getHeaders(String channelId ,String nonce,String signature) {
+	public static HttpHeaders getHeaders(String channelId, String nonce, String signature) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.set("X-LINE-ChannelId", channelId);
@@ -70,7 +69,7 @@ public class LineUtil {
 	}
 
 	public static Item getItem(Map<Integer, CartItem> cart, String orderID, Integer total) {
-		System.out.println("total: "+total);
+		System.out.println("total: " + total);
 		RedirectUrls redirectUrls = new RedirectUrls();
 		redirectUrls.setCancelUrl("");
 		redirectUrls.setConfirmUrl("http://localhost:8080/LinePayCon");
@@ -84,10 +83,10 @@ public class LineUtil {
 			products.setQuantity(entry.getValue().getQuantity());
 			products.setPrice(entry.getValue().getCourse().getPrice());
 			productList.add(products);
-			subtotal += entry.getValue().getCourse().getPrice()*entry.getValue().getQuantity();
+			subtotal += entry.getValue().getCourse().getPrice() * entry.getValue().getQuantity();
 			System.out.println(entry.getValue().getCourse().getPrice());
 		}
-		System.out.println("subtotal: "+subtotal);
+		System.out.println("subtotal: " + subtotal);
 		Packages packages = new Packages();
 		packages.setId("1");
 		packages.setAmount(subtotal);
@@ -104,8 +103,8 @@ public class LineUtil {
 
 		return item;
 	}
-	
-	public static Item getItemByOrder(List<ItemInfo> orderItem) {
+
+	public static Item getItemByOrder(List<ItemInfo> orderItem, Double discount) {
 		RedirectUrls redirectUrls = new RedirectUrls();
 		redirectUrls.setCancelUrl("");
 		redirectUrls.setConfirmUrl("http://localhost:8080/LinePayConByOrder");
@@ -113,15 +112,18 @@ public class LineUtil {
 		List<Products> productList = new ArrayList<Products>();
 		Integer subtotal = 0;
 		for (ItemInfo i : orderItem) {
+			Double price = (i.getDisPrice() * discount);
+			Double dprice = Math.ceil(price / 100);
+			Integer afterPrice = dprice.intValue();
 			Products products = new Products();
 			products.setId(i.getCourseID().toString());
 			products.setName(i.getCourseName());
 			products.setQuantity(i.getQty());
-			products.setPrice(i.getCoursePrice());
+			products.setPrice(afterPrice);
 			productList.add(products);
-			subtotal += (i.getCoursePrice()*i.getQty());
+			subtotal += (afterPrice* i.getQty());
 		}
-		System.out.println("subtotal: "+subtotal);
+		System.out.println("subtotal: " + subtotal);
 		Packages packages = new Packages();
 		packages.setId("1");
 		packages.setAmount(subtotal);

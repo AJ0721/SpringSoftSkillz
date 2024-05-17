@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.softskillz.courseorder.model.bean.CartItem;
 import com.softskillz.courseorder.model.bean.CorderBean;
+import com.softskillz.courseorder.model.bean.DiscountBean;
 import com.softskillz.courseorder.model.bean.ItemInfo;
 import com.softskillz.courseorder.model.bean.Order;
 
@@ -31,9 +32,14 @@ public interface CourseOrderService {
 
 	Integer adminUpdateOrder(String orderID, String status);
 
-	Integer payOrder(String orderID, String status, String method);
+	CorderBean payOrder(String orderID, String status, String method,DiscountBean discount);
 
 	Page<Order> getPageOrder(Pageable pageable);
 
 	Page<Order> getPageOrderByDate(Pageable pageable, String date1String, String date2String);
+	
+	Page<Order> getPageByStudentID(Pageable pageable, Integer studentID,String status);	
+	
+	Page<Order> getPageByStudentIDAndDate(Pageable pageable, String date1String, String date2String, Integer studentID,String status);	
+	
 }

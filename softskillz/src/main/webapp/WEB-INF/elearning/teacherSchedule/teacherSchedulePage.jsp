@@ -102,10 +102,11 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
               href="#"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
-              >開課</a
+              >課程</a
             >
             <div class="dropdown-menu fade-down m-0">
               <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
+              <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
               <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
             </div>
           </div>

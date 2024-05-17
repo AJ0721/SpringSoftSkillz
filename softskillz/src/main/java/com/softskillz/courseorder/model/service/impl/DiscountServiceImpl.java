@@ -18,7 +18,7 @@ import com.softskillz.courseorder.model.service.DiscountService;
 @Service
 public class DiscountServiceImpl implements DiscountService {
 
-	private Map<Integer, Double> discountMap;
+	private Map<String, Double> discountMap;
 
 	@Autowired
 	private DiscountRepository disRepo;
@@ -31,7 +31,7 @@ public class DiscountServiceImpl implements DiscountService {
 
 	@Override
 	@CacheEvict(value = "discountMap", key = "#disID")
-	public void deleteDiscount(Integer disID) {
+	public void deleteDiscount(String disID) {
 		disRepo.deleteById(disID);
 	}
 
@@ -43,14 +43,14 @@ public class DiscountServiceImpl implements DiscountService {
 
 	@Override
 	@Cacheable("discountMap")
-	public Map<Integer, Double> getDiscount() {
+	public Map<String, Double> getDiscount() {
 
 		List<DiscountBean> discountList = disRepo.findAll();
 		if (discountMap == null) {
-			discountMap = new HashMap<Integer, Double>();
+			discountMap = new HashMap<String, Double>();
 		}
 		for (DiscountBean d : discountList) {
-			discountMap.put(d.getDisID(), d.getDisPercent());
+			discountMap.put(d.getDisInfo(), d.getDisPercent());
 		}
 
 		return discountMap;
@@ -68,7 +68,7 @@ public class DiscountServiceImpl implements DiscountService {
 	}
 
 	@Override
-	public DiscountBean getByID(Integer disID) {
+	public DiscountBean getByID(String disID) {
 
 		DiscountBean discountBean = disRepo.findById(disID).get();
 		return discountBean;
