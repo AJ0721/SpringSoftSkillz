@@ -35,33 +35,31 @@ public class AdminCrudController {
 	// 網址頁登入一定要用get方法
 	@GetMapping("/admin-loginPage")
 	public String processLoginAction() {
-		System.out.println("aaaa");
 		return "/dist/account/admin/AdminLoginBack.jsp";
 	}
-	
+
 	// 登出功能
 	@PostMapping("/admin-logout")
 	public String logoutAction(HttpServletRequest request) {
-	    HttpSession session = request.getSession(false); // 獲取當前會話，不創建新會話
-	    if (session != null) {
-	        session.invalidate(); // 使會話失效
-	    }
-	    return "redirect:/admin/admin-loginPage"; // 重定向到登入頁面
+		HttpSession session = request.getSession(false); // 獲取當前會話，不創建新會話
+		if (session != null) {
+			session.invalidate(); // 使會話失效
+		}
+		return "redirect:/admin/admin-loginPage"; // 重定向到登入頁面
 	}
 
-	// post沒辦法在網址頁輸入
+	// 管理員登入，post沒辦法在網址頁輸入
 	@PostMapping("/admin-login")
 	public String loginAction(@RequestParam("adminAccount") String adminAccount,
-			@RequestParam("adminPassword") String adminPassword, Model model) {
+			@RequestParam("adminPassword") String adminPassword, HttpSession session, Model model) {
 
-		boolean result = adminService.checkLogin(new AdminBean(adminAccount, adminPassword));
-		if (result) {
-			model.addAttribute("adminAccount", adminAccount);
+		AdminBean adminData = adminService.checkLogin(new AdminBean(adminAccount, adminPassword));
+
+		if (adminData != null) {
+			session.setAttribute("adminData", adminData);
 			return "/dist/index.html"; // 驗證成功，重定向到首頁
 		} else {
-
 			model.addAttribute("errMsg", "請輸入正確的帳號密碼");
-
 		}
 		return "/dist/account/admin/AdminLoginBack.jsp"; // 錯誤，重新返回登入頁面
 	}

@@ -14,42 +14,42 @@ public class OrderItemService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    // 創建新訂單項目
+    // 創建一個新的訂單項目
     public OrderItem createOrderItem(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
 
-    // 讀取所有訂單項目
+    // 讀取全部訂單項目
     public List<OrderItem> findAllOrderItems() {
         return orderItemRepository.findAll();
     }
 
-    // 根據訂單ID 讀取訂單項目並返回 List<OrderItem>
-//    public List<OrderItem> findOrderItemsByOrderId(Integer orderId) {
-//        return orderItemRepository.findByOrder_id(orderId);
-//    }
+    // Read order items by order ID and return a List<OrderItem>
+    public List<OrderItem> findOrderItemsByOrderId(Integer orderId) {
+        return orderItemRepository.findByOrderId(orderId);
+    }
 
-    // 根據訂單項目ID 讀取單個訂單項目
+    // Read a single order item by its ID
     public OrderItem findOrderItemById(Integer id) {
         Optional<OrderItem> orderItem = orderItemRepository.findById(id);
         return orderItem.orElse(null);
     }
 
-    // 更新訂單項目
+    //根據ID更新訂單項目
     public OrderItem updateOrderItem(Integer id, OrderItem orderItemDetails) {
         OrderItem orderItem = findOrderItemById(id);
         if (orderItem != null) {
-            orderItem.setOrder_id(orderItemDetails.getOrder_id());
-            orderItem.setProduct_id(orderItemDetails.getProduct_id());
+            orderItem.setOrderId(orderItemDetails.getOrderId());
+            orderItem.setProductId(orderItemDetails.getProductId());
             orderItem.setQuantity(orderItemDetails.getQuantity());
-            orderItem.setProduct_price(orderItemDetails.getProduct_price());
-            orderItem.setSub_total(orderItemDetails.getSub_total());
+            orderItem.setProductPrice(orderItemDetails.getProductPrice());
+            orderItem.setSubTotal(orderItemDetails.getSubTotal());
             return orderItemRepository.save(orderItem);
         }
         return null;
     }
 
-    // 刪除訂單項目
+    //刪除訂單項目
     public void deleteOrderItem(Integer id) {
         orderItemRepository.deleteById(id);
     }

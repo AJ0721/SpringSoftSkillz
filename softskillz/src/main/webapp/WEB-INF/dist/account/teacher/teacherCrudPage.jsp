@@ -21,7 +21,7 @@ td.dataTables_empty {
 </style>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SoftSkillz - 老師帳號管理</title>
+<title>SoftSkillz - 教師帳號管理</title>
 
 <link rel="shortcut icon" href="/assets/compiled/svg/favicon.svg"
 	type="image/x-icon" />
@@ -294,21 +294,21 @@ td.dataTables_empty {
 			</header>
 
 			<div class="page-heading">
-				<h3>SoftSkillz - 老師帳號</h3>
+				<h3>SoftSkillz - 教師帳號</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
 					<div class="col-12">
 						<!-- 卡片中放你的功能內容 -->
 						<div class="card" align="center">
-							<h3 class="card-header">老師帳號管理</h3>
+							<h3 class="card-header">教師帳號管理</h3>
 							<div class="card-body">
 								<div>
 									<table class="" id="SearchTable">
 										<tr>
 											<td>
 												<form method="get" action="TeacherSelectOne">
-													老師ID搜尋：<input type="text" name="teacherId"></input>&nbsp;&nbsp;
+													ID搜尋：<input type="text" name="teacherId"></input>&nbsp;&nbsp;
 													<input type="submit" class="btn btn-primary" value="搜尋"></input>
 												</form>
 											</td>

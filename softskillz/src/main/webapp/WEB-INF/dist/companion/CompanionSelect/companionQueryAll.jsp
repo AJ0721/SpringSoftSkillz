@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%>
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <!DOCTYPE html>
     <html lang="en">
@@ -54,9 +54,23 @@ white-space: normal;
         #showproduct tr td {
           vertical-align: middle;
         }
+        
+        tr:nth-child(odd) {
+  		background-color: #FFF2F2;
+		}
+		
+		#ptitle{
+		background-color: white;
+		}
+		
+		/* 鼠標懸停時的背景色 */
+		tr:hover {
+		background-color: #D2E9FF;
+		}
+        
       </style>
       
-      
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
 
     <body>
@@ -277,14 +291,12 @@ white-space: normal;
 						
 						<div align="center" class="container">
 						
-                      <table id="showpage" style="text-align: center;">
                         <div class="row justify-content-start">
-                        <div class="col-4">
-                          <td id="totalPagesCell" colspan="2">總共 ${totalPages} 頁 &nbsp 總共 ${totalElements} 筆資料</td>
+                        <div class="col-4 mt-2">
+                          總共 ${totalPages} 頁 &nbsp 總共 ${totalElements} 筆資料
                           </div>
                           
                           <div class="col-4">
-                          <td style="text-align: center">
                             <button class="btn btn-outline-primary" id="prevPage" type="button"
                               onclick="changePage(-1)">上一頁</button>
                             <c:forEach var="i" begin="1" end="${totalPages}" step="1">
@@ -293,21 +305,20 @@ white-space: normal;
                             </c:forEach>
                             <button class="btn btn-outline-primary" id="nextPage" type="button" style="display: inline-block;"
                               onclick="changePage(1)">下一頁</button>
-                          </td>
                         </div>
                         </div>
-                      </table>
                       </div>
                       
-                      <div align="center" class="m-5">
-                        <form method="get" action="../GetAllCompanions">
-                          <button class="selectAll btn btn-primary" type="submit">顯示全部資料</button>
-                        </form>
-                        <div class="mt-3"><a href="/companionIndex" style="text-decoration: none;"><button
-                              class="index btn btn-primary">回首頁</button></a></div>
-                      </div>
-<!--                       <script src="https://kit.fontawesome.com/0ce6c89b8b.js" crossorigin="anonymous"></script> -->
-<!--                       <button><i class="fa-solid fa-house"></i></button> -->
+<!--                       <div align="center" class="m-5"> -->
+<!--                         <form method="get" action="../GetAllCompanions"> -->
+<!--                           <button class="selectAll btn btn-primary" type="submit">顯示全部資料</button> -->
+<!--                         </form> -->
+                        <div align="center" class="mt-5">
+                        
+                        <a href="/companionIndex" style="text-decoration: none;">
+                        <button class="index btn btn-primary" style="background-color:#7D7DFF; border:0px">回首頁</button></a>
+                        </div>
+<!--                       </div> -->
                       <!-- 我的div -->
 
 
@@ -315,62 +326,6 @@ white-space: normal;
                   </div>
 
 </div>
-              <!-- 右方第一個卡片列表 -->
-<!--               <div class="col-12 col-lg-3"> -->
-<!--                 <div class="card"> -->
-<!--                   <div class="card-body py-4 px-4"> -->
-<!--                     <div class="d-flex align-items-center"> -->
-<!--                       <div class="avatar avatar-xl"> -->
-<!--                         <img src="/assets/compiled/jpg/1.jpg" alt="Face 1" /> -->
-<!--                       </div> -->
-<!--                       <div class="ms-3 name"> -->
-<!--                         <h5 class="font-bold">管理員名稱</h5> -->
-<!--                         <h6 class="text-muted mb-0">管理員帳號</h6> -->
-<!--                       </div> -->
-<!--                     </div> -->
-<!--                   </div> -->
-<!--                 </div> -->
-                <!-- 右方第二個Recent Messages -->
-<!--                 <div class="card"> -->
-<!--                   <div class="card-header"> -->
-<!--                     <h4>Recent Messages</h4> -->
-<!--                   </div> -->
-<!--                   <div class="card-content pb-4"> -->
-<!--                     <div class="recent-message d-flex px-4 py-3"> -->
-<!--                       <div class="avatar avatar-lg"> -->
-<!--                         <img src="/assets/compiled/jpg/4.jpg" /> -->
-<!--                       </div> -->
-<!--                       <div class="name ms-4"> -->
-<!--                         <h5 class="mb-1">Hank Schrader</h5> -->
-<!--                         <h6 class="text-muted mb-0">@johnducky</h6> -->
-<!--                       </div> -->
-<!--                     </div> -->
-<!--                     <div class="recent-message d-flex px-4 py-3"> -->
-<!--                       <div class="avatar avatar-lg"> -->
-<!--                         <img src="/assets/compiled/jpg/5.jpg" /> -->
-<!--                       </div> -->
-<!--                       <div class="name ms-4"> -->
-<!--                         <h5 class="mb-1">Dean Winchester</h5> -->
-<!--                         <h6 class="text-muted mb-0">@imdean</h6> -->
-<!--                       </div> -->
-<!--                     </div> -->
-<!--                     <div class="recent-message d-flex px-4 py-3"> -->
-<!--                       <div class="avatar avatar-lg"> -->
-<!--                         <img src="/assets/compiled/jpg/1.jpg" /> -->
-<!--                       </div> -->
-<!--                       <div class="name ms-4"> -->
-<!--                         <h5 class="mb-1">John Dodol</h5> -->
-<!--                         <h6 class="text-muted mb-0">@dodoljohn</h6> -->
-<!--                       </div> -->
-<!--                     </div> -->
-<!--                     <div class="px-4"> -->
-<!--                       <button class="btn btn-block btn-xl btn-outline-primary font-bold mt-3"> -->
-<!--                         Start Conversation -->
-<!--                       </button> -->
-<!--                     </div> -->
-<!--                   </div> -->
-<!--                 </div> -->
-<!--               </div> -->
             </section>
           </div>
 
@@ -476,7 +431,25 @@ white-space: normal;
                   <!-- 使用 moment.js 在前端進行日期格式化 -->
                   var birthDate = new Date(n.studentBirth);
                   var formattedBirthDate = moment(birthDate).format("YYYY-MM-DD");
-                  var tr = "<tr><td>" + n.companionId + "</td><td>" + n.studentId + "</td><td>" + n.studentNickname + "</td><td>" + n.studentGender + "</td><td>" + formattedBirthDate + "</td><td>" + n.companionFirstLanguage + "</td><td>" + n.companionSpeakingLanguage + "</td><td>" + n.companionLearningInterest + "</td><td>" + n.companionLearningFrequency + "</td><td id='aboutme'><div class='break-word'>" + n.companionAboutMe + "</div></td><td><img id='img' src=" + n.studentPhoto + "></td></tr>";
+                  var tr = "<tr><td>" + n.companionId + "</td><td>" + n.studentId + "</td><td>" + n.studentNickname + "</td><td>" 
+                  + n.studentGender + "</td><td>" + formattedBirthDate + "</td><td>" + n.companionFirstLanguage 
+                  + "</td><td>" + n.companionSpeakingLanguage + "</td><td>" + n.companionLearningInterest 
+                  + "</td><td>" + n.companionLearningFrequency + "</td><td id='aboutme'><div class='break-word'>" 
+                  + n.companionAboutMe + "</div></td><td><img id='img' src=" + n.studentPhoto + "></td>";
+                  
+                  var td2 = "<td>"+"<form method='get' action='${pageContext.request.contextPath}/GetUpdateData'>"
+                          +"<input type='hidden' value='"+ n.companionId + "'name='companion_id'>"
+                          +"<button id='update' class='btn btn-primary' style='background-color:#46A3FF; border:0px' type='submit'>修改</button>"+"</form></td>"
+                          +"<td>"+"<form method='post' action='${pageContext.request.contextPath}/fakeDeleteCompanionById'>"
+                          +"<input type='hidden' name='_method' value='PUT'>"
+                          +"<input type='hidden' value='"+ n.companionId + "'name='companion_id'>"
+                          +"<input type='hidden' value='"+ n.studentId + "'name='student_id'>"
+                          +"<button id='fakedelete' class='btn btn-primary' style='background-color:#FF9797; border:0px' type='submit'>刪除</button>"+"</form></td>";
+                          console.log(n.studentId);
+        tr += td2; // 添加帶有表單的 <td> 元素到 <tr> 元素中
+        tr += "</tr>"; // 完成 <tr> 元素的結束標記
+                  
+                  
                   table.append(tr);
                 });
               }
@@ -500,6 +473,41 @@ white-space: normal;
         }
       </script>
 
+
+						<script>
+					    // 確保文檔加載完成後再執行代碼
+					    document.addEventListener('DOMContentLoaded', function() {
+					        // 監聽點擊事件
+					        document.addEventListener('click', function(event) {
+					            // 判斷點擊的目標元素是否是要觸發的元素（這裡是 #delete 按鈕）
+					            if (event.target.matches('#fakedelete')) {
+					                // 阻止默認行為
+					                event.preventDefault();
+					                // 在控制台中打印出確定按鈕被點擊了
+					                console.log("Delete button clicked!"); 
+					                // 獲取點擊的按鈕元素
+					                const deleteButton = event.target;
+					                // 使用 Swal.fire 顯示彈窗
+					                Swal.fire({
+					                    title: "確定要刪除這筆資料嗎？",
+					                    text: "刪除後資料無法復原",
+					                    icon: "question",
+					                    confirmButtonText: "確定",
+					                    cancelButtonText: "取消",
+					                    showCloseButton: true,
+					                    showCancelButton: true,
+					                }).then((result) => {
+					                    if (result.isConfirmed) {
+					                        // 如果用戶確定刪除，則提交表單
+					                        const form = deleteButton.closest('form');
+					                        form.submit();
+					                    }
+					                });
+					            }
+					        });
+					    });
+						</script>
+						
     </body>
 
     </html>

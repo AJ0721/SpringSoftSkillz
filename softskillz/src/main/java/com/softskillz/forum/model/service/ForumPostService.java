@@ -1,31 +1,19 @@
 package com.softskillz.forum.model.service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.softskillz.account.model.bean.StudentBean;
-import com.softskillz.account.model.bean.AdminBean;
-import com.softskillz.account.model.bean.TeacherBean;
-import com.softskillz.account.model.repository.AdminRepository;
-import com.softskillz.account.model.repository.StudentRepository;
-import com.softskillz.account.model.repository.TeacherRepository;
 import com.softskillz.forum.model.StatusEnum;
-import com.softskillz.forum.model.UserEnum;
 import com.softskillz.forum.model.dto.ForumPostDto;
-import com.softskillz.forum.model.dto.ForumThreadDto;
 import com.softskillz.forum.model.dto.IDtoConverter;
 import com.softskillz.forum.model.model.ForumPostModel;
 import com.softskillz.forum.model.model.ForumThreadModel;
 import com.softskillz.forum.model.repository.ForumPostRepository;
 import com.softskillz.forum.model.repository.ForumThreadRepository;
-import com.softskillz.util.FindUserIdUtils;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

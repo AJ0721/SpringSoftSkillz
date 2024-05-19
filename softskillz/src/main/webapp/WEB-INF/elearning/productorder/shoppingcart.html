@@ -85,12 +85,101 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            function loadCartItems() {
+                $.ajax({
+                    url: '/productcart/view',
+                    type: 'GET',
+                    success: function (response) {
+                        renderCartItems(response.cart, response.emptyCartMessage);
+                    },
+                    error: function (xhr) {
+                        alert('無法加載購物車商品');
+                    }
+                });
+            }
+
+            function renderCartItems(cart, emptyCartMessage) {
+                const cartItemsContainer = $('#cart-items');
+                cartItemsContainer.empty();
+
+                let subtotal = 0;
+
+                if (emptyCartMessage) {
+                    $('#empty-cart-message').show();
+                } else {
+                    $('#empty-cart-message').hide();
+
+                    $.each(cart, function (productId, item) {
+                        const product = item.product;
+                        const quantity = item.quantity;
+                        const total = product.productPrice * quantity;
+                        subtotal += total;
+
+                        const cartItemHtml = `
+                            <div class="product-item row gy-3 mb-4">
+                                <div class="col-lg-5">
+                                    <div class="me-lg-5">
+                                        <div class="d-flex">
+                                            <img src="${product.imageUrl}" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                                            <div class="">
+                                                <a href="#" class="nav-link">${product.productName}</a>
+                                                <p class="text-muted">${product.productDescription}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row text-nowrap">
+                                    <div class="input-group" style="width: 100px;">
+                                        <button class="btn btn-outline-secondary quantity-decrease" data-product-id="${product.productId}" type="button" style="width: 32px; height: 38px;">-</button>
+                                        <input type="text" class="form-control text-center product-quantity" value="${quantity}" readonly style="width: 36px; height: 38px;">
+                                        <button class="btn btn-outline-secondary quantity-increase" data-product-id="${product.productId}" type="button" style="width: 32px; height: 38px;">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                                    <span class="h6 product-price">$${product.productPrice.toFixed(0)}</span>
+                                </div>
+                                <div class="col-lg-2">
+                                    <span class="product-total">$${total.toFixed(0)}</span>
+                                </div>
+                                <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                                    <div class="float-md-end">
+                                        <a href="#!" class="btn btn-light border px-2 icon-hover-primary" style="background-color: white;">
+                                            <i class="fas fa-heart fa-lg px-1 text-secondary"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-danger btn-remove" data-product-id="${product.productId}" style="color: #ffffff;">移除</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        cartItemsContainer.append(cartItemHtml);
+                    });
+                }
+
+                updateTotal(subtotal, null);
+            }
+
+            function updateTotal(subtotal, appliedCoupon) {
+                $('#subtotal').text('$' + subtotal.toFixed(0));
+
+                let discount = 0;
+                if (appliedCoupon) {
+                    discount = appliedCoupon.couponAmount ? appliedCoupon.couponAmount : subtotal * appliedCoupon.couponRate;
+                    $('#discount').text('-$' + discount.toFixed(0));
+                } else {
+                    $('#discount').text('-$0');
+                }
+
+                const grandTotal = subtotal - discount;
+                $('#grand-total').text('$' + grandTotal.toFixed(0));
+            }
+
             function sendUpdateRequest(productId, quantity) {
                 $.ajax({
-                    url: '/productcart/update' + "?productId=" + productId + "&quantity=" + quantity,
+                    url: '/productcart/update',
                     type: 'POST',
+                    data: { productId: productId, quantity: quantity },
                     success: function (response) {
-                        updateTotal(); // Update total after AJAX call
+                        loadCartItems();
                     },
                     error: function (xhr) {
                         alert('更新購物車失敗');
@@ -98,32 +187,15 @@
                 });
             }
 
-            function updateTotal() {
-                let subtotal = 0;
-                $('.product-item').each(function () {
-                    const price = parseFloat($(this).find('.product-price').text().replace('$', '')) || 0;
-                    const quantity = parseInt($(this).find('.product-quantity').val()) || 0;
-                    const total = price * quantity;
-                    subtotal += total;
-                    $(this).find('.product-total').text('$' + total.toFixed(2));
-                });
-                $('#subtotal').text('$' + subtotal.toFixed(2));
-                const discount = parseFloat($('#discount').text().replace('-', '').replace('$', '')) || 0;
-                const grandTotal = subtotal - discount;
-                $('#grand-total').text('$' + grandTotal.toFixed(2));
-            }
-
-            $('.quantity-increase').click(function () {
+            $(document).on('click', '.quantity-increase', function () {
                 var productId = $(this).data('product-id');
                 var quantityInput = $(this).siblings('.product-quantity');
                 var newQuantity = parseInt(quantityInput.val()) + 1;
                 quantityInput.val(newQuantity);
-                console.log(productId);
-                console.log(newQuantity);
                 sendUpdateRequest(productId, newQuantity);
             });
 
-            $('.quantity-decrease').click(function () {
+            $(document).on('click', '.quantity-decrease', function () {
                 var productId = $(this).data('product-id');
                 var quantityInput = $(this).siblings('.product-quantity');
                 var newQuantity = parseInt(quantityInput.val()) - 1;
@@ -131,11 +203,24 @@
                     quantityInput.val(newQuantity);
                     sendUpdateRequest(productId, newQuantity);
                 }
-                console.log(productId);
-                console.log(newQuantity);
             });
 
-            updateTotal(); // Initialize the total calculation on page load
+            $(document).on('click', '.btn-remove', function () {
+                var productId = $(this).data('product-id');
+                $.ajax({
+                    url: '/productcart/remove',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        loadCartItems();
+                    },
+                    error: function (xhr) {
+                        alert('移除購物車項目失敗');
+                    }
+                });
+            });
+
+            loadCartItems();
         });
     </script>
 
@@ -147,142 +232,73 @@
                     <div class="card border shadow-0">
                         <div class="m-4">
                             <h4 class="card-title mb-4">您的購物車</h4>
-
-                            <!-- Sample product item -->
-                            <div class="product-item row gy-3 mb-4">
-                                <div class="col-lg-5">
-                                    <div class="me-lg-5">
-                                        <div class="d-flex">
-                                            <img src="https://dummyimage.com/180x180/0020a1/ffffff"
-                                                class="border rounded me-3" style="width: 96px; height: 96px;" />
-                                            <div class="">
-                                                <a href="#" class="nav-link">學習小夥伴筆記本</a>
-                                                <p class="text-muted">藍色</p>
+                            <div id="empty-cart-message" style="display:none;">
+                                <p>您的購物車是空的。</p>
+                            </div>
+                            <div id="cart-items">
+                                <!-- Sample product item -->
+                                <!-- 使用 JSTL 或其他模板引擎來顯示購物車項目 -->
+                                <c:forEach var="item" items="${cart.values()}">
+                                    <div class="product-item row gy-3 mb-4">
+                                        <div class="col-lg-5">
+                                            <div class="me-lg-5">
+                                                <div class="d-flex">
+                                                    <img src="${item.product.imageUrl}" class="border rounded me-3"
+                                                        style="width: 96px; height: 96px;" />
+                                                    <div class="">
+                                                        <a href="#" class="nav-link">${item.product.productName}</a>
+                                                        <p class="text-muted">${item.product.productDescription}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row text-nowrap">
+                                            <div class="input-group" style="width: 100px;">
+                                                <button class="btn btn-outline-secondary quantity-decrease"
+                                                    data-product-id="${item.product.productId}" type="button"
+                                                    style="width: 32px; height: 38px;">-</button>
+                                                <input type="text" class="form-control text-center product-quantity"
+                                                    value="${item.quantity}" readonly
+                                                    style="width: 36px; height: 38px;">
+                                                <button class="btn btn-outline-secondary quantity-increase"
+                                                    data-product-id="${item.product.productId}" type="button"
+                                                    style="width: 32px; height: 38px;">+</button>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-lg-3 col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                                            <span
+                                                class="h6 product-price">$${item.product.productPrice.toFixed(0)}</span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <span class="product-total">$${(item.product.productPrice *
+                                                item.quantity).toFixed(0)}</span>
+                                        </div>
+                                        <div
+                                            class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                                            <div class="float-md-end">
+                                                <a href="#!" class="btn btn-light border px-2 icon-hover-primary"
+                                                    style="background-color: white;">
+                                                    <i class="fas fa-heart fa-lg px-1 text-secondary"></i>
+                                                </a>
+                                                <form action="/productcart/remove" method="post"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="productId"
+                                                        value="${item.product.productId}">
+                                                    <button type="submit" class="btn"
+                                                        style="background-color: #003366; color: #ffffff;">移除</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row text-nowrap">
-                                    <div class="input-group" style="width: 100px;">
-                                        <button class="btn btn-outline-secondary quantity-decrease" data-product-id="1"
-                                            type="button" style="width: 32px; height: 38px;">-</button>
-                                        <input type="text" class="form-control text-center product-quantity" value="1"
-                                            readonly style="width: 36px; height: 38px;">
-                                        <button class="btn btn-outline-secondary quantity-increase" data-product-id="1"
-                                            type="button" style="width: 32px; height: 38px;">+</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="col-lg-3 col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                    <span class="h6 product-price">$1156.00</span>
-                                </div>
-                                <div class="col-lg-2">
-                                    <span class="product-total">$1156.00</span>
-                                </div>
-                                <div
-                                    class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                    <div class="float-md-end">
-                                        <a href="#!" class="btn btn-light border px-2 icon-hover-primary"
-                                            style="background-color: white;"><i
-                                                class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                                        <a href="#" class="btn"
-                                            style="background-color: #003366; color: #ffffff;">移除</a>
-                                    </div>
-                                </div>
+                                </c:forEach>
                             </div>
-
-                            <!-- Other product items... -->
-                            <div class="product-item row gy-3 mb-4">
-                                <div class="col-lg-5">
-                                    <div class="me-lg-5">
-                                        <div class="d-flex">
-                                            <img src="https://dummyimage.com/180x180/0020a1/ffffff"
-                                                class="border rounded me-3" style="width: 96px; height: 96px;" />
-                                            <div class="">
-                                                <a href="#" class="nav-link">靜心瑜珈墊</a>
-                                                <p class="text-muted">黃色</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row text-nowrap">
-                                    <div class="input-group" style="width: 100px;">
-                                        <button class="btn btn-outline-secondary quantity-decrease" data-product-id="2"
-                                            type="button" style="width: 32px; height: 38px;">-</button>
-                                        <input type="text" class="form-control text-center product-quantity" value="2"
-                                            readonly style="width: 36px; height: 38px;">
-                                        <button class="btn btn-outline-secondary quantity-increase" data-product-id="2"
-                                            type="button" style="width: 32px; height: 38px;">+</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="col-lg-3 col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                    <span class="h6 product-price">$44.80</span>
-                                </div>
-                                <div class="col-lg-2">
-                                    <span class="product-total">$89.60</span>
-                                </div>
-                                <div
-                                    class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                    <div class="float-md-end">
-                                        <a href="#!" class="btn btn-light border px-2 icon-hover-primary"
-                                            style="background-color: white;"><i
-                                                class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                                        <a href="#" class="btn"
-                                            style="background-color: #003366; color: #ffffff;">移除</a>
-                                    </div>
-                                </div>
+                            <div class="border-top pt-4 mx-4 mb-4">
+                                <p><i class="fas fa-truck text-muted fa-lg"></i> 商品運送須知</p>
+                                <p class="text-muted">
+                                    「現貨」商品預計會在同一天或下一個工作日出貨。<br> 預計需要較長時間的商品，將在指定的時間範圍內(例如7 到10 個工作日) 從倉庫出貨。</br>
+                                </p>
                             </div>
-
-                            <div class="product-item row gy-3">
-                                <div class="col-lg-5">
-                                    <div class="me-lg-5">
-                                        <div class="d-flex">
-                                            <img src="https://dummyimage.com/180x180/0020a1/ffffff"
-                                                class="border rounded me-3" style="width: 96px; height: 96px;" />
-                                            <div class="">
-                                                <a href="#" class="nav-link">智能記憶手環</a>
-                                                <p class="text-muted">黑色</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row text-nowrap">
-                                    <div class="input-group" style="width: 100px;">
-                                        <button class="btn btn-outline-secondary quantity-decrease" data-product-id="3"
-                                            type="button" style="width: 32px; height: 38px;">-</button>
-                                        <input type="text" class="form-control text-center product-quantity" value="1"
-                                            readonly style="width: 36px; height: 38px;">
-                                        <button class="btn btn-outline-secondary quantity-increase" data-product-id="3"
-                                            type="button" style="width: 32px; height: 38px;">+</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="col-lg-3 col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                    <span class="h6 product-price">$1156.00</span>
-                                </div>
-                                <div class="col-lg-2">
-                                    <span class="product-total">$1156.00</span>
-                                </div>
-                                <div
-                                    class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                    <div class="float-md-end">
-                                        <a href="#!" class="btn btn-light border px-2 icon-hover-primary"
-                                            style="background-color: white;"><i
-                                                class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                                        <a href="#" class="btn"
-                                            style="background-color: #003366; color: #ffffff;">移除</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="border-top pt-4 mx-4 mb-4">
-                            <p><i class="fas fa-truck text-muted fa-lg"></i> 商品運送須知</p>
-                            <p class="text-muted">
-                                「現貨」商品預計會在同一天或下一個工作日出貨。<br> 預計需要較長時間的商品，將在指定的時間範圍內(例如7 到10 個工作日) 從倉庫出貨。</br>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -308,22 +324,28 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">小計:</p>
-                                <p id="subtotal" class="mb-2">$329.00</p>
+                                <p id="subtotal" class="mb-2">$0</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">折扣:</p>
-                                <p id="discount" class="mb-2 text-success">-$60.00</p>
+                                <p id="discount" class="mb-2 text-success">-$0</p>
                             </div>
                             <hr />
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">總金額:</p>
-                                <p id="grand-total" class="mb-2 fw-bold">$283.00</p>
+                                <p id="grand-total" class="mb-2 fw-bold">$0</p>
                             </div>
 
                             <div class="mt-3">
-                                <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> 結帳 </a>
+                                <form action="/productcart/checkout" method="get">
+                                    <button type="submit" class="btn btn-success w-100 shadow-0 mb-2">結帳</button>
+                                </form>
+                                <form action="/productcart/clear" method="post">
+                                    <button type="submit" class="btn w-100 border mt-2"
+                                        style="background-color: #003366; color: #ffffff;">清空購物車</button>
+                                </form>
                                 <a href="#" class="btn w-100 border mt-2"
-                                    style="background-color: #003366; color: #ffffff;"> 返回商城 </a>
+                                    style="background-color: #003366; color: #ffffff;">返回商城</a>
                             </div>
                         </div>
                     </div>
@@ -332,99 +354,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Recommended Start -->
-    <section>
-        <div class="container my-5">
-            <header class="mb-4">
-                <h3>推薦商品</h3>
-            </header>
-
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card px-4 border shadow-0 mb-4 mb-lg-0">
-                        <div class="mask px-2" style="height: 50px;">
-                            <div class="d-flex justify-content-between">
-                                <h6><span class="badge bg-danger pt-1 mt-3 ms-2">New</span></h6>
-                                <a href="#"><i class="fas fa-heart text-primary fa-lg float-end pt-3 m-2"></i></a>
-                            </div>
-                        </div>
-                        <a href="#" class="">
-                            <img src="https://dummyimage.com/180x180/0020a1/ffffff" class="card-img-top rounded-2" />
-                        </a>
-                        <div class="card-body d-flex flex-column pt-3 border-top">
-                            <a href="#" class="nav-link">Python程式設計基礎</a>
-                            <div class="price-wrap mb-2">
-                                <strong class="product-price">$18.95</strong>
-                                <del class="">$24.99</del>
-                            </div>
-                            <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                                <a href="#" class="btn btn-outline-primary w-100">加入購物車</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card px-4 border shadow-0 mb-4 mb-lg-0">
-                        <div class="mask px-2" style="height: 50px;">
-                            <a href="#"><i class="fas fa-heart text-primary fa-lg float-end pt-3 m-2"></i></a>
-                        </div>
-                        <a href="#" class="">
-                            <img src="https://dummyimage.com/180x180/0020a1/ffffff" class="card-img-top rounded-2" />
-                        </a>
-                        <div class="card-body d-flex flex-column pt-3 border-top">
-                            <a href="#" class="nav-link">初級瑜珈教學</a>
-                            <div class="price-wrap mb-2">
-                                <strong class="product-price">$120.00</strong>
-                            </div>
-                            <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                                <a href="#" class="btn btn-outline-primary w-100">加入購物車</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card px-4 border shadow-0">
-                        <div class="mask px-2" style="height: 50px;">
-                            <a href="#"><i class="fas fa-heart text-primary fa-lg float-end pt-3 m-2"></i></a>
-                        </div>
-                        <a href="#" class="">
-                            <img src="https://dummyimage.com/180x180/0020a1/ffffff" class="card-img-top rounded-2" />
-                        </a>
-                        <div class="card-body d-flex flex-column pt-3 border-top">
-                            <a href="#" class="nav-link">旅遊英語會話手冊</a>
-                            <div class="price-wrap mb-2">
-                                <strong class="product-price">$80.50</strong>
-                            </div>
-                            <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                                <a href="#" class="btn btn-outline-primary w-100">加入購物車</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card px-4 border shadow-0">
-                        <div class="mask px-2" style="height: 50px;">
-                            <a href="#"><i class="fas fa-heart text-primary fa-lg float-end pt-3 m-2"></i></a>
-                        </div>
-                        <a href="#" class="">
-                            <img src="https://dummyimage.com/180x180/0020a1/ffffff" class="card-img-top rounded-2" />
-                        </a>
-                        <div class="card-body d-flex flex-column pt-3 border-top">
-                            <a href="#" class="nav-link">靜音鍵盤</a>
-                            <div class="price-wrap mb-2">
-                                <strong class="product-price">$13.90</strong>
-                            </div>
-                            <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                                <a href="#" class="btn btn-outline-primary w-100">加入購物車</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Recommended End -->
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">

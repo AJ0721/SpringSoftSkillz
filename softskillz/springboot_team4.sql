@@ -8,6 +8,7 @@ CREATE TABLE admin (
 );
 
 INSERT INTO admin VALUES('aaa','123',0)
+SELECT * FROM admin;
 
 --學生
 CREATE TABLE student (
@@ -210,6 +211,16 @@ INSERT INTO corder VALUES('3','1','1234','2020-01-01','2020-01-01 00:30:00','Lin
 INSERT INTO corder VALUES('4','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
 INSERT INTO corder VALUES('5','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
 INSERT INTO corder VALUES('6','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
+
+ALTER TABLE corder
+ADD discount_id varchar(255),
+    discount_percent DECIMAL(5,2) ,
+    after_price int ;
+
+ALTER TABLE corderitem
+ADD discount_percent DECIMAL(5,2) ,
+ after_price INT,
+ subtotal INT
 
 --課程訂單細項
 CREATE TABLE corderitem(

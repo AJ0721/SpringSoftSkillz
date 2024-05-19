@@ -22,4 +22,8 @@ public class ProductViewController {
     }
 
 
+    @GetMapping("/mall/mallfrontend")
+    public String showfrontPage() {
+        return "/elearning/mall/mallfrontend.html";
+    }
 }

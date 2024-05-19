@@ -54,6 +54,16 @@ public class CompanionController {
 		return "dist/companion/companionIndex.jsp";
 	};
 	
+	@GetMapping("/companionFrontIndex")
+	public String companionFrontIndex() {
+		return "elearning/companion/companionFrontIndex.jsp";
+	};
+	
+	@GetMapping("/companionFrontChatroom")
+	public String companionFrontChatroom() {
+		return "elearning/companion/companionFrontChatroom.jsp";
+	};
+	
 	// 新增
 	@PutMapping("/Insert")
 	@ResponseBody
@@ -131,12 +141,41 @@ public class CompanionController {
 	@DeleteMapping("/DeleteCompanionById")
 	@ResponseBody
 	public ModelAndView deleteCompanionById(@RequestParam("companion_id") Integer companionId) {
-		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/GetAllCompanions.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/companionQueryAll.jsp");
 		try {
 			companionService.deleteById(companionId);
 			List<CompanionBean> companions = companionService.getAll();
 			System.out.println(companions);
-			view.addObject("companions", companions);
+//			view.addObject("companions", companions);
+		} catch (Exception e) {
+			e.printStackTrace();
+			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+		}
+		return view;
+	}
+	// 假刪除 點擊刪除時會把資料清除 等同於更新為空白 更新單筆 id
+	@PutMapping("/fakeDeleteCompanionById")
+	public ModelAndView fakedeleteCompanionById(@RequestParam("companion_id") Integer companionId,
+			@RequestParam("student_id") Integer studentId) {
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/companionQueryAll.jsp");
+		try {
+			CompanionBean companionBean = new CompanionBean();
+			
+			
+			StudentBean studentBeanID = studentService.getById(studentId);
+//			StudentBean studentBean = (StudentBean)session.getAttribute("studentBeanID");
+			
+			companionBean.setCompanionId(companionId);
+			companionBean.setStudentBeanID(studentBeanID);
+			
+			companionBean.setCompanionFirstLanguage(" ");
+			companionBean.setCompanionSpeakingLanguage(" ");
+			companionBean.setCompanionLearningInterest(" ");
+			companionBean.setCompanionLearningFrequency(" ");
+			companionBean.setCompanionAboutMe(" ");
+			companionService.update(companionBean);
+			
+			System.out.println(companionBean);
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
@@ -230,7 +269,7 @@ public class CompanionController {
 			@RequestParam("companion_learning_interest") String companionLearningInterest,
 			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
 			HttpSession session) {
-		ModelAndView view = new ModelAndView("dist/companion/CompanionInsert/CompanionByMatchRequirement.jsp");
+		ModelAndView view = new ModelAndView("elearning/companion/CompanionByMatchRequirement.jsp");
 		try {
 			List<CompanionBean> companions = companionService.getByMatchRequirement(companionLearningInterest,
 					companionGender, companionFirstLanguage, companionSpeakingLanguage, companionLearningFrequency,

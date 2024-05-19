@@ -46,7 +46,7 @@ public class CourseFrontController {
 	@Autowired
 	private TeacherScheduleService teacherScheduleService;
 
-	// 有學生登入後解開測試
+	// 學生登入後首頁
 	@GetMapping("/selectAllPage")
 	public String loadCoursesPage(HttpSession session, Model model) {
 		StudentBean student = (StudentBean) session.getAttribute("studentData");
@@ -55,7 +55,6 @@ public class CourseFrontController {
 		model.addAttribute("loggedInUser", loggedInUser);
 		System.out.println("Logged in user: " + loggedInUser);
 
-		//return "redirect:/courseFront/selectAllPage?user=" + loggedInUser;
 		return "elearning/course/courseSelectPage.html";
 	}
 

@@ -1,29 +1,156 @@
 $(document).ready(function () {
+
+    //USER VALIDATION
+    const { loggedInUser } = retrieveUser();
+    validateUser(loggedInUser);
+    displayUserDetails();
+
+
     // Fetch thread details and comments
     const pathname = window.location.pathname;
     const parts = pathname.split("/");
     const threadId = parts[parts.length - 1];
 
     fetchThreadDetails(threadId);
-
-    // SUBMIT ROOT POST
-    $('#root-reply').click(function (e) {
+    //BUTTONS
+    // SUBMIT POST
+    $(document).on('click', '.submit-reply', function (e) {
         e.preventDefault();
-        const postContent = $('#postContent').val();
+        const $form = $(this).closest('form');
+        const postContent = $form.find('textarea').val().trim();
+        const parentPostId = $form.find('.parentPostId').val();
+        if (postContent === "") {
+            Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+            return;
+        }
         const postDto = {
             postContent: postContent,
-            thread: { threadId: parseInt(threadId) },
-            parentPost: null,
+            thread: { threadId: threadId },
+            parentPost: parentPostId ? { postId: parentPostId } : null,
         };
         submitPost(postDto, threadId);
     });
 
-    // CANCEL BUTTON
-    $('#cancel').click(function (e) {
-        window.history.go(-1);
-        return false;
+    //EDIT POST
+    // Edit Button
+    $(document).on('click', '.edit-btn', function () {
+        const postId = $(this).data('post-id');
+        const postElement = $(this).closest('li');
+        const postContentElement = postElement.find('.post-content');
+        const currentContent = postContentElement.text().trim();
+
+        // Make content editable
+        postContentElement.attr('contenteditable', 'true').focus();
+
+        // Hide the edit, delete, and reply buttons
+        postElement.find('.edit-btn, .delete-btn, .reply-btn').hide();
+
+        // Show the update and cancel buttons
+        $(this).after(`
+        <button class="btn btn-sm btn-primary update-btn me-2" data-post-id="${postId}">更新</button>
+        <button class="btn btn-sm btn-secondary cancel-edit" data-post-id="${postId}">取消</button>
+    `);
+
+        // Update Button
+        $(document).on('click', '.update-btn', function () {
+            const updatedContent = postContentElement.text().trim();
+            if (updatedContent === "") {
+                Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+                return;
+            }
+            const postDto = {
+                postContent: updatedContent,
+                thread: { threadId: threadId }
+            };
+            updatePost(postId, postDto);
+        });
+
+        // Cancel Edit Button
+        $(document).on('click', '.cancel-edit', function () {
+            postContentElement.text(currentContent).attr('contenteditable', 'false');
+            $(this).siblings('.update-btn').remove();
+            $(this).remove();
+            postElement.find('.edit-btn, .delete-btn, .reply-btn').show(); // Show the edit, delete, and reply buttons again
+        });
+    });;
+
+    //DELETE POST
+
+    // DELETE POST
+    $(document).on('click', '.delete-btn', function () {
+        const postId = $(this).data('post-id');
+        Swal.fire({
+            title: '確認是否刪除?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '確認',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deletePost(postId);
+            }
+        });
     });
 });
+
+// CANCEL BUTTON: TO PREVIOUS PAGE
+$('#cancel').click(function (e) {
+    window.history.go(-1);
+    return false;
+});
+
+
+
+
+//FUNCTION: CAN EDIT (COMMENT HTML) 
+function createCommentHtml(post) {
+
+    const { loggedInUser } = retrieveUser();
+    const { authorId, authorName, authorType, canEdit = false } = getUserDetails(post, loggedInUser);
+    const formattedDate = new Date(post.postCreatedTime).toLocaleString();
+
+    return `
+    <li class="list-unstyled comment border-start border-light border-3 p-2 mb-3 pl-0" data-post-id="${post.postId}">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <p><strong>${authorName} (${authorId})</strong></p>
+        <span class="d-flex">
+            <button class="me-2 btn btn-sm btn-success reply-btn" data-post-id="${post.postId}">回覆</button>
+            ${canEdit ? `<button class="me-2 btn btn-sm btn-warning edit-btn" data-post-id="${post.postId}">編輯</button>` : ''}
+            ${canEdit ? `<button class="btn btn-sm btn-danger delete-btn" data-post-id="${post.postId}">刪除</button>` : ''}
+        </span>
+    </div>
+    <p class="post-content p-2">${post.postContent}</p>
+    <p class="text-muted"><small>${formattedDate}</small></p>
+    <div class="reply-form-container"></div>
+    <ul class="child-comments"></ul>
+</li>
+    `;
+}
+
+
+// FUNCTION: UPDATE POST
+function updatePost(postId, postDto) {
+    fetch(`/forum/post/update/${postId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postDto)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update post');
+            }
+            return response.json();
+        })
+        .then(updatedPost => {
+            Swal.fire("更新成功", "", "success");
+            console.log('Updated post:', updatedPost);
+            fetchComments(updatedPost.thread.threadId);
+        })
+        .catch(error => console.error('Error updating post:', error));
+}
 
 // FUNCTION: FETCH THREAD DETAILS
 function fetchThreadDetails(threadId) {
@@ -41,20 +168,40 @@ function fetchThreadDetails(threadId) {
         .catch(error => console.error('Error fetching thread details:', error));
 }
 
+// FUNCTION: DELETE POST
+function deletePost(postId) {
+    fetch(`/forum/post/delete/${postId}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete post');
+            }
+
+            console.log('Deleted post ID:', postId);
+            $(`li[data-post-id="${postId}"]`).remove();
+        })
+        .catch(error => console.error('Error deleting post:', error));
+}
+
 // FUNCTION: DISPLAY THREAD DETAILS
 function displayThreadDetails(data) {
+    const { loggedInUser } = retrieveUser();
+    const { authorId, authorName, authorType, canEdit } = getUserDetails(data, loggedInUser);
+
     $('#category').text(data.forumCategory.forumCategoryName);
-
-    let username = '管理員';
-    if (data.student) {
-        username = data.student.studentUsername;
-    } else if (data.teacher) {
-        username = data.teacher.teacherUserName;
-    }
-
-    $('#username').text(username);
+    $('#username').text(authorName);
     $('#threadTitle').text(data.threadTitle);
     $('#threadContent').text(data.threadContent);
+
+    if (canEdit) {
+        $('#can-edit').html(`
+        <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-warning me-2" id="edit-thread">編輯</button>
+                <button class="btn btn-sm btn-danger" id="delete-thread">刪除</button>
+            </div>
+            `);
+    }
 }
 
 // FUNCTION: FETCH ALL POSTS BY THREAD ID
@@ -81,37 +228,6 @@ function displayComments(posts, threadId) {
     attachReplyButtonEvents(posts, threadId);
 }
 
-// FUNCTION: CREATE COMMENT HTML
-function createCommentHtml(post) {
-    let userId, userName, userType;
-    if (post.student) {
-        userId = post.student.studentId;
-        userName = post.student.studentUsername;
-        userType = '學生';
-    } else if (post.teacher) {
-        userId = post.teacher.teacherId;
-        userName = post.teacher.teacherUserName;
-        userType = '老師';
-    } else if (post.admin) {
-        userId = post.admin.adminId;
-        userName = '';
-        userType = '管理員';
-    }
-
-    const formattedDate = new Date(post.postCreatedTime).toLocaleString();
-
-    return `
-    <li class="comment border p-2 mb-2" data-post-id="${post.postId}">
-        <p><strong>${userType} - ${userName} (${userId})</strong></p>
-        <p>${post.postContent}</p>
-        <p class="text-muted"><small>${formattedDate}</small></p>
-        <button class="btn btn-sm btn-secondary reply-btn" data-post-id="${post.postId}">回覆</button>
-        <div class="reply-form-container"></div>
-        <ul class="child-comments"></ul>
-    </li>
-    `;
-}
-
 // FUNCTION: APPEND COMMENTS RECURSIVELY
 function appendComments(posts, parentPostId = null, parentElement) {
     posts.forEach(post => {
@@ -126,42 +242,34 @@ function appendComments(posts, parentPostId = null, parentElement) {
 
 // FUNCTION: ATTACH REPLY BUTTON EVENTS
 function attachReplyButtonEvents(posts, threadId) {
-    $('.reply-btn').click(function () {
+    $(document).on('click', '.reply-btn', function () {
         const postId = $(this).data('post-id');
         const replyFormHtml = `
-        <form class="reply-form">
-            <div class="form-group">
-                <textarea class="form-control reply-content" rows="3"></textarea>
+        <form class="reply-form mt-2">
+            <div class="form-group ">
+                <textarea class="form-control border border-4 rounded-4 reply-content" rows="3"></textarea>
             </div>
-            <button type="button" class="btn btn-secondary mt-2 cancel-reply">取消</button>
-            <button type="submit" class="btn btn-primary mt-2">送出</button>
+            <div class="d-flex justify-content-end mb-2">
+                <button type="button" class="btn btn-secondary mt-2 cancel-reply me-2">取消</button>
+                <button type="submit" class="submit-reply btn btn-primary mt-2">送出</button>
+            </div>
+            <input type="hidden" class="parentPostId" value="${postId}">
         </form>
         `;
-        const commentElement = $(`[data-post-id="${postId}"] .reply-form-container`);
+        const commentElement = $(this).closest('li').find('.reply-form-container').first();
         commentElement.html(replyFormHtml);
+    });
 
-        // CHILD REPLY SUBMIT
-        commentElement.find('.reply-form').submit(function (e) {
-            e.preventDefault();
-            const postContent = commentElement.find('.reply-content').val();
-            const postDto = {
-                postContent: postContent,
-                thread: { threadId: parseInt(threadId) },
-                parentPost: { postId: parseInt(postId) }
-            };
-
-            submitPost(postDto, threadId);
-        });
-
-        // Handle reply form cancellation
-        commentElement.find('.cancel-reply').click(function () {
-            commentElement.empty();
-        });
+    $(document).on('click', '.cancel-reply', function () {
+        $(this).closest('.reply-form-container').empty();
     });
 }
-
 // FUNCTION: SUBMIT POST
 function submitPost(postDto, threadId) {
+
+    const { loggedInUser, userType } = retrieveUser();
+    setUserToDto(postDto, loggedInUser, userType);
+
     fetch('/forum/post/insert', {
         method: 'POST',
         headers: {

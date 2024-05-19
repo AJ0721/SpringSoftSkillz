@@ -1,7 +1,8 @@
 package com.softskillz.account.model.bean;
 
-import java.sql.Date;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.forum.model.model.ForumPostModel;
@@ -111,7 +111,7 @@ public class TeacherBean {
 	@Column(name = "teacher_course_status")
 	private Integer teacherCourseStatus;
 
-	@Column(name = "teacher_id_formatted")
+	@Column(name = "teacher_id_formatted",insertable = false,updatable = false)
 	private String teacherIdFormatted;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacherBean", cascade = CascadeType.ALL)

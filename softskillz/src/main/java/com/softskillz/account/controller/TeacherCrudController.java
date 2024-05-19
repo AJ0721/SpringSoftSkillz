@@ -1,6 +1,9 @@
 package com.softskillz.account.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,23 +57,85 @@ public class TeacherCrudController {
 			return "/dist/account/teacher/TeacherLoginFront.jsp";
 		}
 	}
-	
-	//老師後台頁面
+
+	// 登出功能
+	@PostMapping("/teacher-logout")
+	public String logoutAction(HttpServletRequest request) {
+		HttpSession session = request.getSession(false); // 獲取當前會話，不創建新會話
+		if (session != null) {
+			session.invalidate(); // 使會話失效
+		}
+		return "redirect:/teacher/teacher-loginPage"; // 重定向到登入頁面
+	}
+
+	// 老師後台頁面
 	@GetMapping("/teacher-account")
 	public String TeacherCrudPage() {
 		return "/dist/account/teacher/teacherCrudPage.jsp";
 	}
-	
-	// 登出功能
-	@PostMapping("/teacher-logout")
-	public String logoutAction(HttpServletRequest request) {
-	    HttpSession session = request.getSession(false); // 獲取當前會話，不創建新會話
-	    if (session != null) {
-	        session.invalidate(); // 使會話失效
-	    }
-	    return "redirect:/teacher/teacher-loginPage"; // 重定向到登入頁面
+
+	// 註冊頁面
+	@GetMapping({ "/teacher-createPage" })
+	public String goToStudentCreatePage() {
+		return "/elearning/account/teacher/TeacherCreate.jsp";
 	}
-	
+
+	// 個人中心，印舊資料
+	@GetMapping({ "/teacher-update" })
+	public String goToStudentUpdate(@RequestParam("teacherId") Integer teacherId, Model m) {
+
+		TeacherBean oldTeacherBean = teacherService.findById(teacherId);
+		m.addAttribute("teacher", oldTeacherBean);
+
+		return "/dist/account/student/StudentUpdate.jsp";
+	}
+
+	// 新增，老師註冊
+	@PostMapping("/teacher-create")
+	public String teacherInsert(@RequestParam("teacherLastName") String teacherLastName,
+			@RequestParam("teacherFirstName") String teacherFirstName,
+			@RequestParam("teacherUserName") String teacherUserName,
+			@RequestParam("teacherPassword") String teacherPassword, @RequestParam("teacherBirth") String teacherBirth,
+			@RequestParam("teacherGender") String teacherGender, @RequestParam("teacherEmail") String teacherEmail,
+			@RequestParam("teacherMobile") String teacherMobile, @RequestParam("teacherCountry") String teacherCountry,
+			@RequestParam("subject") String subject, @RequestParam("teacherEducation") String teacherEducation,
+			@RequestParam("experience") String experience, @RequestParam("status") String status,
+			@RequestParam("teachTime") String teachTime, @RequestParam("strength") String strength, Model m)
+			throws ParseException {
+
+		Date now = new Date();
+		// 解析生日日期
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = simpleDateFormat.parse(teacherBirth);
+
+		TeacherBean insertBean = new TeacherBean();
+		insertBean.setTeacherLastName(teacherLastName);
+		insertBean.setTeacherFirstName(teacherFirstName);
+		insertBean.setTeacherUserName(teacherUserName);
+		insertBean.setTeacherPassword(teacherPassword);
+		insertBean.setTeacherBirth(date);
+		insertBean.setTeacherGender(teacherGender);
+		insertBean.setTeacherEmail(teacherEmail);
+		insertBean.setTeacherMobile(teacherMobile);
+		insertBean.setTeacherCountry(teacherCountry);
+		insertBean.setSubject(subject);
+		insertBean.setTeacherEducation(teacherEducation);
+		insertBean.setExperience(experience);
+		insertBean.setStatus(status);
+		insertBean.setTeachTime(teachTime);
+		insertBean.setStrength(strength);
+		insertBean.setTeacherRegistrationDate(now);
+
+		TeacherBean resultBean = teacherService.insert(insertBean);
+
+		if (resultBean == null) {
+			m.addAttribute("createMsg", "該帳號已被使用");
+		} else {
+			m.addAttribute("createMsg", "帳號創建成功");
+		}
+		return "/dist/account/teacher/TeacherLoginFront.jsp";
+	}
+
 	// 查詢單筆
 	@GetMapping("/TeacherSelectOne")
 	public String processFindOne(@RequestParam("teacherId") Integer teacherId, Model m) {
@@ -88,7 +153,7 @@ public class TeacherCrudController {
 		return "/dist/account/teacher/teacherCrudPage.jsp";
 
 	}
-	
+
 	// 查詢全部
 	@GetMapping("/TeacherSelectAll")
 	public String processFindAllAction(Model m) {
@@ -98,7 +163,7 @@ public class TeacherCrudController {
 
 		return "/dist/account/teacher/teacherCrudPage.jsp";
 	}
-	
+
 	// 刪除
 	@DeleteMapping("/TeacherDelete")
 	public String processDeleteAction(@RequestParam("teacherId") Integer teacherId, Model m) {
@@ -111,6 +176,5 @@ public class TeacherCrudController {
 		return "redirect:/teacher/teacher-account";
 
 	}
-	
-	
+
 }

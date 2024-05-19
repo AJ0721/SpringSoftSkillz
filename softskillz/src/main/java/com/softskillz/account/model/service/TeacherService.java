@@ -62,5 +62,10 @@ public class TeacherService {
 			return false;
 		}
 	}
+
+	//新增,註冊老師
+	public TeacherBean insert(TeacherBean teachers) {
+		return teacherRepository.save(teachers);
+	}
 	
 }

@@ -235,8 +235,14 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 							  >課程訂單管理</a
 							>
 						  </li>
+						  <li class="submenu-item">
+							<a href="/coursediscount/discount.do" class="submenu-link"
+							  >課程折扣管理</a
+							>
+						  </li>
 						</ul>
 					  </li>
+		
 					  <li class="sidebar-title">商品管理</li>
 					  <li class="sidebar-item has-sub">
 						<a href="#" class="sidebar-link">
@@ -245,7 +251,9 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 						</a>
 						<ul class="submenu">
 						  <li class="submenu-item">
-							<a href="/mall/index" class="submenu-link">商品管理</a>
+							<a href="/mall/mallProductAll" class="submenu-link"
+							  >商品管理</a
+							>
 						  </li>
 						</ul>
 					  </li>
@@ -258,6 +266,11 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 						<ul class="submenu">
 						  <li class="submenu-item">
 							<a href="/order" class="submenu-link">商品訂單管理</a>
+						  </li>
+						  <li class="submenu-item">
+							<a href="/order/create" class="submenu-link"
+							  >新增商品訂單</a
+							>
 						  </li>
 						</ul>
 					  </li>
@@ -287,6 +300,36 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 						  </li>
 						</ul>
 					  </li>
+		
+					  <li class="sidebar-title">訊息管理</li>
+					  <li class="sidebar-item has-sub">
+						<a href="#" class="sidebar-link">
+						  <i class="bi bi-grid-1x2-fill"></i>
+						  <span>訊息管理</span>
+						</a>
+						<ul class="submenu">
+						  <li class="submenu-item">
+							<a href="/chat/coursechat.do" class="submenu-link"
+							  >訊息管理</a
+							>
+						  </li>
+						</ul>
+					  </li>
+		
+					  <br />
+					  <form
+						action="/admin/admin-logout"
+						method="post"
+						style="text-align: center; margin: 0 auto"
+					  >
+						<button
+						  type="submit"
+						  class="btn rounded-pill"
+						  style="background-color: #3f6cba; color: white"
+						>
+						  <i class="bi bi-person-circle"></i>&nbsp;登出
+						</button>
+					  </form>
 					</ul>
 				  </div>
 			</div>
@@ -304,7 +347,7 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 			</div>
 			<div class="page-content">
 				<section class="row">
-					<div class="col-12 col-lg-10">
+					<div class="col-12">
 						<!-- 查詢學生預約 -->
 						<div class="card">
 							<h3 class="card-header">查詢學生預約資料</h3>
@@ -365,76 +408,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                                             %>
                                         </tbody>
                                     </table>
-								</div>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-12">
-								<div class="card">
-									<div class="card-header">
-										<h4>學生預約時數統計表</h4>
-									</div>
-									<div class="card-body">
-										<div id="reservationChart"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- 右方第一個卡片列表 -->
-					<div class="col-12 col-lg-2">
-						<div class="card">
-							<div class="card-body py-4 px-4">
-								<div class="d-flex align-items-center">
-									<div class="avatar avatar-xl">
-										<img src="/assets/compiled/jpg/1.jpg" alt="Face 1" />
-									</div>
-									<div class="ms-3 name">
-										<h5 class="font-bold">管理員名稱</h5>
-										<h6 class="text-muted mb-0">管理員帳號</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- 右方第二個Recent Messages -->
-						<div class="card">
-							<div class="card-header">
-								<h4>Recent Messages</h4>
-							</div>
-							<div class="card-content pb-4">
-								<div class="recent-message d-flex px-4 py-3">
-									<div class="avatar avatar-lg">
-										<img src="/assets/compiled/jpg/4.jpg" />
-									</div>
-									<div class="name ms-4">
-										<h5 class="mb-1">Hank Schrader</h5>
-										<h6 class="text-muted mb-0">@johnducky</h6>
-									</div>
-								</div>
-								<div class="recent-message d-flex px-4 py-3">
-									<div class="avatar avatar-lg">
-										<img src="/assets/compiled/jpg/5.jpg" />
-									</div>
-									<div class="name ms-4">
-										<h5 class="mb-1">Dean Winchester</h5>
-										<h6 class="text-muted mb-0">@imdean</h6>
-									</div>
-								</div>
-								<div class="recent-message d-flex px-4 py-3">
-									<div class="avatar avatar-lg">
-										<img src="/assets/compiled/jpg/1.jpg" />
-									</div>
-									<div class="name ms-4">
-										<h5 class="mb-1">John Dodol</h5>
-										<h6 class="text-muted mb-0">@dodoljohn</h6>
-									</div>
-								</div>
-								<div class="px-4">
-									<button
-										class="btn btn-block btn-xl btn-outline-primary font-bold mt-3">
-										Start Conversation</button>
 								</div>
 							</div>
 						</div>

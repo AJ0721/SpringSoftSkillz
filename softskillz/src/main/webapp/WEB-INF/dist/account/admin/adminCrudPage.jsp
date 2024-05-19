@@ -305,7 +305,7 @@
 											<td>
 												<form method="get" action="/admin/AdminSelectOne"
 													style="display: inline;">
-													管理員ID搜尋：<input type="text" name="admin_id"></input>&nbsp;&nbsp;
+													ID搜尋：<input type="text" name="admin_id"></input>&nbsp;&nbsp;
 													<input class="btn btn-primary" type="submit" value="搜尋"></input>
 												</form>
 											</td>

@@ -82,13 +82,18 @@ button:hover {
 .links a:hover {
 	text-decoration: underline;
 }
+
+.message {
+	color: #919fc6;
+	text-align: center; /* 文字居中 */
+}
 </style>
 </head>
 
 <body>
 	<div class="login-container">
-		<img src="/dist/account/images/softskillz_logo.png" alt="Softskillz Logo"
-			class="logo">
+		<img src="/dist/account/images/softskillz_logo.png"
+			alt="Softskillz Logo" class="logo">
 		<form id="loginForm" action="/student/student-login" method="POST">
 			<!--  接資料是用mame-->
 			<input type="text" id="usernameOrEmail" name="usernameOrEmail"
@@ -102,8 +107,8 @@ button:hover {
 				href="forgot_password.html">忘記密碼</a>
 		</div>
 		<br />
-		<div>${loginMsg}</div>
-		<div>${createMsg}</div>
+		<div class="message">${loginMsg}</div>
+		<div class="message">${createMsg}</div>
 	</div>
 </body>
 

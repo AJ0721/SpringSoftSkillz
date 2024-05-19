@@ -96,46 +96,42 @@
                                     <input type="text" class="form-control" id="name" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">電子郵件</label>
+                                    <label for="email" class="form-label">手機</label>
                                     <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">郵政編碼</label>
+                                    <input type="text" class="form-control" id="city" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="address" class="form-label">地址</label>
                                     <input type="text" class="form-control" id="address" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="city" class="form-label">城市</label>
-                                    <input type="text" class="form-control" id="city" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="state" class="form-label">州/省</label>
-                                    <input type="text" class="form-control" id="state" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="zip" class="form-label">郵政編碼</label>
+                                    <label for="zip" class="form-label">備註</label>
                                     <input type="text" class="form-control" id="zip" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">付款方式</label>
                                     <div class="d-flex justify-content-between">
                                         <div id="pay-method-option-item-cc"
-                                            class="pay-method-option-item selected text-center border rounded p-2"
+                                            class="pay-method-option-item selected text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
                                             role="button" style="width: 30%;">
-                                            <img src="https://via.placeholder.com/80" class="img-fluid mb-2" alt="信用卡">
+                                            <img src="/img/productorder/ecpay.jpg" class="img-fluid mb-2" alt="信用卡">
                                             <span>信用卡</span>
                                         </div>
-                                        <div id="pay-method-option-item-installment"
-                                            class="pay-method-option-item text-center border rounded p-2" role="button"
-                                            style="width: 30%;">
-                                            <img src="https://via.placeholder.com/80" class="img-fluid mb-2"
-                                                alt="信用卡分期">
-                                            <span>信用卡分期</span>
-                                        </div>
                                         <div id="pay-method-option-item-cvs"
-                                            class="pay-method-option-item text-center border rounded p-2" role="button"
-                                            style="width: 30%;">
-                                            <img src="https://via.placeholder.com/80" class="img-fluid mb-2" alt="超商付款">
+                                            class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
+                                            role="button" style="width: 30%;">
+                                            <img src="/img/productorder/ecpay2.jpg" class="img-fluid mb-2" alt="超商付款">
                                             <span>超商付款</span>
+                                        </div>
+                                        <div id="pay-method-option-item-installment"
+                                            class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
+                                            role="button" style="width: 30%;">
+                                            <img src="/img/productorder/LINEPAY.jpg" class="img-fluid mb-2"
+                                                alt="LINE PAY">
+                                            <span>LINE PAY</span>
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +158,7 @@
                                 <p class="mb-2">總金額:</p>
                                 <p id="grand-total" class="mb-2 fw-bold">$2341.60</p>
                             </div>
-                            <a href="#" class="btn btn-light w-100 border mt-2">返回商城</a>
+                            <a href="#" class="btn btn-primary w-100">返回商城</a>
                         </div>
                     </div>
                 </div>

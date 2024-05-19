@@ -67,63 +67,135 @@ pageEncoding="UTF-8"%>
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-      <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-          <h2 class="m-0 text-primary">
-              <i class="fa fa-book me-3"></i>SoftSkillz
-          </h2>
+    <nav
+      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
+    >
+      <a
+        href="/softskillz/fhomepage"
+        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
+      >
+        <h2 class="m-0 text-primary">
+          <i class="fa fa-book me-3"></i>SoftSkillz
+        </h2>
       </a>
-      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-          <span class="navbar-toggler-icon"></span>
+      <button
+        type="button"
+        class="navbar-toggler me-4"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-          <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-              <!-- 新增個人中心連結 -->
-              <c:if test="${loggedInUser == 'student'}">
-                <a href="/student/personal-center" class="nav-item nav-link">個人中心</a>
-            </c:if>
-              <a href="about.html" class="nav-item nav-link">About</a>
-              <div class="nav-item dropdown">
-                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">課程</a>
-                  <div class="dropdown-menu fade-down m-0">
-                      <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-                      <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
-                      <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
-                      <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
-                      <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
-                      <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
-                      <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
-                  </div>
-              </div>
-              <a href="#" class="nav-item nav-link">論壇</a>
-              <a href="#" class="nav-item nav-link">學伴</a>
-              <a href="#" class="nav-item nav-link">商城</a>
-              <a href="contact.html" class="nav-item nav-link">Contact</a>
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+          <a href="/softskillz/fhomepage" class="nav-item nav-link active"
+            >首頁</a
+          >
+          <a
+            href="/student/personal-center"
+            th:if="${loggedInUser == 'student'}"
+            class="nav-item nav-link"
+            >個人中心</a
+          >
+          <a
+            href="/studentScheduleFront/schedule"
+            th:if="${loggedInUser == 'student'}"
+            class="nav-item nav-link"
+            >學生行事曆</a
+          >
+          <a href="about.html" class="nav-item nav-link">About</a>
+          <div class="nav-item dropdown">
+            <a
+              href="/courseFront/selectAllPage"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              >課程</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/courseFront/selectAllPage" class="dropdown-item"
+                >所有課程</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=語言"
+                class="dropdown-item"
+                >語言</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=程式設計"
+                class="dropdown-item"
+                >程式設計</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=藝術"
+                class="dropdown-item"
+                >藝術</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=影片剪輯"
+                class="dropdown-item"
+                >影片剪輯</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=科學"
+                class="dropdown-item"
+                >科學</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=商業"
+                class="dropdown-item"
+                >商業</a
+              >
+            </div>
           </div>
-          <div class="navbar-nav p-4 p-lg-0">
-              <c:choose>
-                  <c:when test="${loggedInUser == 'guest'}">
-                      <div class="d-flex align-items-center">
-                          <form id="student-login-form" action="/student/student-loginPage" method="get" class="me-2">
-                              <button type="submit" class="btn btn-primary" style="background-color: #3f6cba; color: white; border: 1px solid transparent;">
-                                  學生登入
-                              </button>
-                          </form>
-                          <form id="teacher-login-form" action="/teacher/teacher-loginPage" method="get" class="me-2">
-                              <button type="submit" class="btn btn-primary">老師登入</button>
-                          </form>
-                      </div>
-                  </c:when>
-                  <c:otherwise>
-                      <form id="student-logout-form" action="/student/student-logout" method="post" class="me-2">
-                          <button type="submit" class="btn btn-primary">學生登出</button>
-                      </form>
-                  </c:otherwise>
-              </c:choose>
+          <a href="#" class="nav-item nav-link">論壇</a>
+          <a href="#" class="nav-item nav-link">學伴</a>
+          <a href="#" class="nav-item nav-link">商城</a>
+          <a href="contact.html" class="nav-item nav-link">Contact</a>
+        </div>
+        <div class="navbar-nav p-4 p-lg-0">
+          <div
+            class="d-flex align-items-center"
+            th:if="${loggedInUser == 'guest'}"
+          >
+            <form
+              id="student-login-form"
+              action="/student/student-loginPage"
+              method="get"
+              class="me-2"
+            >
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="
+                  background-color: #3f6cba;
+                  color: white;
+                  border: 1px solid transparent;
+                "
+              >
+                學生登入
+              </button>
+            </form>
+            <form
+              id="teacher-login-form"
+              action="/teacher/teacher-loginPage"
+              method="get"
+              class="me-2"
+            >
+              <button type="submit" class="btn btn-primary">老師登入</button>
+            </form>
           </div>
+          <form
+            id="student-logout-form"
+            action="/student/student-logout"
+            method="post"
+            th:if="${loggedInUser == 'student'}"
+            class="me-2"
+          >
+            <button type="submit" class="btn btn-primary">學生登出</button>
+          </form>
+        </div>
       </div>
-  </nav>
+    </nav>
   <!-- Navbar End -->
 
     <!-- 課程詳情 -->
@@ -235,7 +307,6 @@ pageEncoding="UTF-8"%>
                 <a href="/coursecart/${course.courseID}/10" class="btn btn-primary btn-lg d-block mb-2 cartbtn" id="button10">10堂: NT$ <span id="price10"></span></a>
                 <a href="/coursecart/${course.courseID}/20" class="btn btn-primary btn-lg d-block cartbtn" id="button20">20堂: NT$ <span id="price20"></span></a>
             </c:when>
-            
         </c:choose>
     </div>
 

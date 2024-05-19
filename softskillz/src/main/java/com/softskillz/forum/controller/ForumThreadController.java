@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysql.cj.log.Log;
 import com.softskillz.forum.model.StatusEnum;
 import com.softskillz.forum.model.dto.AdminDto;
 import com.softskillz.forum.model.dto.ForumThreadDto;
 import com.softskillz.forum.model.service.IForumThreadService;
+
+import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
 @RequestMapping("/forum/thread")
@@ -31,14 +35,7 @@ public class ForumThreadController {
 
 	@PostMapping("/insert")
 	public ResponseEntity<ForumThreadDto> insertThread(@RequestBody ForumThreadDto threadDto) {
-		// Hardcode the admin ID
-		if (threadDto.getAdmin() == null) {
-		    AdminDto adminDto = new AdminDto();
-		    adminDto.setAdminId(1);  
-		    threadDto.setAdmin(adminDto);  
-		    threadDto.getAdmin().setAdminId(1);  
-		} 
-
+				
 		ForumThreadDto createdThread = forumThreadService.insertForumThread(threadDto);
 	    if (createdThread != null) {
 	        return ResponseEntity.ok(createdThread);  

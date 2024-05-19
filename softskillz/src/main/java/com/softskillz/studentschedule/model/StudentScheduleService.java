@@ -23,5 +23,3 @@ public class StudentScheduleService {
 		studentScheduleRepository.deleteById(studentScheduleID);
 	}
 }
-
-// 修改學生行事曆

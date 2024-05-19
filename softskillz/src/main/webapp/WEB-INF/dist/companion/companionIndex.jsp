@@ -35,9 +35,6 @@
 					box-shadow: 1px 1px #888888;
 				}
 
-				#interest {}
-
-				#frequency {}
 			</style>
 		</head>
 
@@ -401,10 +398,6 @@
 <!-- 							</div> -->
 						</section>
 					</div>
-
-
-				</div>
-
 				<footer>
 					<div class="footer clearfix mb-0 text-muted">
 						<div class="float-start">
@@ -412,6 +405,10 @@
 						</div>
 					</div>
 				</footer>
+
+
+				</div>
+
 			</div>
 			</div>
 

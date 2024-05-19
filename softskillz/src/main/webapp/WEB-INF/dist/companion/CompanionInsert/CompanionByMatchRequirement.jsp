@@ -4,25 +4,53 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>SoftSkillz 登入後首頁（學生）（dist）</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SoftSkillz - 後台管理</title>
+    <!-- Favicon -->
+    <link href="/img/favicon.ico" rel="icon" />
 
-  <link rel="shortcut icon" href="/assets/compiled/svg/favicon.svg" type="image/x-icon" />
-  <link rel="shortcut icon"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjMzIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMzQiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSIzMyIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMzQiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249Ijk2LjAiCiAgIHRpZmY6WVJlc29sdXRpb249Ijk2LjAiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC4xIgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTAzLTMxVDEwOjUwOjIzKzAyOjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz5V57uAAAABgmlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz9maORHo1hYKC9hISNGTWwsRn4VFmOUX5uZZ36oeTOv954kW2WrKLHxa8FfwFZZK0WkZClrYoOe87ypmWTO7dzzud97z+nec8ETzaiaWd4NWtYyIiNhZWZ2TvE946WZSjqoj6mmPjE1HKWkfdxR5sSbgFOr9Ll/rXoxYapQVik8oOqGJTwqPL5i6Q5vCzeo6dii8KlwpyEXFL519LjLLw6nXP5y2IhGBsFTJ6ykijhexGra0ITl5bRqmWU1fx/nJTWJ7PSUxBbxJkwijBBGYYwhBgnRQ7/MIQIE6ZIVJfK7f/MnyUmuKrPOKgZLpEhj0SnqslRPSEyKnpCRYdXp/9++msneoFu9JgwVT7b91ga+LfjetO3PQ9v+PgLvI1xkC/m5A+h7F32zoLXug38dzi4LWnwHzjeg8UGPGbFfySvuSSbh9QRqZ6H+Gqrm3Z7l9zm+h+iafNUV7O5Bu5z3L/wAdthn7QIme0YAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAJTSURBVFiF7Zi9axRBGIefEw2IdxFBRQsLWUTBaywSK4ubdSGVIY1Y6HZql8ZKCGIqwX/AYLmCgVQKfiDn7jZeEQMWfsSAHAiKqPiB5mIgELWYOW5vzc3O7niHhT/YZvY37/swM/vOzJbIqVq9uQ04CYwCI8AhYAlYAB4Dc7HnrOSJWcoJcBS4ARzQ2F4BZ2LPmTeNuykHwEWgkQGAet9QfiMZjUSt3hwD7psGTWgs9pwH1hC1enMYeA7sKwDxBqjGnvNdZzKZjqmCAKh+U1kmEwi3IEBbIsugnY5avTkEtIAtFhBrQCX2nLVehqyRqFoCAAwBh3WGLAhbgCRIYYinwLolwLqKUwwi9pxV4KUlxKKKUwxC6ZElRCPLYAJxGfhSEOCz6m8HEXvOB2CyIMSk6m8HoXQTmMkJcA2YNTHm3congOvATo3tE3A29pxbpnFzQSiQPcB55IFmFNgFfEQeahaAGZMpsIJIAZWAHcDX2HN+2cT6r39GxmvC9aPNwH5gO1BOPFuBVWAZue0vA9+A12EgjPadnhCuH1WAE8ivYAQ4ohKaagV4gvxi5oG7YSA2vApsCOH60WngKrA3R9IsvQUuhIGY00K4flQG7gHH/mLytB4C42EgfrQb0mV7us8AAMeBS8mGNMR4nwHamtBB7B4QRNdaS0M8GxDEog7iyoAguvJ0QYSBuAOcAt71Kfl7wA8DcTvZ2KtOlJEr+ByyQtqqhTyHTIeB+ONeqi3brh+VgIN0fohUgWGggizZFTplu12yW8iy/YLOGWMpDMTPXnl+Az9vj2HERYqPAAAAAElFTkSuQmCC"
-    type="image/png" />
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="/assets/compiled/css/app.css" />
-  <link rel="stylesheet" href="/assets/compiled/css/app-dark.css" />
-  <link rel="stylesheet" href="/assets/compiled/css/iconly.css" />
+    <!-- Icon Font Stylesheet -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet" />
+    <link
+      href="/lib/owlcarousel/assets/owl.carousel.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet" />
+    
   <style>
 #img{
-width: 160px;
+width: 150px;
 height: auto;
 }
 
@@ -181,7 +209,6 @@ p { padding-left: 10px; }
   background-color: #fee6e6;
   border-color: #bbb;
   color: #666;
-  font-weight: 600;
 }
 .btn:hover,
 .btn.active {
@@ -197,266 +224,146 @@ p { padding-left: 10px; }
   color: #b12f27;
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
 }
+				.nav-link {
+            font-weight: normal; /* 預設為正常字體粗細 */
+        }
+        .nav-link.active {
+            font-weight: bold; /* 選中時為粗體 */
+        }
+        
+        #popup {
+					display: none;
+				}
 
-</style>
-</head>
+				#popupEng {
+					display: none;
+				}
+				
+				
+			</style>
+  </head>
 
-<body>
-  <script src="/assets/static/js/initTheme.js"></script>
-  <div id="app">
-    <div id="sidebar">
-      <div class="sidebar-wrapper active">
-        <div class="sidebar-header position-relative">
-          <div class="d-flex justify-content-between align-items-center">
-            <!-- 左上角Logo -->
-            <div class="logo">
-              <a href="index.html"><img src="/assets/compiled/jpg/logo1.jpg" alt="Logo" srcset="" /></a>
-            </div>
-            <!-- 切換日間夜間模式 -->
-            <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
-              <!-- 日間模式圖片 -->
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                role="img" class="iconify iconify--system-uicons" width="20" height="20"
-                preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
-                <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                  <path
-                    d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-                    opacity=".3"></path>
-                  <g transform="translate(-210 -1)">
-                    <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
-                    <circle cx="220.5" cy="11.5" r="4"></circle>
-                    <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
-                  </g>
-                </g>
-              </svg>
-              <!-- 切換按鈕 -->
-              <div class="form-check form-switch fs-6">
-                <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer" />
-                <label class="form-check-label"></label>
-              </div>
-              <!-- 夜間模式圖片 -->
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 24 24">
-                <path fill="currentColor"
-                  d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
-                </path>
-              </svg>
-            </div>
-            <div class="sidebar-toggler x">
-              <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-            </div>
-          </div>
-        </div>
-        <!-- 側邊欄 -->
-        <div class="sidebar-menu">
-          <ul class="menu">
-            <li class="sidebar-item active">
-              <a href="/softskillz/newhomepage" class="sidebar-link">
-                <i class="bi bi-grid-fill"></i>
-                <span>首頁</span>
-              </a>
-            </li>
-            <li class="sidebar-title">用戶管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>管理員</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">Horizontal Menu</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>教師</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">Horizontal Menu</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>學生</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">Horizontal Menu</a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="sidebar-title">課程管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>課程</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/course/coursePage/courseAllPage" class="submenu-link">所有課程功能</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">新增課程</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">查詢課程</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">修改課程</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>教師行事曆</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/teacherSchedule/teacherSchedulePage/teacherScheduleAllPage"
-                    class="submenu-link">所有教師行事曆功能</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">新增教師行事曆</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">查詢教師行事曆</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">修改教師行事曆</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>學生預約</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/studentReservation/studentReservationPage/studentReservationAllPage"
-                    class="submenu-link">所有學生預約功能</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">新增學生預約</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">查詢學生預約</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>學生行事曆</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">新增學生行事曆</a>
-                </li>
-                <li class="submenu-item">
-                  <a href="#" class="submenu-link">查詢學生行事曆</a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="sidebar-title">課程訂單管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>課程訂單管理</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/adminorder/adorder.do" class="submenu-link">課程訂單管理</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-title">商品管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>商品管理</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/mall/index" class="submenu-link">商品管理</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-title">商品訂單管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>商品訂單管理</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/order" class="submenu-link">商品訂單管理</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-title">學伴資料管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>學伴資料管理</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/companion/index.html" class="submenu-link">學伴資料管理</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-title">論壇管理</li>
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-grid-1x2-fill"></i>
-                <span>論壇管理</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a href="/forum/adminhome" class="submenu-link">論壇管理</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+  <body>
+    <!-- Spinner Start -->
+    <div
+      id="spinner"
+      class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+    >
+      <div
+        class="spinner-border text-primary"
+        style="width: 3rem; height: 3rem"
+        role="status"
+      >
+        <span class="sr-only">Loading...</span>
       </div>
     </div>
+    <!-- Spinner End -->
 
-    <!-- 中間內容部分 -->
-    <div id="main">
-      <header class="mb-3">
-        <a href="#" class="burger-btn d-block d-xl-none">
-          <i class="bi bi-justify fs-3"></i>
-        </a>
-      </header>
+    <!-- Navbar Start -->
+    <nav
+      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
+    >
+      <a
+        href="/softskillz/fhomepage"
+        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
+      >
+        <h2 class="m-0 text-primary">
+          <i class="fa fa-book me-3"></i>SoftSkillz
+        </h2>
+      </a>
+      <button
+        type="button"
+        class="navbar-toggler me-4"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+          <a href="/softskillz/fhomepage" class="nav-item nav-link active"
+            >首頁</a
+          >
+          <a href="about.html" class="nav-item nav-link">About</a>
+		  <a href="#" class="nav-item nav-link">個人中心</a>
+          <div class="nav-item dropdown">
+            <a
+              href="/courseFront/selectAllPage"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              >課程</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/courseFront/selectAllPage" class="dropdown-item"
+                >所有課程</a
+              >
+              <a href="team.html" class="dropdown-item">語言</a>
+              <a href="testimonial.html" class="dropdown-item">程式設計</a>
+              <a href="404.html" class="dropdown-item">藝術</a>
+              <a href="404.html" class="dropdown-item">影片剪輯</a>
+              <a href="404.html" class="dropdown-item">心理學</a>
+              <a href="404.html" class="dropdown-item">科學</a>
+              <a href="404.html" class="dropdown-item">商業</a>
+            </div>
+          </div>
+          <a href="#" class="nav-item nav-link">論壇</a>
+          <a href="#" class="nav-item nav-link">學伴</a>
+          <a href="#" class="nav-item nav-link">商城</a>
+          <div class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              >Pages</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="team.html" class="dropdown-item">Our Team</a>
+              <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+              <a href="404.html" class="dropdown-item">404 Page</a>
+            </div>
+          </div>
+          <a href="contact.html" class="nav-item nav-link">Contact</a>
+        </div>
+	  <form action="/student/student-logout" method="post" class="d-none d-lg-block">
+	    <button type="submit" class="btn btn-primary py-4 px-lg-5">
+	      <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+	    </button>
+	  </form>
+    </nav>
+    <!-- Navbar End -->
 
-      <div class="page-heading">
-        <h3>SoftSkillz - 你的功能</h3>
-      </div>
-      <div class="page-content">
-        <section class="row">
-          <div class="col-12 col-lg-9">
-            <!-- 卡片中放你的功能內容 -->
-            <div class="card">
-              <h3 class="card-header">新增課程資料</h3>
-              <div class="card-body">
+    <!-- 自行發揮的空間 -->
+
+<div id="main">
+
+					<div class="page-heading">
+					</div>
+					<div class="page-content">
+						<section class="row">
+							<div class="col-12">
+								<!-- 卡片中放你的功能內容 -->
+								<div class="card">
+									<!-- <h3 class="card-header">新增課程資料</h3> -->
+									<div class="card-body">
+										<div>
+											<div>
+												<h2 class="text-center mt-5">學伴配對</h2>
+											</div>
+										</div><br>
+
+<ul class="nav nav-tabs justify-content-center" >
+								<li class="nav-item"><a class="nav-link active"
+									aria-current="page" href="#" id="tab1" style="font-size: large;">與新的學伴配對</a></li>
+								<li class="nav-item"><a class="nav-link" href="#" id="tab2" style="font-size: large;">查詢我的學伴</a>
+								</li>
+							</ul>
 
 
-<div align="center">
-<h2>符合學習興趣的學伴資料</h2>
+							<div class="m-3" align="center" id="content1">
+<h5>符合學習興趣的學伴資料</h5>
 <%-- <jsp:useBean id="companion" scope="request" class="com.project2.bean.CompanionBean" /> --%>
 <!-- <form action="InsertCompanionByInterestDemo" method="post"> -->
-<table border="1">
+<table class="mt-3" border="1">
 <tr style="background-color:#a8fefa">
 <th>學伴編號<th>學生會員編號<th>學伴帳號名稱<th>學伴性別<th>學伴母語<th>學伴會說語言<th>學伴學習興趣<th>學伴學習頻率<th>學伴照片<th>是否配對
 <% List<CompanionBean> companions = (ArrayList<CompanionBean>)request.getAttribute("companions");
@@ -496,113 +403,203 @@ for(CompanionBean companion: companions){
 </td>
 <%} %>
 </table>
-<div><button class="index">回首頁</button></div>
+<div><button class="index btn btn-primary mt-3" style="background-color:#ACD4D6;border:0px;border-radius:8px">回首頁</button></div>
 <!-- </form> -->
 </div>
 
 
+<!-- 查已配對學伴的tab -->
 
-              </div>
+<div id="content2" style="display: none;" align="center" class="m-3">
+								<div style="border-radius: 10px;display:inline-block">
+										<form method="get" action="../GetCompanionMatchById">
+										<label for="" class="fs-5 mb-2 fw-bold">查詢目前已配對的學伴</label><br>
+											<label for="" class="fs-6">請輸入你的暱稱</label><br><input class="form-control"
+												type="text" name="nickname" id="english"
+												style="border-radius: 10px;display:inline-block;text-align: center;width: 200px;" placeholder="請輸入英文使用者名稱" />
+											<div class="popup; text-warning" id="popupEng">請輸入英文字！</div>
+											<div align="center"><button class="btn btn-primary mt-3" style="background-color:#ACD4D6;border:0px;border-radius:8px">查詢已配對學伴</button></div>
+										</form>
+									</div>
+							</div>
+
+								</div>
+
+
+							</div>
+
+
+
+    <!-- Footer Start -->
+    <div
+      class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
+      data-wow-delay="0.1s"
+    >
+      <div class="container py-5">
+        <div class="row g-5">
+          <div class="col-lg-3 col-md-6">
+            <h4 class="text-white mb-3">Quick Link</h4>
+            <a class="btn btn-link" href="">About Us</a>
+            <a class="btn btn-link" href="">Contact Us</a>
+            <a class="btn btn-link" href="">Privacy Policy</a>
+            <a class="btn btn-link" href="">Terms & Condition</a>
+            <a class="btn btn-link" href="">FAQs & Help</a>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h4 class="text-white mb-3">聯絡我們</h4>
+            <p class="mb-2">
+              <i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
+            </p>
+            <p class="mb-2">
+              <i class="fa fa-phone-alt me-3"></i>+012 345 67890
+            </p>
+            <p class="mb-2">
+              <i class="fa fa-envelope me-3"></i>info@example.com
+            </p>
+            <div class="d-flex pt-2">
+              <a class="btn btn-outline-light btn-social" href=""
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a class="btn btn-outline-light btn-social" href=""
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a class="btn btn-outline-light btn-social" href=""
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a class="btn btn-outline-light btn-social" href=""
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
             </div>
-
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Profile Visit</h4>
-                  </div>
-                  <div class="card-body">
-                    <div id="chart-profile-visit"></div>
-                  </div>
-                </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h4 class="text-white mb-3">圖片集錦</h4>
+            <div class="row g-2 pt-2">
+              <div class="col-4">
+                <img
+                  class="img-fluid bg-light p-1"
+                  src="/img/course-1.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="col-4">
+                <img
+                  class="img-fluid bg-light p-1"
+                  src="/img/course-2.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="col-4">
+                <img
+                  class="img-fluid bg-light p-1"
+                  src="/img/course-3.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="col-4">
+                <img
+                  class="img-fluid bg-light p-1"
+                  src="/img/course-2.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="col-4">
+                <img
+                  class="img-fluid bg-light p-1"
+                  src="/img/course-3.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="col-4">
+                <img
+                  class="img-fluid bg-light p-1"
+                  src="/img/course-1.jpg"
+                  alt=""
+                />
               </div>
             </div>
           </div>
-
-          <!-- 右方第一個卡片列表 -->
-          <div class="col-12 col-lg-3">
-            <div class="card">
-              <div class="card-body py-4 px-4">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar-xl">
-                    <img src="/assets/compiled/jpg/1.jpg" alt="Face 1" />
-                  </div>
-                  <div class="ms-3 name">
-                    <h5 class="font-bold">管理員名稱</h5>
-                    <h6 class="text-muted mb-0">管理員帳號</h6>
-                  </div>
-                </div>
-              </div>
+          <div class="col-lg-3 col-md-6">
+            <h4 class="text-white mb-3">意見信箱</h4>
+            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+            <div class="position-relative mx-auto" style="max-width: 400px">
+              <input
+                class="form-control border-0 w-100 py-3 ps-4 pe-5"
+                type="text"
+                placeholder="Your email"
+              />
+              <button
+                type="button"
+                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
+              >
+                SignUp
+              </button>
             </div>
-            <!-- 右方第二個Recent Messages -->
-            <div class="card">
-              <div class="card-header">
-                <h4>Recent Messages</h4>
-              </div>
-              <div class="card-content pb-4">
-                <div class="recent-message d-flex px-4 py-3">
-                  <div class="avatar avatar-lg">
-                    <img src="/assets/compiled/jpg/4.jpg" />
-                  </div>
-                  <div class="name ms-4">
-                    <h5 class="mb-1">Hank Schrader</h5>
-                    <h6 class="text-muted mb-0">@johnducky</h6>
-                  </div>
-                </div>
-                <div class="recent-message d-flex px-4 py-3">
-                  <div class="avatar avatar-lg">
-                    <img src="/assets/compiled/jpg/5.jpg" />
-                  </div>
-                  <div class="name ms-4">
-                    <h5 class="mb-1">Dean Winchester</h5>
-                    <h6 class="text-muted mb-0">@imdean</h6>
-                  </div>
-                </div>
-                <div class="recent-message d-flex px-4 py-3">
-                  <div class="avatar avatar-lg">
-                    <img src="/assets/compiled/jpg/1.jpg" />
-                  </div>
-                  <div class="name ms-4">
-                    <h5 class="mb-1">John Dodol</h5>
-                    <h6 class="text-muted mb-0">@dodoljohn</h6>
-                  </div>
-                </div>
-                <div class="px-4">
-                  <button class="btn btn-block btn-xl btn-outline-primary font-bold mt-3">
-                    Start Conversation
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <footer>
-        <div class="footer clearfix mb-0 text-muted">
-          <div class="float-start">
-            <p>2024 &copy; Soft Skillz</p>
           </div>
         </div>
-      </footer>
+      </div>
+      <div class="container">
+        <div class="copyright">
+          <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+              &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
+              Right Reserved.
+
+              <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+              <div class="footer-menu">
+                <a href="">Home</a>
+                <a href="">Cookies</a>
+                <a href="">Help</a>
+                <a href="">FQAs</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    <!-- Footer End -->
 
-  <script src="/assets/static/js/components/dark.js"></script>
-  <script src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
+      ><i class="bi bi-arrow-up"></i
+    ></a>
 
-  <script src="/assets/compiled/js/app.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
-  <!-- Need: Apexcharts -->
-  <script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
-  <script src="/assets/static/js/pages/dashboard.js"></script>
-  
-  <script>
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+    <script>
+        // 監聽 tab 的點擊事件
+        document.getElementById('tab1').addEventListener('click', function() {
+            // 切換內容顯示
+            document.getElementById('content1').style.display = 'block';
+            document.getElementById('content2').style.display = 'none';
+            // 切換 tab 的激活狀態
+            this.classList.add('active');
+            document.getElementById('tab2').classList.remove('active');
+        });
+
+        document.getElementById('tab2').addEventListener('click', function() {
+            // 切換內容顯示
+            document.getElementById('content1').style.display = 'none';
+            document.getElementById('content2').style.display = 'block';
+            // 切換 tab 的激活狀態
+            this.classList.add('active');
+            document.getElementById('tab1').classList.remove('active');
+        });
+    </script>
+      <script>
 const index = document.querySelector('.index')
 index.addEventListener('click', function () {
-  location.href = "/companionIndex"
+  location.href = "/companionFrontIndex"
 })
 </script>
-</body>
-
+  </body>
 </html>

@@ -15,6 +15,7 @@ import com.softskillz.account.model.bean.TeacherBean;
 @RequestMapping("/forum")
 public class PageTransitionController {
 
+	
 	// to frontstage home
 	@GetMapping("/userhome.controller")
 	public String showUserForumHome(Model model) {

@@ -1,124 +1,168 @@
 package com.softskillz.productorder.model;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer order_id;
-    private Integer student_id;
-    private Integer coupon_id;    
-    private Integer total_amount;
-    private String order_status;
-    private String payment_method;
-    private String shipment_status;
-    private String shipping_address;
-    
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	private LocalDateTime order_date;
-   
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	private LocalDateTime shipment_date;
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<OrderItem> orderItems = new HashSet<OrderItem>();
+    @Column(name = "order_id")
+    private Integer orderId;
 
-	public Integer getOrder_id() {
-		return order_id;
-	}
+    @Column(name = "student_id")
+    private Integer studentId;
 
-	public void setOrder_id(Integer order_id) {
-		this.order_id = order_id;
-	}
+    @Column(name = "coupon_id")
+    private Integer couponId;
 
-	public Integer getStudent_id() {
-		return student_id;
-	}
+    @Column(name = "total_amount")
+    private Integer totalAmount;
 
-	public void setStudent_id(Integer student_id) {
-		this.student_id = student_id;
-	}
+    @Column(name = "order_status")
+    private String orderStatus;
 
-	public Integer getCoupon_id() {
-		return coupon_id;
-	}
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
-	public void setCoupon_id(Integer coupon_id) {
-		this.coupon_id = coupon_id;
-	}
+    @Column(name = "shipment_status")
+    private String shipmentStatus;
 
-	public Integer getTotal_amount() {
-		return total_amount;
-	}
+    @Column(name = "shipping_address")
+    private String shippingAddress;
 
-	public void setTotal_amount(Integer total_amount) {
-		this.total_amount = total_amount;
-	}
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
 
-	public String getOrder_status() {
-		return order_status;
-	}
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "shipment_date")
+    private LocalDateTime shipmentDate;
 
-	public void setOrder_status(String order_status) {
-		this.order_status = order_status;
-	}
+    @JsonManagedReference
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<OrderItem> orderItems = new HashSet<>();
 
-	public String getPayment_method() {
-		return payment_method;
-	}
+    public Order() {
+        super();
+    }
 
-	public void setPayment_method(String payment_method) {
-		this.payment_method = payment_method;
-	}
+    public Integer getOrderId() {
+        return orderId;
+    }
 
-	public String getShipment_status() {
-		return shipment_status;
-	}
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
 
-	public void setShipment_status(String shipment_status) {
-		this.shipment_status = shipment_status;
-	}
+    public Integer getStudentId() {
+        return studentId;
+    }
 
-	public String getShipping_address() {
-		return shipping_address;
-	}
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
 
-	public void setShipping_address(String shipping_address) {
-		this.shipping_address = shipping_address;
-	}
+    public Integer getCouponId() {
+        return couponId;
+    }
 
-	public LocalDateTime getOrder_date() {
-		return order_date;
-	}
+    public void setCouponId(Integer couponId) {
+        this.couponId = couponId;
+    }
 
-	public void setOrder_date(LocalDateTime order_date) {
-		this.order_date = order_date;
-	}
+    public Integer getTotalAmount() {
+        return totalAmount;
+    }
 
-	public LocalDateTime getShipment_date() {
-		return shipment_date;
-	}
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
-	public void setShipment_date(LocalDateTime shipment_date) {
-		this.shipment_date = shipment_date;
-	}
+    public String getOrderStatus() {
+        return orderStatus;
+    }
 
-	public Set<OrderItem> getOrderItems() {
-		return orderItems;
-	}
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
-	public void setOrderItems(Set<OrderItem> orderItems) {
-		this.orderItems = orderItems;
-	}
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
 
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getShipmentStatus() {
+        return shipmentStatus;
+    }
+
+    public void setShipmentStatus(String shipmentStatus) {
+        this.shipmentStatus = shipmentStatus;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public LocalDateTime getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public LocalDateTime getShipmentDate() {
+        return shipmentDate;
+    }
+
+    public void setShipmentDate(LocalDateTime shipmentDate) {
+        this.shipmentDate = shipmentDate;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    @Override
+    public String toString() {
+        return "Order [orderId=" + orderId + ", studentId=" + studentId + ", couponId=" + couponId + ", totalAmount=" 
+                + totalAmount + ", orderStatus=" + orderStatus + ", paymentMethod=" + paymentMethod 
+                + ", shipmentStatus=" + shipmentStatus + ", shippingAddress=" + shippingAddress + ", orderDate=" 
+                + orderDate + ", shipmentDate=" + shipmentDate + ", orderItems=" + orderItems + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Order other = (Order) obj;
+        return Objects.equals(orderId, other.orderId);
+    }
 }

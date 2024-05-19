@@ -62,15 +62,25 @@ public class StudentCrudController {
 		}
 	}
 
+	// 個人中心，印舊資料
+	@GetMapping({ "/student-update" })
+	public String goToStudentUpdate(@RequestParam("studentId") Integer studentId, Model m) {
+
+		StudentBean oldStudentBean = studentService.findById(studentId);
+		m.addAttribute("student", oldStudentBean);
+
+		return "/dist/account/student/StudentUpdate.jsp";
+	}
+
 	// 登出功能
 	@PostMapping("/student-logout")
 	public String logoutAction(HttpServletRequest request) {
-		
+
 		// 獲取當前會話，不創建新會話
-		//true就是如果你沒有，就叫舊的session，false就是會叫對話過的session
-		HttpSession session = request.getSession(false); 
-		
-		//session != null是對話過的
+		// true就是如果你沒有，就叫舊的session，false就是會叫對話過的session
+		HttpSession session = request.getSession(false);
+
+		// session != null是對話過的
 		if (session != null) {
 			session.invalidate(); // 使會話失效
 		}
@@ -89,16 +99,6 @@ public class StudentCrudController {
 		return "/elearning/account/student/StudentCreate.jsp";
 	}
 
-	// 新增頁面，印舊資料
-	@GetMapping({ "/student-update" })
-	public String goToStudentUpdate(@RequestParam("studentId") Integer studentId, Model m) {
-
-		StudentBean oldStudentBean = studentService.findById(studentId);
-		m.addAttribute("student", oldStudentBean);
-
-		return "/dist/account/student/StudentUpdate.jsp";
-	}
-
 	// 新增, 學生註冊
 	@PostMapping("/student-create")
 	public String studentInsert(@RequestParam("studentLastName") String studentLastName,
@@ -108,7 +108,8 @@ public class StudentCrudController {
 			@RequestParam("studentGender") String studentGender, @RequestParam("studentBirth") String studentBirth,
 			@RequestParam("studentCountry") String studentCountry, @RequestParam("studentMobile") String studentMobile,
 			@RequestParam("studentEducation") String studentEducation,
-			@RequestParam("learningFrequency") String learningFrequency,@RequestParam("firstLanguage") String firstLanguage, Model m) throws ParseException {
+			@RequestParam("learningFrequency") String learningFrequency,
+			@RequestParam("firstLanguage") String firstLanguage, Model m) throws ParseException {
 
 		Date now = new Date();
 
@@ -129,7 +130,7 @@ public class StudentCrudController {
 		insertBean.setStudentEducation(studentEducation);
 		insertBean.setLearningFrequency(learningFrequency);
 		insertBean.setFirstLanguage(firstLanguage);
-		insertBean.setStudentRegistrationDate(now);   // 設置註冊日期為當前日期
+		insertBean.setStudentRegistrationDate(now); // 設置註冊日期為當前日期
 
 		StudentBean resultBean = studentService.insert(insertBean);
 
@@ -183,7 +184,7 @@ public class StudentCrudController {
 
 	}
 
-	// 後台修改學生資料
+	// 個人中心，修改學生資料
 	@PutMapping("/StudentUpdate")
 	public String processUpdateAction(@RequestParam("studentId") Integer studentId,
 			@RequestParam("studentLastName") String studentLastName,

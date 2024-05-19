@@ -39,10 +39,13 @@ public class AdminService {
 	
 
 	// 檢查帳號密碼
-	public boolean checkLogin(AdminBean adminBean) {
+	public AdminBean checkLogin(AdminBean adminBean) {
 		Optional<AdminBean> result = adminRepos.findByUsernameAndPassword(adminBean.getAdminAccount(),
 				adminBean.getAdminPassword());
-		return result.isPresent();
+		if (result.isPresent()) {
+			return result.get();
+		}
+		return null;
 	}
 
 	// 更新
@@ -90,5 +93,6 @@ public class AdminService {
 	public Page<AdminBean> findAllByPage(Pageable pageable){
 		return adminRepos.findAll(pageable);
 	}
-
+	
+	
 }

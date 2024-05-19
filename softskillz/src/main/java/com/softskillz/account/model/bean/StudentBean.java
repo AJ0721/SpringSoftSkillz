@@ -87,7 +87,6 @@ public class StudentBean {
 	@Column(name = "learning_frequency")
 	private String learningFrequency;
 
-//	@Transient
 	@Column(name = "student_id_formatted",insertable = false,updatable = false)
 	private String studentIdFormatted;
 

@@ -26,7 +26,7 @@ import jakarta.annotation.Resource;
 
 @Controller
 @RequestMapping("/order")
-//@SessionAttributes(names = {"order"})
+@SessionAttributes(names = {"order"})
 public class OrderController {
 
 	private final OrderService orderService;
@@ -40,6 +40,7 @@ public class OrderController {
 //    public String showSearchPage() {
 //        return "/order/jsp/searchOrder.jsp"; // searchOrder.jsp 是搜尋框頁面
 //    }
+	
     // 根據訂單 ID 顯示單個訂單的詳情頁面，使用查詢參數接收訂單ID
     @GetMapping("/search")
     public String getOrderById(@RequestParam("orderId") int orderId, Model model) {
@@ -110,15 +111,15 @@ public class OrderController {
                               RedirectAttributes redirectAttributes) {
     
         Order order = orderService.getById(orderId);
-        order.setStudent_id(studentId);
-        order.setCoupon_id(couponId);
-        order.setOrder_date(orderDate);
-        order.setTotal_amount(totalAmount);
-        order.setOrder_status(orderStatus);
-        order.setPayment_method(paymentMethod);
-        order.setShipment_date(shipmentDate);
-        order.setShipment_status(shipmentStatus);
-        order.setShipping_address(shippingAddress);
+        order.setStudentId(studentId);
+        order.setCouponId(couponId);
+        order.setOrderDate(orderDate);
+        order.setTotalAmount(totalAmount);
+        order.setOrderStatus(orderStatus);
+        order.setPaymentMethod(paymentMethod);
+        order.setShipmentDate(shipmentDate);
+        order.setShipmentStatus(shipmentStatus);
+        order.setShippingAddress(shippingAddress);
 
         orderService.updateOrder(order);
         redirectAttributes.addFlashAttribute("successMessage", "訂單更新成功！");
@@ -127,7 +128,7 @@ public class OrderController {
     
     @GetMapping("/orderHistory")
     public String orderHistory(Model model) {
-        // 获取用户订单历史数据
+        // 獲取會員訂單歷史紀錄
         // model.addAttribute("orders", orderService.getOrdersByUser(userId));
         return "elearning/productorder/orderhistory.html";
     }

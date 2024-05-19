@@ -35,7 +35,7 @@ public class StudentScheduleController {
 	@Autowired
 	private StudentScheduleService studentScheduleService;
 
-	// 根據教師編號查詢該教師所有行事曆的頁面
+	// 根據學生編號查詢該所有行事曆的頁面
 	@GetMapping("/selectAllPage")
 	public String selectAllStudentSchedules(Model model) {
 		List<StudentBean> students = studentService.findAllStudents();
@@ -73,7 +73,7 @@ public class StudentScheduleController {
 		return "/dist/studentSchedule/studentScheduleSelectAll.jsp";
 	}
 
-	// 處理刪除教師行事曆的請求
+	// 處理刪除學生行事曆的請求
 	@PostMapping("/deleted")
 	@ResponseBody
 	public ResponseEntity<?> deleteStudentSchedule(@RequestParam("studentScheduleID") Integer studentScheduleID) {
