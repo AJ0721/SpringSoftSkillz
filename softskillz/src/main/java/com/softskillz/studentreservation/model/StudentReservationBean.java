@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "student_reservation")
@@ -50,6 +51,9 @@ public class StudentReservationBean implements Serializable {
 	@Column(name = "total_hours")
 	private int totalHours;
 
+	@Transient // 不儲存到資料庫，只是用來傳遞資料
+	private String zoomMeetingUrl;
+
 	@JoinColumn(name = "course_id", insertable = false, updatable = false)
 	@JsonBackReference("course-studentReservation")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -64,7 +68,6 @@ public class StudentReservationBean implements Serializable {
 	@JsonBackReference("teacherSchedule-studentReservation")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private TeacherScheduleBean teacherScheduleBean;
-
 
 	public StudentReservationBean() {
 	}
@@ -177,5 +180,13 @@ public class StudentReservationBean implements Serializable {
 
 	public void setTeacherScheduleBean(TeacherScheduleBean teacherScheduleBean) {
 		this.teacherScheduleBean = teacherScheduleBean;
+	}
+
+	public String getZoomMeetingUrl() {
+		return zoomMeetingUrl;
+	}
+
+	public void setZoomMeetingUrl(String zoomMeetingUrl) {
+		this.zoomMeetingUrl = zoomMeetingUrl;
 	}
 }

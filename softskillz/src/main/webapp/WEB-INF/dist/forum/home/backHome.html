@@ -467,7 +467,7 @@
                                         <button class="btn btn-success mb-3" id="createNewThread">新增文章</button>
                                         <button class="btn btn-danger mb-3" id="deleteSelectedThreads">刪除</button>
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover">
+                                            <table class="table table-bordered table-hover" id="thread-table">
                                                 <thead>
                                                     <tr class="text-nowrap text-center">
                                                         <th><input class="form-check-input" type="checkbox"
@@ -481,7 +481,6 @@
                                                         <th>留言</th>
                                                         <th>創建時間</th>
                                                         <th>狀態</th>
-                                                        <th>編輯</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="threadList">
@@ -497,7 +496,7 @@
 
                                         <button class="btn btn-danger mb-3" id="deleteSelectedPosts">刪除</button>
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover">
+                                            <table class="table table-bordered table-hover" id="post-table">
                                                 <thead>
                                                     <tr class="text-nowrap text-center">
                                                         <th><input class="form-check-input" type="checkbox"
@@ -613,7 +612,6 @@
         $(document).ready(function () {
 
             //USER VALIDATION
-
             let loggedInUser;
             let userType;
 
@@ -658,39 +656,30 @@
 
 
 
-            $('#category-table').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"  // 使用中文介面
-                },
-                "paging": true,    // 啟用表格分頁
-                "lengthChange": true,  // 允許用戶改變分頁設置
-                "searching": true,  // 啟用快速搜索
-                "ordering": true,  // 啟用排序
-                "info": true,      // 顯示頁腳信息
-                "autoWidth": false,  // 禁用自動調整列寬
-                "responsive": true  // 啟用響應式布局
+            //CLICK: SYNC TAB WITH HASH
+            const navLinks = document.querySelectorAll('#nav-tabs-list .nav-link');
+
+            // Add click event listeners to each nav link
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const tabHash = this.getAttribute('href');
+                    console.log(`tabhash:${tabHash}`);
+                    window.location.hash = tabHash;
+                    //use window.location.hash = tabHash to change the hash without navigating to a new page
+
+                });
             });
+
+
         });
 
-        // Update DataTable on tab click
-        // $('#nav-category-tab').on('click', function () {
-        //     $('#categoryList').empty();
-        //     fetchCategories().done(function (categories) {
-        //         displayCategoriesTab(categories);
-        //         dataTable.columns.adjust().draw(); // Adjust columns and redraw DataTable
-        //     }).fail(function (error) {
-        //         console.error("Error fetching categories:", error);
-        //         $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
-        //     });
-        // });
 
         // Redirect to assigned tab based on hash in URL
         var hash = window.location.hash;
         console.log(`tabhash:${hash}`);
 
         $('.nav-tabs a[href="' + hash + '"]').tab('show');
-
-
         switch (hash) {
             case '#nav-category':
                 $('#categoryList').empty();
@@ -726,8 +715,6 @@
                     });
                 break;
         }
-
-
 
         //CLICK: SYNC TAB WITH HASH
         const navLinks = document.querySelectorAll('#nav-tabs-list .nav-link');

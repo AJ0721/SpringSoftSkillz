@@ -379,7 +379,7 @@ td.dataTables_empty {
 													<td>${teaher.teacherCourseStatus}</td>
 													<td hidden>${teaher.teacherIdFormatted}</td>
 													<td><a
-														href="teaher-update?teaherId=${teaher.teacherId}"
+														href="teacher-update?teacherId=${teaher.teacherId}"
 														class="btn"
 														style="color: white; background-color: #808cbc;">修改</a></td>
 													<td>

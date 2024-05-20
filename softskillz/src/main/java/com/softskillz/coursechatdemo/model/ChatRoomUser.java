@@ -1,8 +1,14 @@
 package com.softskillz.coursechatdemo.model;
 
-public class ChatRoomUser {
+import java.io.Serializable;
+
+public class ChatRoomUser implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String userID;
+
+	private String userName;
 
 	private String userPhoto;
 
@@ -12,6 +18,13 @@ public class ChatRoomUser {
 	public ChatRoomUser(String userID, String userPhoto) {
 		super();
 		this.userID = userID;
+		this.userPhoto = userPhoto;
+	}
+
+	public ChatRoomUser(String userID, String userName, String userPhoto) {
+		super();
+		this.userID = userID;
+		this.userName = userName;
 		this.userPhoto = userPhoto;
 	}
 
@@ -31,9 +44,17 @@ public class ChatRoomUser {
 		this.userPhoto = userPhoto;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
-		return "ChatRoomUser [userID=" + userID + ", userPhoto=" + userPhoto + "]";
+		return "ChatRoomUser [userID=" + userID + ", userName=" + userName + ", userPhoto=" + userPhoto + "]";
 	}
 
 }

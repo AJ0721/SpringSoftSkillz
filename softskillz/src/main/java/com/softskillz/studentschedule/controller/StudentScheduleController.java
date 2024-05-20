@@ -19,18 +19,23 @@ import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.service.StudentService;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
+import com.softskillz.studentreservation.model.StudentReservationBean;
+import com.softskillz.studentreservation.model.StudentReservationService;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.studentschedule.model.StudentScheduleService;
 
 @Controller
 @RequestMapping("/studentSchedule")
 public class StudentScheduleController {
-
+	
 	@Autowired
-    private CourseService courseService;
+	private CourseService courseService;
 	
 	@Autowired
 	private StudentService studentService;
+	
+	@Autowired
+	private StudentReservationService studentReservationService;
 
 	@Autowired
 	private StudentScheduleService studentScheduleService;
@@ -55,11 +60,17 @@ public class StudentScheduleController {
 			for (int i = 0; i < reservationIds.length; i++) {
 				if (!reservationIds[i].equals("0")) {
 					int reservationId = Integer.parseInt(reservationIds[i]);
-					CourseBean course = courseMap.computeIfAbsent(reservationId,
-							id -> courseService.findCourseById(id));
-					if (course != null) {
-						String hour = String.format("%02d:00", i);
-						scheduleDisplay.append(hour).append(" - ").append(course.getCourseName()).append(", ");
+					StudentReservationBean reservation = studentReservationService
+							.findStudentReservationById(reservationId);
+					if (reservation != null) {
+						int courseId = reservation.getCourseID();
+						CourseBean course = courseMap.computeIfAbsent(courseId, id -> courseService.findCourseById(id));
+						if (course != null) {
+							String hour = String.format("%02d:00", i);
+							scheduleDisplay.append(hour).append(" - ").append(course.getCourseName()).append(", ");
+						}
+					} else {
+						System.err.println("Reservation not found for ID: " + reservationId);
 					}
 				}
 			}

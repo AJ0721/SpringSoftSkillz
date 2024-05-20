@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.course.model.CourseBean;
+import com.softskillz.course.model.CourseService;
 import com.softskillz.courseorder.model.bean.CartItem;
 import com.softskillz.courseorder.model.bean.Course2;
 import com.softskillz.courseorder.model.service.impl.CourseServiceImpl;
+import com.softskillz.util.Util;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,10 +31,16 @@ import jakarta.servlet.http.HttpSession;
 public class CartController {
 
 	@Autowired
-	private CourseServiceImpl cService;
+//	private CourseServiceImpl cService;
+	private CourseService cService;
 
 	@GetMapping("/cart.do")
-	public String processAction() {
+	public String processAction(HttpSession session,Model m) {
+		StudentBean student =(StudentBean) session.getAttribute("studentData");
+		if(student == null) {
+			m.addAttribute("path","/coursecart/cart.do");
+			return "forward:/student/student-loginPage";
+		}
 		return "/elearning/courseorder/cart.html";
 	}
 
@@ -48,17 +58,20 @@ public class CartController {
 	@ResponseBody
 	public String addToCart(@PathVariable("cid") Integer cid,@PathVariable("qty")Integer quantity, Model m, HttpSession session) {
 
-		Course2 course = cService.getCourseById(cid);
+//		Course2 course = cService.getCourseById(cid);
+		CourseBean courseBean = cService.findCourseById(cid);
+		Course2 course = Util.getCourse(courseBean);
+		
 		Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("coursecart");
 		if (cart == null) {
 			cart = new HashMap<Integer, CartItem>();
 		}
 		CartItem cartItem = new CartItem();
-		cartItem.setCourse(course);
-		;
+		cartItem.setCourse(course);		;
 		cartItem.setQuantity(quantity);
 		cart.put(cart.size(), cartItem);
 		session.setAttribute("coursecart", cart);
+		System.out.println(cart);
 		return "1";
 	}
 

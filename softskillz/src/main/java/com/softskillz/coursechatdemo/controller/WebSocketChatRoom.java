@@ -18,6 +18,7 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -74,9 +75,7 @@ public class WebSocketChatRoom {
 
 			if (receiveSession != null) {
 				receiveSession.getAsyncRemote().sendText(message);
-			} else {
-				session.getAsyncRemote().sendText("系统消息：對方不在線上，消息已保存");
-			}
+			} 
 		} catch (JsonProcessingException e) {
 			System.out.println("JSON 解析错误：" + e.getMessage());
 			e.printStackTrace();
@@ -99,11 +98,19 @@ public class WebSocketChatRoom {
 		error.printStackTrace();
 	}
 
-	public static String generateChatRoomId(String user1, String user2) {
-		if (user1.compareTo(user2) < 0) {
-			return user1 + "_" + user2;
-		} else {
-			return user2 + "_" + user1;
-		}
-	}
+
+	
+    public static void sendMessageToUser(String rece, Map<String, Object> messageMap) throws JsonProcessingException {
+    	ObjectMapper om = new ObjectMapper();
+    	ChatRoom chatRoom = (ChatRoom) messageMap.get("chatRoom");
+    	chatRoomService.insertChatRoom(chatRoom);
+    	ChatHistory chatHistory = (ChatHistory) messageMap.get("chatHistory");
+    	chatHistoryService.insertChat(chatHistory);
+    	String message = om.writeValueAsString(chatHistory);
+        String userKey = USER_NAME_PREFIX + rece;
+        Session session = sessionMap.get(userKey);
+        if (session != null) {
+            session.getAsyncRemote().sendText(message);
+        }
+    }
 }

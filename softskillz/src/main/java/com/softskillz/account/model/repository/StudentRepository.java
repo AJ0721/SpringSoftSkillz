@@ -17,6 +17,8 @@ public interface StudentRepository extends JpaRepository<StudentBean, Integer> {
     @Query("FROM StudentBean sb WHERE sb.studentEmail = :sEmail AND sb.studentPassword = :sPassword")
     Optional<StudentBean> findByEmail(@Param("sEmail") String studentEmail, @Param("sPassword") String studentPassword);
 
+	StudentBean findByStudentIdFormatted(String studentIdFormatted);
+
 }
 	
 

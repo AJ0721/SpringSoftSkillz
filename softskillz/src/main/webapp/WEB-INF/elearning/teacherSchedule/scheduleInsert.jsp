@@ -107,30 +107,16 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
               href="#"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
-              >開課</a
+              >課程</a
             >
             <div class="dropdown-menu fade-down m-0">
               <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
+              <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
               <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
             </div>
           </div>
-          <a href="about.html" class="nav-item nav-link">About</a>
 		      <a href="#" class="nav-item nav-link">個人中心</a>
           <a href="#" class="nav-item nav-link">論壇</a>
-          <div class="nav-item dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              >Pages</a
-            >
-            <div class="dropdown-menu fade-down m-0">
-              <a href="team.html" class="dropdown-item">Our Team</a>
-              <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-              <a href="404.html" class="dropdown-item">404 Page</a>
-            </div>
-          </div>
-          <a href="contact.html" class="nav-item nav-link">Contact</a>
         </div>
 	  <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
 	    <button type="submit" class="btn btn-primary py-4 px-lg-5">
@@ -161,7 +147,7 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                 required
               />
             </p>
-
+            <div class="text-center">
             <fieldset>
               <legend>開課時段 :</legend>
               <!-- 使用 JavaScript 生成開課時段按鈕 -->
@@ -170,7 +156,7 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                 <div id="timeSlots2" class="column"></div>
               </div>
             </fieldset>
-            <div class="text-center">
+            
               <!-- 提交表單的按鈕 -->
               <button
                 type="submit"
@@ -198,24 +184,15 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
     >
       <div class="container py-5">
         <div class="row g-5">
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">Quick Link</h4>
-            <a class="btn btn-link" href="">About Us</a>
-            <a class="btn btn-link" href="">Contact Us</a>
-            <a class="btn btn-link" href="">Privacy Policy</a>
-            <a class="btn btn-link" href="">Terms & Condition</a>
-            <a class="btn btn-link" href="">FAQs & Help</a>
-          </div>
-          <div class="col-lg-3 col-md-6">
+          <div class="col-lg-8 col-md-6">
             <h4 class="text-white mb-3">聯絡我們</h4>
             <p class="mb-2">
-              <i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
+              <i class="fa fa-map-marker-alt me-3"></i
+              >320桃園市中壢區新生路二段421號
             </p>
+            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
             <p class="mb-2">
-              <i class="fa fa-phone-alt me-3"></i>+012 345 67890
-            </p>
-            <p class="mb-2">
-              <i class="fa fa-envelope me-3"></i>info@example.com
+              <i class="fa fa-envelope me-3"></i>academic@shengte.college
             </p>
             <div class="d-flex pt-2">
               <a class="btn btn-outline-light btn-social" href=""
@@ -232,56 +209,9 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
               ></a>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">圖片集錦</h4>
-            <div class="row g-2 pt-2">
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-1.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-2.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-3.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-2.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-3.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-1.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">意見信箱</h4>
-            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+          <div class="col-lg-4 col-md-6">
+            <h4 class="text-white mb-10">意見信箱</h4>
+            <p>請留下您對我們的寶貴意見</p>
             <div class="position-relative mx-auto" style="max-width: 400px">
               <input
                 class="form-control border-0 w-100 py-3 ps-4 pe-5"
@@ -292,7 +222,7 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                 type="button"
                 class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
               >
-                SignUp
+                送出
               </button>
             </div>
           </div>
@@ -306,14 +236,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
               Right Reserved.
 
               <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-            </div>
-            <div class="col-md-6 text-center text-md-end">
-              <div class="footer-menu">
-                <a href="">Home</a>
-                <a href="">Cookies</a>
-                <a href="">Help</a>
-                <a href="">FQAs</a>
-              </div>
             </div>
           </div>
         </div>
@@ -353,18 +275,18 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
           var button = document.createElement("button"); // 改用button元素
           button.type = "button";
           button.innerHTML = hour + ":00"; // 使用innerHTML設置按鈕文本
-          button.className = "btn btn-secondary"; // 使用Bootstrap樣式
+          button.className = "btn btn-primary"; // 使用Bootstrap樣式
           button.style.marginRight = "8px"; // 直接設定右邊距為8px
           button.style.marginBottom = "8px"; // 直接設定下邊距為8px
           button.onclick = function () {
             if (this.classList.contains("btn-success")) {
               this.classList.remove("btn-success");
-              this.classList.add("btn-secondary");
+              this.classList.add("btn-primary");
               var index = teacherTimeSlots.indexOf(this.innerHTML);
               teacherTimeSlots.splice(index, 1);
             } else {
               this.classList.add("btn-success");
-              this.classList.remove("btn-secondary");
+              this.classList.remove("btn-primary");
               teacherTimeSlots.push(this.innerHTML);
             }
             document.getElementById("teacherTimeSlotsInput").value =

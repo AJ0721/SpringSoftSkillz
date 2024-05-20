@@ -373,7 +373,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 <h3 class="card-header">新增學生預約資料</h3>
                 <div class="card-body">
                   <form
-                    id="scheduleForm"
+                    id="reservationForm"
                     method="post"
                     action="${pageContext.request.contextPath}/studentReservation/add"
                   >
@@ -484,6 +484,16 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                         name="totalHours"
                         value=""
                       />
+                      <input
+                        type="hidden"
+                        name="courseID"
+                        value="${course.courseID}"
+                      />
+                      <input
+                        type="hidden"
+                        name="teacherScheduleID"
+                        value="${teacherSchedule.teacherScheduleID}"
+                      />
                     </div>
                   </form>
                 </div>
@@ -520,75 +530,74 @@ uri="http://java.sun.com/jsp/jstl/core"%>
 
     <script>
       $(document).ready(function () {
-        $("#courseID").change(function () {
-          var selectedTeacherId = $(this)
-            .find("option:selected")
-            .data("teacher-id");
-          $("#teacherScheduleID option").each(function () {
-            if (
-              $(this).data("teacher-id") == selectedTeacherId ||
-              $(this).val() == ""
-            ) {
-              $(this).show();
-            } else {
-              $(this).hide();
-            }
-          });
-        });
-      });
+        var studentTimeSlots = [];
+        var teacherTimeSlots = "";
 
-      var studentTimeSlots = [];
-
-      function createTimeSlotButton(hour) {
-        var button = document.createElement("button"); // 改用button元素
-        button.type = "button";
-        button.innerHTML = hour + ":00"; // 使用innerHTML設置按鈕文本
-        button.className = "btn btn-secondary"; // 使用Bootstrap樣式
-        button.style.marginRight = "8px"; // 直接設定右邊距為8px
-        button.style.marginBottom = "8px"; // 直接設定下邊距為8px
-        button.onclick = function () {
-          if (this.classList.contains("btn-success")) {
-            this.classList.remove("btn-success");
-            this.classList.add("btn-secondary");
-            var index = studentTimeSlots.indexOf(this.innerHTML);
-            studentTimeSlots.splice(index, 1);
-          } else {
-            this.classList.add("btn-success");
-            this.classList.remove("btn-secondary");
-            studentTimeSlots.push(this.innerHTML);
+        // 當教師行事曆選擇改變時，動態獲取對應的時段資料
+        $("#teacherScheduleID").change(function () {
+          var teacherScheduleID = $(this).val();
+          if (teacherScheduleID) {
+            $.ajax({
+              url: "/studentReservation/getTimeSlots",
+              type: "GET",
+              data: { teacherScheduleID: teacherScheduleID },
+              success: function (response) {
+                teacherTimeSlots = response.teacherTimeSlots;
+                generateTimeSlotButtons();
+              },
+              error: function () {
+                Swal.fire({
+                  title: "錯誤!",
+                  text: "無法獲取教師時段資料，請稍後再試。",
+                  icon: "error",
+                  confirmButtonText: "確定",
+                });
+              },
+            });
           }
-          document.getElementById("studentTimeSlotsInput").value =
-            JSON.stringify(studentTimeSlots);
-        };
-        return button;
-      }
+        });
 
-      for (var i = 0; i < 24; i++) {
-        var hour = ("0" + i).slice(-2);
-        var button = createTimeSlotButton(hour);
-        if (i < 12) {
-          document.getElementById("timeSlots1").appendChild(button);
-        } else {
-          document.getElementById("timeSlots2").appendChild(button);
+        function generateTimeSlotButtons() {
+          studentTimeSlots = [];
+          $("#timeSlots1").empty();
+          $("#timeSlots2").empty();
+
+          for (var i = 0; i < 24; i++) {
+            if (teacherTimeSlots.charAt(i) === "1") {
+              var hour = ("0" + i).slice(-2);
+              var button = createTimeSlotButton(hour);
+              if (i < 12) {
+                $("#timeSlots1").append(button);
+              } else {
+                $("#timeSlots2").append(button);
+              }
+            }
+          }
         }
-      }
 
-      //開課時段表單
-      document
-        .getElementById("scheduleForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault(); // 阻止表單預設提交行為
+        function createTimeSlotButton(hour) {
+          var button = $("<button></button>")
+            .attr("type", "button")
+            .addClass("btn btn-primary mb-2 mr-2")
+            .css("margin", "5px")
+            .text(hour + ":00")
+            .on("click", function () {
+              if ($(this).hasClass("btn-success")) {
+                $(this).removeClass("btn-success").addClass("btn-primary");
+                var index = studentTimeSlots.indexOf(hour + ":00");
+                studentTimeSlots.splice(index, 1);
+              } else {
+                $(this).removeClass("btn-primary").addClass("btn-success");
+                studentTimeSlots.push(hour + ":00");
+              }
+              $("#studentTimeSlotsInput").val(JSON.stringify(studentTimeSlots));
+              $("#totalHours").val(studentTimeSlots.length);
+            });
+          return button;
+        }
 
-          var today = new Date();
-          var reservationDate =
-            today.getFullYear() +
-            "-" +
-            (today.getMonth() + 1).toString().padStart(2, "0") +
-            "-" +
-            today.getDate().toString().padStart(2, "0");
-          $("#reservationDate").val(reservationDate);
-          $("#totalHours").val(studentTimeSlots.length);
-          $("#studentTimeSlotsInput").val(JSON.stringify(studentTimeSlots));
+        $("#reservationForm").submit(function (event) {
+          event.preventDefault();
 
           if (studentTimeSlots.length === 0) {
             Swal.fire({
@@ -597,49 +606,58 @@ uri="http://java.sun.com/jsp/jstl/core"%>
               icon: "error",
               confirmButtonText: "確定",
             });
-          } else {
-            submitForm(); // 現在呼叫 submitForm 函數來處理表單提交
+            return;
           }
-        });
 
-      function submitForm() {
-        var formData = $("#scheduleForm").serialize(); // 序列化表單數據
+          var formData = $(this).serialize();
 
-        // 發送 AJAX 請求到後端提交表單
-        $.ajax({
-          url: $("#scheduleForm").attr("action"), // 使用表單的action屬性
-          type: "POST",
-          data: formData,
-          success: function (response) {
-            if (response.success) {
-              Swal.fire({
-                title: "成功!",
-                text: response.message,
-                icon: "success",
-              }).then((result) => {
-                if (result.value) {
-                  window.location.reload(); // 刷新頁面
-                }
-              });
-            } else {
+          $.ajax({
+            url: "/studentReservation/add",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+              if (response.success) {
+                Swal.fire({
+                  title: "成功!",
+                  text: response.message,
+                  icon: "success",
+                }).then((result) => {
+                  if (result.value) {
+                    Swal.fire({
+                      title: "Zoom會議室連結",
+                      html:
+                        '<a href="' +
+                        response.zoomMeetingUrl +
+                        '" target="_blank">' +
+                        response.zoomMeetingUrl +
+                        "</a>",
+                      icon: "info",
+                      confirmButtonText: "確定",
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: "錯誤!",
+                  text: response.message,
+                  icon: "error",
+                  confirmButtonText: "確定",
+                });
+              }
+            },
+            error: function () {
               Swal.fire({
                 title: "錯誤!",
-                text: response.message,
+                text: "預約失敗，請稍後再試。",
                 icon: "error",
                 confirmButtonText: "確定",
               });
-            }
-          },
-          error: function () {
-            Swal.fire({
-              title: "錯誤!",
-              text: "該時段已被預約,請選擇其他時段。",
-              icon: "error",
-              confirmButtonText: "確定",
-            });
-          },
+            },
+          });
         });
-      }
+      });
     </script>
   </body>
 </html>

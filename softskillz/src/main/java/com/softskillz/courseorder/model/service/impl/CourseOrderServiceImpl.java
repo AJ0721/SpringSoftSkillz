@@ -230,15 +230,20 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 	public CorderBean payOrder(String orderID, String status, String method, DiscountBean discount) {
 		CorderBean corderBean = coRepo.findById(orderID).get();
 		delayQueue.remove(corderBean);
-		String disID = discount.getDisID();
-		Double disPercent = discount.getDisPercent();
-		Double afterPrice = Math.ceil((corderBean.getOrderPrice() * discount.getDisPercent() / 100));
-		Integer newPrice = afterPrice.intValue();
-		corderBean.setDisNo(disID);
-		corderBean.setDisPercent(disPercent);
-		corderBean.setAfterPrice(newPrice);
+		if (discount!=null) {
+			String disID = discount.getDisID();
+			Double disPercent = discount.getDisPercent();
+			corderBean.setDisPercent(disPercent);
+			Double afterPrice = Math.ceil((corderBean.getOrderPrice() * disPercent / 100));
+			Integer newPrice = afterPrice.intValue();
+			corderBean.setDisNo(disID);
+			corderBean.setAfterPrice(newPrice);
+		} else {
+			corderBean.setAfterPrice(corderBean.getOrderPrice());
+		}
 		corderBean.setStatus(status);
 		corderBean.setMethod(method);
+		
 		return coRepo.save(corderBean);
 	}
 
