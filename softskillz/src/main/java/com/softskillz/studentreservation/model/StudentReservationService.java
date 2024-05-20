@@ -2,6 +2,8 @@ package com.softskillz.studentreservation.model;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -9,11 +11,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.softskillz.course.model.CourseBean;
+import com.softskillz.course.model.CourseService;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.studentschedule.model.StudentScheduleRepository;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
 import com.softskillz.teacherschedule.model.TeacherScheduleRepository;
+import com.softskillz.zoom.model.ZoomService;
 
 @Service
 @Transactional
@@ -28,9 +34,49 @@ public class StudentReservationService {
 	@Autowired
 	private TeacherScheduleRepository teacherScheduleRepository;
 
-	// 新增學生預約
+	@Autowired
+	private ZoomService zoomService;
+
+	@Autowired
+	private CourseService courseService;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	// 檢查預約時數是否超過購買時數
+	public boolean checkHoursLimit(int studentId, int courseId, int requestedHours) {
+		String sql = "SELECT " + "SUM(ci.qty) AS total_purchased_hours, "
+				+ "(SELECT SUM(sr.total_hours) FROM student_reservation sr WHERE sr.student_id = ? AND sr.course_id = ?) + "
+				+ "SUM(ci.item_status) AS total_used_hours " + "FROM corderitem ci "
+				+ "JOIN corder co ON ci.order_id = co.order_id AND co.order_status = '已付款' "
+				+ "WHERE co.student_id = ? AND ci.course_id = ? " + "GROUP BY ci.course_id";
+
+		List<Boolean> results = jdbcTemplate.query(sql, ps -> {
+			ps.setInt(1, studentId);
+			ps.setInt(2, courseId);
+			ps.setInt(3, studentId);
+			ps.setInt(4, courseId);
+		}, (rs, rowNum) -> {
+			int totalPurchasedHours = rs.getInt("total_purchased_hours");
+			int totalUsedHours = rs.getInt("total_used_hours");
+			return (totalUsedHours + requestedHours) <= totalPurchasedHours;
+		});
+
+		return results.isEmpty() ? false : results.get(0);
+	}
+
+	// 新增學生預約 將網址用彈窗顯示在網頁的版本
 	public StudentReservationBean insertStudentReservation(StudentReservationBean studentReservationBean)
 			throws ReservationException {
+
+		int studentId = studentReservationBean.getStudentID();
+		int courseId = studentReservationBean.getCourseID();
+		int requestedHours = studentReservationBean.getTotalHours();
+
+		// 檢查是否超過購買時數
+		if (!checkHoursLimit(studentId, courseId, requestedHours)) {
+			throw new ReservationException("總預約時數超過購買時數");
+		}
 
 		// 解析 JSON 字串為時間段列表
 		List<String> timeSlotsList;
@@ -61,7 +107,39 @@ public class StudentReservationService {
 		// 更新學生行事曆
 		updateStudentSchedule(savedReservation);
 
+		// 創建Zoom會議
+		String meetingUrl = createZoomMeeting(savedReservation, teacherScheduleBean);
+
+		// 設置Zoom會議URL
+		savedReservation.setZoomMeetingUrl(meetingUrl);
+
 		return savedReservation;
+	}
+
+	// 創建Zoom會議
+	private String createZoomMeeting(StudentReservationBean reservation, TeacherScheduleBean teacherScheduleBean) {
+		try {
+			// 獲取課程資料
+			CourseBean course = courseService.findCourseById(reservation.getCourseID());
+			if (course != null) {
+				String courseName = course.getCourseName();
+				LocalDate courseDate = teacherScheduleBean.getCourseDate();
+				String studentTimeSlots = reservation.getStudentTimeSlots();
+
+				// 找到第一個被預約的時間
+				int startHour = studentTimeSlots.indexOf('1');
+				OffsetDateTime startTime = courseDate.atTime(startHour, 0).atOffset(ZoneOffset.ofHours(8));
+
+				// 呼叫ZoomService創建會議
+				String meetingUrl = zoomService.createMeeting(startTime, courseName, 2);
+				System.out.println("Zoom meeting URL: " + meetingUrl);
+				return meetingUrl;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("創建Zoom會議失敗", e);
+		}
+		return null;
 	}
 
 	// 檢查學生選擇的時段是否全部開放
@@ -96,12 +174,13 @@ public class StudentReservationService {
 		// 從教師行事曆獲取開課日期
 		LocalDate courseDate = teacherScheduleRepository.findById(reservation.getTeacherScheduleID())
 				.orElseThrow(() -> new IllegalStateException("教師行事曆數據缺失")).getCourseDate();
-		System.out.println("課程日期" + courseDate);// 有抓到課程日期
+		System.out.println("課程日期: " + courseDate); // 有抓到課程日期
 
 		// 檢查是否已有對應的學生行事曆
 		Optional<StudentScheduleBean> existingSchedule = studentScheduleRepository
 				.findByStudentIDAndCourseDate(reservation.getStudentID(), courseDate);
-		System.out.println("查詢新增的學生預約日期在有沒有資料表有沒有舊資料" + existingSchedule);
+		System.out.println("查詢新增的學生預約日期在資料表中是否有舊資料: " + existingSchedule);
+
 		// 格式化和準備新的時間段數據
 		String newTimeSlotsAll = formatTimeSlotsAll(reservation);
 
@@ -111,7 +190,7 @@ public class StudentReservationService {
 			StudentScheduleBean schedule = existingSchedule.get();
 			schedule.setStudentTimeSlotsAll(mergeStudentTimeSlots(schedule.getStudentTimeSlotsAll(), newTimeSlotsAll));
 			studentScheduleRepository.save(schedule);
-			System.out.println("更新資料" + schedule);
+			System.out.println("更新資料: " + schedule);
 		} else {
 			// 新建行事曆條目
 			StudentScheduleBean newSchedule = new StudentScheduleBean();
@@ -119,12 +198,12 @@ public class StudentReservationService {
 			newSchedule.setStudentCourseDate(courseDate);
 			newSchedule.setStudentTimeSlotsAll(newTimeSlotsAll);
 			studentScheduleRepository.save(newSchedule);
-			System.out.println("全新資料" + newSchedule);
+			System.out.println("全新資料: " + newSchedule);
 		}
 	}
 
 	private String formatTimeSlotsAll(StudentReservationBean reservation) {
-		// 這裡需要改寫以包含預約編號和時段
+		// 包含預約編號和時段
 		String[] timeSlots = new String[24];
 		Arrays.fill(timeSlots, "0");
 		String studentTimeSlots = reservation.getStudentTimeSlots();
@@ -170,9 +249,14 @@ public class StudentReservationService {
 		return timeSlots.substring(0, index) + "1" + timeSlots.substring(index + 1);
 	}
 
-	// 根據ID查詢單筆教師行事曆
+	// 根據ID查詢單筆學生預約
 	public StudentReservationBean findStudentReservationById(Integer studentReservationID) {
 		return studentReservationRepository.findById(studentReservationID).orElse(null);
+	}
+
+	// 根據ID查詢單筆教師行事曆
+	public TeacherScheduleBean findTeacherScheduleById(int teacherScheduleID) {
+		return teacherScheduleRepository.findById(teacherScheduleID).orElse(null);
 	}
 
 	// 查詢單名學生所有預約

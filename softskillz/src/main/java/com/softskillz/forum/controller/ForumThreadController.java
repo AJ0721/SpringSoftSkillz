@@ -14,14 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mysql.cj.log.Log;
 import com.softskillz.forum.model.StatusEnum;
-import com.softskillz.forum.model.dto.AdminDto;
 import com.softskillz.forum.model.dto.ForumThreadDto;
 import com.softskillz.forum.model.service.IForumThreadService;
-
-import lombok.extern.slf4j.Slf4j;
-
 
 @RestController
 @RequestMapping("/forum/thread")
@@ -35,17 +30,16 @@ public class ForumThreadController {
 
 	@PostMapping("/insert")
 	public ResponseEntity<ForumThreadDto> insertThread(@RequestBody ForumThreadDto threadDto) {
-				
 		ForumThreadDto createdThread = forumThreadService.insertForumThread(threadDto);
-	    if (createdThread != null) {
-	        return ResponseEntity.ok(createdThread);  
-	    } else {
-	        return ResponseEntity.badRequest().build();  
-	    }
+		if (createdThread != null) {
+			return ResponseEntity.ok(createdThread);
+		} else {
+			return ResponseEntity.badRequest().build();
+		}
 
 	}
 
-//update thread by ID
+	// update thread by ID
 	@PutMapping("/update/{threadId}")
 	public ForumThreadDto updateThread(@PathVariable("threadId") Integer threadId,
 			@RequestBody ForumThreadDto threadDto) {
@@ -72,13 +66,13 @@ public class ForumThreadController {
 
 	@DeleteMapping("/delete-all")
 	public String deleteAllThreads(@RequestBody List<Integer> threadIds) {
-		
+
 		if (threadIds == null || threadIds.isEmpty()) {
 			throw new IllegalArgumentException("No thread IDs provided for deletion.");
 		}
 		forumThreadService.deleteAllForumThreads(threadIds);
-		
-		return "Deleted thread ID: "+threadIds;
+
+		return "Deleted thread ID: " + threadIds;
 
 	}
 

@@ -1,6 +1,22 @@
 
 $(document).ready(function () {
 
+    //DATATABLE
+    
+    fetchCategories();
+
+
+    $('#category-table tbody').on('click', '.edit', function () {
+        var categoryId = $(this).closest('tr').find('td:nth-child(2)').text();
+        console.log('categoryId:', categoryId); // Debugging log
+        if (categoryId) {
+            window.location.href = '/forum/category/updatepage/' + categoryId;
+        } else {
+            console.error('Category ID not found');
+        }
+    });
+
+
     //ACTION: FETCH ALL 
     $('#nav-category-tab').click(function (e) {
         e.preventDefault();
@@ -90,10 +106,10 @@ $(document).ready(function () {
         window.location.href = '/forum/category/insertpage'
     });
 
-    $('#categoryList').on('click', '.edit', function () {
-        var categoryId = $(this).closest('tr').find('td:nth-child(2)').text();
-        window.location.href = '/forum/category/updatepage/' + categoryId;
-    });
+    // $('#categoryList').on('click', '.edit', function () {
+    //     var categoryId = $(this).closest('tr').find('td:nth-child(2)').text();
+    //     window.location.href = '/forum/category/updatepage/' + categoryId;
+    // });
 
 
     //SEARCH BAR: CLICK

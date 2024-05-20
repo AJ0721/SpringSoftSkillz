@@ -16,6 +16,7 @@ function getUser() {
         }).then(data => {
             console.log(data);
             sendOutUser = data.userID;
+            console.log(sendOutUser);
             getChatlist(data.userID);
             connectWebSocket(data.userID);
         })
@@ -187,6 +188,7 @@ function chatroom(userName, userPhotoURL) {
         chatInput.id = "popup-chat-input";
 
         var sendButton = document.createElement("button");
+        sendButton.style.marginLeft="1px";
         sendButton.textContent = "送出";
 
         sendButton.addEventListener("click", function () {
@@ -288,5 +290,51 @@ function appendUl(data) {
         });
         chatlist.appendChild(li); // 添加到列表
     });
+
+    function appendUl(data) {
+    const dropdownMenu = document.getElementById("chatlist"); // 获取目标 dropdown-menu
+
+    data.forEach((chat) => {
+        // 创建一个新的<a>元素
+        const newAnchor = document.createElement("a");
+        newAnchor.href = "#";
+        newAnchor.classList.add("dropdown-item");
+
+        // 创建一个包含照片和姓名的容器
+        const container = document.createElement("div");
+
+        // 创建头像
+        const img = document.createElement("img");
+        img.src = "/" + chat.userPhoto;
+        img.alt = chat.userID;
+
+        // 创建用户ID的文本
+        const text = document.createElement("span");
+        text.textContent = chat.userID;
+
+        // 将头像和文本添加到容器中
+        container.appendChild(img);
+        container.appendChild(text);
+
+        // 将容器添加到<a>元素中
+        newAnchor.appendChild(container);
+
+        // 为每个创建的<a>元素添加点击事件
+        newAnchor.addEventListener("click", () => {
+            let chatPopup = document.querySelector(".chat-popup");
+            if (!chatPopup) {
+                console.log(1123);
+                chatroom(chat.userID, "/" + chat.userPhoto); // 确保事件处理函数没有修改 DOM 结构
+            } else {
+                chatPopup.remove();
+                chatroom(chat.userID, "/" + chat.userPhoto);
+            }
+        });
+
+        // 将新的<a>元素添加到dropdown-menu中
+        dropdownMenu.appendChild(newAnchor);
+    });
+}
+    
 }
 

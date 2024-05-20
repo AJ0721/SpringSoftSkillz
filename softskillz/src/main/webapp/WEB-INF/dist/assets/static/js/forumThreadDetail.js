@@ -11,76 +11,64 @@ $(document).ready(function () {
     const parts = pathname.split("/");
     const threadId = parts[parts.length - 1];
 
-    fetchThreadDetails(threadId);
-    //BUTTONS
-    // SUBMIT POST
-    $(document).on('click', '.submit-reply', function (e) {
-        e.preventDefault();
-        const $form = $(this).closest('form');
-        const postContent = $form.find('textarea').val().trim();
-        const parentPostId = $form.find('.parentPostId').val();
-        if (postContent === "") {
-            Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
-            return;
-        }
-        const postDto = {
-            postContent: postContent,
-            thread: { threadId: threadId },
-            parentPost: parentPostId ? { postId: parentPostId } : null,
-        };
-        submitPost(postDto, threadId);
-    });
+    //--------------------THREAD--------------------
 
-    //EDIT POST
-    // Edit Button
-    $(document).on('click', '.edit-btn', function () {
-        const postId = $(this).data('post-id');
-        const postElement = $(this).closest('li');
-        const postContentElement = postElement.find('.post-content');
-        const currentContent = postContentElement.text().trim();
+    fetchThreadDetails(threadId);
+
+    // EDIT THREAD
+    $(document).on('click', '#edit-thread', function (e) {
+        e.preventDefault(); // Prevent default action
+
+        console.log('Edit button clicked');  // Debugging statement
+        const threadTitleElement = $('#threadTitle');
+        const threadContentElement = $('#threadContent');
+        const currentTitle = threadTitleElement.text().trim();
+        const currentContent = threadContentElement.text().trim();
+
 
         // Make content editable
-        postContentElement.attr('contenteditable', 'true').focus();
+        threadTitleElement.attr('contenteditable', 'true').focus();
+        threadContentElement.attr('contenteditable', 'true');
 
-        // Hide the edit, delete, and reply buttons
-        postElement.find('.edit-btn, .delete-btn, .reply-btn').hide();
+        // Hide the edit and delete buttons
+        $('#edit-thread, #delete-thread').hide();
 
         // Show the update and cancel buttons
-        $(this).after(`
-        <button class="btn btn-sm btn-primary update-btn me-2" data-post-id="${postId}">更新</button>
-        <button class="btn btn-sm btn-secondary cancel-edit" data-post-id="${postId}">取消</button>
-    `);
+        $('#can-edit').append(`
+            <button class="btn btn-sm btn-primary me-2" id="update-thread">更新</button>
+            <button class="btn btn-sm btn-secondary" id="cancel-edit-thread">取消</button>
+        `);
 
         // Update Button
-        $(document).on('click', '.update-btn', function () {
-            const updatedContent = postContentElement.text().trim();
-            if (updatedContent === "") {
-                Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+        $('#update-thread').off('click').on('click', function () {
+            const updatedTitle = threadTitleElement.text().trim();
+            const updatedContent = threadContentElement.text().trim();
+            if (updatedTitle === "" || updatedContent === "") {
+                Swal.fire('標題和內容不可空白 (╯>д<)╯', '', 'error');
                 return;
             }
-            const postDto = {
-                postContent: updatedContent,
-                thread: { threadId: threadId }
+            const threadDto = {
+                threadTitle: updatedTitle,
+                threadContent: updatedContent,
             };
-            updatePost(postId, postDto);
+            updateThread(threadId, threadDto);
         });
 
         // Cancel Edit Button
-        $(document).on('click', '.cancel-edit', function () {
-            postContentElement.text(currentContent).attr('contenteditable', 'false');
-            $(this).siblings('.update-btn').remove();
-            $(this).remove();
-            postElement.find('.edit-btn, .delete-btn, .reply-btn').show(); // Show the edit, delete, and reply buttons again
+        $('#cancel-edit-thread').off('click').on('click', function () {
+            threadTitleElement.text(currentTitle).attr('contenteditable', 'false');
+            threadContentElement.text(currentContent).attr('contenteditable', 'false');
+            $('#update-thread, #cancel-edit-thread').remove();
+            $('#edit-thread, #delete-thread').show(); // Show the edit and delete buttons again
         });
-    });;
+    });
 
-    //DELETE POST
 
-    // DELETE POST
-    $(document).on('click', '.delete-btn', function () {
-        const postId = $(this).data('post-id');
+    // DELETE THREAD
+    $(document).on('click', '#delete-thread', function (e) {
+        e.preventDefault(); // Prevent default action
         Swal.fire({
-            title: '確認是否刪除?',
+            title: '確認是否刪除文章?',
             text: "",
             icon: 'warning',
             showCancelButton: true,
@@ -88,11 +76,18 @@ $(document).ready(function () {
             cancelButtonText: '取消'
         }).then((result) => {
             if (result.isConfirmed) {
-                deletePost(postId);
+                deleteThread(threadId);
             }
         });
     });
+
+
+
+
 });
+
+//--------------------THREAD--------------------
+
 
 // CANCEL BUTTON: TO PREVIOUS PAGE
 $('#cancel').click(function (e) {
@@ -100,14 +95,91 @@ $('#cancel').click(function (e) {
     return false;
 });
 
+// FUNCTION: DISPLAY THREAD DETAILS
+function displayThreadDetails(data) {
+    const { loggedInUser } = retrieveUser();
+    const { authorName, canEdit } = getUserDetails(data, loggedInUser);
+
+    $('#category').text(data.forumCategory.forumCategoryName);
+    $('#username').text(authorName);
+    $('#threadTitle').text(data.threadTitle);
+    $('#threadContent').text(data.threadContent);
+
+    if (canEdit) {
+        $('#can-edit').html(`
+        <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-warning me-2" id="edit-thread">編輯</button>
+                <button class="btn btn-sm btn-danger" id="delete-thread">刪除</button>
+            </div>
+            `);
+    }
+}
+
+// FUNCTION: FETCH THREAD DETAILS
+function fetchThreadDetails(threadId) {
+    fetch(`/forum/thread/find/id/${threadId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayThreadDetails(data);
+            fetchComments(threadId);
+        })
+        .catch(error => console.error('Error fetching thread details:', error));
+}
+
+// FUNCTION: UPDATE THREAD
+function updateThread(threadId, threadDto) {
+    fetch(`/forum/thread/update/${threadId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(threadDto)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update thread');
+            }
+            return response.json();
+        })
+        .then(updatedThread => {
+            Swal.fire("更新成功", "", "success");
+            console.log('Updated thread:', updatedThread);
+            fetchThreadDetails(updatedThread.threadId);
+        })
+        .catch(error => console.error('Error updating thread:', error));
+}
+
+// FUNCTION: DELETE THREAD
+function deleteThread(threadId) {
+    fetch(`/forum/thread/delete/${threadId}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete thread');
+            }
+            console.log('Deleted thread ID:', threadId);
+            window.history.go(-1);
+        })
+        .catch(error => console.error('Error deleting thread:', error));
+}
 
 
 
-//FUNCTION: CAN EDIT (COMMENT HTML) 
+
+
+//--------------------POST--------------------
+
+//FUNCTION: POST CAN EDIT (COMMENT HTML) 
 function createCommentHtml(post) {
 
     const { loggedInUser } = retrieveUser();
-    const { authorId, authorName, authorType, canEdit = false } = getUserDetails(post, loggedInUser);
+    const { authorId, authorName, canEdit = false } = getUserDetails(post, loggedInUser);
     const formattedDate = new Date(post.postCreatedTime).toLocaleString();
 
     return `
@@ -152,21 +224,6 @@ function updatePost(postId, postDto) {
         .catch(error => console.error('Error updating post:', error));
 }
 
-// FUNCTION: FETCH THREAD DETAILS
-function fetchThreadDetails(threadId) {
-    fetch(`/forum/thread/find/id/${threadId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayThreadDetails(data);
-            fetchComments(threadId);
-        })
-        .catch(error => console.error('Error fetching thread details:', error));
-}
 
 // FUNCTION: DELETE POST
 function deletePost(postId) {
@@ -184,25 +241,6 @@ function deletePost(postId) {
         .catch(error => console.error('Error deleting post:', error));
 }
 
-// FUNCTION: DISPLAY THREAD DETAILS
-function displayThreadDetails(data) {
-    const { loggedInUser } = retrieveUser();
-    const { authorId, authorName, authorType, canEdit } = getUserDetails(data, loggedInUser);
-
-    $('#category').text(data.forumCategory.forumCategoryName);
-    $('#username').text(authorName);
-    $('#threadTitle').text(data.threadTitle);
-    $('#threadContent').text(data.threadContent);
-
-    if (canEdit) {
-        $('#can-edit').html(`
-        <div class="d-flex justify-content-end">
-                <button class="btn btn-sm btn-warning me-2" id="edit-thread">編輯</button>
-                <button class="btn btn-sm btn-danger" id="delete-thread">刪除</button>
-            </div>
-            `);
-    }
-}
 
 // FUNCTION: FETCH ALL POSTS BY THREAD ID
 function fetchComments(threadId) {

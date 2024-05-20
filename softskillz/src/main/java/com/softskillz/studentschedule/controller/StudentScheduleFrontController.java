@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
+import com.softskillz.studentreservation.model.StudentReservationBean;
+import com.softskillz.studentreservation.model.StudentReservationService;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.studentschedule.model.StudentScheduleService;
 
@@ -33,6 +34,9 @@ public class StudentScheduleFrontController {
 
 	@Autowired
 	private StudentScheduleService studentScheduleService;
+
+	@Autowired
+	private StudentReservationService studentReservationService;
 
 	@Autowired
 	private CourseService courseService;
@@ -51,33 +55,35 @@ public class StudentScheduleFrontController {
 		Map<Integer, CourseBean> courseMap = new HashMap<>();
 
 		for (StudentScheduleBean schedule : studentSchedules) {
+
 			String[] reservationIds = schedule.getStudentTimeSlotsAll().split("-");
 			StringBuilder scheduleDisplay = new StringBuilder();
 
 			for (int i = 0; i < reservationIds.length; i++) {
 				if (!reservationIds[i].equals("0")) {
 					int reservationId = Integer.parseInt(reservationIds[i]);
-					CourseBean course = courseMap.computeIfAbsent(reservationId,
-							id -> courseService.findCourseById(id));
-					if (course != null) {
-						String hour = String.format("%02d:00", i);
-						scheduleDisplay.append(hour).append(" - ").append(course.getCourseName()).append(", ");
+					StudentReservationBean reservation = studentReservationService
+							.findStudentReservationById(reservationId);
+					if (reservation != null) {
+						int courseId = reservation.getCourseID();
+						CourseBean course = courseMap.computeIfAbsent(courseId, id -> courseService.findCourseById(id));
+						if (course != null) {
+							String hour = String.format("%02d:00", i);
+							scheduleDisplay.append(hour).append(" - ").append(course.getCourseName()).append(", ");
+						}
 					}
 				}
 			}
 			if (scheduleDisplay.length() > 0) {
-				scheduleDisplay.setLength(scheduleDisplay.length() - 2);
+				scheduleDisplay.setLength(scheduleDisplay.length() - 2); // 去掉最後一個逗號和空格
 			}
 			schedule.setFormattedSchedule(scheduleDisplay.toString());
 		}
 
-		// 過濾出今天及之後的行事曆
-		LocalDate today = LocalDate.now();
-		studentSchedules = studentSchedules.stream()
-				.filter(schedule -> !schedule.getStudentCourseDate().isBefore(today)).collect(Collectors.toList());
-
-		// 對courseDate排序
-		studentSchedules.sort(Comparator.comparing(StudentScheduleBean::getStudentCourseDate));
+//		// 過濾出今天及之後的行事曆
+//		LocalDate today = LocalDate.now();
+//		studentSchedules = studentSchedules.stream().filter(schedule -> !schedule.getStudentCourseDate().isBefore(today))
+//				.collect(Collectors.toList());
 
 		// 格式化日期並分組
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -91,7 +97,7 @@ public class StudentScheduleFrontController {
 		Map<Integer, List<StudentScheduleBean>> weeklySchedules = new HashMap<>();
 		Map<Integer, List<String>> weeklyFormattedDates = new HashMap<>();
 		int weekCounter = 0;
-		DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;// 週一開始
+		DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY; // 週一開始
 		List<StudentScheduleBean> currentWeekSchedules = new ArrayList<>();
 		List<String> currentWeekDates = new ArrayList<>();
 
@@ -130,5 +136,4 @@ public class StudentScheduleFrontController {
 
 		return "elearning/studentSchedule/studentSchedulePage.jsp";
 	}
-
 }

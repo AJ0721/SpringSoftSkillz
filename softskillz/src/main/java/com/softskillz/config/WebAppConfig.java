@@ -143,7 +143,11 @@ public class WebAppConfig implements WebMvcConfigurer {
 		// account圖片
 		registry.addResourceHandler("/account/images/**")
 				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/images/");
-
+		
+		// 學生照片
+		registry.addResourceHandler("/student/images/**")
+				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/student/images/");
+		
 		// 教師照片
 		registry.addResourceHandler("/teacher/images/**")
 				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/teacher/images/");

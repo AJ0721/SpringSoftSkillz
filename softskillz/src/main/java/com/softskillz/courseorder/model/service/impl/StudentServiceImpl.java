@@ -1,5 +1,7 @@
 package com.softskillz.courseorder.model.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,4 +28,12 @@ public class StudentServiceImpl implements StudentServiceS {
 		return stRepo.findByStudentIdFormatted(studentIdFormatted);
 	}
 
+	public StudentBean findByStudentID(Integer studentID) {
+		Optional<StudentBean> result = stRepo.findById(studentID);
+		StudentBean student = null;
+		if(result.isPresent()) {
+			student = result.get();
+		}
+		return student;
+	}
 }

@@ -40,13 +40,17 @@ public class CourseOrderController {
 	private CourseOrderServiceImpl coService;
 
 	@GetMapping("/order.do")
-	public String processAction() {
+	public String processAction(HttpSession session) {
+		StudentBean student =(StudentBean) session.getAttribute("studentData");
+		if(student == null) {
+			return "forward:/student/student-loginPage";
+		}
 		return "/elearning/courseorder/courseorder.html";
 	}
 
 	@GetMapping("/orderdetail")
 	public String processPayAction() {
-		return "/elearning/courseorder/test.html";
+		return "/elearning/courseorder/orderdetail.html";
 	}
 
 	@PostMapping("/{tot}")
@@ -54,9 +58,9 @@ public class CourseOrderController {
 	public String doOrder(@PathVariable("tot")Integer total, HttpSession session) {
 
 		Integer studentID = 1;
-//		StudentBean studentBean = (StudentBean) session.getAttribute("student");
+		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
 //
-//		studentID = studentBean.getStudentId();
+		studentID = studentBean.getStudentId();
 
 		Long time = System.currentTimeMillis();
 		Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("coursecart");
@@ -67,10 +71,9 @@ public class CourseOrderController {
 		corderBean.setOrderDate(new Date(time));
 		corderBean.setCancelDate(new Date(time + 30 * 60 * 1000));
 		corderBean.setOrderPrice(total);
-		corderBean.setMethod("");
 		corderBean.setStatus("未付款");
 		coService.insertORD(corderBean, cart);
-		session.removeAttribute("cart");
+		session.removeAttribute("coursecart");
 		return orderID;
 	}
 
@@ -78,8 +81,8 @@ public class CourseOrderController {
 	@ResponseBody
 	public List<Order> getOrder(HttpSession session) {
 		Integer studentID = 1;// 先頂著
-//		StudentBean studentBean = (StudentBean) session.getAttribute("student");
-//		studentID = studentBean.getStudentId();
+		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
+		studentID = studentBean.getStudentId();
 		List<Order> orders = coService.studentORD(studentID);
 		return orders;
 	}
@@ -87,7 +90,6 @@ public class CourseOrderController {
 	@PutMapping("/{oid}")
 	@ResponseBody
 	public String cancelOrder(@PathVariable("oid") String orderID) {
-//		String orderID = map.get("orderID");
 		Integer cancelORD = coService.cancelORD(orderID);
 		return cancelORD.toString();
 	}

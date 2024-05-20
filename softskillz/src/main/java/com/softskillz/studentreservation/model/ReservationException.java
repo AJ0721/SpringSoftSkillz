@@ -7,6 +7,10 @@ public class ReservationException extends Exception {
 		super(message);
 		this.errorCode = errorCode;
 	}
+	
+	public ReservationException(String message) {
+        super(message);
+    }
 
 	public String getErrorCode() {
 		return errorCode;

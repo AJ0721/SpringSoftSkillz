@@ -157,4 +157,21 @@ public class CourseFrontController {
 		return "elearning/course/courseDetailPage.jsp";
 	}
 
+	@GetMapping("/selectTimeSlots")
+	public String selectTimeSlots(@RequestParam("courseID") int courseID,
+			@RequestParam("teacherScheduleID") int teacherScheduleID, HttpSession session, Model model) {
+
+		StudentBean student = (StudentBean) session.getAttribute("studentData");
+		if (student == null) {
+			return "redirect:/student/student-loginPage";
+		}
+		CourseBean course = courseService.findCourseById(courseID);
+		TeacherScheduleBean teacherSchedule = teacherScheduleService.findTeacherScheduleById(teacherScheduleID);
+
+		model.addAttribute("course", course);
+		model.addAttribute("teacherSchedule", teacherSchedule);
+		model.addAttribute("student", student);
+
+		return "elearning/course/studentReservationSelect.jsp";
+	}
 }
