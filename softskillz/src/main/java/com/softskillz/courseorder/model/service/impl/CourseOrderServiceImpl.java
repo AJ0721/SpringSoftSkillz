@@ -230,15 +230,20 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 	public CorderBean payOrder(String orderID, String status, String method, DiscountBean discount) {
 		CorderBean corderBean = coRepo.findById(orderID).get();
 		delayQueue.remove(corderBean);
-		String disID = discount.getDisID();
-		Double disPercent = discount.getDisPercent();
-		Double afterPrice = Math.ceil((corderBean.getOrderPrice() * discount.getDisPercent() / 100));
-		Integer newPrice = afterPrice.intValue();
-		corderBean.setDisNo(disID);
-		corderBean.setDisPercent(disPercent);
-		corderBean.setAfterPrice(newPrice);
+		if (discount!=null) {
+			String disID = discount.getDisID();
+			Double disPercent = discount.getDisPercent();
+			corderBean.setDisPercent(disPercent);
+			Double afterPrice = Math.ceil((corderBean.getOrderPrice() * disPercent / 100));
+			Integer newPrice = afterPrice.intValue();
+			corderBean.setDisNo(disID);
+			corderBean.setAfterPrice(newPrice);
+		} else {
+			corderBean.setAfterPrice(corderBean.getOrderPrice());
+		}
 		corderBean.setStatus(status);
 		corderBean.setMethod(method);
+		
 		return coRepo.save(corderBean);
 	}
 
@@ -345,6 +350,29 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 				return order;
 			}
 		});
+		return page;
+	}
+
+	@Override
+	public Page<Order> getPageByStatus(Pageable pageable, String status) {
+		Page<CorderBean> result = coRepo.findByStatus(pageable, status);
+		Page<Order> page = result.map((o)->{
+			Order order = new Order();
+			order.setOrderID(o.getOrderID());
+			order.setStudentID(o.getStudentID());
+			order.setOrderPrice(o.getOrderPrice());
+			order.setOrderDate(o.getOrderDate());
+			order.setCancelDate(o.getCancelDate());
+			order.setPaymentMethod(o.getMethod());
+			order.setOrderStatus(o.getStatus());
+			order.setDisNo(o.getDisNo());
+			order.setDisPercent(o.getDisPercent());
+			order.setAfterPrice(o.getAfterPrice());
+			return order;
+		});
+		
+
+		
 		return page;
 	}
 }

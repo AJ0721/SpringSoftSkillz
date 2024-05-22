@@ -14,6 +14,11 @@ public class OrderItemService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    // 批量創建新的訂單項目
+    public void createOrderItems(List<OrderItem> orderItems) {
+        orderItemRepository.saveAll(orderItems);
+    }
+    
     // 創建一個新的訂單項目
     public OrderItem createOrderItem(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);

@@ -92,5 +92,9 @@ public class StudentService {
 		return studentRepository.save(studentBean);
 
 	}
+	
+	public StudentBean findStudentByFormatID(String studentIdFormatted) {
+		return studentRepository.findByStudentIdFormatted(studentIdFormatted);
+	}
 
 }

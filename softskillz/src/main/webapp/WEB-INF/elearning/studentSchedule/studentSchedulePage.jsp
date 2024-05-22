@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>課程詳情頁面</title>
+    <title>學生行事曆頁面</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -67,135 +67,50 @@ pageEncoding="UTF-8"%>
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav
-      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
-    >
-      <a
-        href="/softskillz/fhomepage"
-        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-      >
-        <h2 class="m-0 text-primary">
-          <i class="fa fa-book me-3"></i>SoftSkillz
-        </h2>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+      <a href="/courseFront/selectAllPage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+          <h2 class="m-0 text-primary">
+            <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+            style="max-width: 250px; height: auto; margin-top: 16px;">
+          </h2>
       </a>
-      <button
-        type="button"
-        class="navbar-toggler me-4"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
+      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a href="/softskillz/fhomepage" class="nav-item nav-link active"
-            >首頁</a
-          >
-          <a
-            href="/student/personal-center"
-            th:if="${loggedInUser == 'student'}"
-            class="nav-item nav-link"
-            >個人中心</a
-          >
-          <a
-            href="/studentScheduleFront/schedule"
-            th:if="${loggedInUser == 'student'}"
-            class="nav-item nav-link"
-            >學生行事曆</a
-          >
-          <a href="about.html" class="nav-item nav-link">About</a>
-          <div class="nav-item dropdown">
-            <a
-              href="/courseFront/selectAllPage"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              >課程</a
-            >
-            <div class="dropdown-menu fade-down m-0">
-              <a href="/courseFront/selectAllPage" class="dropdown-item"
-                >所有課程</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=語言"
-                class="dropdown-item"
-                >語言</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=程式設計"
-                class="dropdown-item"
-                >程式設計</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=藝術"
-                class="dropdown-item"
-                >藝術</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=影片剪輯"
-                class="dropdown-item"
-                >影片剪輯</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=科學"
-                class="dropdown-item"
-                >科學</a
-              >
-              <a
-                href="/courseFront/selectAllPage?category=商業"
-                class="dropdown-item"
-                >商業</a
-              >
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+              <a href="/courseFront/selectAllPage" class="nav-item nav-link active">首頁</a>
+              <div class="nav-item dropdown">
+                <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">個人中心</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
+                    <a href="" class="dropdown-item">學生預約</a>
+                </div>
             </div>
+              <a href="#" class="nav-item nav-link">學伴</a>
+              <div class="nav-item dropdown">
+                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">課程</a>
+                  <div class="dropdown-menu fade-down m-0">
+                      <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
+                      <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
+                      <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
+                      <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
+                      <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
+                      <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
+                      <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
+                  </div>
+              </div>
+              <a href="#" class="nav-item nav-link">論壇</a>
+              <a href="#" class="nav-item nav-link">商城</a>
+              <a href="contact.html" class="nav-item nav-link">Contact</a>
           </div>
-          <a href="#" class="nav-item nav-link">論壇</a>
-          <a href="#" class="nav-item nav-link">學伴</a>
-          <a href="#" class="nav-item nav-link">商城</a>
-          <a href="contact.html" class="nav-item nav-link">Contact</a>
-        </div>
-        <div class="navbar-nav p-4 p-lg-0">
-          <div
-            class="d-flex align-items-center"
-            th:if="${loggedInUser == 'guest'}"
-          >
-            <form
-              id="student-login-form"
-              action="/student/student-loginPage"
-              method="get"
-              class="me-2"
-            >
-              <button
-                type="submit"
-                class="btn btn-primary"
-                style="
-                  background-color: #3f6cba;
-                  color: white;
-                  border: 1px solid transparent;
-                "
-              >
-                學生登入
-              </button>
-            </form>
-            <form
-              id="teacher-login-form"
-              action="/teacher/teacher-loginPage"
-              method="get"
-              class="me-2"
-            >
-              <button type="submit" class="btn btn-primary">老師登入</button>
-            </form>
-          </div>
-          <form
-            id="student-logout-form"
-            action="/student/student-logout"
-            method="post"
-            th:if="${loggedInUser == 'student'}"
-            class="me-2"
-          >
-            <button type="submit" class="btn btn-primary">學生登出</button>
-          </form>
-        </div>
+          <div class="navbar-nav p-4 p-lg-0">
+            <form id="student-logout-form" action="/student/student-logout" method="post">
+               <button type="submit" class="btn btn-primary py-4 px-lg-5">學生登出</button>
+              </form>
+            </div>
       </div>
-    </nav>
+  </nav>
   <!-- Navbar End -->
 
     <!-- 學生行事曆 -->
@@ -235,26 +150,26 @@ pageEncoding="UTF-8"%>
                 </tbody>
             </table>
             <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                  <% 
-                  Integer currentPage = (Integer) request.getAttribute("currentPage");
-                  Integer totalPages = (Integer) request.getAttribute("totalPages");
-                  if (currentPage != null && totalPages != null) {
-                      for (int i = 1; i <= totalPages; i++) { 
-                  %>
-                  <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
-                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                  </li>
-                  <% 
-                      }
-                  } else {
-                  %>
-                  <li class="page-item disabled"><span class="page-link">没有更多頁</span></li>
-                  <% 
-                  } 
-                  %>
-                </ul>
-            </nav>
+              <ul class="pagination justify-content-center">
+                <% 
+                Integer currentPage = (Integer) request.getAttribute("currentPage");
+                Integer totalPages = (Integer) request.getAttribute("totalPages");
+                if (currentPage != null && totalPages != null) {
+                    for (int i = 1; i <= totalPages; i++) { 
+                %>
+                <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
+                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+                <% 
+                    }
+                } else {
+                %>
+                <li class="page-item disabled"><span class="page-link">没有更多頁</span></li>
+                <% 
+                } 
+                %>
+              </ul>
+          </nav>
         </div>
     </div>
 
@@ -262,132 +177,67 @@ pageEncoding="UTF-8"%>
 
     <!-- Footer Start -->
     <div
-      class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
-      data-wow-delay="0.1s"
-    >
-      <div class="container py-5">
-        <div class="row g-5">
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">Quick Link</h4>
-            <a class="btn btn-link" href="">About Us</a>
-            <a class="btn btn-link" href="">Contact Us</a>
-            <a class="btn btn-link" href="">Privacy Policy</a>
-            <a class="btn btn-link" href="">Terms & Condition</a>
-            <a class="btn btn-link" href="">FAQs & Help</a>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">聯絡我們</h4>
-            <p class="mb-2">
-              <i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
-            </p>
-            <p class="mb-2">
-              <i class="fa fa-phone-alt me-3"></i>+012 345 67890
-            </p>
-            <p class="mb-2">
-              <i class="fa fa-envelope me-3"></i>info@example.com
-            </p>
-            <div class="d-flex pt-2">
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-facebook-f"></i
-              ></a>
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-linkedin-in"></i
-              ></a>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">圖片集錦</h4>
-            <div class="row g-2 pt-2">
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-1.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-2.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-3.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-2.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-3.jpg"
-                  alt=""
-                />
-              </div>
-              <div class="col-4">
-                <img
-                  class="img-fluid bg-light p-1"
-                  src="/img/course-1.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <h4 class="text-white mb-3">意見信箱</h4>
-            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-            <div class="position-relative mx-auto" style="max-width: 400px">
-              <input
-                class="form-control border-0 w-100 py-3 ps-4 pe-5"
-                type="text"
-                placeholder="Your email"
-              />
-              <button
-                type="button"
-                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
-              >
-                SignUp
-              </button>
-            </div>
+    class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
+    data-wow-delay="0.1s">
+    <div class="container py-5">
+      <div class="row g-5">
+        <div class="col-lg-8 col-md-6">
+          <h4 class="text-white mb-3">聯絡我們</h4>
+          <p class="mb-2">
+            <i class="fa fa-map-marker-alt me-3"></i
+            >320桃園市中壢區新生路二段421號
+          </p>
+          <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
+          <p class="mb-2">
+            <i class="fa fa-envelope me-3"></i>academic@shengte.college
+          </p>
+          <div class="d-flex pt-2">
+            <a class="btn btn-outline-light btn-social" href=""
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a class="btn btn-outline-light btn-social" href=""
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a class="btn btn-outline-light btn-social" href=""
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a class="btn btn-outline-light btn-social" href=""
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
           </div>
         </div>
-      </div>
-      <div class="container">
-        <div class="copyright">
-          <div class="row">
-            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-              &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
-              Right Reserved.
-
-              <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-            </div>
-            <div class="col-md-6 text-center text-md-end">
-              <div class="footer-menu">
-                <a href="">Home</a>
-                <a href="">Cookies</a>
-                <a href="">Help</a>
-                <a href="">FQAs</a>
-              </div>
-            </div>
+        <div class="col-lg-4 col-md-6">
+          <h4 class="text-white mb-10">意見信箱</h4>
+          <p>請留下您對我們的寶貴意見</p>
+          <div class="position-relative mx-auto" style="max-width: 400px">
+            <input
+              class="form-control border-0 w-100 py-3 ps-4 pe-5"
+              type="text"
+              placeholder="Your email"
+            />
+            <button
+              type="button"
+              class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
+            >
+              送出
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <div class="container">
+      <div class="copyright">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
+            Right Reserved.
+
+            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- Footer End -->
 
     <!-- Back to Top -->
@@ -405,7 +255,6 @@ pageEncoding="UTF-8"%>
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
-
 
   </body>
 </html>

@@ -46,4 +46,7 @@ public interface CourseOrderReporistory extends JpaRepository<CorderBean, String
 	
 	@Query("from CorderBean o where o.orderDate >= :date1 AND o.orderDate <= :date2 AND o.status = :status and o.studentID = :student ")
 	Page<CorderBean> findByStudentIDAndOrderDate(Pageable pageable,@Param("date1") Date date1, @Param("date2") Date date2, @Param("student") Integer studentID ,@Param("status") String status );
+	
+	@Query("from CorderBean o where o.status = :status")
+	Page<CorderBean> findByStatus(Pageable pageable , @Param("status") String status);
 }

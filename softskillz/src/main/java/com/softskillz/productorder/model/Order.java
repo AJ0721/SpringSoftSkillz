@@ -18,10 +18,10 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private Integer orderId;
+    private Integer orderId;//後端
 
     @Column(name = "student_id")
-    private Integer studentId;
+    private Integer studentId;//後端
 
     @Column(name = "coupon_id")
     private Integer couponId;
@@ -30,24 +30,24 @@ public class Order implements Serializable {
     private Integer totalAmount;
 
     @Column(name = "order_status")
-    private String orderStatus;
+    private String orderStatus;//後端
 
     @Column(name = "payment_method")
     private String paymentMethod;
 
     @Column(name = "shipment_status")
-    private String shipmentStatus;
+    private String shipmentStatus;//後端
 
     @Column(name = "shipping_address")
     private String shippingAddress;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    private LocalDateTime orderDate;//後端
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "shipment_date")
-    private LocalDateTime shipmentDate;
+    private LocalDateTime shipmentDate;//後端
 
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

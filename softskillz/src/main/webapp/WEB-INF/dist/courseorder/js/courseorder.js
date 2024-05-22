@@ -3,14 +3,14 @@ let date2 = "";
 let url = "/adminorder";
 let pageNo = "";
 let size = "";
-window.onload = () => {
-    const orders = sessionStorage.getItem("orders");
+window.addEventListener("load",() => {
+    const orders = sessionStorage.getItem("allorders");
     if (orders) {
         appendorder(JSON.parse(orders));
     } else {
         allorders();
     }
-}
+})
 
 function allorders() {
     date1 = "";
@@ -25,7 +25,7 @@ function allorders() {
             }
         }).then(data => {
             let orders = JSON.stringify(data);
-            sessionStorage.setItem("orders", orders)
+            sessionStorage.setItem("allorders", orders)
             appendorder(data);
         })
 }
@@ -49,7 +49,7 @@ function getOrderByDate() {
         }
     }).then(data => {
         let orders = JSON.stringify(data);
-        sessionStorage.setItem("orders", orders)
+        sessionStorage.setItem("allorders", orders)
         appendorder(data);
     }).catch(error => {
         console.log(error);
@@ -249,10 +249,9 @@ function choose() {
 
 let allord = document.querySelector("#allord");
 allord.addEventListener("click", () => {
-    if (date1 && date2) {
         pageNo = ""
         allorders();
-    }
+    
 })
 
 function getItem(e) {
@@ -391,4 +390,26 @@ function dateFormat(date) {
     let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
 
     return year + "-" + mon + "-" + day;
+}
+
+let pending = document.querySelector("#pending");
+pending.addEventListener("click",getPendingOrder)
+
+function getPendingOrder(){
+    date1 = "";
+    date2 = "";
+    let status = "處理中";
+    url = "/adminorder/pending?" + "pid=" + pageNo + "&size=" + size+"&status="+status;
+    sessionStorage.clear();
+    fetch(url)
+        .then(response => {
+            console.log(response);
+            if (response.ok) {
+                return response.json();
+            }
+        }).then(data => {
+            let orders = JSON.stringify(data);
+            sessionStorage.setItem("allorders", orders)
+            appendorder(data);
+        })
 }

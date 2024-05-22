@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SoftSkillz - 商品管理</title>
+
+    <link
+            rel="shortcut icon"
+            href="/assets/compiled/svg/favicon.svg"
+            type="image/x-icon"
+    />
+    <link
+            rel="shortcut icon"
+            href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjMzIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMzQiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSIzMyIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMzQiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249Ijk2LjAiCiAgIHRpZmY6WVJlc29sdXRpb249Ijk2LjAiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC4xIgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTAzLTMxVDEwOjUwOjIzKzAyOjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz5V57uAAAABgmlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz9maORHo1hYKC9hISNGTWwsRn4VFmOUX5uZZ36oeTOv954kW2WrKLHxa8FfwFZZK0WkZClrYoOe87ypmWTO7dzzud97z+nec8ETzaiaWd4NWtYyIiNhZWZ2TvE946WZSjqoj6mmPjE1HKWkfdxR5sSbgFOr9Ll/rXoxYapQVik8oOqGJTwqPL5i6Q5vCzeo6dii8KlwpyEXFL519LjLLw6nXP5y2IhGBsFTJ6ykijhexGra0ITl5bRqmWU1fx/nJTWJ7PSUxBbxJkwijBBGYYwhBgnRQ7/MIQIE6ZIVJfK7f/MnyUmuKrPOKgZLpEhj0SnqslRPSEyKnpCRYdXp/9++msneoFu9JgwVT7b91ga+LfjetO3PQ9v+PgLvI1xkC/m5A+h7F32zoLXug38dzi4LWnwHzjeg8UGPGbFfySvuSSbh9QRqZ6H+Gqrm3Z7l9zm+h+iafNUV7O5Bu5z3L/wAdthn7QIme0YAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAJTSURBVFiF7Zi9axRBGIefEw2IdxFBRQsLWUTBaywSK4ubdSGVIY1Y6HZql8ZKCGIqwX/AYLmCgVQKfiDn7jZeEQMWfsSAHAiKqPiB5mIgELWYOW5vzc3O7niHhT/YZvY37/swM/vOzJbIqVq9uQ04CYwCI8AhYAlYAB4Dc7HnrOSJWcoJcBS4ARzQ2F4BZ2LPmTeNuykHwEWgkQGAet9QfiMZjUSt3hwD7psGTWgs9pwH1hC1enMYeA7sKwDxBqjGnvNdZzKZjqmCAKh+U1kmEwi3IEBbIsugnY5avTkEtIAtFhBrQCX2nLVehqyRqFoCAAwBh3WGLAhbgCRIYYinwLolwLqKUwwi9pxV4KUlxKKKUwxC6ZElRCPLYAJxGfhSEOCz6m8HEXvOB2CyIMSk6m8HoXQTmMkJcA2YNTHm3congOvATo3tE3A29pxbpnFzQSiQPcB55IFmFNgFfEQeahaAGZMpsIJIAZWAHcDX2HN+2cT6r39GxmvC9aPNwH5gO1BOPFuBVWAZue0vA9+A12EgjPadnhCuH1WAE8ivYAQ4ohKaagV4gvxi5oG7YSA2vApsCOH60WngKrA3R9IsvQUuhIGY00K4flQG7gHH/mLytB4C42EgfrQb0mV7us8AAMeBS8mGNMR4nwHamtBB7B4QRNdaS0M8GxDEog7iyoAguvJ0QYSBuAOcAt71Kfl7wA8DcTvZ2KtOlJEr+ByyQtqqhTyHTIeB+ONeqi3brh+VgIN0fohUgWGggizZFTplu12yW8iy/YLOGWMpDMTPXnl+Az9vj2HERYqPAAAAAElFTkSuQmCC"
+            type="image/png"
+    />
+
+    <link rel="stylesheet" href="/assets/compiled/css/app.css"/>
+    <link rel="stylesheet" href="/assets/compiled/css/app-dark.css"/>
+    <link rel="stylesheet" href="/assets/compiled/css/iconly.css"/>
+    <!-- 額外用到的css -->
+    <link rel="stylesheet" href="/assets/extensions/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" crossorigin href="/assets/compiled/css/extra-component-sweetalert.css">
+    <style>
+        #productsTable {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        #productsTable th,
+        #productsTable td {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        #productsTable th:nth-child(1),
+        #productsTable td:nth-child(1) {
+          width: 80px; /* 編號 */
+        }
+
+        #productsTable th:nth-child(2),
+        #productsTable td:nth-child(2) {
+          width: 350px; /* 商品名稱 */
+        }
+
+        #productsTable th:nth-child(3),
+        #productsTable td:nth-child(3) {
+          width: 100px; /* 類別 */
+        }
+
+        #productsTable th:nth-child(4),
+        #productsTable td:nth-child(4) {
+          width: 150px; /* 圖片 */
+        }
+
+        #productsTable th:nth-child(5),
+        #productsTable td:nth-child(5) {
+          width: 100px; /* 價格 */
+        }
+
+        #productsTable th:nth-child(6),
+        #productsTable td:nth-child(6) {
+          width: 100px; /* 庫存 */
+        }
+
+        #productsTable th:nth-child(7),
+        #productsTable td:nth-child(7) {
+          width: 200px; /* 創建日期 */
+        }
+
+        #productsTable th:nth-child(8),
+        #productsTable td:nth-child(8) {
+          width: 230px; /* 最後修改日期 */
+        }
+
+        #productsTable th:nth-child(9),
+        #productsTable td:nth-child(9) {
+          width: 250px; /* 操作 */
+        }
+
+        #productsTable th:nth-child(10),
+        #productsTable td:nth-child(10) {
+          display: none; /* 描述 */
+        }
+
+        #searchInput,
+        #categoryFilter {
+            min-width: 150px;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sortable {
+            cursor: pointer;
+        }
+
+        .sortable:after {
+            content: " \25B2"; /* 默認為升冪箭頭 */
+        }
+
+        .sortable.desc:after {
+            content: " \25BC"; /* 降冪箭頭 */
+        }
+
+        .required-label::after {
+          content: ' *';
+          color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+<script src="/assets/static/js/initTheme.js"></script>
+<div id="app">
+    <!-- 側邊欄 -->
+    <div id="sidebar">
+        <div class="sidebar-wrapper active">
+            <div class="sidebar-header position-relative">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- 左上角Logo -->
+                    <div class="logo">
+                        <a href="/softskillz/newhomepage"
+                        ><img
+                                src="/assets/compiled/jpg/logo1.jpg"
+                                alt="Logo"
+                                srcset=""
+                        /></a>
+                    </div>
+                    <!-- 切換日間夜間模式 -->
+                    <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
+                        <!-- 日間模式圖片 -->
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true"
+                                role="img"
+                                class="iconify iconify--system-uicons"
+                                width="20"
+                                height="20"
+                                preserveAspectRatio="xMidYMid meet"
+                                viewBox="0 0 21 21"
+                        >
+                            <g
+                                    fill="none"
+                                    fill-rule="evenodd"
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                            >
+                                <path
+                                        d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                                        opacity=".3"
+                                ></path>
+                                <g transform="translate(-210 -1)">
+                                    <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+                                    <circle cx="220.5" cy="11.5" r="4"></circle>
+                                    <path
+                                            d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"
+                                    ></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <!-- 切換按鈕 -->
+                        <div class="form-check form-switch fs-6">
+                            <input
+                                    class="form-check-input me-0"
+                                    type="checkbox"
+                                    id="toggle-dark"
+                                    style="cursor: pointer"
+                            />
+                            <label class="form-check-label"></label>
+                        </div>
+                        <!-- 夜間模式圖片 -->
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true"
+                                role="img"
+                                class="iconify iconify--mdi"
+                                width="20"
+                                height="20"
+                                preserveAspectRatio="xMidYMid meet"
+                                viewBox="0 0 24 24"
+                        >
+                            <path
+                                    fill="currentColor"
+                                    d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div class="sidebar-toggler x">
+                        <a href="#" class="sidebar-hide d-xl-none d-block"
+                        ><i class="bi bi-x bi-middle"></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+            <!-- 側邊欄 -->
+            <div class="sidebar-menu">
+                <ul class="menu">
+                    <li class="sidebar-item active">
+                        <a href="/softskillz/newhomepage" class="sidebar-link">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>首頁</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-title">用戶管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>管理員</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/admin/admin-account" class="submenu-link"
+                                >管理員帳號</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>教師</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/teacher/teacher-account" class="submenu-link"
+                                >教師帳號</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>學生</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/student/student-account" class="submenu-link"
+                                >學生帳號</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-title">課程管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>課程</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/course/insertPage" class="submenu-link"
+                                >新增課程</a
+                                >
+                            </li>
+                            <li class="submenu-item">
+                                <a href="/course/selectAllPage" class="submenu-link"
+                                >查詢課程</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>教師行事曆</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/teacherSchedule/insertPage" class="submenu-link"
+                                >新增教師行事曆</a
+                                >
+                            </li>
+                            <li class="submenu-item">
+                                <a
+                                        href="/teacherSchedule/selectAllPage"
+                                        class="submenu-link"
+                                >查詢教師行事曆</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>學生預約</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a
+                                        href="/studentReservation/insertPage"
+                                        class="submenu-link"
+                                >新增學生預約</a
+                                >
+                            </li>
+                            <li class="submenu-item">
+                                <a
+                                        href="/studentReservation/selectAllPage"
+                                        class="submenu-link"
+                                >查詢學生預約</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>學生行事曆</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a
+                                        href="/studentSchedule/selectAllPage"
+                                        class="submenu-link"
+                                >查詢學生行事曆</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-title">課程訂單管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>課程訂單管理</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/adminorder/adorder.do" class="submenu-link"
+                                >課程訂單管理</a
+                                >
+                            </li>
+                            <li class="submenu-item">
+                                <a href="/coursediscount/discount.do" class="submenu-link"
+                                >課程折扣管理</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-title">商品管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>商品管理</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/mall/backend" class="submenu-link"
+                                >商品管理</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-title">商品訂單管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>商品訂單管理</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/order" class="submenu-link">商品訂單管理</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="/order/create" class="submenu-link"
+                                >新增商品訂單</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-title">學伴資料管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>學伴資料管理</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/companionIndex.html" class="submenu-link"
+                                >學伴資料管理</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-title">論壇管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>論壇管理</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/forum/adminhome" class="submenu-link">論壇管理</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-title">訊息管理</li>
+                    <li class="sidebar-item has-sub">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>訊息管理</span>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="/chat/coursechat.do" class="submenu-link"
+                                >訊息管理</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <br/>
+                    <form
+                            action="/admin/admin-logout"
+                            method="post"
+                            style="text-align: center; margin: 0 auto"
+                    >
+                        <button
+                                type="submit"
+                                class="btn rounded-pill"
+                                style="background-color: #3f6cba; color: white"
+                        >
+                            <i class="bi bi-person-circle"></i>&nbsp;登出
+                        </button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 中間內容部分 -->
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <h3>SoftSkillz - 所有商品頁面</h3>
+        </div>
+
+
+        <div class="page-content">
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            所有商品資料
+                        </h5>
+                    </div>
+
+                    <!-- 表格商品區 -->
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <input type="text" id="searchInput" class="form-control" placeholder="搜尋商品名稱">
+                            </div>
+                            <div class="col-md-3">
+                                <select id="categoryFilter" class="form-select">
+                                    <option value="">所有分類</option>
+                                    <option value="實體教材">實體教材</option>
+                                    <option value="周邊商品">周邊商品</option>
+                                    <option value="教材影片">教材影片</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="addProductBtn" class="btn btn-success w-100">新增商品</button>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <span id="productCount">目前商品數：0 / 總商品數：0</span>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="productsTable">
+                                <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="productId">編號</th>
+                                    <th class="sortable" data-sort="productName">商品名稱</th>
+                                    <th class="sortable" data-sort="category">類別</th>
+                                    <th>圖片</th>
+                                    <th class="sortable" data-sort="productPrice">價格</th>
+                                    <th class="sortable" data-sort="stock">庫存</th>
+                                    <!-- 隱藏描述欄位 -->
+                                    <th class="sortable" data-sort="description" style="display: none;">描述</th>
+                                    <th class="sortable" data-sort="createdDate">創建日期</th>
+                                    <th class="sortable" data-sort="lastModifiedDate">最後修改日期</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- 商品數據將通過jQuery動態加載 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <!-- 分頁按鈕將通過jQuery動態加載 -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+    </section>
+</div>
+
+<footer>
+    <div class="footer clearfix mb-0 text-muted">
+        <div class="float-start">
+            <p>2024 &copy; Soft Skillz</p>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+<!-- 新增/編輯商品模態窗口 -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalLabel">新增商品</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="productForm">
+          <input type="hidden" id="productId">
+          <div class="mb-3">
+            <label for="productName" class="form-label required-label">商品名稱</label>
+            <input type="text" class="form-control" id="productName" required>
+          </div>
+          <div class="mb-3">
+            <label for="productCategory" class="form-label required-label">類別</label>
+            <select class="form-select" id="productCategory" required>
+              <option value="實體教材">實體教材</option>
+              <option value="周邊商品">周邊商品</option>
+              <option value="教材影片">教材影片</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="productPrice" class="form-label required-label">價格</label>
+            <input type="number" class="form-control" id="productPrice" required>
+          </div>
+          <div class="mb-3">
+            <label for="productStock" class="form-label">庫存</label>
+            <input type="number" class="form-control" id="productStock">
+          </div>
+          <div class="mb-3">
+            <label for="productDescription" class="form-label">描述</label>
+            <textarea class="form-control" id="productDescription"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="productImage" class="form-label required-label">圖片URL</label>
+            <input type="url" class="form-control" id="productImage" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+        <button type="button" class="btn btn-primary" id="saveProductBtn">儲存商品</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/static/js/components/dark.js"></script>
+<script src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+<script src="/assets/compiled/js/app.js"></script>
+
+<!-- Need: Apexcharts -->
+<script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/static/js/pages/dashboard.js"></script>
+
+<!-- Need: jQuery -->
+<script src="/assets/extensions/jquery/jquery.min.js"></script>
+<!-- Need: sweetalert -->
+<script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
+>
+<script src="/assets/static/js/pages/sweetalert2.js"></script>
+>
+
+<!-- JS 顯示商品列表 -->
+<script>
+    $(document).ready(function () {
+        // 當前頁面
+        let currentPage = 1;
+        // 每頁顯示的商品數量
+        const limit = 6;
+        // 當前排序
+        let sortColumn = 'created_date';
+        let sortOrder = 'desc';
+
+        // 獲取商品數據的函數
+        function fetchProducts() {
+            // 獲取搜索框的值
+            const search = $('#searchInput').val();
+            // 獲取分類篩選的值
+            const category = $('#categoryFilter').val();
+
+          // 修正這裡的排序欄位名稱
+            let sortColumnMapping = {
+                productId: 'product_id',
+                productName: 'product_name',
+                category: 'category',
+                productPrice: 'productPrice',
+                stock: 'stock',
+                createdDate: 'created_date',
+                lastModifiedDate: 'last_modified_date'
+            };
+
+            let orderByColumn = sortColumnMapping[sortColumn] || 'created_date';
+
+            // 使用AJAX發送GET請求來獲取商品數據
+            $.ajax({
+                url: '/products', // API端點
+                method: 'GET', // 請求方法
+                data: {
+                    search: search, // 搜索關鍵詞
+                    category: category, // 分類篩選
+                    orderBy: orderByColumn, // 排序列
+                    sort: sortOrder, // 排序方式
+                    limit: limit, // 每頁顯示的商品數量
+                    offset: (currentPage - 1) * limit // 分頁偏移量
+                },
+                success: function (data) {
+                    // 清空表格的主體部分
+                    $('#productsTable tbody').empty();
+                    // 遍歷每個商品數據並添加到表格中
+                    data.results.forEach(function (product) {
+                        // 格式化創建日期和最後修改日期
+                        const createdDate = new Date(product.createdDate).toLocaleString('zh-TW', {timeZone: 'Asia/Taipei'});
+                        const lastModifiedDate = new Date(product.lastModifiedDate).toLocaleString('zh-TW', {timeZone: 'Asia/Taipei'});
+
+                        let stockDisplay = product.stock;
+                        if (product.category === '教材影片') {
+                            stockDisplay = '無限';
+                        } else if (product.stock === 0 || product.stock === null) {
+                            stockDisplay = '<span style="color: red;">無庫存</span>';
+                        } else {
+                            stockDisplay = product.stock;
+                        }
+
+                      // 將商品數據添加到表格中
+                        $('#productsTable tbody').append(`
+                    <tr>
+                        <td>${product.productId}</td>
+                        <td>${product.productName}</td>
+                        <td>${product.category}</td>
+                        <td><img src="${product.imageUrl}" style="width: 100px;"></td>
+                        <td>${product.productPrice}</td>
+                        <td>${stockDisplay}</td>
+                        <td>${createdDate}</td>
+                        <td>${lastModifiedDate}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="editProduct(${product.productId})">修改</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.productId})">刪除</button>
+                        </td>
+                    </tr>
+                `);
+                    });
+
+                    // 更新商品筆數
+                    $('#productCount').text(`目前商品數：${data.results.length} / 總商品數：${data.total}`);
+
+                    // 清空並重建分頁按鈕
+                    $('#pagination').empty();
+                    // 根據總數據量和每頁顯示的數量計算總頁數
+                    for (let i = 1; i <= Math.ceil(data.total / limit); i++) {
+                        // 添加分頁按鈕
+                        $('#pagination').append(`<li class="page-item ${i === currentPage ? 'active' : ''}">
+                  <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>`);
+                    }
+                }
+            });
+        }
+
+        // 切換頁面的函數
+        window.changePage = function (page) {
+            currentPage = page; // 更新當前頁面
+            fetchProducts(); // 獲取新的頁面數據
+        }
+
+        // 編輯商品的函數
+        window.editProduct = function (productId) {
+            $.ajax({
+                url: `/products/${productId}`,
+                method: 'GET',
+                success: function (data) {
+                    $('#productId').val(data.productId);
+                    $('#productName').val(data.productName);
+                    $('#productCategory').val(data.category);
+                    $('#productPrice').val(data.productPrice);
+                    $('#productStock').val(data.stock === '無限' ? '' : data.stock);
+                    $('#productDescription').val(data.description);
+                    $('#productImage').val(data.imageUrl);
+                    $('#productModalLabel').text('編輯商品');
+                    $('#productModal').modal('show');
+                }
+            });
+        }
+
+        // 刪除商品的函數
+        window.deleteProduct = function (productId) {
+            Swal.fire({
+                title: '確認刪除',
+                text: "您確定要刪除此商品嗎？",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '是的，刪除它！',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/products/${productId}`, // API端點
+                        method: 'DELETE', // 請求方法
+                        success: function () {
+                            Swal.fire('已刪除!', '商品已刪除。', 'success'); // 刪除成功提示
+                            fetchProducts(); // 重新獲取商品數據
+                        },
+                        error: function () {
+                            Swal.fire('錯誤!', '刪除失敗，請重試。', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 新增商品按鈕的點擊事件
+        $('#addProductBtn').click(function () {
+            $('#productModalLabel').text('新增商品');
+            $('#productForm').trigger('reset'); // 重設表單
+            $('#productModal').modal('show'); // 顯示模態窗口
+        });
+
+        // 綁定儲存按鈕事件
+        $('#saveProductBtn').click(function () {
+            const productId = $('#productId').val();
+            const productData = {
+                productName: $('#productName').val(),
+                category: $('#productCategory').val(),
+                productPrice: $('#productPrice').val(),
+                stock: $('#productStock').val() === '' ? null : $('#productStock').val(),
+                description: $('#productDescription').val(),
+                imageUrl: $('#productImage').val()
+            };
+
+            let method = 'POST';
+            let url = '/products';
+            if (productId) {
+                method = 'PUT';
+                url += `/${productId}`;
+            }
+
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: 'application/json',
+                data: JSON.stringify(productData),
+                success: function () {
+                    $('#productModal').modal('hide');
+                    fetchProducts();
+                    Swal.fire('成功!', '商品已儲存。', 'success');
+                },
+                error: function () {
+                    Swal.fire('錯誤!', '操作失敗，請檢查輸入資料。', 'error');
+                }
+            });
+        });
+
+        // 搜索、篩選和排序條件的變化事件
+        $('#searchInput, #categoryFilter').on('input change', function () {
+            currentPage = 1; // 重置到第一頁
+            fetchProducts(); // 重新獲取商品數據
+        });
+
+        // 點擊表格標頭進行排序的事件
+        $('.sortable').on('click', function () {
+            const column = $(this).data('sort');
+            if (sortColumn === column) {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortOrder = 'asc';
+            }
+            $('.sortable').removeClass('asc desc');
+            $(this).addClass(sortOrder);
+            fetchProducts(); // 重新獲取商品數據
+        });
+
+        // 初始化時獲取商品數據
+        fetchProducts();
+    });
+
+</script>
+
+</body>
+</html>

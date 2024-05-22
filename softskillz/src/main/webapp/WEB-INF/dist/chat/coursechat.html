@@ -21,7 +21,7 @@
 <body>
   <script src="/assets/static/js/initTheme.js"></script>
   <div id="app">
-    <script src="/courseorder/js/backsidebar.js"></script>
+    <script src="/dist/courseorder/js/backsidebar.js"></script>
   </div>
 
   <!-- 中間內容部分 -->
@@ -33,11 +33,11 @@
     </header>
 
     <div class="page-heading">
-      <h3>SoftSkillz - 你的功能</h3>
+      <h3>SoftSkillz - 訊息管理</h3>
     </div>
     <div class="page-content">
       <section class="row">
-        <div class="col-12 col-lg-9">
+        <div class="col-12 col-lg-12">
           <!-- 卡片中放你的功能內容 -->
           <div class="card col-12" style="min-height:900px;">
             <h3 class=" card-header">課程訊息</h3>
@@ -103,7 +103,7 @@
           <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">訂單編號:</h5>
+                <h5 class="modal-title">聊天室編號:</h5>
                 <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
                   <i data-feather="x"></i>
                 </button>
@@ -111,7 +111,7 @@
               <div class="modal-body table-responsive">
                 <table class="table mb-0">
                   <thead>
-                    <th class="text-center">編號</th>
+                    <!-- <th class="text-center">編號</th> -->
                     <th class="text-center">聊天室編號</th>
                     <th class="text-center">傳送人</th>
                     <th class="text-center">訊息</th>
@@ -135,62 +135,7 @@
 
 
 
-        <!-- 右方第一個卡片列表 -->
-        <div class="col-12 col-lg-3">
-          <div class="card">
-            <div class="card-body py-4 px-4">
-              <div class="d-flex align-items-center">
-                <div class="avatar avatar-xl">
-                  <img src="/assets/compiled/jpg/1.jpg" alt="Face 1" />
-                </div>
-                <div class="ms-3 name">
-                  <h5 class="font-bold">管理員名稱</h5>
-                  <h6 class="text-muted mb-0">管理員帳號</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 右方第二個Recent Messages -->
-          <div class="card">
-            <div class="card-header">
-              <h4>Recent Messages</h4>
-            </div>
-            <div class="card-content pb-4">
-              <div class="recent-message d-flex px-4 py-3">
-                <div class="avatar avatar-lg">
-                  <img src="/assets/compiled/jpg/4.jpg" />
-                </div>
-                <div class="name ms-4">
-                  <h5 class="mb-1">Hank Schrader</h5>
-                  <h6 class="text-muted mb-0">@johnducky</h6>
-                </div>
-              </div>
-              <div class="recent-message d-flex px-4 py-3">
-                <div class="avatar avatar-lg">
-                  <img src="/assets/compiled/jpg/5.jpg" />
-                </div>
-                <div class="name ms-4">
-                  <h5 class="mb-1">Dean Winchester</h5>
-                  <h6 class="text-muted mb-0">@imdean</h6>
-                </div>
-              </div>
-              <div class="recent-message d-flex px-4 py-3">
-                <div class="avatar avatar-lg">
-                  <img src="/assets/compiled/jpg/1.jpg" />
-                </div>
-                <div class="name ms-4">
-                  <h5 class="mb-1">John Dodol</h5>
-                  <h6 class="text-muted mb-0">@dodoljohn</h6>
-                </div>
-              </div>
-              <div class="px-4">
-                <button class="btn btn-block btn-xl btn-outline-primary font-bold mt-3">
-                  Start Conversation
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </section>
     </div>
 
@@ -201,7 +146,6 @@
         </div>
       </div>
     </footer>
-  </div>
   </div>
 
   <script src="/assets/static/js/components/dark.js"></script>
@@ -218,211 +162,8 @@
   <script src="/assets/static/js/pages/date-picker.js"></script>
   <script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
-  <script>
-    let pageNo = "";
-    let size = "";
-    window.onload = () => {
-      const chatroom = sessionStorage.getItem("chatroom");
-      if (chatroom) {
-        appendChat(JSON.parse(chatroom));
-      } else {
-        getAllChatRoom();
-      }
-    }
-
-    function getAllChatRoom() {
-      fetch("/chat?" + "pid=" + pageNo)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-        }).then(data => {
-          console.log(data);
-          let chatroom = JSON.stringify(data);
-          sessionStorage.setItem("chatroom", chatroom)
-          appendChat(data);
-        })
-    }
-
-    function appendChat(data) {
-      let tbody = document.querySelector("tbody");
-      tbody.innerHTML = "";
-      let content = data.content;
-      console.log(content);
-      for (let key in content) {
-        let tr = document.createElement("tr");
-        let lastTime = new Date(content[key].lastTime)
-        tr.innerHTML =
-          "<td class='text-center chatRoomID'>" + content[key].chatRoomID + "</td>" +
-          "<td class='text-center'>" + content[key].user1 + "</td>" +
-          "<td class='text-center'>" + content[key].user2 + "</td>" +
-          "<td class='text-center'>" + lastTime.toLocaleString('sv') + "</td>" +
-          "<td class='text-center'><button class='btn btn-primary block chathistory'  data-bs-toggle='modal' data-bs-target='#border-less' >詳細</button></td>";
-        tbody.appendChild(tr);
-
-        let chathistory = tr.querySelector('.chathistory');
-        chathistory.addEventListener('click', getHistory);
-      }
-      let page = data.totalPages;
-      let pagination = document.querySelector(".pagination");
-      let pageNumber = data.pageable.pageNumber;
-      console.log("pageNumber" + pageNumber);
-
-      pagination.innerHTML = "";
-      let previousLi = document.createElement("li");
-      previousLi.className = "page-item";
-      previousLi.innerHTML = `<a class="page-link" href="#" aria-label="Previous" id="previous"><span aria-hidden="true">&laquo;</span></a>`
-      pagination.appendChild(previousLi);
-      let previous = document.querySelector("#previous");
-      previous.addEventListener("click", (e) => {
-        console.log(pageNumber);
-        e.preventDefault();
-        if (pageNumber > 0) {
-          pageNo = pageNumber;
-          getAllChatRoom();
-        }
-      });
-      for (let i = 0; i < page; i++) {
-        let li = document.createElement("li");
-        li.className = "page-item";
-        let a = document.createElement("a");
-        if (pageNumber == i) {
-          a.className = "page-link active";
-        } else {
-          a.className = "page-link";
-        }
-
-        a.href = "#";
-        a.textContent = i + 1;
-        a.addEventListener("click", (e) => {
-          e.preventDefault();
-          pageNo = parseInt(e.target.textContent, 10);
-          getAllChatRoom();
-        })
-        li.appendChild(a);
-        pagination.append(li);
-      }
-      let NextLi = document.createElement("li");
-      NextLi.className = "page-item";
-      NextLi.innerHTML = `<a class="page-link" href="#" aria-label="Next" id="next"><span aria-hidden="true" >&raquo;</span></a>`
-      pagination.appendChild(NextLi);
-
-      let next = document.querySelector("#next");
-      next.addEventListener("click", (e) => {
-        console.log(123);
-        e.preventDefault();
-        if (pageNumber + 1 < page) {
-          pageNo = pageNumber + 2
-          getAllChatRoom();
-        }
-      });
-
-    }
-
-    pagesize = document.querySelector("#pagesize");
-    pagesize.addEventListener("change", (e) => {
-      size = e.target.value;
-      console.log(size);
-      pageNo = "";
-      getAllChatRoom();
-    })
-    let id = "";
-    function getHistory(e) {
-      let tr = e.target.closest("tr");
-      id = tr.querySelector(".chatRoomID").textContent;
-      console.log(id);
-      let title = document.querySelector(".modal-title");
-      title.innerHTML = "聊天室編號:" + id;
-      history(id);
-    }
-
-    function history(id) {
-      fetch("/chat/" + id + "?pid=" + pageNo)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-        }).then(data => {
-          showHistory(data);
-        })
-    }
-
-    function showHistory(data) {
-      let tbody = document.querySelector("#chathistory");
-      tbody.innerHTML = "";
-      let content = data.content;
-      console.log(content);
-      for (let key in content) {
-        let tr = document.createElement("tr");
-        let sendTime = new Date(content[key].sendTime)
-        tr.innerHTML =
-          "<td class='text-center '>" + content[key].id + "</td>" +
-          "<td class='text-center chatRoomID'>" + content[key].chatRoomId + "</td>" +
-          "<td class='text-center'>" + content[key].sendOutUser + "</td>" +
-          "<td class='text-center'>" + content[key].msg + "</td>" +
-          "<td class='text-center'>" + sendTime.toLocaleString('sv') + "</td>";
-        tbody.appendChild(tr);
-      }
-      let page = data.totalPages;
-      let hispagination = document.querySelector("#hispagination");
-      let pageNumber = data.pageable.pageNumber;
-      console.log("pageNumber" + pageNumber);
-
-      hispagination.innerHTML = "";
-      let previousLi = document.createElement("li");
-      previousLi.className = "page-item";
-      previousLi.innerHTML = `<a class="page-link" href="#" aria-label="Previous" id="previoushis"><span aria-hidden="true">&laquo;</span></a>`
-      hispagination.appendChild(previousLi);
-      let previous = document.querySelector("#previoushis");
-      previous.addEventListener("click", (e) => {
-        console.log(pageNumber);
-        e.preventDefault();
-        if (pageNumber > 0) {
-          pageNo = pageNumber;
-          history(id);
-        }
-      });
-      for (let i = 0; i < page; i++) {
-        let li = document.createElement("li");
-        li.className = "page-item";
-        let a = document.createElement("a");
-        if (pageNumber == i) {
-          a.className = "page-link active";
-        } else {
-          a.className = "page-link";
-        }
-
-        a.href = "#";
-        a.textContent = i + 1;
-        a.addEventListener("click", (e) => {
-          e.preventDefault();
-          pageNo = parseInt(e.target.textContent, 10);
-          history(id);
-        })
-        li.appendChild(a);
-        hispagination.append(li);
-      }
-      let NextLi = document.createElement("li");
-      NextLi.className = "page-item";
-      NextLi.innerHTML = `<a class="page-link" href="#" aria-label="Next" id="nexthis"><span aria-hidden="true" >&raquo;</span></a>`
-      hispagination.appendChild(NextLi);
-
-      let next = document.querySelector("#nexthis");
-      next.addEventListener("click", (e) => {
-        console.log(123);
-        e.preventDefault();
-        if (pageNumber + 1 < page) {
-          pageNo = pageNumber + 2
-          history(id);
-        }
-      });
-
-    }
-
-  </script>
+  
+  <script src="/dist/chat/js/coursechat.js"></script>
 </body>
 
 

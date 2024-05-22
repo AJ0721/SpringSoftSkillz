@@ -147,52 +147,31 @@ $(document).ready(function () {
     });
 
 
-    document.body.addEventListener('change', function (e) {
-        if (e.target.classList.contains('status-dropdown')) {
-            const threadId = e.target.dataset.threadId;
-            const newStatus = e.target.value;
+    $(document).on('change', '.status-dropdown', function () {
+        var threadId = $(this).data('thread-id');
+        var newStatus = $(this).val();
 
-            // Show confirmation dialog
-            Swal.fire({
-                title: '是否更新文章狀態?',
-                text: "",
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: '取消',
-                confirmButtonText: '確認'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Send the update to the server
-                    fetch(`/forum/thread/update/id/${threadId}?status=${newStatus}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ threadStatus: newStatus })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            Swal.fire(
-                                '更新成功!',
-                                '',
-                                'success'
-                            );
-                        })
-                        .catch(error => {
-                            console.error('Error updating status:', error);
-                            Swal.fire(
-                                '更新失敗',
-                                '請檢查網路連線並重新整理',
-                                'error'
-                            );
-                            dropdown.val(originalStatus);
-                        });
-                } else {
-                    // User clicked 'Cancel', restore the original status
-                    $(e.target).val($(e.target).data('current'));
-                }
-            });
-        }
+        // Make a PUT request to update the status
+        fetch(`/forum/thread/update/id/${threadId}?status=${newStatus}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Status updated successfully:', data);
+            Swal.fire("狀態更新成功", "", "success");
+        })
+        .catch(error => {
+            console.error('Error updating status:', error);
+            Swal.fire('狀態更新失敗', '請檢查連線並重新整理', 'error');
+        });
     });
 });
 

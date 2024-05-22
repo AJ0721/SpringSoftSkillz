@@ -19,11 +19,11 @@
 			<script src="/assets/extensions/jquery/jquery.min.js"></script>
 			<style>
 				#popup {
-					display: none;
+					visibility: hidden;
 				}
 
 				#popupEng {
-					display: none;
+					visibility: hidden;
 				}
 
 				select {
@@ -34,7 +34,51 @@
 					border: solid 1px #bbb;
 					box-shadow: 1px 1px #888888;
 				}
+.input-container {
+    position: relative;
+    display: inline-block;
+}
 
+.input-container i {
+    position: absolute;
+    left: 178px; /* 調整圖標與輸入框左邊距離 */
+    top: 30%;
+    transform: translateY(-50%);
+    font-size: 20px; /* 調整圖標大小 */
+    color: #999;
+}
+
+.input-container2 {
+    position: relative;
+    display: inline-block;
+}
+
+.input-container2 i {
+    position: absolute;
+    left: 200px; /* 調整圖標與輸入框左邊距離 */
+    top: 30%;
+    transform: translateY(-50%);
+    font-size: 20px; /* 調整圖標大小 */
+    color: #999;
+}
+
+#number {
+    width: 200px;
+    height: 40px;
+    padding-left: 30px; /* 留出空間給圖標 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#english{
+    width: 200px;
+    height: 40px;
+    padding-left: 30px; /* 留出空間給圖標 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
 			</style>
 		</head>
 
@@ -284,7 +328,7 @@
 					</header>
 
 					<div class="page-heading">
-						<h3>SoftSkillz - 你的功能</h3>
+						<h3>SoftSkillz - 學伴資料管理</h3>
 					</div>
 					<div class="page-content">
 						<section class="row">
@@ -299,28 +343,35 @@
 											</div>
 										</div><br>
 
-								<table>
+								<table align="center">
+								<tr align="center">
 									<td>
 										<form method="get" action="../GetCompanionById">
+													<div class="input-container">
 													<label for="" class="fs-5">以id查詢基本資料 :</label>
+                                                        <i class="bi bi-person"></i>
 													<input type="text" name="companion_id" id="number"
 														style="border:solid 1px;border-radius: 5px;"
 														placeholder="請輸入數字" size="13"/>
-													<div class="popup; text-warning" id="popup">請輸入數字！</div>
-
 													<!-- 					<input type="submit" value="查詢" /> -->
-													<button type="submit" class="btn btn-primary">查詢</button>
+													<button type="submit" class="btn btn-primary" id="selectById">查詢</button>
+                                                    </div>
+
 												</form>
 									</td>
 									<td>&nbsp &nbsp</td>
 									<td>
 										<form method="get" action="../GetCompanionByName">
+										<div class="input-container2">
 													<label for="" class="fs-5">以暱稱查詢基本資料 :</label>
+													<i class="bi bi-person"></i>
 													<input type="text" name="companion_username"
 														style="border:solid 1px;border-radius: 5px;"
 														placeholder="請輸入英文名稱" id="english" size="13"/>
-													<div class="popup; text-warning" id="popupEng">請輸入英文字！</div>
-													<button type="submit" class="btn btn-primary">查詢</button>
+													
+													<button type="submit" class="btn btn-primary" id="selectByName">查詢</button>
+													 </div>
+													
 												</form>
 									</td>
 									<td>
@@ -328,6 +379,15 @@
 														class="btn btn-primary">查詢全部</button></a>
 									
 									</td>
+									</tr>
+									<tr align="center">
+									<td colspan="2"><div class="popup; text-warning fs-5" id="popup">請輸入數字！</div></td>
+									<td colspan="2"><div class="popup; text-warning fs-5" id="popupEng">請輸入英文字！</div></td>
+									</tr>
+									<tr align="center">
+									<td colspan="2" class="fs-5">${errorMessage}</td>
+									<td colspan="2" class="fs-5">${errorMessageErrName}</td>
+									</tr>
 								</table>
 
 
@@ -337,65 +397,6 @@
 
 
 							</div>
-
-
-
-							<!-- 右方第一個卡片列表 -->
-<!-- 							<div class="col-12 col-lg-3"> -->
-<!-- 								<div class="card"> -->
-<!-- 									<div class="card-body py-4 px-4"> -->
-<!-- 										<div class="d-flex align-items-center"> -->
-<!-- 											<div class="avatar avatar-xl"> -->
-<!-- 												<img src="/assets/compiled/jpg/1.jpg" alt="Face 1" /> -->
-<!-- 											</div> -->
-<!-- 											<div class="ms-3 name"> -->
-<!-- 												<h5 class="font-bold">管理員名稱</h5> -->
-<!-- 												<h6 class="text-muted mb-0">管理員帳號</h6> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-								<!-- 右方第二個Recent Messages -->
-<!-- 								<div class="card"> -->
-<!-- 									<div class="card-header"> -->
-<!-- 										<h4>Recent Messages</h4> -->
-<!-- 									</div> -->
-<!-- 									<div class="card-content pb-4"> -->
-<!-- 										<div class="recent-message d-flex px-4 py-3"> -->
-<!-- 											<div class="avatar avatar-lg"> -->
-<!-- 												<img src="/assets/compiled/jpg/4.jpg" /> -->
-<!-- 											</div> -->
-<!-- 											<div class="name ms-4"> -->
-<!-- 												<h5 class="mb-1">Hank Schrader</h5> -->
-<!-- 												<h6 class="text-muted mb-0">@johnducky</h6> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 										<div class="recent-message d-flex px-4 py-3"> -->
-<!-- 											<div class="avatar avatar-lg"> -->
-<!-- 												<img src="/assets/compiled/jpg/5.jpg" /> -->
-<!-- 											</div> -->
-<!-- 											<div class="name ms-4"> -->
-<!-- 												<h5 class="mb-1">Dean Winchester</h5> -->
-<!-- 												<h6 class="text-muted mb-0">@imdean</h6> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 										<div class="recent-message d-flex px-4 py-3"> -->
-<!-- 											<div class="avatar avatar-lg"> -->
-<!-- 												<img src="/assets/compiled/jpg/1.jpg" /> -->
-<!-- 											</div> -->
-<!-- 											<div class="name ms-4"> -->
-<!-- 												<h5 class="mb-1">John Dodol</h5> -->
-<!-- 												<h6 class="text-muted mb-0">@dodoljohn</h6> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 										<div class="px-4"> -->
-<!-- 											<button class="btn btn-block btn-xl btn-outline-primary font-bold mt-3"> -->
-<!-- 												Start Conversation -->
-<!-- 											</button> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
 						</section>
 					</div>
 				<footer>
@@ -424,6 +425,8 @@
 				document.addEventListener('DOMContentLoaded', function () {
 					const numbers = document.querySelectorAll('#number');
 					const popups = document.querySelectorAll('#popup');
+					const selectById = document.querySelector('#selectById');
+					const selectByName = document.querySelector('#selectByName');
 
 					numbers.forEach(function (number, index) {
 						number.addEventListener('input', function (event) {
@@ -431,9 +434,11 @@
 							const containsNonNumber = !/^\d*$/.test(inputValue);
 							const containsNumber = /\d/.test(inputValue);
 							if (containsNonNumber || (containsNumber && containsNonNumber && inputValue !== "")) {
-								popups[index].style.display = 'block';
+								popups[index].style.visibility = 'visible';
+								selectById.disabled = true;
 							} else {
-								popups[index].style.display = 'none';
+								popups[index].style.visibility = 'hidden';
+								 selectById.disabled = false;
 							}
 						});
 					});
@@ -449,9 +454,11 @@
 							const containsNonEnglish = !/^[a-zA-Z]*$/.test(inputValue);
 							const containsEnglish = /[a-zA-Z]/.test(inputValue);
 							if (containsNonEnglish || (containsEnglish && containsNonEnglish && inputValue !== "")) {
-								popups[index].style.display = 'block';
+								popups[index].style.visibility = 'visible';
+								selectByName.disabled = true;
 							} else {
-								popups[index].style.display = 'none';
+								popups[index].style.visibility = 'hidden';
+								selectByName.disabled = false;
 							}
 						});
 					});
@@ -494,7 +501,38 @@
 				  
 				          }
 			</script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// 遍歷所有的表單元素
+			const forms = document.querySelectorAll('form');
+			forms.forEach(form => {
+				form.addEventListener('submit', function (event) {
+					event.preventDefault(); // 防止表單預設的提交行為
+	
+					// 檢查每個輸入欄位是否為空
+					const inputs = form.querySelectorAll('input[type="text"]');
+					let isEmpty = false;
+					inputs.forEach(input => {
+						if (input.value.trim() === '') {
+							isEmpty = true;
+						}
+					});
+	
+					// 如果有空值，顯示提示訊息
+					if (isEmpty) {
+						Swal.fire({
+							title: "輸入欄位不可為空白",
+							showCloseButton: true,
+						});
+					} else {
+						// 否則提交表單
+						form.submit();
+					}
+				});
+			});
+		});
+	</script>
 		</body>
 
 		</html>

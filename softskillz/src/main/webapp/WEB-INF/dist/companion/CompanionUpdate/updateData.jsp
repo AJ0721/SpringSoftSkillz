@@ -18,9 +18,55 @@
       <link rel="stylesheet" href="/assets/compiled/css/app-dark.css" />
       <link rel="stylesheet" href="/assets/compiled/css/iconly.css" />
 <script src="/assets/extensions/jquery/jquery.min.js"></script>
+<script>
+function updateFileName() {
+    var fileInput = document.getElementById('fileNameDisplay');
+    var file = fileInput.files[0];
+    if (file) {
+        var img = document.getElementById('img');
+        img.src = URL.createObjectURL(file);
+        img.onload = function() {
+            URL.revokeObjectURL(img.src); // 釋放內存
+        }
+    }
+}
+function upload() {
+    var fileInput = document.querySelector('input[type="file"]');
+    var file = fileInput.files[0];
+    var formData = new FormData();
+    
+    if (file) {
+        alert('照片上傳成功！');
+        formData.append('companion_photo', file);
+        
+        fetch('upload2.controller', {
+            method: 'POST',
+            body: formData
+        }).then(function (response) {
+            console.log('status:', response.status);
+            return response.text(); // 如果你希望處理 JSON 響應
+        }).then(function(data) {
+            console.log('Response data:', data);
+            // 將文件名顯示在另一個輸入框中
+            document.getElementById('fileNameDisplay').value = file.name;
+            var test = document.getElementById('fileNameDisplay').value
+            console.log(test);
+        }).catch(function(error) {
+            console.error('Upload error:', error);
+        });
+    } else {
+        alert('未上傳照片！');
+        // 如果未上傳照片，將文件名設置為 companionPhoto 的值
+        var companionPhoto = '${companion.companionPhoto}';
+        document.getElementById('fileNameDisplay').value = companionPhoto;
+    }
+
+    
+}
+</script>
       <style>
         #img {
-          width: 130px;
+          width: 150px;
           height: auto;
         }
 #TABLE{
@@ -50,18 +96,26 @@ border-radius: 5px;
     font-size: 17px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
 }
-textarea {
+        select {
+height:30px;
 border:solid 1px;
 border-radius: 5px;
+    width: 110px;
+    text-align: center;
+    font-size: 17px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+textarea {
+    border: solid 1px;
+    border-radius: 5px;
     width: 140px;
     text-align: center;
     font-size: 17px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-    vertical-align: middle;
     resize: none;
-    height: 80px; /* 設置 textarea 的高度 */
-  line-height: 80px; /* 將行高設置為與 textarea 高度相同，從而將文字置中 */
-  vertical-align: middle; /* 垂直置中 */
+    height: 100px;
+    line-height: 1.4; /* 減少行高，可以設置為任何小於1的值 */
+    padding-top: 28px; /* 增加內邊距以便垂直居中 */
 }
 
 textarea::-webkit-scrollbar {
@@ -313,7 +367,7 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS
 <div id="TABLE" align="center" class="mt-3">
 <table id="TABLE" >
 <tr id="thOfTable" style="background-color:white" align="center">
-<th>學伴編號<th>學生會員編號<th>暱稱<th>母語<th>其他會說語言<th>學習興趣<th>學習頻率<th>關於我<th>照片
+<th>學伴編號<th>學生會員編號<th>暱稱<th>母語<th>其他會說語言<th>學習興趣<th>學習頻率<th>關於我<th>照片<th>選擇照片<th>上傳
 </tr>
 <tr align="center">
 <td><input type="text" value="<%= companion.getCompanionId()%>" name="companion_id" readonly style="background-color: #FFF2F2">
@@ -324,11 +378,35 @@ SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSS
 <td><input type="text" value="<%= companion.getCompanionFirstLanguage() %>" name="companion_first_language">
 <td><input type="text" value="<%= companion.getCompanionSpeakingLanguage() %>" name="companion_speaking_language">
 <td><input type="text" value="<%= companion.getCompanionLearningInterest() %>" name="companion_learning_interest">
-<td><input type="text" value="<%= companion.getCompanionLearningFrequency() %>" name="companion_learning_frequency">
+
+<td>
+<select name="companion_learning_frequency">
+<% 
+        String learningFrequency = companion.getCompanionLearningFrequency();
+        if ("每週1-3次".equals(learningFrequency)) {
+    %>
+                            <option value="每週1-3次"><%= companion.getCompanionLearningFrequency() %></option>
+                            <option value="每週4-7次">每週4-7次</option>
+                            <% } else if("每週4-7次".equals(learningFrequency)){ %>
+                            <option value="每週4-7次"><%= companion.getCompanionLearningFrequency() %></option>
+                            <option value="每週1-3次">每週1-3次</option>
+                             <% }else {%>
+                             <option value=""><%= companion.getCompanionLearningFrequency() %></option>
+                             <option value="每週1-3次">每週1-3次</option>
+                            <option value="每週4-7次">每週4-7次</option>
+                             <% } %>
+                          </select>
 <td><textarea name="companion_about_me"><%= companion.getCompanionAboutMe() %></textarea>
-<td><img id="img" src="${pageContext.request.contextPath}${companion.getStudentBeanID().getStudentPhoto()}" alt="Companion_Photo" name="companion_photo">
+<td><img id="img" src="${companion.companionPhoto}" alt="個人照片">
+
+<td>
+<input type="file" name="companion_photo" id="fileNameDisplay" style="display: none;" onchange="updateFileName()"/>
+<input type="hidden" value="${companion.getStudentBeanID()}" name="studentBeanID">
+<button type="button" onclick="document.getElementById('fileNameDisplay').click()" class="btn btn-primary" style="width:100px">選擇照片</button>
+<td>
+<button type="button" onclick="upload()" class="btn btn-primary" style="width:60px">上傳</button>
+
 <input type="hidden" name="_method" value="PUT">
-<input type="hidden" value="${companion.getStudentBeanID().getStudentPhoto()}" name="companion_photo">
 <input type="hidden" value="${companion.getStudentBeanID()}" name="studentBeanID">
 
 </table>

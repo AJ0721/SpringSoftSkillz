@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threads Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap5.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>我的文章</h3>
+        <div class="mb-3">
+            <button class="btn btn-success" id="createNewThread">Create New Thread</button>
+            <button class="btn btn-danger" id="deleteSelectedThreads">Delete</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="thread-table">
+                <thead>
+                    <tr class="text-center">
+                        <th><input class="form-check-input" type="checkbox" id="selectAllThreads"></th>
+                        <th>ID</th>
+                        <th>Author</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Likes</th>
+                        <th>Comments</th>
+                        <th>Creation Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="threadList">
+                    <!-- Thread rows will be dynamically populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let userId = 3;  // Replace with the actual user ID
+            let userType = 'student';  // Replace with the actual user type ('student' or 'teacher')
+
+            let apiUrl = `http://localhost:8080/forum/thread/${userType}id/${userId}`;
+
+            function fetchThreads() {
+                return fetch(apiUrl)
+                    .then(response => response.json())
+                    .catch(error => {
+                        console.error('Error fetching threads:', error);
+                    });
+            }
+
+            function populateTable(threads) {
+                let threadList = $('#threadList');
+                threadList.empty();
+                threads.forEach(thread => {
+                    let row = `
+                        <tr>
+                            <td><input class="form-check-input" type="checkbox" data-id="${thread.id}"></td>
+                            <td>${thread.id}</td>
+                            <td>${thread.author}</td>
+                            <td>${thread.title}</td>
+                            <td>${thread.category}</td>
+                            <td>${thread.likes}</td>
+                            <td>${thread.comments}</td>
+                            <td>${thread.creationTime}</td>
+                            <td>${thread.status}</td>
+                        </tr>
+                    `;
+                    threadList.append(row);
+                });
+
+                $('#thread-table').DataTable();
+            }
+
+            fetchThreads().then(threads => {
+                populateTable(threads);
+            });
+
+            $('#selectAllThreads').on('change', function() {
+                $('input[type="checkbox"]').prop('checked', this.checked);
+            });
+
+            // Additional functionalities for create and delete can be added here
+        });
+    </script>
+</body>
+</html>

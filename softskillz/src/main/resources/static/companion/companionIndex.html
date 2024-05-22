@@ -545,6 +545,38 @@
 			});
 		});
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// 遍歷所有的表單元素
+			const forms = document.querySelectorAll('form');
+			forms.forEach(form => {
+				form.addEventListener('submit', function (event) {
+					event.preventDefault(); // 防止表單預設的提交行為
+	
+					// 檢查每個輸入欄位是否為空
+					const inputs = form.querySelectorAll('input[type="text"]');
+					let isEmpty = false;
+					inputs.forEach(input => {
+						if (input.value.trim() === '') {
+							isEmpty = true;
+						}
+					});
+	
+					// 如果有空值，顯示提示訊息
+					if (isEmpty) {
+						Swal.fire({
+							title: "輸入欄位不可為空白",
+							showCloseButton: true,
+						});
+					} else {
+						// 否則提交表單
+						form.submit();
+					}
+				});
+			});
+		});
+	</script>
 </body>
 
 </html>

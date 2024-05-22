@@ -39,8 +39,8 @@ public class CompanionService {
 		return null;
 	}
 	
-	public CompanionBean getByName(String companionUsername) {
-		Optional<CompanionBean> op1 = companionRepos.findBycompanionUsername(companionUsername);
+	public CompanionBean getByStudentNickname(String studentNickname) {
+		Optional<CompanionBean> op1 = companionRepos.findBystudentNickname(studentNickname);
 		
 		if(op1.isPresent()) {
 			return op1.get();
@@ -92,7 +92,7 @@ public class CompanionService {
         companionDTO.setStudentNickname(companionBean.getStudentBeanID().getStudentNickname());
         companionDTO.setStudentGender(companionBean.getStudentBeanID().getStudentGender());
         companionDTO.setStudentBirth(companionBean.getStudentBeanID().getStudentBirth());
-        companionDTO.setStudentPhoto(companionBean.getStudentBeanID().getStudentPhoto());
+        companionDTO.setCompanionPhoto(companionBean.getCompanionPhoto());
         return companionDTO;
     }
 }

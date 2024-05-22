@@ -64,16 +64,11 @@ public class WebAppConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
 		// 網頁串到模版之後這邊都要刪掉喔
-		registry.addResourceHandler("/courseorder/css/**").addResourceLocations("/WEB-INF/courseorder/css/");
-		registry.addResourceHandler("/courseorder/js/**").addResourceLocations("/WEB-INF/courseorder/js/");
-		registry.addResourceHandler("/courseorder/html/**").addResourceLocations("/WEB-INF/courseorder/html/");
-		registry.addResourceHandler("/courseorder/admin/**").addResourceLocations("/WEB-INF/courseorder/admin/");
-
+		
 		registry.addResourceHandler("/Companion/CompanionImg/**")
 				.addResourceLocations("/WEB-INF/companion/jsp/Companion/CompanionImg/");
 
 		registry.addResourceHandler("/html/**").addResourceLocations("/WEB-INF/html/");
-		registry.addResourceHandler("/forum/js/**").addResourceLocations("/WEB-INF/forum/js/");
 		registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/account/images/");
 		registry.addResourceHandler("/mall/css/**").addResourceLocations("/WEB-INF/mall/css/");
 		registry.addResourceHandler("/mall/js/**").addResourceLocations("/WEB-INF/mall/js/");
@@ -143,10 +138,18 @@ public class WebAppConfig implements WebMvcConfigurer {
 		// account圖片
 		registry.addResourceHandler("/account/images/**")
 				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/images/");
-
+		
+		// 學生照片
+		registry.addResourceHandler("/student/images/**")
+				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/student/images/");
+		
 		// 教師照片
 		registry.addResourceHandler("/teacher/images/**")
 				.addResourceLocations("file:src/main/webapp/WEB-INF/dist/account/teacher/images/");
+		
+		// 學伴照片
+				registry.addResourceHandler("/companion/CompanionImg/**")
+						.addResourceLocations("/WEB-INF/dist/companion/CompanionImg/");
 
 		// 前台模版html
 		registry.addResourceHandler("/elearning/**").addResourceLocations("/WEB-INF/elearning/");

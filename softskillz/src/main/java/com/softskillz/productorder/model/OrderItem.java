@@ -17,7 +17,7 @@ public class OrderItem implements Serializable {
     @Column(name = "order_item_id")
     private Integer orderItemId;
 
-    @Column(name = "order_id")
+    @Column(name = "order_id")//報錯先處理
     private Integer orderId;
 
     @Column(name = "product_id")

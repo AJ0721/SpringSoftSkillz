@@ -42,4 +42,5 @@ public interface CourseOrderService {
 	
 	Page<Order> getPageByStudentIDAndDate(Pageable pageable, String date1String, String date2String, Integer studentID,String status);	
 	
+	Page<Order> getPageByStatus(Pageable pageable ,String status);
 }

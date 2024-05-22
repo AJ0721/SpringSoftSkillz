@@ -45,13 +45,13 @@ public class LinePayTest {
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Autowired
 	private CourseOrderServiceImpl coService;
-	
+
 	@Autowired
 	private DiscountServiceImpl disService;
-	
+
 	private static final String ChannelSecret = "4a91e36157b573b652b027d2b69935cb";
 	private static final String ChannelId = "2003913073";
 
@@ -76,21 +76,22 @@ public class LinePayTest {
 		HttpHeaders headers = LineUtil.getHeaders(ChannelId, nonce, signature);
 		HttpEntity<Item> reqEntity = new HttpEntity<>(item, headers);
 		ResponseEntity<String> repEntity = restTemplate.exchange(reqUrl, HttpMethod.POST, reqEntity, String.class);
-		System.out.println("jjjjjjjj"+repEntity.getBody());
+		System.out.println("jjjjjjjj" + repEntity.getBody());
 		JsonNode jsonResponse = om1.readTree(repEntity.getBody());
-		System.out.println("kkkkkkkkkkk"+jsonResponse);
+		System.out.println("kkkkkkkkkkk" + jsonResponse);
 		String returnCode = jsonResponse.get("returnCode").asText();
 		if (returnCode.equals("0000")) {
 			url = jsonResponse.get("info").get("paymentUrl").get("web").toString();
-			System.out.println("re"+jsonResponse.get("returnCode").asText());
-			System.out.println("in"+jsonResponse.get("info").get("paymentUrl").get("web").toString());
-			System.out.println("url= "+url);
+			System.out.println("re" + jsonResponse.get("returnCode").asText());
+			System.out.println("in" + jsonResponse.get("info").get("paymentUrl").get("web").toString());
+			System.out.println("url= " + url);
 		}
 		return ResponseEntity.ok().body(url);
 	}
 
 	@GetMapping("/LinePayCon")
-	public String confirm(@RequestParam("transactionId") String transactionId, Model m,SessionStatus status) throws JsonProcessingException {
+	public String confirm(@RequestParam("transactionId") String transactionId, Model m, SessionStatus status)
+			throws JsonProcessingException {
 		Integer total = (Integer) m.getAttribute("total");
 		String conUrl = "https://sandbox-api-pay.line.me/v3/payments/" + transactionId + "/confirm";
 		Citem citem = new Citem();
@@ -103,16 +104,15 @@ public class LinePayTest {
 		String nonce = UUID.randomUUID().toString();
 		String signature = LineUtil.encrypt(ChannelSecret, ChannelSecret + requestUri + jsonStr + nonce);
 		HttpHeaders headers = LineUtil.getHeaders(ChannelId, nonce, signature);
-		
+
 		HttpEntity<Citem> reqEntity = new HttpEntity<>(citem, headers);
-		
+
 		ResponseEntity<String> repEntity = restTemplate.exchange(conUrl, HttpMethod.POST, reqEntity, String.class);
-		
-		
+
 		System.out.println("--");
 		JsonNode jsonResponse = om1.readTree(repEntity.getBody());
 		String returnCode = jsonResponse.get("returnCode").asText();
-		if (returnCode.equals("0000") ){
+		if (returnCode.equals("0000")) {
 			System.out.println("0000000");
 			Map<Integer, CartItem> cart = (Map<Integer, CartItem>) m.getAttribute("cart");
 			String orderID = (String) m.getAttribute("orderID");
@@ -128,17 +128,23 @@ public class LinePayTest {
 		}
 		return "forward:/courseorder/order.do";
 	}
-	
+
 	@PostMapping(path = "/LinePayReqAfter/{oid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> reqestByOrder(@PathVariable("oid") String orderID,@RequestParam("dis")String disID,HttpSession session)
+	public ResponseEntity<String> reqestByOrder(@PathVariable("oid") String orderID,
+			@RequestParam(value = "dis", required = false) String disID, HttpSession session)
 			throws JsonProcessingException {
-		System.out.println(orderID);
-		DiscountBean discount = disService.getByID(disID);
-		System.out.println("dis:"+discount);
-		session.setAttribute("discount",discount);
+		System.out.println("dis=" + disID);
+		DiscountBean discount = null;
+		Double disPercent = 100.00;
+		if (disID != null && !disID.isEmpty()) {
+			System.out.println("123dis");
+			discount = disService.getByID(disID);
+			session.setAttribute("discount", discount);
+			disPercent = discount.getDisPercent();
+		}
 		List<ItemInfo> orederItem = coService.getItem(orderID);
-		Item item = LineUtil.getItemByOrder(orederItem,discount.getDisPercent());
+		Item item = LineUtil.getItemByOrder(orederItem, disPercent);
 		String url = null;
 		String reqUrl = "https://sandbox-api-pay.line.me/v3/payments/request";
 		String requestUri = "/v3/payments/request";
@@ -150,25 +156,30 @@ public class LinePayTest {
 		HttpHeaders headers = LineUtil.getHeaders(ChannelId, nonce, signature);
 		HttpEntity<Item> reqEntity = new HttpEntity<>(item, headers);
 		ResponseEntity<String> repEntity = restTemplate.exchange(reqUrl, HttpMethod.POST, reqEntity, String.class);
-		System.out.println("jjjjjjjj"+repEntity.getBody());
+		System.out.println("jjjjjjjj" + repEntity.getBody());
 		JsonNode jsonResponse = om1.readTree(repEntity.getBody());
-		System.out.println("kkkkkkkkkkk"+jsonResponse);
+		System.out.println("kkkkkkkkkkk" + jsonResponse);
 		String returnCode = jsonResponse.get("returnCode").asText();
 		if (returnCode.equals("0000")) {
 			url = jsonResponse.get("info").get("paymentUrl").get("web").toString();
-			System.out.println("re"+jsonResponse.get("returnCode").asText());
-			System.out.println("in"+jsonResponse.get("info").get("paymentUrl").get("web").toString());
-			System.out.println("url= "+url);
+			System.out.println("re" + jsonResponse.get("returnCode").asText());
+			System.out.println("in" + jsonResponse.get("info").get("paymentUrl").get("web").toString());
+			System.out.println("url= " + url);
 		}
 		return ResponseEntity.ok().body(url);
 	}
-	
+
 	@GetMapping("/LinePayConByOrder")
-	public String confirmByOrder(@RequestParam("transactionId") String transactionId,@RequestParam("orderId") String orderID,HttpSession session) throws JsonProcessingException {
-		Integer orderPrice = coService.getORDByID(orderID).getOrderPrice();
+	public String confirmByOrder(@RequestParam("transactionId") String transactionId,
+			@RequestParam("orderId") String orderID, HttpSession session) throws JsonProcessingException {
+		Integer price = coService.getORDByID(orderID).getOrderPrice();
 		DiscountBean discount = (DiscountBean) session.getAttribute("discount");
-		Double price= Math.ceil((orderPrice*discount.getDisPercent()/100));
-		System.out.println(price);
+		
+		if (discount != null) {
+			Double disPrice = Math.ceil((price * discount.getDisPercent() / 100));
+			System.out.println(price);
+			price = disPrice.intValue();
+		}
 
 		String conUrl = "https://sandbox-api-pay.line.me/v3/payments/" + transactionId + "/confirm";
 		Citem citem = new Citem();
@@ -181,20 +192,19 @@ public class LinePayTest {
 		String nonce = UUID.randomUUID().toString();
 		String signature = LineUtil.encrypt(ChannelSecret, ChannelSecret + requestUri + jsonStr + nonce);
 		HttpHeaders headers = LineUtil.getHeaders(ChannelId, nonce, signature);
-		
+
 		HttpEntity<Citem> reqEntity = new HttpEntity<>(citem, headers);
-		
+
 		ResponseEntity<String> repEntity = restTemplate.exchange(conUrl, HttpMethod.POST, reqEntity, String.class);
-		
-		
+
 		System.out.println("--");
 		JsonNode jsonResponse = om1.readTree(repEntity.getBody());
 		String returnCode = jsonResponse.get("returnCode").asText();
 		System.out.println("123123");
 		System.out.println(jsonResponse);
-		if (returnCode.equals("0000") ){
+		if (returnCode.equals("0000")) {
 			System.out.println("你好");
-			coService.payOrder(orderID, "已付款", "LinePay",discount);
+			coService.payOrder(orderID, "已付款", "LinePay", discount);
 			session.removeAttribute("discount");
 		}
 		return "forward:/courseorder/order.do";

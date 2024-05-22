@@ -16,6 +16,7 @@ public class OrderService {
 
     // 建立新訂單
     public Order insertOrder(Order order) {
+    	
         return orderRepository.save(order);
     }
 

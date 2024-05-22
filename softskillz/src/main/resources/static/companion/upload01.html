@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>upload01</title>
+    <script>
+		function upload() {
+			alert('ok');
+		            var fileInput = document.querySelector('input[type="file"]');
+		            var file = fileInput.files[0];
+		            var formData = new FormData();
+		            formData.append('myFile', file);
+		
+		            fetch('upload2.controller', {
+		                method: 'POST',
+		                body: formData
+		            }).then(function (response) {
+		                console.log('status:', response.status);
+		                return response.json(); // 如果你希望處理 JSON 響應
+		            }).then(function(data) {
+		                console.log('Response data:', data);
+		            }).catch(function(error) {
+		                console.error('Upload error:', error);
+		            });
+		        }
+    </script>
+</head>
+
+<body>
+    <h3>Upload</h3>
+    
+        <p>
+            Please Select File to Upload:<br />
+            <input type="file" name="myFile" />
+        </p>
+        <button type="button" onclick="upload()">Upload</button>
+    
+</body>
+
+</html>

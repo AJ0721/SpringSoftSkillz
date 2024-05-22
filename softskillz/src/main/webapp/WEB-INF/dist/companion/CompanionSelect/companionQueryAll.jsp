@@ -435,7 +435,7 @@ white-space: normal;
                   + n.studentGender + "</td><td>" + formattedBirthDate + "</td><td>" + n.companionFirstLanguage 
                   + "</td><td>" + n.companionSpeakingLanguage + "</td><td>" + n.companionLearningInterest 
                   + "</td><td>" + n.companionLearningFrequency + "</td><td id='aboutme'><div class='break-word'>" 
-                  + n.companionAboutMe + "</div></td><td><img id='img' src=" + n.studentPhoto + "></td>";
+                  + n.companionAboutMe + "</div></td><td><img id='img' src=" + n.companionPhoto + "></td>";
                   
                   var td2 = "<td>"+"<form method='get' action='${pageContext.request.contextPath}/GetUpdateData'>"
                           +"<input type='hidden' value='"+ n.companionId + "'name='companion_id'>"
@@ -444,7 +444,7 @@ white-space: normal;
                           +"<input type='hidden' name='_method' value='PUT'>"
                           +"<input type='hidden' value='"+ n.companionId + "'name='companion_id'>"
                           +"<input type='hidden' value='"+ n.studentId + "'name='student_id'>"
-                          +"<button id='fakedelete' class='btn btn-primary' style='background-color:#FF9797; border:0px' type='submit'>刪除</button>"+"</form></td>";
+                          +"<button id='fakedelete' class='btn btn-primary' style='background-color:#ff7e7e; border:0px' type='submit'>清除</button>"+"</form></td>";
                           console.log(n.studentId);
         tr += td2; // 添加帶有表單的 <td> 元素到 <tr> 元素中
         tr += "</tr>"; // 完成 <tr> 元素的結束標記

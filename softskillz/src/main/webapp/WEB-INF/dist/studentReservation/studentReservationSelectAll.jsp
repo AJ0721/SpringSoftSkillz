@@ -481,40 +481,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
         });
     });
 
-	document.addEventListener("DOMContentLoaded", function() {
-    var studentId = `${studentId}`;  // 從 Spring MVC 模型獲得的 studentId
-
-    fetch('/api/monthlyHours?studentId=' + studentId)
-        .then(response => response.json())
-        .then(data => {
-            var categories = data.map(item => item[0] + '-' + item[1]); // "年-月"
-            var seriesData = data.map(item => item[2]); // totalHours
-
-            var reservationOptions = {
-                chart: {
-                    type: "line",
-                },
-                series: [{
-                    name: "Total Hours",
-                    data: seriesData,
-                }],
-                xaxis: {
-                    categories: categories,
-                },
-                yaxis: {
-                    title: {
-                        text: 'Total Hours'
-                    }
-                }
-            };
-
-            var chart = new ApexCharts(document.querySelector("#reservaionChart"), reservationOptions);
-            chart.render();
-        })
-        .catch(error => console.error('Error loading the chart data:', error));
-});
-
-
     $(document).ready(function() {
     // 初始化DataTable
     $('#reservationTable').DataTable({

@@ -156,11 +156,11 @@ public class CorderBean implements Serializable, Delayed {
 	public void prePersist() {
 
 		if (this.method == null) {
-			this.method = "";
+			this.method = "未付款";
 		}
 
 		if (this.disNo == null) {
-			this.disNo = "";
+			this.disNo = "無";
 		}
 		
 		if (this.disPercent == null) {

@@ -33,6 +33,7 @@
 
       <!-- Template Stylesheet -->
       <link href="/css/style.css" rel="stylesheet" />
+      <link rel="stylesheet" href="/elearning/companion/companionCSS/chatindex.css" />
     </head>
 
     <body>
@@ -74,7 +75,15 @@
               </div>
             </div>
             <a href="#" class="nav-item nav-link">論壇</a>
-            <a href="#" class="nav-item nav-link">學伴</a>
+<!--             首頁學伴選單 -->
+            <div class="nav-item dropdown">
+            <a href="/companionFrontIndex" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">學伴</a>
+            <div class="dropdown-menu fade-down m-0">
+                <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
+                <a href="/companionFrontChatroom" class="dropdown-item">學伴聊天室</a>
+              </div>
+            </div>
+           <!--             首頁學伴選單 --> 
             <a href="#" class="nav-item nav-link">商城</a>
             <div class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -96,208 +105,314 @@
 
       <!-- 自行發揮的空間 -->
 
-      <div id="main">
-
-        <div class="page-heading">
-        </div>
-        <div class="page-content">
-          <div class="col-12">
-            <!-- 卡片中放你的功能內容 -->
-            <div class="card">
-              <!-- <h3 class="card-header">新增課程資料</h3> -->
-              <div class="card-body">
-                <div>
-                  <div>
-                    <h2 class="text-center mt-5">學伴聊天室</h2>
-                  </div>
-                </div><br>
-
-                <div class="page-heading">
-                  <div class="page-title">
-                    <div class="row">
-                      <div class="col-12">
-                        <h3>Chatbox</h3>
-                        <!-- <p class="text-subtitle text-muted">Our take on a chat conversation.</p> -->
-                      </div>
-
-                    </div>
-                  </div>
-                  <section class="section">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="card">
-                          <div class="card-header">
-                            <div class="media d-flex align-items-center">
-                              <div class="avatar me-3">
-                                <!-- <img src="./assets/compiled/jpg/1.jpg" alt="" srcset=""> -->
-                                <span class="avatar-status bg-success"></span>
-                              </div>
-                              <div class="name flex-grow-1">
-                                <h6 class="mb-0">Alfy</h6>
-                                <span class="text-xs">Online</span>
-                              </div>
-                              <button class="btn btn-sm">
-                                <i data-feather="x"></i>
-                              </button>
-                            </div>
-                          </div>
-                          <div class="card-body pt-4 bg-grey">
-                            <div class="chat-content">
-                              <div class="chat">
-                                <div class="chat-body">
-                                  <div class="chat-message">Hi Alfy, how can i help you?</div>
-                                </div>
-                              </div>
-                              <div class="chat chat-left">
-                                <div class="chat-body">
-                                  <div class="chat-message">I'm looking for the best admin dashboard template</div>
-                                  <div class="chat-message">With bootstrap certainly</div>
-                                </div>
-                              </div>
-                              <div class="chat">
-                                <div class="chat-body">
-                                  <div class="chat-message">I recommend you to use Mazer Dashboard</div>
-                                </div>
-                              </div>
-                              <div class="chat chat-left">
-                                <div class="chat-body">
-                                  <div class="chat-message">That's great! I like it so much :)</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card-footer">
-                            <div class="message-form d-flex flex-direction-column align-items-center">
-                              <a href="http://" class="black"><i data-feather="smile"></i></a>
-                              <div class="d-flex flex-grow-1 ms-4">
-                                <input type="text" class="form-control" placeholder="Type your message..">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-
-
-              </div>
-
+      <div align="center">
+        <h2 class="mt-5">學伴聊天室</h2>
+      </div>
+      
+      <div id="username-page">
+        <div class="username-page-container">
+          <h1 class="title">輸入你的暱稱</h1>
+          <form id="usernameForm" name="usernameForm">
+            <div class="form-group">
+              <input type="text" id="name" placeholder="輸入暱稱" autocomplete="off" class="form-control" style="border-radius:20px" />
             </div>
-
-
-          </div>
+            <div class="form-group">
+              <button type="submit" class="accent username-submit" style="border-radius: 10px;">開始聊天</button>
+            </div>
+          </form>
         </div>
+      </div>
+
+<div id="user-list-page" align="center" class="hidden">
+  <h2>選擇一個用戶開始聊天</h2>
+  <ul id="userList"></ul>
+</div>
+
+      <div id="chat-page" class="hidden">
+        <div class="chat-container" style="border-radius: 20px;">
+          <div class="chat-header">
+            <h2>開始聊天吧！</h2>
+          </div>
+          <div class="connecting">
+            Connecting...
+          </div>
+          <ul id="messageArea">
+          </ul>
+          
+          <form id="messageForm" name="messageForm">
+            <div class="form-group">
+              <div class="input-group clearfix">
+                <input type="text" id="message" placeholder="輸入訊息" autocomplete="off"
+                  class="form-control" style="border-radius: 10px;"/>
+                <button type="submit" class="primary" style="border-radius: 10px;">送出</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
 
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-          <div class="container py-5">
-            <div class="row g-5">
-              <div class="col-lg-3 col-md-6">
-                <h4 class="text-white mb-3">Quick Link</h4>
-                <a class="btn btn-link" href="">About Us</a>
-                <a class="btn btn-link" href="">Contact Us</a>
-                <a class="btn btn-link" href="">Privacy Policy</a>
-                <a class="btn btn-link" href="">Terms & Condition</a>
-                <a class="btn btn-link" href="">FAQs & Help</a>
+      <!-- Footer Start -->
+      <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+          <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+              <h4 class="text-white mb-3">Quick Link</h4>
+              <a class="btn btn-link" href="">About Us</a>
+              <a class="btn btn-link" href="">Contact Us</a>
+              <a class="btn btn-link" href="">Privacy Policy</a>
+              <a class="btn btn-link" href="">Terms & Condition</a>
+              <a class="btn btn-link" href="">FAQs & Help</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <h4 class="text-white mb-3">聯絡我們</h4>
+              <p class="mb-2">
+                <i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
+              </p>
+              <p class="mb-2">
+                <i class="fa fa-phone-alt me-3"></i>+012 345 67890
+              </p>
+              <p class="mb-2">
+                <i class="fa fa-envelope me-3"></i>info@example.com
+              </p>
+              <div class="d-flex pt-2">
+                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
               </div>
-              <div class="col-lg-3 col-md-6">
-                <h4 class="text-white mb-3">聯絡我們</h4>
-                <p class="mb-2">
-                  <i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
-                </p>
-                <p class="mb-2">
-                  <i class="fa fa-phone-alt me-3"></i>+012 345 67890
-                </p>
-                <p class="mb-2">
-                  <i class="fa fa-envelope me-3"></i>info@example.com
-                </p>
-                <div class="d-flex pt-2">
-                  <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                  <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                  <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                  <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <h4 class="text-white mb-3">圖片集錦</h4>
+              <div class="row g-2 pt-2">
+                <div class="col-4">
+                  <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
                 </div>
-              </div>
-              <div class="col-lg-3 col-md-6">
-                <h4 class="text-white mb-3">圖片集錦</h4>
-                <div class="row g-2 pt-2">
-                  <div class="col-4">
-                    <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
-                  </div>
-                  <div class="col-4">
-                    <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
-                  </div>
-                  <div class="col-4">
-                    <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
-                  </div>
-                  <div class="col-4">
-                    <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
-                  </div>
-                  <div class="col-4">
-                    <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
-                  </div>
-                  <div class="col-4">
-                    <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
-                  </div>
+                <div class="col-4">
+                  <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
                 </div>
-              </div>
-              <div class="col-lg-3 col-md-6">
-                <h4 class="text-white mb-3">意見信箱</h4>
-                <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                <div class="position-relative mx-auto" style="max-width: 400px">
-                  <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
-                  <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
-                    SignUp
-                  </button>
+                <div class="col-4">
+                  <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
+                </div>
+                <div class="col-4">
+                  <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
+                </div>
+                <div class="col-4">
+                  <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
+                </div>
+                <div class="col-4">
+                  <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
                 </div>
               </div>
             </div>
+            <div class="col-lg-3 col-md-6">
+              <h4 class="text-white mb-3">意見信箱</h4>
+              <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+              <div class="position-relative mx-auto" style="max-width: 400px">
+                <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
+                <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                  SignUp
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="container">
-            <div class="copyright">
-              <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                  &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
-                  Right Reserved.
+        </div>
+        <div class="container">
+          <div class="copyright">
+            <div class="row">
+              <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
+                Right Reserved.
 
-                  <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                  <div class="footer-menu">
-                    <a href="">Home</a>
-                    <a href="">Cookies</a>
-                    <a href="">Help</a>
-                    <a href="">FQAs</a>
-                  </div>
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+              </div>
+              <div class="col-md-6 text-center text-md-end">
+                <div class="footer-menu">
+                  <a href="">Home</a>
+                  <a href="">Cookies</a>
+                  <a href="">Help</a>
+                  <a href="">FQAs</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- Footer End -->
+      </div>
+      <!-- Footer End -->
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+      <!-- Back to Top -->
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/lib/wow/wow.min.js"></script>
-        <script src="/lib/easing/easing.min.js"></script>
-        <script src="/lib/waypoints/waypoints.min.js"></script>
-        <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+      <!-- JavaScript Libraries -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="/lib/wow/wow.min.js"></script>
+      <script src="/lib/easing/easing.min.js"></script>
+      <script src="/lib/waypoints/waypoints.min.js"></script>
+      <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="/js/main.js"></script>
+      <!-- Template Javascript -->
+      <script src="/js/main.js"></script>
 
-        <!-- 測試後台的js,css -->
-        <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+      <!-- 測試後台的js,css -->
+      <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+
+      <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+      <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+      <script src="/js/main.js"></script>
+
+<script>
+var usernamePage = document.querySelector('#username-page');
+var chatPage = document.querySelector('#chat-page');
+var userListPage = document.querySelector('#user-list-page');
+var usernameForm = document.querySelector('#usernameForm');
+var messageForm = document.querySelector('#messageForm');
+var messageInput = document.querySelector('#message');
+var messageArea = document.querySelector('#messageArea');
+var userListElement = document.querySelector('#userList');
+var connectingElement = document.querySelector('.connecting');
+var chatContainer = document.querySelector('.chat-container');
+
+var stompClient = null;
+var username = null;
+var targetUser = null;
+
+var colors = [
+    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
+    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+];
+
+function connect(event) {
+    username = document.querySelector('#name').value.trim();
+
+    if(username) {
+        usernamePage.classList.add('hidden');
+// usernamePage.style.display = 'none';
+//         userListPage.classList.remove('hidden');
+        chatPage.classList.remove('hidden');
+
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, onConnected, onError);
+    }
+    event.preventDefault();
+}
+
+
+function onConnected() {
+    // Subscribe to the Public Topic
+    stompClient.subscribe('/topic/public', onMessageReceived);
+
+    // Tell your username to the server
+    stompClient.send("/app/chat.addUser",
+        {},
+        JSON.stringify({sender: username, type: 'JOIN'})
+    )
+
+    connectingElement.classList.add('hidden');
+}
+
+
+function onError(error) {
+    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+    connectingElement.style.color = 'red';
+}
+
+
+function sendMessage(event) {
+    var messageContent = messageInput.value.trim();
+    if(messageContent && stompClient) {
+        var chatMessage = {
+            sender: username,
+            content: messageInput.value,
+            type: 'CHAT'
+        };
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        messageInput.value = '';
+    }
+    event.preventDefault();
+}
+
+//添加消息時滾動到最底部函數
+function scrollChatToBottom() {
+    // 滾動到最底部
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function onMessageReceived(payload) {
+    var message = JSON.parse(payload.body);
+
+    var messageElement = document.createElement('li');
+
+    if(message.type === 'JOIN') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' 加入對話';
+    } else if (message.type === 'LEAVE') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' 離開對話';
+    } else {
+        messageElement.classList.add('chat-message');
+
+        var avatarElement = document.createElement('i');
+        var avatarText = document.createTextNode(message.sender[0]);
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+
+        messageElement.appendChild(avatarElement);
+
+        var usernameElement = document.createElement('span');
+        var usernameText = document.createTextNode(message.sender);
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+    }
+
+    var textElement = document.createElement('p');
+    var messageText = document.createTextNode(message.content);
+    textElement.appendChild(messageText);
+
+    messageElement.appendChild(textElement);
+
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+    scrollChatToBottom();
+}
+
+
+function getAvatarColor(messageSender) {
+    var hash = 0;
+    for (var i = 0; i < messageSender.length; i++) {
+        hash = 31 * hash + messageSender.charCodeAt(i);
+    }
+    var index = Math.abs(hash % colors.length);
+    return colors[index];
+}
+
+usernameForm.addEventListener('submit', connect, true)
+messageForm.addEventListener('submit', sendMessage, true)
 
 
 
+function selectUser(target) {
+  targetUser = target;
+  userListPage.classList.add('hidden');
+  chatPage.classList.remove('hidden');
+}
+function onUserListReceived(payload) {
+	  var users = JSON.parse(payload.body);
+	  userListElement.innerHTML = '';
+
+	  users.forEach(function(user) {
+	    if (user !== username) {
+	      var userElement = document.createElement('li');
+	      userElement.textContent = user;
+	      userElement.onclick = function() { selectUser(user); };
+	      userListElement.appendChild(userElement);
+	    }
+	  });
+	}
+</script>
     </body>
-    <link rel="stylesheet" href="/assets/compiled/css/ui-widgets-chatbox.css">
 
     </html>

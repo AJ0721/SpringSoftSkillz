@@ -39,11 +39,12 @@ public class ChatHistory {
 		super();
 	}
 
-	public ChatHistory(String chatRoomId, String sendOutUser, String msg) {
+	public ChatHistory(String chatRoomId, String sendOutUser, String msg,Date sendTime) {
 		super();
 		this.chatRoomId = chatRoomId;
 		this.sendOutUser = sendOutUser;
 		this.msg = msg;
+		this.sendTime =sendTime;
 	}
 
 	public Integer getId() {

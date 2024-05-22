@@ -11,21 +11,26 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class SessionUserUtils {
 
-    public static final String STUDENT= "studentData";
-    public static final String TEACHER= "teacherData";
-    public static final String ADMIN= "adminData";
+    public static final String STUDENT = "studentData";
+    public static final String TEACHER = "teacherData";
+    public static final String ADMIN = "adminData";
 
     public Object getLoggedInUser(HttpSession session) {
         Object user = session.getAttribute(STUDENT);
         if (user != null) {
+        	System.out.println(user);
             return user;
         }
         user = session.getAttribute(TEACHER);
         if (user != null) {
+        	System.out.println(user);
+
             return user;
         }
         user = session.getAttribute(ADMIN);
         if (user != null) {
+        	System.out.println(user);
+
             return user;
         }
         return null;

@@ -46,9 +46,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary">
-                <i class="fa fa-book me-3"></i>SoftSkillz
-            </h2>
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>SoftSkillz</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -63,7 +61,7 @@
                     <div class="dropdown-menu fade-down m-0">
                         <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
                         <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
-                        <a href="t/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
+                        <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
                         <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
                         <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
                         <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
@@ -90,26 +88,26 @@
                     <div class="card border shadow-0">
                         <div class="m-4">
                             <h4 class="card-title mb-4">結帳資訊</h4>
-                            <form>
+                            <form id="checkoutForm">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">姓名</label>
                                     <input type="text" class="form-control" id="name" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">手機</label>
-                                    <input type="email" class="form-control" id="email" required>
+                                    <label for="phone" class="form-label">手機</label>
+                                    <input type="text" class="form-control" id="phone" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="city" class="form-label">郵政編碼</label>
-                                    <input type="text" class="form-control" id="city" required>
+                                    <label for="postalCode" class="form-label">郵政編碼</label>
+                                    <input type="text" class="form-control" id="postalCode" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="address" class="form-label">地址</label>
                                     <input type="text" class="form-control" id="address" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="zip" class="form-label">備註</label>
-                                    <input type="text" class="form-control" id="zip" required>
+                                    <label for="note" class="form-label">備註</label>
+                                    <input type="text" class="form-control" id="note" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">付款方式</label>
@@ -135,7 +133,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">確認付款</button>
+                                <button type="button" id="confirmPaymentButton"
+                                    class="btn btn-primary w-100">確認付款</button>
+                                <button type="button" class="btn btn-primary w-100" onclick="testPay()">確認付款2</button>
                             </form>
                         </div>
                     </div>
@@ -147,16 +147,24 @@
                             <h5 class="card-title">訂單明細</h5>
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">小計:</p>
-                                <p id="subtotal" class="mb-2">$2401.60</p>
+                                <p id="checkout-subtotal" class="mb-2">$0</p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p class="mb-2">優惠券折扣:</p>
-                                <p id="discount" class="mb-2 text-success">-$60.00</p>
+                                <p class="mb-2">優惠券編號:</p>
+                                <p id="checkout-discount-code" class="mb-2 text-success"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="couponCode" class="form-label">優惠券代碼</label>
+                                <input type="text" class="form-control" id="couponCode" name="couponCode" required>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-2">已套用優惠券折扣:</p>
+                                <p id="checkout-discount" class="mb-2 text-success">-$0</p>
                             </div>
                             <hr />
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">總金額:</p>
-                                <p id="grand-total" class="mb-2 fw-bold">$2341.60</p>
+                                <p id="checkout-grand-total" class="mb-2 fw-bold">0</p>
                             </div>
                             <a href="#" class="btn btn-primary w-100">返回商城</a>
                         </div>
@@ -264,7 +272,27 @@
     <script src="/js/main.js"></script>
 
     <script>
+
+        function testPay() {
+            let total = document.getElementById("checkout-grand-total").textContent;
+            console.log(total);
+            window.location.href = `/productcart/createOrder?grandTotal=${total}`
+
+        }
+
         document.addEventListener('DOMContentLoaded', (event) => {
+            // Parse URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const subtotal = urlParams.get('subtotal');
+            const discount = urlParams.get('discount');
+            const grandTotal = urlParams.get('grandTotal');
+
+            // Update amounts on the page
+            document.getElementById('checkout-subtotal').innerText = `$${subtotal}`;
+            document.getElementById('checkout-discount').innerText = `-$${discount}`;
+            document.getElementById('checkout-grand-total').innerText = `$${grandTotal}`;
+
+            // Payment method selection handling
             const paymentOptions = document.querySelectorAll('.pay-method-option-item');
 
             paymentOptions.forEach(option => {
@@ -272,6 +300,38 @@
                     paymentOptions.forEach(opt => opt.classList.remove('selected'));
                     this.classList.add('selected');
                 });
+            });
+
+            // Confirm payment button handling
+            document.getElementById('confirmPaymentButton').addEventListener('click', function () {
+                const order = {
+                    studentId: document.getElementById('name').value,
+                    couponId: document.getElementById('checkout-discount-code').innerText,
+                    shippingAddress: document.getElementById('address').value,
+                    paymentMethod: 'LINE PAY',
+                    totalAmount: parseInt(grandTotal.replace('$', ''))
+                };
+
+                fetch('/api/orders/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(order)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Order created:', data);
+                        // Handle success - Redirect to payment URL
+                        if (data) {
+                            const transactionId = data.transactionId;
+                            window.location.href = `/LinePayReqV2?transactionId=${transactionId}`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Handle error
+                    });
             });
         });
     </script>

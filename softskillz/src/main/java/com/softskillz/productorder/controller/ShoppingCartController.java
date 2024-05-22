@@ -1,6 +1,8 @@
 package com.softskillz.productorder.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,130 +16,207 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.softskillz.mall.model.Coupon;
 import com.softskillz.mall.model.Product;
 import com.softskillz.productorder.model.ProductCartItem;
+import com.softskillz.mall.service.CouponService;
 import com.softskillz.mall.service.ProductService;
 
 @Controller
 @RequestMapping("/productcart")
 public class ShoppingCartController {
 
-    @Autowired
-    private ProductService productService;
+ @Autowired
+ private ProductService productService;
 
-    // 處理產品詳細資料
-    @GetMapping("/detail")
-    public String getProductDetail(@RequestParam("id") Integer productId, Model model, HttpServletResponse response) throws IOException {
-        Optional<Product> product = productService.findProductById(productId);
-        if (!product.isPresent()) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "找不到指定的產品");
-            return null; // 或者可以重定向到一個錯誤頁面
-        }
-        model.addAttribute("product", product.get());
-        return "productDetail"; // JSP 檔案名
-    }
-    
+ @Autowired
+ private CouponService couponService; // 注入 CouponService
+
+ // 處理產品詳細資料
+ @GetMapping("/detail")
+ public String getProductDetail(@RequestParam("id") Integer productId, Model model, HttpServletResponse response)
+   throws IOException {
+  Product product = productService.findProductById(productId);
+  if (product == null) {
+   response.sendError(HttpServletResponse.SC_NOT_FOUND, "找不到指定的產品");
+   return null; // 或者可以重定向到一個錯誤頁面
+  }
+  model.addAttribute("product", product);
+  return "productDetail"; // JSP 檔案名
+ }
+
  // 模擬的商品數據
-    private static final Map<Integer, Product> productData = new HashMap<>();
-    static {
-        productData.put(1, new Product(1, "學習小夥伴筆記本", "精緻設計的筆記本，伴隨您學習之路", null, null, null, 599, null, null, null, null, null, null, null));
-        productData.put(2, new Product(2, "靜心瑜珈墊", "優質材質、防滑設計，適合居家健身", null, null, null, 849, null, null, null, null, null, null, null));
-        productData.put(3, new Product(3, "智能記憶手環", "記錄學習數據、提醒作息時間", null, null, null, 1077, null, null, null, null, null, null, null));
-    }
+ private static final Map<Integer, Product> productData = new HashMap<>();
+ static {
+  // 模擬數據，根據實際需求修改
+ }
 
-    // 添加產品到購物車
-    @GetMapping("/add")
-    public String addToCart(@RequestParam("productId") Integer productId, @RequestParam("quantity") Integer quantity, HttpSession session, RedirectAttributes redirectAttributes) {
-        Optional<Product> product = productService.findProductById(productId);
-        if (!product.isPresent()) {
-            redirectAttributes.addFlashAttribute("error", "產品未找到");
-            // 重定向到產品列表或首頁，並顯示錯誤訊息
-            return "redirect:/productList";
-        }
+ // 新增假資料到 session
+ @GetMapping("/addtestdata")
+ public String addTestDataToSession(HttpSession session) {
+  Map<Integer, ProductCartItem> cart = new HashMap<>();
+  for (Map.Entry<Integer, Product> entry : productData.entrySet()) {
+   ProductCartItem item = new ProductCartItem(entry.getValue(), 1);
+   cart.put(entry.getKey(), item);
+  }
+  session.setAttribute("cart", cart);
+  System.err.println("cart" + cart);
+  return "redirect:view";
+ }
 
-        Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new HashMap<>();
-            session.setAttribute("cart", cart);
-        }
+ // 添加產品到購物車
+ @PostMapping("/add")
+ public ResponseEntity<String> addToCart(@RequestParam("productId") Integer productId, @RequestParam("quantity") Integer quantity,
+   HttpSession session) {
+  Product product = productService.findProductById(productId);
+  if (product == null) {
+   return ResponseEntity.status(HttpStatus.NOT_FOUND).body("產品未找到");
+  }
 
-        // 檢查購物車是否已包含該商品
-        if (cart.containsKey(productId)) {
-            // 如果購物車已有此商品，增加數量
-            ProductCartItem existingItem = cart.get(productId);
-            existingItem.setQuantity(existingItem.getQuantity() + quantity);
-        } else {
-            // 如果購物車中沒有此商品，創建新的購物車項目
-            cart.put(productId, new ProductCartItem(product.get(), quantity));
-        }
+  Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
+  if (cart == null) {
+   cart = new HashMap<>();
+   session.setAttribute("cart", cart);
+  }
 
-        // 更新會話中的購物車
-        session.setAttribute("cart", cart);
-        redirectAttributes.addFlashAttribute("success", "產品已成功添加到購物車");
-        return "redirect:view";
-    }
+  // 檢查購物車是否已包含該商品
+  if (cart.containsKey(productId)) {
+   // 如果購物車已有此商品，增加數量
+   ProductCartItem existingItem = cart.get(productId);
+   existingItem.setQuantity(existingItem.getQuantity() + quantity);
+  } else {
+   // 如果購物車中沒有此商品，創建新的購物車項目
+   cart.put(productId, new ProductCartItem(product, quantity));
+  }
 
-    // 查看購物車
-    @GetMapping("/view")
-    public String viewCart(HttpSession session, Model model) {
-        Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new HashMap<>();
-            session.setAttribute("cart", cart);
-        }
+  // 更新會話中的購物車
+  session.setAttribute("cart", cart);
+  return ResponseEntity.ok("產品已成功添加到購物車");
+ }
 
-        // 获取推荐商品
-        List<Product> recommendedProducts = productService.findAllProducts(); // 可以修改此處以便獲取真正的推薦商品邏輯
-        model.addAttribute("recommendedProducts", recommendedProducts);
 
-        model.addAttribute("cart", cart);
-        return "elearning/productorder/shoppingcart.html";
-    }
+ // 查看購物車
+ @GetMapping("/view")
+ public String viewCart(HttpSession session, Model model) {
 
-    // 更新購物車項目
-    @PostMapping("/update")
-    public String updateCartItem(@RequestParam("productId") Integer productId, @RequestParam("quantity") Integer quantity, HttpSession session, RedirectAttributes redirectAttributes) {
-        Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
-        if (cart == null) {
-            redirectAttributes.addFlashAttribute("error", "購物車未找到");
-            return "redirect:view";
-        }
+  // 獲取推薦商品
+  //        List<Product> product = productService.findAllProducts(); // 可以修改此處以便獲取真正的推薦商品邏輯
+  //        System.out.println(product);
+  //        model.addAttribute("product", product);
+  //        model.addAttribute("productName", product.get(0).getProductName());
+  //        model.addAttribute("recommendedProducts", recommendedProducts);
+  //        model.addAttribute("cart", cart);
 
-        ProductCartItem item = cart.get(productId);
-        if (item != null) {
-            item.setQuantity(quantity);
-            cart.put(productId, item);
-            session.setAttribute("cart", cart);
-        } else {
-            redirectAttributes.addFlashAttribute("error", "購物車項目未找到");
-        }
-        return "redirect:view";
-    }
+  // 獲取已應用的優惠券
+  //        Coupon appliedCoupon = (Coupon) session.getAttribute("appliedCoupon");
+  //        model.addAttribute("appliedCoupon", appliedCoupon);
 
-    // 從購物車移除項目
-    @PostMapping("/remove")
-    public String removeFromCart(@RequestParam("productId") Integer productId, HttpSession session, RedirectAttributes redirectAttributes) {
-        Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
-        if (cart == null || !cart.containsKey(productId)) {
-            redirectAttributes.addFlashAttribute("error", "購物車項目未找到");
-            return "redirect:view";
-        }
+  return "elearning/productorder/shoppingcart.html";
+ }
 
-        cart.remove(productId);
-        session.setAttribute("cart", cart);
-        return "redirect:view";
-    }
+ // 更新購物車項目
+ @PostMapping("/update")
+ public String updateCartItem(@RequestParam("productId") Integer productId,
+   @RequestParam("quantity") Integer quantity, HttpSession session, RedirectAttributes redirectAttributes) {
+  Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
+  if (cart == null) {
+   redirectAttributes.addFlashAttribute("error", "購物車未找到");
+   return "redirect:view";
+  }
 
-    // 清空購物車
-    @PostMapping("/clear")
-    public String clearCart(HttpSession session) {
-        session.removeAttribute("cart");
-        return "redirect:view";
-    }
+  ProductCartItem item = cart.get(productId);
+  if (item != null) {
+   item.setQuantity(quantity);
+   cart.put(productId, item);
+   session.setAttribute("cart", cart);
+  } else {
+   redirectAttributes.addFlashAttribute("error", "購物車項目未找到");
+  }
+  return "redirect:view";
+ }
 
-    // 結帳頁面
-    @GetMapping("/checkout")
-    public String checkout() {
-        return "elearning/productorder/checkout.html";
-    }
+ @GetMapping("/cartdata")
+ @ResponseBody
+ public Map<Integer, ProductCartItem> getCartData(HttpSession session) {
+  Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
+  if (cart == null) {
+   cart = new HashMap<>();
+   session.setAttribute("cart", cart);
+  }
+  System.err.println("cart" + cart);
+  return cart;
+ }
+
+ // 從購物車移除項目
+ @PostMapping("/remove")
+ public String removeFromCart(@RequestParam("productId") Integer productId, HttpSession session,
+   RedirectAttributes redirectAttributes) {
+  Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
+  if (cart == null || !cart.containsKey(productId)) {
+   redirectAttributes.addFlashAttribute("error", "購物車項目未找到");
+   return "redirect:view";
+  }
+
+  cart.remove(productId);
+  session.setAttribute("cart", cart);
+  return "redirect:view";
+ }
+
+ // 清空購物車
+ @PostMapping("/clear")
+ public String clearCart(HttpSession session) {
+  session.removeAttribute("cart");
+  session.removeAttribute("appliedCoupon"); // 清除應用的優惠券
+  return "redirect:view";
+ }
+ 
+ 
+String GrandTotal;
+ // 結帳頁面
+ @GetMapping("/checkout")
+ public String checkout(@RequestParam String grandTotal) {
+	 GrandTotal=grandTotal;
+	 System.out.println(grandTotal);
+	 return "elearning/productorder/checkout.html";
+ 
+ }
+ 
+ 
+ 
+ 
+
+ 
+ /*@GetMapping("/testtesttest")
+ public String qewrqwer() {
+	 
+	 return GrandTotal;
+ }*/
+ 
+
+ // 應用優惠券
+ @PostMapping("/apply-coupon")
+ public String applyCoupon(@RequestParam("couponCode") String couponCode, HttpSession session,
+   RedirectAttributes redirectAttributes) {
+  Map<Integer, ProductCartItem> cart = (Map<Integer, ProductCartItem>) session.getAttribute("cart");
+  if (cart == null) {
+   redirectAttributes.addFlashAttribute("error", "購物車未找到");
+   return "redirect:view";
+  }
+
+  try {
+   // 嘗試將 couponCode 轉換為 Integer
+   Integer couponId = Integer.parseInt(couponCode);
+   Optional<Coupon> coupon = couponService.findCouponById(couponId);
+   if (coupon.isPresent()) {
+    session.setAttribute("appliedCoupon", coupon.get());
+    redirectAttributes.addFlashAttribute("success", "優惠券已成功應用");
+   } else {
+    redirectAttributes.addFlashAttribute("error", "無效的優惠券代碼");
+   }
+  } catch (NumberFormatException e) {
+   redirectAttributes.addFlashAttribute("error", "無效的優惠券代碼");
+  }
+
+  return "redirect:view";
+ }
 }

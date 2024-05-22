@@ -49,6 +49,9 @@ public class CompanionBean {
 	
 	@Column(name = "companion_about_me")
 	private String companionAboutMe;
+	
+	@Column(name = "companion_photo")
+	private String companionPhoto;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companionAId", cascade = CascadeType.ALL)
@@ -59,7 +62,7 @@ public class CompanionBean {
 	private Set<CompanionMatchBean> companionMatchB;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "student_id")
+	@JoinColumn(name = "student_id",updatable = false)
 	private StudentBean studentBeanID;
 	
 	public CompanionBean() {
@@ -67,7 +70,7 @@ public class CompanionBean {
 
 	public CompanionBean(Integer companionId, String companionFirstLanguage, String companionSpeakingLanguage,
 			String companionLearningInterest, String companionLearningFrequency, String companionAboutMe,
-			Set<CompanionMatchBean> companionMatchA, Set<CompanionMatchBean> companionMatchB,
+			String companionPhoto, Set<CompanionMatchBean> companionMatchA, Set<CompanionMatchBean> companionMatchB,
 			StudentBean studentBeanID) {
 		super();
 		this.companionId = companionId;
@@ -76,6 +79,7 @@ public class CompanionBean {
 		this.companionLearningInterest = companionLearningInterest;
 		this.companionLearningFrequency = companionLearningFrequency;
 		this.companionAboutMe = companionAboutMe;
+		this.companionPhoto = companionPhoto;
 		this.companionMatchA = companionMatchA;
 		this.companionMatchB = companionMatchB;
 		this.studentBeanID = studentBeanID;
@@ -129,6 +133,14 @@ public class CompanionBean {
 		this.companionAboutMe = companionAboutMe;
 	}
 
+	public String getCompanionPhoto() {
+		return companionPhoto;
+	}
+
+	public void setCompanionPhoto(String companionPhoto) {
+		this.companionPhoto = companionPhoto;
+	}
+
 	public Set<CompanionMatchBean> getCompanionMatchA() {
 		return companionMatchA;
 	}
@@ -168,6 +180,8 @@ public class CompanionBean {
 		builder.append(companionLearningFrequency);
 		builder.append(", companionAboutMe=");
 		builder.append(companionAboutMe);
+		builder.append(", companionPhoto=");
+		builder.append(companionPhoto);
 		builder.append(", companionMatchA=");
 		builder.append(companionMatchA);
 		builder.append(", companionMatchB=");

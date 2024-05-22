@@ -1,86 +1,125 @@
 package com.softskillz.mall.controller;
 
+import com.softskillz.mall.constant.ProductCategory;
+import com.softskillz.mall.dto.ProductQueryParams;
+import com.softskillz.mall.dto.ProductRequest;
 import com.softskillz.mall.model.Product;
 import com.softskillz.mall.service.ProductService;
-import com.softskillz.mall.specifications.ProductSpecifications;
+import com.softskillz.mall.util.Page;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * 商品控制器，負責處理商品相關的 HTTP 請求
- */
+@Validated
 @RestController
-@RequestMapping("/products")
 public class ProductController {
 
+    private final ProductService productService;
+
     @Autowired
-    private ProductService productService;
-
-    // 獲取全部商品列表
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.findAllProducts();
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    // 根據商品 ID 獲取商品
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
-        return productService.findProductById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    // 查詢商品列表
+    @GetMapping("/products")
+    public ResponseEntity<Page<Product>> findProducts(
+            // 查詢條件 Filtering
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search,
+
+            //排序 Sorting
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort,
+
+            // 分頁 Pagination
+            @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset
+    ) {
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
+
+        // 取得 product list
+        List<Product> productList = productService.findProducts(productQueryParams);
+
+        // 取得 product 總數
+        Integer total = productService.countProduct(productQueryParams);
+
+        // 分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
-    // 新增商品
-    @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
-    }
-
-    // 更新商品
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
-        try {
-            Product updatedProduct = productService.updateProduct(id, product);
-            return ResponseEntity.ok(updatedProduct);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+    // 查詢單個商品 by productId
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<Product> findProduct(@PathVariable Integer productId) {
+        Product product = productService.findProductById(productId);
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    // 刪除商品
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
+    // 新增商品
+    @PostMapping("/products")
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
+        Integer productId = productService.createProduct(productRequest);
+
+        Product product = productService.findProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<Page<Product>> listProducts(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "productId", required = false) Integer productId,
-            @RequestParam(value = "typeId", required = false) Integer typeId,
-            @RequestParam(value = "statusId", required = false) Integer statusId,
-            @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
-            @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sort", defaultValue = "productId") String sort,
-            @RequestParam(value = "direction", defaultValue = "ASC") Sort.Direction direction
-    ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
-        Page<Product> products = productService.findProducts(
-                ProductSpecifications.withDynamicQuery(name, productId, typeId, statusId, minPrice, maxPrice),
-                pageable
-        );
-        return ResponseEntity.ok(products);
+    // 修改商品 by productId
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+            @RequestBody @Valid ProductRequest productRequest) {
+
+        // 檢查 product 是否存在
+        Product product = productService.findProductById(productId);
+
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // 修改商品的數據
+        productService.updateProduct(productId, productRequest);
+
+        Product updatedProduct = productService.findProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+    }
+
+    // 刪除商品 by productId
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+        productService.deleteProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
-

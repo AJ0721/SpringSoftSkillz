@@ -98,50 +98,54 @@
 		<!-- Spinner End -->
 
 		<!-- Navbar Start -->
-		<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-			<a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-				<h2 class="m-0 text-primary">
-					<i class="fa fa-book me-3"></i>SoftSkillz
-				</h2>
-			</a>
-			<button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
-				data-bs-target="#navbarCollapse">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarCollapse">
-				<div class="navbar-nav ms-auto p-4 p-lg-0">
-					<a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-					<a href="about.html" class="nav-item nav-link">About</a>
-					<div class="nav-item dropdown">
-						<a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle"
-							data-bs-toggle="dropdown">課程</a>
-						<div class="dropdown-menu fade-down m-0">
-							<a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-							<a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a> <a
-								href="t/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a> <a
-								href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a> <a
-								href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a> <a
-								href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a> <a
-								href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
-						</div>
-					</div>
-					<a href="#" class="nav-item nav-link">論壇</a> <a href="#" class="nav-item nav-link">學伴</a> <a
-						href="#" class="nav-item nav-link">商城</a> <a href="contact.html"
-						class="nav-item nav-link">Contact</a>
-				</div>
-				<form action="/student/student-loginPage" method="get" class="d-none d-lg-block">
-					<button type="submit" class="btn btn-primary py-4 px-lg-5"
-						style="background-color: #3f6cba; color: white; border: 1px solid transparent;"
-						onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
-						onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';">
-						學生登入</button>
-				</form>
-				<form action="/teacher/teacher-loginPage" method="get" class="d-none d-lg-block">
-					<button type="submit" class="btn btn-primary py-4 px-lg-5">
-						老師登入</button>
-				</form>
-			</div>
-		</nav>
+		  <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+    <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+      <h2 class="m-0 text-primary">
+        <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+          style="max-width: 250px; height: auto; margin-top: 16px" />
+      </h2>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto p-4 p-lg-0">
+        <a href="/softskillz/fhomepage" class="nav-item nav-link active" style="font-size: 26px;">首頁</a>
+        <div class="nav-item dropdown">
+          <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+            style="font-size: 26px;">課程</a>
+          <div class="dropdown-menu fade-down m-0">
+            <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
+            <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
+            <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
+            <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
+            <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
+            <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
+            <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
+          </div>
+        </div>
+        <a href="#" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
+        <a href="#" class="nav-item nav-link" style="font-size: 26px;">學伴</a>
+        <a href="#" class="nav-item nav-link" style="font-size: 26px;">商城</a>
+      </div>
+      <form action="/student/student-loginPage" method="get" class="d-none d-lg-block">
+        <button type="submit" class="btn btn-primary py-4 px-lg-5" style="
+              background-color: #3f6cba;
+              color: white;
+              font-size: 26px;
+              border: 1px solid transparent;
+            " onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
+          onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';">
+          學生登入
+        </button>
+      </form>
+      <form action="/teacher/teacher-loginPage" method="get" class="d-none d-lg-block">
+        <button type="submit" class="btn btn-primary py-4 px-lg-5" style="font-size: 26px;">
+          老師登入
+        </button>
+      </form>
+    </div>
+  </nav>
 		<!-- Navbar End -->
 
 		<!-- 自行發揮的空間 -->
@@ -330,85 +334,49 @@
 
 		<!-- Footer Start -->
 		<div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-			<div class="container py-5">
-				<div class="row g-5">
-					<div class="col-lg-3 col-md-6">
-						<h4 class="text-white mb-3">Quick Link</h4>
-						<a class="btn btn-link" href="">About Us</a> <a class="btn btn-link" href="">Contact Us</a> <a
-							class="btn btn-link" href="">Privacy Policy</a> <a class="btn btn-link" href="">Terms &
-							Condition</a> <a class="btn btn-link" href="">FAQs & Help</a>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<h4 class="text-white mb-3">聯絡我們</h4>
-						<p class="mb-2">
-							<i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
-						</p>
-						<p class="mb-2">
-							<i class="fa fa-phone-alt me-3"></i>+012 345 67890
-						</p>
-						<p class="mb-2">
-							<i class="fa fa-envelope me-3"></i>info@example.com
-						</p>
-						<div class="d-flex pt-2">
-							<a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a> <a
-								class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-							<a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a> <a
-								class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<h4 class="text-white mb-3">圖片集錦</h4>
-						<div class="row g-2 pt-2">
-							<div class="col-4">
-								<img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
-							</div>
-							<div class="col-4">
-								<img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
-							</div>
-							<div class="col-4">
-								<img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
-							</div>
-							<div class="col-4">
-								<img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
-							</div>
-							<div class="col-4">
-								<img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
-							</div>
-							<div class="col-4">
-								<img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<h4 class="text-white mb-3">意見信箱</h4>
-						<p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-						<div class="position-relative mx-auto" style="max-width: 400px">
-							<input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
-								placeholder="Your email" />
-							<button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
-								SignUp</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="container">
-				<div class="copyright">
-					<div class="row">
-						<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-							&copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
-							Right Reserved.
+    <div class="container py-5">
+      <div class="row g-5">
+        <div class="col-lg-8 col-md-6">
+          <h4 class="text-white mb-3">聯絡我們</h4>
+          <p class="mb-2">
+            <i class="fa fa-map-marker-alt me-3"></i>320桃園市中壢區新生路二段421號
+          </p>
+          <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
+          <p class="mb-2">
+            <i class="fa fa-envelope me-3"></i>academic@shengte.college
+          </p>
+          <div class="d-flex pt-2">
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <h4 class="text-white mb-10">意見信箱</h4>
+          <p>請留下您對我們的寶貴意見</p>
+          <div class="position-relative mx-auto" style="max-width: 400px">
+            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
+            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+              送出
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="copyright">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
+            Right Reserved.
 
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-						</div>
-						<div class="col-md-6 text-center text-md-end">
-							<div class="footer-menu">
-								<a href="">Home</a> <a href="">Cookies</a> <a href="">Help</a> <a href="">FQAs</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 		<!-- Footer End -->
 
 		<!-- Back to Top -->

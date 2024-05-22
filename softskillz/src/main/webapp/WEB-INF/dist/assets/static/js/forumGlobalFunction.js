@@ -1,10 +1,31 @@
+
 //--------------------USER--------------------
 //USER VALIDATION
+//GET LOGGED IN USER DTO
+window.retrieveUser = function () {
+    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+    const userType = sessionStorage.getItem('userType');
+
+    return { loggedInUser, userType };
+}
+
+
 window.validateUser = function (user) {
     if (!user) {
         window.location.href = '/admin/admin-loginPage';
         return;
     }
+}
+
+//DISPLAY LOGEGD IN USER DETAIL
+window.displayUserDetails = function () {
+    const { loggedInUser, userType } = retrieveUser();
+    const username = getUserName(loggedInUser);
+    const zhUserType = toZhUserType(userType);
+    document.getElementById('user-detail').innerHTML =
+        `
+    <h6 class=" mb-0 text-primary" id="user-name">${zhUserType} ${username}</h6>
+    `
 }
 
 //CONVERT USERTYPE TO MANDARIN FOR DISPLAY
@@ -24,18 +45,6 @@ window.toZhUserType = function (userType) {
     return zhUserType;
 }
 
-//DISPLAY LOGEGD IN USER DETAIL
-window.displayUserDetails = function () {
-    const { loggedInUser, userType } = retrieveUser();
-    const username = getUserName(loggedInUser);
-    const zhUserType = toZhUserType(userType);
-    document.getElementById('user-detail').innerHTML = 
-    `
-    <h6 class=" mb-0 text-primary" id="user-name">${zhUserType} ${username}</h6>
-    `
-}
-
-
 //GET LOGGED IN USER NAME
 window.getUserName = function (user) {
     var username;
@@ -51,14 +60,6 @@ window.getUserName = function (user) {
             break;
     }
     return username;
-}
-
-//GET LOGGED IN USER DTO
-window.retrieveUser = function () {
-    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-    const userType = sessionStorage.getItem('userType');
-
-    return { loggedInUser, userType };
 }
 
 
@@ -125,10 +126,6 @@ window.createThreadHtml = function (thread) {
                 <option value="DELETED" ${status === 'DELETED' ? 'selected' : ''}>刪除</option>
             </select>
         </td>
-        <td id="updateThread" class="align-middle text-center">
-        <button class="edit btn btn-sm btn-primary">
-        <i class="bi bi-pencil align-middle">
-        </i></button></td>
     </tr>
         `
         ;
@@ -136,20 +133,109 @@ window.createThreadHtml = function (thread) {
 
 
 //FUCTION: FETCH ALL THREADS
+// window.fetchThreads = function () {
+//     return fetch('/forum/thread/find-all', {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok ' + response.statusText);
+//             } else {
+//                 return response.json();
+//             }
+//         })
+// }
+
 window.fetchThreads = function () {
-    return fetch('/forum/thread/find-all', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    return fetch('/forum/thread/find-all')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if ($.fn.DataTable.isDataTable('#thread-table')) {
+                // If DataTable already exists, clear and add new data
+                var table = $('#thread-table').DataTable();
+                table.clear().rows.add(data).draw();
             } else {
-                return response.json();
+                // Initialize DataTable if it doesn't exist
+                $('#thread-table').DataTable({
+                    data: data,
+                    columns: [
+                        {
+                            data: null,
+                            orderable: false,
+                            defaultContent: '<input class="form-check-input" type="checkbox">'
+                        },
+                        { data: 'threadId' },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                let userType, userId;
+                                if (row.student) {
+                                    userId = row.student.studentId;
+                                    userType = '學生';
+                                } else if (row.teacher) {
+                                    userId = row.teacher.teacherId;
+                                    userType = '老師';
+                                } else if (row.admin) {
+                                    userId = row.admin.adminId;
+                                    userType = '管理員';
+                                }
+                                return `${userType}-${userId}`;
+                            }
+                        },
+                        {
+                            data: 'threadTitle',
+                            render: function (data, type, row) {
+                                return `<a href="/forum/thread/detailpage/${row.threadId}" class="thread-link">${data}</a>`;
+                            }
+                        },
+                        { data: 'forumCategory.forumCategoryName' },
+                        { data: 'threadUpvoteCount' },
+                        { data: 'threadResponseCount' },
+                        {
+                            data: 'threadCreatedTime',
+                            render: function (data) {
+                                return data.split('T')[0]; // Format date to YYYY-MM-DD
+                            }
+                        },
+                        {
+                            data: 'threadStatus',
+                            orderable: false,
+                            render: function (data, type, row) {
+                                return `
+                                    <select class="status-dropdown" data-thread-id="${row.threadId}">
+                                        <option value="VISIBLE" ${data === 'VISIBLE' ? 'selected' : ''}>正常</option>
+                                        <option value="LOCKED" ${data === 'LOCKED' ? 'selected' : ''}>待審</option>
+                                        <option value="DELETED" ${data === 'DELETED' ? 'selected' : ''}>刪除</option>
+                                    </select>
+                                `;
+                            }
+                        },
+
+                    ],
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"
+                    },
+                    "paging": true,
+                    "lengthChange": true,
+                    "pageLength": 5, // Default number of entries per page
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "全部"]], // Custom options for page entries
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true
+                });
             }
         })
+        .catch(error => console.error('Error fetching threads:', error));
 }
 
 
@@ -248,27 +334,130 @@ window.createPostHtml = function (post) {
 }
 
 //FUCTION: FETCH ALL POSTS
+// window.fetchPosts = function () {
+//     return fetch('/forum/post/find-all', {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok ' + response.statusText);
+//             }
+//             return response.json();
+//         });
+
+// }
+
 window.fetchPosts = function () {
-    return fetch('/forum/post/find-all', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    return fetch('/forum/post/find-all')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
             return response.json();
-        });
-
+        })
+        .then(data => {
+            if ($.fn.DataTable.isDataTable('#post-table')) {
+                // If DataTable already exists, clear and add new data
+                var table = $('#post-table').DataTable();
+                table.clear().rows.add(data).draw();
+            } else {
+                // Initialize DataTable if it doesn't exist
+                $('#post-table').DataTable({
+                    data: data,
+                    columns: [
+                        {
+                            data: null,
+                            orderable: false,
+                            defaultContent: '<input class="form-check-input" type="checkbox">'
+                        },
+                        { data: 'postId' },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                let userId, userType;
+                                if (row.student) {
+                                    userId = row.student.studentId;
+                                    userType = '學生';
+                                } else if (row.teacher) {
+                                    userId = row.teacher.teacherId;
+                                    userType = '老師';
+                                } else if (row.admin) {
+                                    userId = row.admin.adminId;
+                                    userType = '管理員';
+                                }
+                                return `${userType}-${userId}`;
+                            }
+                        },
+                        {
+                            data: 'thread',
+                            render: function (data, type, row) {
+                                return `<a href="/forum/thread/detailpage/${data.threadId}" class="thread-link">ID: ${data.threadId}<br/>${data.threadTitle}</a>`;
+                            }
+                        },
+                        {
+                            data: 'postContent',
+                            render: function (data, type, row) {
+                                return `<a href="#" class="view-post-details" data-post-id="${row.postId}" data-bs-toggle="modal" data-bs-target="#postDetailsModal">${data}</a>`;
+                            }
+                        },
+                        {
+                            data: 'parentPost',
+                            render: function (data, type, row) {
+                                if (data === null) {
+                                    return '無';
+                                } else {
+                                    return `<a href="#" class="view-post-details" data-post-id="${data.postId}" data-bs-toggle="modal" data-bs-target="#postDetailsModal">${data.postContent}</a>`;
+                                }
+                            }
+                        },
+                        { data: 'postUpvoteCount' },
+                        { data: 'postResponseCount' },
+                        {
+                            data: 'postCreatedTime',
+                            render: function (data) {
+                                return data.split('T')[0]; // Format date to YYYY-MM-DD
+                            }
+                        },
+                        {
+                            data: 'postStatus',
+                            orderable: false,
+                            render: function (data, type, row) {
+                                return `
+                                    <select class="status-dropdown" data-post-id="${row.postId}">
+                                        <option value="VISIBLE" ${data === 'VISIBLE' ? 'selected' : ''}>正常</option>
+                                        <option value="LOCKED" ${data === 'LOCKED' ? 'selected' : ''}>待審</option>
+                                        <option value="DELETED" ${data === 'DELETED' ? 'selected' : ''}>刪除</option>
+                                    </select>
+                                `;
+                            }
+                        }
+                    ],
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"
+                    },
+                    "paging": true,
+                    "lengthChange": true,
+                    "pageLength": 5,
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "全部"]],
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching posts:', error));
 }
 
 //FUNCTION: DISPLAY POSTS IN TAB
 window.displayPostsTab = function (posts) {
     console.log('displayPostsTab():', posts);
     if (!Array.isArray(posts)) {
-        console.error('displayThreadsTab called with invalid data:', posts);
+        console.error('displayPostsTab called with invalid data:', posts);
         return;  // Early return if data is not an array.
     }
     var $postList = $('#postList');
@@ -281,8 +470,65 @@ window.displayPostsTab = function (posts) {
 
 
 //--------------------CATEGORIES--------------------
-//FUNCTION: FETCH ALL CATEGORIES (returns a jQuery promise)
+
 window.fetchCategories = function () {
+    return fetch('/forum/category/find-all')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if ($.fn.DataTable.isDataTable('#category-table')) {
+                // If DataTable already exists, clear and add new data
+                var table = $('#category-table').DataTable();
+                table.clear().rows.add(data).draw();
+            } else {
+                // Initialize DataTable if it doesn't exist
+                $('#category-table').DataTable({
+                    data: data,
+                    columns: [
+                        {
+                            data: null,
+                            defaultContent: '<input class="form-check-input" type="checkbox">'
+                        },
+                        { data: 'forumCategoryId' },
+                        {
+                            data: 'forumCategoryName',
+                            render: function (data, type, row) {
+                                return `<a href="/forum/category/detailpage/${row.forumCategoryId}">${data}</a>`;
+                            }
+                        },
+                        { data: 'forumCategoryDescription' },
+                        {
+                            data: null,
+                            orderable: false,
+                            defaultContent: `
+                                <button class="edit btn btn-sm btn-primary">
+                                <i class="bi bi-pencil align-middle"></i></button>`
+                        }
+                    ],
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"
+                    },
+                    "paging": true,
+                    "lengthChange": true,
+                    "pageLength": 5, // Default number of entries per page
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "全部"]], // Custom options for page entries
+
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching categories:', error));
+}
+
+window.fetchCreateThreadCategories = function () {
     return fetch('/forum/category/find-all', {
         method: 'GET',
         headers: {
@@ -297,6 +543,7 @@ window.fetchCategories = function () {
 };
 
 
+
 //CATEGORY HTML
 window.createCategoryHtml = function (category) {
     return `
@@ -306,7 +553,7 @@ window.createCategoryHtml = function (category) {
             <td>${category.forumCategoryId}</td>
             <td><a href="/forum/category/detailpage/${category.forumCategoryId}">${category.forumCategoryName}</a></td>
             <td>${category.forumCategoryDescription}</td>
-            <td id="updatePost" class="align-middle text-center">
+            <td id="updateCategory class="align-middle text-center">
             <button class=" edit btn btn-sm btn-primary">
             <i class="bi bi-pencil align-middle">
             </i></button></td>            
@@ -315,14 +562,23 @@ window.createCategoryHtml = function (category) {
 }
 
 //FUNCTION: DISPLAY CATEGORY IN TAB 
+// window.displayCategoriesTab = function (categories) {
+//     var $categoryList = $('#categoryList');
+//     $categoryList.empty();
+//     categories.forEach(function (category) {
+//         $categoryList.append(`${createCategoryHtml(category)}`);
+//     })
+
+// }
+
 window.displayCategoriesTab = function (categories) {
+    if (!Array.isArray(categories)) {
+        console.error('displayCategoriesTab called with invalid data:', categories);
+        return;
+    }
     var $categoryList = $('#categoryList');
     $categoryList.empty();
     categories.forEach(function (category) {
         $categoryList.append(`${createCategoryHtml(category)}`);
-    })
-
+    });
 }
-
-
-

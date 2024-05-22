@@ -1,5 +1,7 @@
 package com.softskillz.companion.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.softskillz.companion.model.CompanionBean;
@@ -25,14 +28,14 @@ import com.softskillz.companion.model.CompanionDTO;
 import com.softskillz.companion.model.CompanionMatchBean;
 import com.softskillz.companion.model.CompanionMatchService;
 import com.softskillz.companion.model.CompanionService;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.service.StudentService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
-//@SessionAttributes(names= {"companionUsername"})
 public class CompanionController {
 
 	@Autowired
@@ -64,42 +67,32 @@ public class CompanionController {
 		return "elearning/companion/companionFrontChatroom.jsp";
 	};
 	
-	// 新增
+	@GetMapping("/companionFrontCenter")
+	public String companionFrontCenter() {
+		return "elearning/companion/companionFrontCenter.jsp";
+	};
+	
+	// 使用者點選「個人條件設定」時，先判斷學伴資料表有無這個studentId，若無，就新增studentId到sql表
 	@PutMapping("/Insert")
 	@ResponseBody
 	public ModelAndView insert(//@RequestParam("companion_id") Integer companionId,
-			@RequestParam("student_id") Integer studentId,
-//			@RequestParam("companion_username") String companionUsername,
-//			@RequestParam("companion_gender") String companionGender,
-//			@RequestParam("companion_birth") String companionBirth,
-			@RequestParam("companion_first_language") String companionFirstLanguage,
-			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
-			@RequestParam("companion_learning_interest") String companionLearningInterest,
-			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
-			@RequestParam("companion_about_me") String companionAboutMe,
+//			@RequestParam("companion_first_language") String companionFirstLanguage,
+//			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
+//			@RequestParam("companion_learning_interest") String companionLearningInterest,
+//			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
+//			@RequestParam("companion_about_me") String companionAboutMe,
 			HttpSession session
 //			,@RequestParam("companion_photo") String companionPhoto
 			) {
 		ModelAndView view = new ModelAndView("dist/companion/CompanionInsert/insertOK.jsp");
 		try {
+//			Integer studentId =  (Integer) session.getAttribute("studentId");
+			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+			StudentBean studentID = studentService.getById(studentData.getStudentId());
 			CompanionBean companionBean = new CompanionBean();
 //			StudentBean studentBean = (StudentBean)session.getAttribute("studentID");
-			StudentBean studentBeanID = studentService.getById(studentId);
 			
-//			String birth = companionBirth;
-//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//			LocalDate newBirth = LocalDate.parse(birth, formatter);
-			
-			companionBean.setStudentBeanID(studentBeanID);
-//			companionBean.setCompanionUsername(companionUsername);
-//			companionBean.setCompanionGender(companionGender);
-//			companionBean.setCompanionBirth(companionBirth);
-			companionBean.setCompanionFirstLanguage(companionFirstLanguage);
-			companionBean.setCompanionSpeakingLanguage(companionSpeakingLanguage);
-			companionBean.setCompanionLearningInterest(companionLearningInterest);
-			companionBean.setCompanionLearningFrequency(companionLearningFrequency);
-			companionBean.setCompanionAboutMe(companionAboutMe);
-//			companionBean.setCompanionPhoto(companionPhoto);
+			companionBean.setStudentBeanID(studentID);
 			companionService.insert(companionBean);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,12 +105,20 @@ public class CompanionController {
 	@PostMapping("/InsertCompanion")
 	public ModelAndView insertCompanion(@RequestParam("companion_id") Integer companionId,
 			@RequestParam("like_or_dislike") String likeOrDislike,
-			@SessionAttribute("studentNickname") String studentNickname
+//			@SessionAttribute("studentNickname") String studentNickname
+			HttpSession session
 			) {
-		ModelAndView view = new ModelAndView("dist/companion/CompanionInsert/insertCompanion.jsp");
+		
+		ModelAndView view = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
 		try {
+			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+
+//			String studentNickname =  (String) session.getAttribute("studentNickname");
+			String studentNickname =  studentData.getStudentNickname();
+			System.out.println("取session"+studentNickname);
+//			System.out.println(session.getAttribute("studentNickname"));
 			CompanionMatchBean companionMatch = new CompanionMatchBean();
-			CompanionBean companionBeanA = companionService.getByName(studentNickname);
+			CompanionBean companionBeanA = companionService.getByStudentNickname(studentNickname);
 			CompanionBean companionBeanB = companionService.getById(companionId);
 			
 			companionMatch.setCompanionAId(companionBeanA);
@@ -168,11 +169,11 @@ public class CompanionController {
 			companionBean.setCompanionId(companionId);
 			companionBean.setStudentBeanID(studentBeanID);
 			
-			companionBean.setCompanionFirstLanguage(" ");
-			companionBean.setCompanionSpeakingLanguage(" ");
-			companionBean.setCompanionLearningInterest(" ");
-			companionBean.setCompanionLearningFrequency(" ");
-			companionBean.setCompanionAboutMe(" ");
+			companionBean.setCompanionFirstLanguage("");
+			companionBean.setCompanionSpeakingLanguage("");
+			companionBean.setCompanionLearningInterest("");
+			companionBean.setCompanionLearningFrequency("");
+			companionBean.setCompanionAboutMe("");
 			companionService.update(companionBean);
 			
 			System.out.println(companionBean);
@@ -197,7 +198,7 @@ public class CompanionController {
 		return view;
 	}
 	
-	// 修改單筆 抓id
+	// 後台修改單筆 抓id
 	@PutMapping("/Update")
 	public ModelAndView update(@RequestParam("companion_id") Integer companionId,
 			@RequestParam("student_id") Integer studentId,
@@ -207,13 +208,15 @@ public class CompanionController {
 			@RequestParam("companion_learning_interest") String companionLearningInterest,
 			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
 			@RequestParam("companion_about_me") String companionAboutMe,
+			@RequestParam("companion_photo") String companionPhoto,
 			HttpSession session
 			) {
-		ModelAndView view = new ModelAndView("dist/companion/CompanionUpdate/update.jsp");
+		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/companionQueryAll.jsp");
 		try {
-			CompanionBean companionBean = new CompanionBean();
 			
 			StudentBean studentBeanID = studentService.getById(studentId);
+//			CompanionBean companionBean = new CompanionBean();
+			CompanionBean companionBean = studentBeanID.getCompanionBean();
 //			StudentBean studentBean = (StudentBean)session.getAttribute("studentBeanID");
 			
 			companionBean.setCompanionId(companionId);
@@ -223,6 +226,54 @@ public class CompanionController {
 			companionBean.setCompanionLearningInterest(companionLearningInterest);
 			companionBean.setCompanionLearningFrequency(companionLearningFrequency);
 			companionBean.setCompanionAboutMe(companionAboutMe);
+//			System.out.println("12"+companionPhoto.isEmpty());
+		if(!companionPhoto.isEmpty()) {
+			companionBean.setCompanionPhoto("companion/CompanionImg/"+companionPhoto);
+			}
+			
+			companionService.update(companionBean);
+		} catch (Exception e) {
+			e.printStackTrace();
+			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+		}
+		return view;
+	}
+	
+	// 前台修改個人條件資料 單筆 抓id
+	@PutMapping("/UpdateMyData")
+	public ModelAndView updateMyData(
+			@RequestParam("companion_id") Integer companionId,
+//			@RequestParam("student_id") Integer studentId,
+			@RequestParam("companion_username") String companionUsername,
+			@RequestParam("companion_first_language") String companionFirstLanguage,
+			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
+			@RequestParam("companion_learning_interest") String companionLearningInterest,
+			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
+			@RequestParam("companion_about_me") String companionAboutMe,
+			@RequestParam("companion_photo") String companionPhoto,
+			HttpSession session
+			) {
+		ModelAndView view = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
+		try {
+			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+			Integer studentId = studentData.getStudentId();
+//			StudentBean studentBeanID = studentService.getById(studentId);
+//			CompanionBean companionBean = new CompanionBean();
+			CompanionBean companionBean = studentData.getCompanionBean();
+//			StudentBean studentBean = (StudentBean)session.getAttribute("studentBeanID");
+			
+			companionBean.setCompanionId(companionId);
+			companionBean.setStudentBeanID(studentData);
+			companionBean.setCompanionFirstLanguage(companionFirstLanguage);
+			companionBean.setCompanionSpeakingLanguage(companionSpeakingLanguage);
+			companionBean.setCompanionLearningInterest(companionLearningInterest);
+			companionBean.setCompanionLearningFrequency(companionLearningFrequency);
+			companionBean.setCompanionAboutMe(companionAboutMe);
+//			System.out.println("12"+companionPhoto.isEmpty());
+		if(!companionPhoto.isEmpty()) {
+			companionBean.setCompanionPhoto("companion/CompanionImg/"+companionPhoto);
+			}
+			
 			companionService.update(companionBean);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -235,34 +286,88 @@ public class CompanionController {
 	@GetMapping("/GetCompanionById")
 	public ModelAndView getCompanionById(@RequestParam("companion_id") Integer companionId) {
 		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/selectById.jsp");
+		ModelAndView viewErr = new ModelAndView("dist/companion/companionIndex.jsp");
 		try {
 			CompanionBean companion = companionService.getById(companionId);
-			view.addObject("companion", companion);
+			if (companion != null) {
+				view.addObject("companion", companion);
+				return view;
+			}else {
+				viewErr.addObject("errorMessage", "沒有這個id的資料");
+				return viewErr;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+			viewErr.addObject("errorMessage", "An error occurred: " + e.getMessage());
+			return viewErr;
 		}
-		return view;
 	}
 	
 	// 查詢單筆 username
 	@GetMapping("/GetCompanionByName")
 	public ModelAndView getCompanionByName(@RequestParam("companion_username") String companionUsername) {
 		ModelAndView view = new ModelAndView("dist/companion/CompanionSelect/selectByName.jsp");
+		ModelAndView viewErr = new ModelAndView("dist/companion/companionIndex.jsp");
 		try {
-			CompanionBean companion = companionService.getByName(companionUsername);
-			view.addObject("companion", companion);
+			CompanionBean companion = companionService.getByStudentNickname(companionUsername);
+			if (companion != null) {
+				view.addObject("companion", companion);
+				return view;
+			}else {
+				viewErr.addObject("errorMessageErrName", "沒有這個暱稱的資料");
+				return viewErr;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+			view.addObject("errorMessageErrName", "An error occurred: " + e.getMessage());
+			return viewErr;
 		}
-		return view;
 	}
+	
+	// 前台查詢個人條件設定 若使用者從未設定個人條件 就直接新增id到sql表 單筆 username
+	// 使用者點選「個人條件設定」時，先判斷學伴資料表有無這個studentId，若無，就新增studentId到sql表
+	@GetMapping("/GetMyData")
+	public ModelAndView getMyData(HttpSession session) {
+		ModelAndView view = new ModelAndView("elearning/companion/companionFrontCenter.jsp");
+		ModelAndView viewErr = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
+		try {
+			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+			Integer studentId = studentData.getStudentId();
+			String studentNickname = studentData.getStudentNickname();
+			CompanionBean companion = companionService.getByStudentNickname(studentNickname);
+			if (companion != null) {
+				view.addObject("companion", companion);
+				return view;
+			}else {
+//				StudentBean studentBeanID = studentService.getById(studentId);
+				CompanionBean companionBean = new CompanionBean();
+//				StudentBean studentBean = (StudentBean)session.getAttribute("studentID");
+				
+				companionBean.setStudentBeanID(studentData);
+				companionBean.setCompanionFirstLanguage("");
+				companionBean.setCompanionSpeakingLanguage("");
+				companionBean.setCompanionLearningInterest("");
+				companionBean.setCompanionLearningFrequency("");
+				companionBean.setCompanionAboutMe("");
+				companionBean.setCompanionPhoto("companion/CompanionImg/Default.jpg");
+				companionService.insert(companionBean);
+				CompanionBean companion2 = companionService.getByStudentNickname(studentNickname);
+				view.addObject("companion", companion2);
+//				viewErr.addObject("errorMessageErrName", "沒有這個暱稱的資料");
+				return view;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			view.addObject("errorMessageErrName", "An error occurred: " + e.getMessage());
+			return viewErr;
+		}
+	}
+	
 	
 	// 查詢多筆符合條件的學伴後 再申請配對
 	@GetMapping("/GetCompanionByMatchRequirement")
 	public ModelAndView getCompanionByMatchRequirement(
-			@RequestParam("student_nickname") String studentNickname,
+//			@RequestParam("student_nickname") String studentNickname,
 			@RequestParam("companion_gender") String companionGender,
 			@RequestParam("companion_first_language") String companionFirstLanguage,
 			@RequestParam("companion_speaking_language") String companionSpeakingLanguage,
@@ -271,6 +376,8 @@ public class CompanionController {
 			HttpSession session) {
 		ModelAndView view = new ModelAndView("elearning/companion/CompanionByMatchRequirement.jsp");
 		try {
+			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+			String studentNickname = studentData.getStudentNickname();
 			List<CompanionBean> companions = companionService.getByMatchRequirement(companionLearningInterest,
 					companionGender, companionFirstLanguage, companionSpeakingLanguage, companionLearningFrequency,
 					studentNickname);
@@ -285,15 +392,18 @@ public class CompanionController {
 			// 隨機排序
 			Collections.shuffle(companions);
 
-			// 只取前2筆資料，Math.min(companions.size(), 2)，裡面數字決定要取幾筆出來
-			List<CompanionBean> randomCompanions = new ArrayList<>(companions.subList(0, Math.min(companions.size(), 2)));
+			// 只取前5筆資料，Math.min(companions.size(), 5)，裡面數字決定要取幾筆出來
+			List<CompanionBean> randomCompanions = new ArrayList<>(companions.subList(0, Math.min(companions.size(), 5)));
 			view.addObject("companions", randomCompanions);
-			session.setAttribute("studentNickname", studentNickname);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
 		}
+		
+//		session.setAttribute("studentNickname", studentNickname);			
+
 		return view;
 	}
 	
@@ -339,5 +449,26 @@ public class CompanionController {
 	    return companionDTOList;
 	}
 
-
+	//用fetch呼叫這支controller，將使用者選擇的圖片存到指定資料夾
+	@PostMapping("/upload2.controller")
+	@ResponseBody
+	public String processAction(@RequestParam("companion_photo") MultipartFile mf) throws IllegalStateException, IOException {
+		String fileName = mf.getOriginalFilename();
+		System.out.println("fileName:" + fileName);
+		
+		
+		String saveFileDirPath = "C:\\Users\\Denton\\Documents\\softskillzworkspace\\softskillz\\src\\main\\webapp\\WEB-INF\\dist\\companion\\CompanionImg";
+		File saveFileDir = new File(saveFileDirPath);
+		
+		if(!saveFileDir.exists()) {
+			saveFileDir.mkdirs();
+			System.out.println("upload directory created");
+		}
+		
+		File saveFilePath = new File(saveFileDir, fileName);
+		mf.transferTo(saveFilePath);
+		System.out.println("saveFilePath:" + saveFilePath);
+		
+		return "success";
+	}
 }

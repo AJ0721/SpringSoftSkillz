@@ -7,34 +7,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.softskillz.account.model.bean.StudentBean;
-import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.forum.model.UserEnum;
+
+import jakarta.servlet.http.HttpSession;
 
 @SessionAttributes(names = { "student", "teacher", "username", "admin" })
 @Controller
 @RequestMapping("/forum")
 public class PageTransitionController {
 
-	
 	// to frontstage home
-	@GetMapping("/userhome.controller")
+	@GetMapping("/home")
+	public String showUserForumHome(HttpSession session, Model model) {
+
+		return "/elearning/forum/pages/home/frontHome.html";
+	}
+
+	// to frontstage thread detail page
+	@GetMapping("/f/thread/id/{threadId}")
+	public String frontThreadDetailPage(@PathVariable Integer threadId, Model model) {
+		model.addAttribute("threadId", threadId);
+		return "/elearning/forum/pages/thread/threadDetail.html";
+	}
+
+	// to frontstage myThread
+	@GetMapping("/f/user/{type}/{id}")
+	public String frontThreadDetailPage(@PathVariable("type") UserEnum userType ,@PathVariable("id") Integer id , Model model) {
+		
+		return "/elearning/forum/pages/thread/myThread.html";
+	}
+
 	public String showUserForumHome(Model model) {
 
-		StudentBean student = (StudentBean) model.getAttribute("student");
-		TeacherBean teacher = (TeacherBean) model.getAttribute("teacher");
+		return "/elearning/forum/home/frontHome.html";
+	}
 
-		if (student != null) {
-			String sUsername = student.getStudentUsername();
-			model.addAttribute("username", sUsername);
-		} else if (teacher != null) {
-			String tUsername = teacher.getTeacherUserName();
-			model.addAttribute("username", tUsername);
-		} else {
-			model.addAttribute("username", "guest");
-		}
-
-//		return "/forum/pages/jsp/homepage/forumFrontstageHome.jsp"; 
-		return "/forum/pages/jsp/homepage/forumBackstageHome.jsp";
+	// to frontstage thread insert
+	@GetMapping("/f/thread/insert")
+	public String frontCreateThread(Model model) {
+		return "/elearning/forum/pages/thread/insertThread.html";
 	}
 
 	// to backstage home
@@ -45,7 +56,7 @@ public class PageTransitionController {
 
 	}
 
-//CATEGORY
+	// CATEGORY
 	// to category insert
 	@GetMapping("/category/insertpage")
 	public String adminNewCategory() {
@@ -65,7 +76,7 @@ public class PageTransitionController {
 		return "/dist/forum/category/forumCategoryDetail.html";
 	}
 
-//THREAD
+	// THREAD
 	// to thread insert
 	@GetMapping("/thread/insertpage")
 	public String createThread(Model model) {

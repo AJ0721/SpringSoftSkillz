@@ -52,12 +52,12 @@ public class AdminOrderController {
 			@RequestParam(value = "size", defaultValue = "10") Integer size,
 			@RequestParam(value = "sort", defaultValue = "orderDate") String sort,
 			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection) {
-		System.out.println("d1:"+date1);
-		System.out.println("d2:"+date2);
-		
+		System.out.println("d1:" + date1);
+		System.out.println("d2:" + date2);
+
 		Direction direction = Direction.fromString(sortDirection);
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
-		Page<Order> pageOrder = coService.getPageOrderByDate(pageable,date1,date2);
+		Page<Order> pageOrder = coService.getPageOrderByDate(pageable, date1, date2);
 		System.out.println(pageOrder.getContent());
 		return pageOrder;
 	}
@@ -84,6 +84,7 @@ public class AdminOrderController {
 		return count.toString();
 	}
 
+	
 	@DeleteMapping("/{oid}")
 	@ResponseBody
 	public String deleteORD(@PathVariable("oid") String orderID, Model m) {
@@ -97,6 +98,22 @@ public class AdminOrderController {
 			m.addAttribute("orders", orders);
 		}
 		return "ok";
+	}
+	
+	
+	@GetMapping("pending")
+	@ResponseBody
+	public Page<Order> pagePendingOrder(@RequestParam(value = "pid", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sort", defaultValue = "orderDate") String sort,
+			@RequestParam(value = "direction", defaultValue = "ASC") String sortDirection,
+			@RequestParam(value = "status", defaultValue = "待處理") String status) {
+		System.out.println(status);
+		Direction direction = Direction.fromString(sortDirection);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
+		Page<Order> pageOrder = coService.getPageByStatus(pageable,status);
+		System.out.println(pageOrder.getContent());
+		return pageOrder;
 	}
 
 	@GetMapping("/{oid}")
@@ -122,5 +139,7 @@ public class AdminOrderController {
 		System.out.println(pageOrder.getContent());
 		return pageOrder;
 	}
+
+
 
 }

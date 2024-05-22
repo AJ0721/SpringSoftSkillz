@@ -279,6 +279,26 @@ sendtime DATETIME2(3) not null
 
 
 --商城
+
+--(新)
+DROP TABLE IF EXISTS product;
+CREATE TABLE product
+(
+    product_id         INT            NOT NULL PRIMARY KEY IDENTITY(1,1),
+    product_name       NVARCHAR(128)  NOT NULL,
+    category           NVARCHAR(32)   NOT NULL,
+    image_url          NVARCHAR(256)  NOT NULL,
+    price              DECIMAL(10, 2) NOT NULL,
+    stock              INT                NULL,
+    description        NVARCHAR(1024),
+    created_date       DATETIME2       NOT NULL,
+    last_modified_date DATETIME2       NOT NULL
+);
+
+SELECT * FROM product;
+
+-- (因下方 商城訂單有外鍵關聯 coupon、product_image表最好也先暫時CREATE TABLE)
+-- (下方暫留區)(舊)
 -- 建立商品狀態表
 CREATE TABLE product_status (
     product_status_id INT NOT NULL, -- 商品狀態編號(手動指定)
@@ -346,7 +366,6 @@ CREATE TABLE coupon (
     coupon_start_date DATETIME2(0) NOT NULL, -- 優惠券開始日期
     coupon_end_date DATETIME2(0), -- 優惠券結束日期
     CONSTRAINT PK_coupon PRIMARY KEY (coupon_id),
-    CONSTRAINT FK_coupon_coupon_type FOREIGN KEY (coupon_type_id) REFERENCES coupon_type(coupon_type_id),
     CONSTRAINT CHK_coupon_amount CHECK (coupon_amount >= 0),
     CONSTRAINT CHK_coupon_rate CHECK (coupon_rate >= 0 AND coupon_rate <= 1),
     CONSTRAINT CHK_coupon_buy_quantity CHECK (coupon_buy_quantity >= 0),
@@ -371,6 +390,7 @@ VALUES
     ('5E60B6B0', '年終回饋', '年底購物滿2000減200', 2, 200, 0, 2000, 0, '2024-12-01', '2024-12-31'),
     ('EBB8878E', '新年快樂購', '新年期間購物享受一次性折扣20%', 1, 0, 0.20, 0, 0, '2024-01-01', '2024-01-31');
 
+-- (舊的)(占留)(上方已有新的 請略過)
 -- 建立商品表
 CREATE TABLE product (
     product_id INT IDENTITY(1,1), -- 商品編號(自增)
@@ -388,9 +408,6 @@ CREATE TABLE product (
     product_update_date DATETIME2(0) NULL, -- 商品更新日期
     coupon_id INT NULL, -- 優惠券編號(外鍵，商品可能沒有任何促銷活動)
     CONSTRAINT PK_product PRIMARY KEY (product_id),
-    CONSTRAINT FK_product_product_type FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id),
-    CONSTRAINT FK_product_status FOREIGN KEY (product_status_id) REFERENCES product_status(product_status_id),
-    CONSTRAINT FK_product_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id),
     CONSTRAINT CHK_product_price CHECK (product_price >= 0),
     CONSTRAINT CHK_product_stock CHECK (product_stock >= 0 OR product_stock IS NULL),
     CONSTRAINT CHK_product_physical_material CHECK (
@@ -398,6 +415,7 @@ CREATE TABLE product (
     )
 );
 
+-- (舊的)(占留)(上方已有新的 請略過)
 -- 插入商品數據
 INSERT INTO product (product_name, product_description, product_type_id, product_status_id, product_price, product_stock, product_target_audience, product_author_name, product_isbn, product_publication_date, product_create_date, product_update_date, coupon_id)
 VALUES
@@ -438,7 +456,6 @@ CREATE TABLE product_image (
     product_image_url NVARCHAR(255) NOT NULL, -- 商品圖片URL
     product_id INT NOT NULL, -- 商品編號(外鍵)
     CONSTRAINT PK_product_image PRIMARY KEY (product_image_id),
-    CONSTRAINT FK_product_image_product FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 -- 插入商品圖片數據
@@ -481,7 +498,6 @@ CREATE TABLE product_video (
     product_video_url NVARCHAR(255) NOT NULL, -- 商品影片URL
     product_id INT NOT NULL, -- 商品編號(外鍵)
     CONSTRAINT PK_product_video PRIMARY KEY (product_video_id),
-    CONSTRAINT FK_product_video_product FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 -- 插入商品影片數據
@@ -502,9 +518,7 @@ VALUES
 CREATE TABLE coupon_type_relations (
     coupon_id INT, -- 優惠券編號(外鍵)
     product_type_id INT, -- 商品類型編號(外鍵),
-    CONSTRAINT PK_coupon_type_relations PRIMARY KEY (coupon_id, product_type_id),
-    CONSTRAINT FK_coupon_type_relations_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id),
-    CONSTRAINT FK_coupon_type_relations_product_type FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id)
+    CONSTRAINT PK_coupon_type_relations PRIMARY KEY (coupon_id, product_type_id)
 );
 
 -- 插入優惠券與商品類型關聯數據
@@ -539,9 +553,12 @@ DROP TABLE teacher;
 --商城訂單
 
 --商品訂單
+
+
+
 CREATE TABLE orders (
     order_id INT PRIMARY KEY IDENTITY(1, 1),
-    student_id INT NOT NULL FOREIGN KEY REFERENCES student(student_id),
+    student_id INT  NULL FOREIGN KEY REFERENCES student(student_id),
 	coupon_id INT NULL FOREIGN KEY REFERENCES coupon(coupon_id),
     order_date DATETIME2 NOT NULL,
     total_amount INT NOT NULL,
@@ -577,6 +594,8 @@ CREATE TABLE orderitem (
     sub_total INT NOT NULL
 );
 
+drop table orderitem
+
 --插入商品訂單項目
 INSERT INTO orderitem (order_id, product_id, product_image_id, quantity, product_price, sub_total)
 VALUES
@@ -584,7 +603,6 @@ VALUES
 (2, 2, 2, 1, 1500, 1500), 
 (2, 3, 3, 3, 300, 900);  
 
-DROP TABLE orderitem;
 
 --學伴
 
@@ -768,7 +786,7 @@ CREATE TABLE forum_post (
 	post_response_count INT, 
     post_created_time DATETIME2 DEFAULT SYSDATETIME() NOT NULL,
     post_status VARCHAR(10) CHECK (post_status IN ('VISIBLE', 'EDITED', 'LOCKED', 'DELETED')) NOT NULL,
-    CONSTRAINT FK_thread_id FOREIGN KEY(thread_id) REFERENCES forum_thread(thread_id),
+    CONSTRAINT FK_thread_id FOREIGN KEY(thread_id) REFERENCES forum_thread(thread_id) ON DELETE CASCADE,
 	CONSTRAINT FK_post_creator1 FOREIGN KEY(post_student_id) REFERENCES student(student_id),
     CONSTRAINT FK_post_creator2 FOREIGN KEY(post_teacher_id) REFERENCES teacher(teacher_id),
 	CONSTRAINT FK_post_parent_post FOREIGN KEY (parent_post_id) REFERENCES forum_post(post_id),

@@ -1,7 +1,7 @@
 package com.softskillz.mall.service.impl;
 
 import com.softskillz.mall.model.Coupon;
-import com.softskillz.mall.repos.CouponRepository;
+import com.softskillz.mall.repository.CouponRepository;
 import com.softskillz.mall.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

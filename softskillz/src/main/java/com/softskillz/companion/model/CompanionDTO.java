@@ -19,6 +19,8 @@ public class CompanionDTO {
 	
 	private String companionAboutMe;
 	
+	private String companionPhoto;
+	
 	private StudentBean studentBeanID;
 
     public static CompanionDTO fromCompanionBean(CompanionBean companionBean) {
@@ -34,7 +36,7 @@ public class CompanionDTO {
         companionDTO.setStudentNickname(companionBean.getStudentBeanID().getStudentNickname());
         companionDTO.setStudentGender(companionBean.getStudentBeanID().getStudentGender());
         companionDTO.setStudentBirth(companionBean.getStudentBeanID().getStudentBirth());
-        companionDTO.setStudentPhoto(companionBean.getStudentBeanID().getStudentPhoto());
+        companionDTO.setCompanionPhoto(companionBean.getCompanionPhoto());
         return companionDTO;
     }
 	
@@ -86,6 +88,13 @@ public class CompanionDTO {
 		this.companionAboutMe = companionAboutMe;
 	}
 
+	public String getCompanionPhoto() {
+		return companionPhoto;
+	}
+
+	public void setCompanionPhoto(String companionPhoto) {
+		this.companionPhoto = companionPhoto;
+	}
 
 	public StudentBean getStudentBean() {
 		return studentBeanID;
@@ -139,15 +148,16 @@ public class CompanionDTO {
         studentBeanID.setStudentBirth(studentBirth);
     }
 
-    public String getStudentPhoto() {
-        return studentBeanID != null ? studentBeanID.getStudentPhoto() : null;
-    }
-
-    public void setStudentPhoto(String studentPhoto) {
-        if (studentBeanID == null) {
-            studentBeanID = new StudentBean();
-        }
-        studentBeanID.setStudentPhoto(studentPhoto);
-    }
+//    public String getStudentPhoto() {
+//        return studentBeanID != null ? studentBeanID.getStudentPhoto() : null;
+//    }
+//
+//    public void setStudentPhoto(String studentPhoto) {
+//        if (studentBeanID == null) {
+//            studentBeanID = new StudentBean();
+//        }
+//        studentBeanID.setStudentPhoto(studentPhoto);
+//    }
+    
 	
 }
