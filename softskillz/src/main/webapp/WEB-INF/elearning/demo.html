@@ -56,7 +56,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav ms-auto p-4 p-lg-0">
+<<<<<<< HEAD
         <a href="/softskillz/fhomepage" class="nav-item nav-link active" style="font-size: 26px">首頁</a>
+=======
+        <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
+        <a href="/student/student-update" class="nav-item nav-link">個人中心</a>
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
         <div class="nav-item dropdown">
           <a href="/student/student-info" th:if="${loggedInUser == 'student'}" class="nav-link dropdown-toggle"
             data-bs-toggle="dropdown" style="font-size: 26px">個人中心</a>
@@ -82,6 +87,7 @@
             <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
           </div>
         </div>
+<<<<<<< HEAD
         <a href="/courseorder/order.do" class="nav-item nav-link" style="font-size: 26px">訂單</a>
         <a href="#" class="nav-item nav-link" style="font-size: 26px">論壇</a>
         <a href="#" class="nav-item nav-link" style="font-size: 26px">商城</a>
@@ -95,6 +101,13 @@
           <a href="/coursecart/cart.do" class="nav-item nav-link" style="font-size: 32px"><i
               class="bi bi-cart4"></i></a>
         </div>
+=======
+        <a href="#" class="nav-item nav-link">論壇</a>
+        <a href="#" class="nav-item nav-link">學伴</a>
+        <a href="#" class="nav-item nav-link">商城</a>
+		<a href="message.html" class="nav-item nav-link"><i class="bi bi-chat-dots-fill" style="font-size: 32px;"></i></a>
+		<a href="shop.html" class="nav-item nav-link"><i class="bi bi-cart-fill" style="font-size: 32px;"></i></a>   
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
       </div>
     </div>
     <form action="/student/student-logout" method="post" class="d-none d-lg-block">

@@ -2,9 +2,15 @@ var websocket = null;
 var chatPopup = null;
 var sendOutUser = null;
 let userID = null;
+<<<<<<< HEAD
 window.addEventListener("load",()=>{
     getUser();
 })
+=======
+window.onload = () => {
+    getUser();
+}
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
 function getUser() {
     fetch("/chat/getUser")
@@ -187,7 +193,15 @@ function chatroom(userID, userName, userPhotoURL) {
         chatInput.id = "popup-chat-input";
 
         var sendButton = document.createElement("button");
+<<<<<<< HEAD
+<<<<<<<< HEAD:softskillz/src/main/webapp/WEB-INF/elearning/coursechatroom/studentchat.js
         sendButton.style.marginLeft = "1px";
+========
+        sendButton.style.marginLeft="1px";
+>>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d:softskillz/src/main/webapp/WEB-INF/courseorder/js/chatroom.js
+=======
+        sendButton.style.marginLeft = "1px";
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
         sendButton.textContent = "送出";
 
         sendButton.addEventListener("click", function () {
@@ -300,6 +314,55 @@ function appendUl(data) {
 
         dropdownMenu.appendChild(newAnchor);
     });
+<<<<<<< HEAD
+
+    function appendUl(data) {
+    const dropdownMenu = document.getElementById("chatlist"); // 获取目标 dropdown-menu
+
+    data.forEach((chat) => {
+        // 创建一个新的<a>元素
+        const newAnchor = document.createElement("a");
+        newAnchor.href = "#";
+        newAnchor.classList.add("dropdown-item");
+
+        // 创建一个包含照片和姓名的容器
+        const container = document.createElement("div");
+
+        // 创建头像
+        const img = document.createElement("img");
+        img.src = "/" + chat.userPhoto;
+        img.alt = chat.userID;
+
+        // 创建用户ID的文本
+        const text = document.createElement("span");
+        text.textContent = chat.userID;
+
+        // 将头像和文本添加到容器中
+        container.appendChild(img);
+        container.appendChild(text);
+
+        // 将容器添加到<a>元素中
+        newAnchor.appendChild(container);
+
+        // 为每个创建的<a>元素添加点击事件
+        newAnchor.addEventListener("click", () => {
+            let chatPopup = document.querySelector(".chat-popup");
+            if (!chatPopup) {
+                console.log(1123);
+                chatroom(chat.userID, "/" + chat.userPhoto); // 确保事件处理函数没有修改 DOM 结构
+            } else {
+                chatPopup.remove();
+                chatroom(chat.userID, "/" + chat.userPhoto);
+            }
+        });
+
+        // 将新的<a>元素添加到dropdown-menu中
+        dropdownMenu.appendChild(newAnchor);
+    });
+}
+    
+=======
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 }
 
 

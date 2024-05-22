@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+<<<<<<< HEAD
 import com.softskillz.forum.model.UserEnum;
 
 import jakarta.servlet.http.HttpSession;
 
+=======
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 @SessionAttributes(names = { "student", "teacher", "username", "admin" })
 @Controller
 @RequestMapping("/forum")
@@ -18,6 +21,7 @@ public class PageTransitionController {
 
 	// to frontstage home
 	@GetMapping("/home")
+<<<<<<< HEAD
 	public String showUserForumHome(HttpSession session, Model model) {
 
 		return "/elearning/forum/pages/home/frontHome.html";
@@ -46,6 +50,11 @@ public class PageTransitionController {
 	@GetMapping("/f/thread/insert")
 	public String frontCreateThread(Model model) {
 		return "/elearning/forum/pages/thread/insertThread.html";
+=======
+	public String showUserForumHome(Model model) {
+
+		return "/elearning/forum/pages/home/frontHome.html";
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 	}
 
 	// to backstage home

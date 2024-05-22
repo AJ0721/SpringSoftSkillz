@@ -74,7 +74,11 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
     >
       <a
+<<<<<<< HEAD
         href="/courseFront/selectAllPage"
+=======
+        href="/softskillz/fhomepage"
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
         class="navbar-brand d-flex align-items-center px-4 px-lg-5"
       >
         <h2 class="m-0 text-primary">
@@ -96,7 +100,11 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
+<<<<<<< HEAD
           <a href="/courseFront/selectAllPage" class="nav-item nav-link active"
+=======
+          <a href="/softskillz/fhomepage" class="nav-item nav-link active"
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
             >首頁</a
           >
           <div class="nav-item dropdown">
@@ -394,6 +402,7 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
                 }).then((result) => {
                   if (result.value) {
                     Swal.fire({
+<<<<<<< HEAD
                       title: "已傳送Zoom會議室連結，請至聊天室查看",
                       // html:
                       //   '<a href="' +
@@ -401,6 +410,16 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
                       //   '" target="_blank">' +
                       //   response.zoomMeetingUrl +
                       //   "</a>",
+=======
+                      title: "Zoom會議室連結",
+                      // text: response.zoomMeetingUrl,
+                      html:
+                        '<a href="' +
+                        response.zoomMeetingUrl +
+                        '" target="_blank">' +
+                        response.zoomMeetingUrl +
+                        "</a>",
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
                       icon: "info",
                       confirmButtonText: "確定",
                     }).then(() => {

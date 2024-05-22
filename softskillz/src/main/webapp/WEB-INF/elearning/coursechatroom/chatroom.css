@@ -1,3 +1,4 @@
+/* 消息样式 */
 .message {
     padding: 10px;
     margin-bottom: 5px;
@@ -103,6 +104,7 @@
     border-radius: 5px;
     background-color: #0288d1;
     color: white;
+<<<<<<<< HEAD:softskillz/src/main/webapp/WEB-INF/elearning/coursechatroom/chatroom.css
     margin-left: 10px;
 }
 
@@ -110,3 +112,42 @@
 .chat-popup .chat-input button:hover {
     background-color: #0277bd;
 }
+========
+    margin-left: 10px; /* 添加左边距 */
+}
+
+.chat-popup .chat-input button:hover {
+    background-color: #0277bd;
+}
+
+/* 聊天头部样式 */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.userPhotoElement {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.userNameElement {
+    margin-left: 10px;
+}
+
+.closeButton {
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.userContainer {
+    display: flex;
+    align-items: center;
+}
+>>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d:softskillz/src/main/webapp/WEB-INF/courseorder/css/chatroom.css

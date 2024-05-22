@@ -439,14 +439,23 @@
               icon: 'success',
               timer: 2000, // 2000 milliseconds delay
               didClose: () => {
+<<<<<<< HEAD
                 window.location.href = '/forum/adminhome#nav-category'; 
+=======
+                window.location.href = '/forum/adminhome#nav-category'; // Redirect after the alert closes
+                //todo: redirect to category tab
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
               }
             });
           },
           error: function (error) {
             console.error('Error creating category:', error);
             Swal.fire(
+<<<<<<< HEAD
               '更新失敗',
+=======
+              '刪除失敗',
+>>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
               '可能原因：<br>1. 此分類中仍有文章<br>2. 網路無法連線，請重新整理<br>',
               'error'
             );
