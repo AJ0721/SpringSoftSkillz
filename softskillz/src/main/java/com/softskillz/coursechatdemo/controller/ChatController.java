@@ -72,11 +72,7 @@ public class ChatController {
 					user = new ChatRoomUser(cr.getUser2(),
 							(teacher.getTeacherLastName() + teacher.getTeacherFirstName()), teacher.getTeacherPhoto());
 				} else {
-<<<<<<< HEAD
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
-=======
-					user = new ChatRoomUser("system", "貓", "/teacher/images/teacher01.jpg");
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 				}
 				chatList.add(user);
 			} else {
@@ -86,11 +82,7 @@ public class ChatController {
 					user = new ChatRoomUser(cr.getUser1(),
 							(teacher.getTeacherLastName() + teacher.getTeacherFirstName()), teacher.getTeacherPhoto());
 				} else {
-<<<<<<< HEAD
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
-=======
-					user = new ChatRoomUser("system", "貓", "/teacher/images/teacher01.jpg");
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 				}
 				chatList.add(user);
 			}
@@ -115,11 +107,7 @@ public class ChatController {
 					user = new ChatRoomUser(cr.getUser2(),
 							(studnet.getStudentLastName() + studnet.getStudentFirstName()), studnet.getStudentPhoto());
 				} else {
-<<<<<<< HEAD
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
-=======
-					user = new ChatRoomUser("system", "貓", "/teacher/images/teacher01.jpg");
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 				}
 				chatList.add(user);
 			} else {
@@ -129,11 +117,7 @@ public class ChatController {
 					user = new ChatRoomUser(cr.getUser2(),
 							(studnet.getStudentLastName() + studnet.getStudentFirstName()), studnet.getStudentPhoto());
 				} else {
-<<<<<<< HEAD
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
-=======
-					user = new ChatRoomUser("system", "貓", "/teacher/images/teacher01.jpg");
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 				}
 				chatList.add(user);
 			}
@@ -154,11 +138,7 @@ public class ChatController {
 		} else {
 			user.setUserID("system");
 			user.setUserPhoto("/teacher/images/teacher01.jpg");
-<<<<<<< HEAD
 			user.setUserName("貓貓管理員");
-=======
-			user.setUserName("貓");
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 		}
 		return user;
 
@@ -199,11 +179,7 @@ public class ChatController {
 		} else {
 			user.setUserID("system");
 			user.setUserPhoto("/teacher/images/teacher01.jpg");
-<<<<<<< HEAD
 			user.setUserName("貓貓管理員");
-=======
-			user.setUserName("貓");
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 		}
 		return user;
 	}
@@ -235,25 +211,13 @@ public class ChatController {
 		return pageHistory;
 	}
 
-<<<<<<< HEAD
 
 	@PostMapping("/sendmessage")
 	@ResponseBody
-=======
-//	@GetMapping("/sendmessage")
-	@PostMapping("/sendmessage")
-	@ResponseBody
-//	public String sendMessage(@RequestParam("teacherID") Integer teacherID,	@RequestParam("studentID") Integer studentID, @RequestParam("msg") String msg) throws JsonProcessingException {
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 	public String sendMessage(@RequestBody Map<String,String> dataMap )	throws JsonProcessingException {
 		Integer studentID = Integer.parseInt(dataMap.get("studentID"));
 		Integer teacherID = Integer.parseInt(dataMap.get("teacherID"));
 		String msg = dataMap.get("msg");
-<<<<<<< HEAD
-=======
-		// 找學生formatID
-		// 找老師formatID
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 		StudentBean student = stService.getById(studentID);
 		String sformatID = student.getStudentIdFormatted();
 		TeacherBean teacher = tService.findById(teacherID);

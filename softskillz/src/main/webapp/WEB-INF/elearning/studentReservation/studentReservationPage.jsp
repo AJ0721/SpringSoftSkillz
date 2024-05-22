@@ -74,11 +74,7 @@ pageEncoding="UTF-8"%>
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-<<<<<<< HEAD
       <a href="/courseFront/selectAllPage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-=======
-      <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
           <h2 class="m-0 text-primary">
             <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
             style="max-width: 250px; height: auto; margin-top: 16px;">
@@ -89,11 +85,7 @@ pageEncoding="UTF-8"%>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <div class="navbar-nav ms-auto p-4 p-lg-0">
-<<<<<<< HEAD
               <a href="/courseFront/selectAllPage" class="nav-item nav-link active">首頁</a>
-=======
-              <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
               <div class="nav-item dropdown">
                 <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">個人中心</a>
                 <div class="dropdown-menu fade-down m-0">

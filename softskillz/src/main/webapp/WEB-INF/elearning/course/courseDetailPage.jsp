@@ -86,11 +86,7 @@ pageEncoding="UTF-8"%>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <div class="navbar-nav ms-auto p-4 p-lg-0">
-<<<<<<< HEAD
               <a href="/courseFront/selectAllPage" class="nav-item nav-link active">首頁</a>
-=======
-              <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
               <c:if test="${loggedInUser == 'student'}">
                 <div class="nav-item dropdown">
                   <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">個人中心</a>

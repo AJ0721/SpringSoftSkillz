@@ -37,87 +37,15 @@
               <!-- Customized Bootstrap Stylesheet -->
               <link href="/css/bootstrap.min.css" rel="stylesheet" />
 
-<<<<<<< HEAD
               <!-- Template Stylesheet -->
               <link href="/css/style.css" rel="stylesheet" />
-=======
-    <!-- Sweet alert -->
-    <link
-rel="stylesheet"
-href="/assets/extensions/sweetalert2/sweetalert2.min.css"
-/>
-	<!--聊天室吧大概-->
-	<link href="/elearning/coursechatroom/chatroom.css" rel="stylesheet" />
-	
-  </head>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
               <!-- Sweet alert -->
               <link rel="stylesheet" href="/assets/extensions/sweetalert2/sweetalert2.min.css" />
               <!--聊天室吧大概-->
               <link href="/elearning/coursechatroom/chatroom.css" rel="stylesheet" />
 
-<<<<<<< HEAD
             </head>
-=======
-    <!-- Navbar Start -->
-    <nav
-      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
-    >
-      <a
-        href="/softskillz/fhomepage"
-        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-      >
-        <h2 class="m-0 text-primary">
-          <i class="fa fa-book me-3"></i>SoftSkillz
-        </h2>
-      </a>
-      <button
-        type="button"
-        class="navbar-toggler me-4"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a href="/teacherScheduleFront/schedule" class="nav-item nav-link active"
-            >首頁</a
-          >
-          <div class="nav-item dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              >課程</a
-            >
-            <div class="dropdown-menu fade-down m-0">
-              <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
-              <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
-              <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
-            </div>
-          </div>
-		      <a href="#" class="nav-item nav-link">個人中心</a>
-          <a href="#" class="nav-item nav-link">論壇</a>
-          <!--老師訊息-->
-        <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i
-              class="bi bi-chat-square-dots"></i></a>
-          <div class=" dropdown-menu fade-down m-0" id="chatlist">
-          </div>
-        </div> 
-          <a href="message.html" class="nav-item nav-link"><i class="bi bi-chat-dots-fill" style="font-size: 18px;"></i></a>
-          <a href="shop.html" class="nav-item nav-link"><i class="bi bi-cart-fill" style="font-size: 18px;"></i></a>
-        </div>
-	  <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
-	    <button type="submit" class="btn btn-primary py-4 px-lg-5">
-	      <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-	    </button>
-	  </form>
-    </nav>
-    <!-- Navbar End -->
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
             <body>
               <!-- Spinner Start -->
@@ -279,7 +207,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
                       <button type="submit" form="editScheduleForm" class="btn btn-primary">保存修改</button>
                     </div>
-<<<<<<< HEAD
                   </div>
                 </div>
               </div>
@@ -335,84 +262,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
 
               <!-- Back to Top -->
               <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-=======
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                <button type="submit" form="editScheduleForm" class="btn btn-primary">保存修改</button>
-            </div>
-        </div>
-    </div>
-</div>
-    
-
-    <!-- Footer Start -->
-    <div
-      class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
-      data-wow-delay="0.1s"
-    >
-      <div class="container py-5">
-        <div class="row g-5">
-          <div class="col-lg-8 col-md-6">
-            <h4 class="text-white mb-3">聯絡我們</h4>
-            <p class="mb-2">
-              <i class="fa fa-map-marker-alt me-3"></i
-              >320桃園市中壢區新生路二段421號
-            </p>
-            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
-            <p class="mb-2">
-              <i class="fa fa-envelope me-3"></i>academic@shengte.college
-            </p>
-            <div class="d-flex pt-2">
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-facebook-f"></i
-              ></a>
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a class="btn btn-outline-light btn-social" href=""
-                ><i class="fab fa-linkedin-in"></i
-              ></a>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <h4 class="text-white mb-10">意見信箱</h4>
-            <p>請留下您對我們的寶貴意見</p>
-            <div class="position-relative mx-auto" style="max-width: 400px">
-              <input
-                class="form-control border-0 w-100 py-3 ps-4 pe-5"
-                type="text"
-                placeholder="Your email"
-              />
-              <button
-                type="button"
-                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"
-              >
-                送出
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="copyright">
-          <div class="row">
-            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-              &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
-              Right Reserved.
-
-              <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Footer End -->
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
               <!-- JavaScript Libraries -->
               <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -435,7 +284,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                 $(document).on('click', '.deleteSchedule', function () {
                   var scheduleID = $(this).data('schedule-id'); // 從按鈕獲取教師行事曆ID
 
-<<<<<<< HEAD
                   Swal.fire({
                     title: '確定要刪除這個行事曆嗎？',
                     text: '刪除後將無法恢復！',
@@ -453,31 +301,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                         data: { teacherScheduleID: scheduleID },
                         success: function (response) {
                           Swal.fire('刪除成功!', '', 'success').then(() => {
-=======
-	<!-- 聊天室吧大概 -->
-	<script src="/elearning/coursechatroom/teachchat.js"></script>
-	<script>
-        $(document).on('click', '.deleteSchedule', function () {
-    var scheduleID = $(this).data('schedule-id'); // 從按鈕獲取教師行事曆ID
-
-        Swal.fire({
-            title: '確定要刪除這個行事曆嗎？',
-            text: '刪除後將無法恢復！',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: '刪除',
-            cancelButtonText: '取消'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/teacherSchedule/deleted',
-                    type: 'POST',
-                    data: { teacherScheduleID: scheduleID },
-                    success: function(response) {
-                        Swal.fire('刪除成功!', '', 'success').then(() => {
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
                             window.location.reload(); // 刷新頁面
                           });
                         },
@@ -555,7 +378,6 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                     teacherTimeSlots: timeSlotsData  // 將時段數據加入到提交數據中
                   };
 
-<<<<<<< HEAD
                   $.ajax({
                     url: '${pageContext.request.contextPath}/teacherSchedule/updated',
                     type: 'POST',
@@ -586,34 +408,3 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
             </body>
 
             </html>
-=======
-    $.ajax({
-        url: '${pageContext.request.contextPath}/teacherSchedule/updated',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(teacherScheduleData),
-        success: function(response) {
-            Swal.fire({
-                title: '成功',
-                text: response,
-                icon: 'success',
-                confirmButtonText: '確定'
-            }).then((result) => {
-                $('#editModal').modal('hide'); // 隱藏模態框
-                location.reload();  // 刷新頁面
-            });
-        },
-        error: function() {
-            Swal.fire({
-                title: '錯誤',
-                text: '修改教師行事曆失敗',
-                icon: 'error',
-                confirmButtonText: '確定'
-            });
-        }
-    });
-});
-    </script>
-  </body>
-</html>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d

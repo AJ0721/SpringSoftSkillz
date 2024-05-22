@@ -1,16 +1,11 @@
 $(document).ready(function () {
-<<<<<<< HEAD
     // Fetch thread details and comments
-=======
-   // Fetch thread details and comments
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
     const pathname = window.location.pathname;
     const parts = pathname.split("/");
     const threadId = parts[parts.length - 1];
 
     //--------------------THREAD--------------------
 
-<<<<<<< HEAD
 
 
 
@@ -65,34 +60,10 @@ $(document).ready(function () {
             // Restore all buttons
             $('.edit-btn, .delete-btn, .reply-btn').show();
         });
-=======
-    fetchThreadDetails(threadId);
-
-   
-    //--------------------POST--------------------
-
-    // SUBMIT POST
-    $(document).on('click', '.submit-reply', function (e) {
-        e.preventDefault();
-        const $form = $(this).closest('form');
-        const postContent = $form.find('textarea').val().trim();
-        const parentPostId = $form.find('.parentPostId').val();
-        if (postContent === "") {
-            Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
-            return;
-        }
-        const postDto = {
-            postContent: postContent,
-            thread: { threadId: threadId },
-            parentPost: parentPostId ? { postId: parentPostId } : null,
-        };
-        submitPost(postDto, threadId);
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
     });
 
     //EDIT POST
 
-<<<<<<< HEAD
    
     $(document).on('click', '.edit-btn', function () {
         const postId = $(this).data('post-id');
@@ -114,29 +85,6 @@ $(document).ready(function () {
     
         // Update Button
         $(document).one('click', '.update-btn', function () {
-=======
-    // Edit Button
-    $(document).on('click', '.edit-btn', function () {
-        const postId = $(this).data('post-id');
-        const postElement = $(this).closest('li');
-        const postContentElement = postElement.find('.post-content');
-        const currentContent = postContentElement.text().trim();
-
-        // Make content editable
-        postContentElement.attr('contenteditable', 'true').focus();
-
-        // Hide the edit, delete, and reply buttons
-        postElement.find('.edit-btn, .delete-btn, .reply-btn').hide();
-
-        // Show the update and cancel buttons
-        $(this).after(`
-        <button class="btn btn-sm btn-primary update-btn me-2" data-post-id="${postId}">更新</button>
-        <button class="btn btn-sm btn-secondary cancel-edit" data-post-id="${postId}">取消</button>
-    `);
-
-        // Update Button
-        $(document).on('click', '.update-btn', function () {
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
             const updatedContent = postContentElement.text().trim();
             if (updatedContent === "") {
                 Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
@@ -147,7 +95,6 @@ $(document).ready(function () {
                 thread: { threadId: threadId }
             };
             updatePost(postId, postDto);
-<<<<<<< HEAD
     
             // Restore all buttons
             $('.edit-btn, .delete-btn, .reply-btn').show();
@@ -165,19 +112,6 @@ $(document).ready(function () {
             $('.edit-btn, .delete-btn, .reply-btn').show();
         });
     });
-=======
-        });
-
-        // Cancel Edit Button
-        $(document).on('click', '.cancel-edit', function () {
-            postContentElement.text(currentContent).attr('contenteditable', 'false');
-            $(this).siblings('.update-btn').remove();
-            $(this).remove();
-            postElement.find('.edit-btn, .delete-btn, .reply-btn').show(); // Show the edit, delete, and reply buttons again
-        });
-    });;
-
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
     //DELETE POST
     $(document).on('click', '.delete-btn', function () {

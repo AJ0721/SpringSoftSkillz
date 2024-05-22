@@ -72,7 +72,6 @@
 }
 
 .profile-image {
-<<<<<<< HEAD
 	width: 160px;
 	/* 或其他尺寸 */
 	height: 160px;
@@ -81,12 +80,6 @@
 	/* 這會創造出圓形的效果 */
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 	/* 可選，添加陰影 */
-=======
-	width: 160px; /* 或其他尺寸 */
-	height: 160px; /* 確保寬度和高度相等 */
-	border-radius: 50%; /* 這會創造出圓形的效果 */
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* 可選，添加陰影 */
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 }
 
 @media ( max-width : 768px) {
@@ -114,20 +107,12 @@
 	<!-- Navbar Start -->
 	<nav
 		class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-<<<<<<< HEAD
 		<a href="/courseFront/selectAllPage"
-=======
-		<a href="/softskillz/fhomepage"
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 			class="navbar-brand d-flex align-items-center px-4 px-lg-5">
 			<h2 class="m-0 text-primary">
 				<img src="/account/images/softskillz_logo.png" alt="SoftSkillz"
 					class="me-3"
-<<<<<<< HEAD
 					style="max-width: 250px; height: auto; margin-top: 16px" />
-=======
-					style="max-width: 250px; height: auto; margin-top: 16px;">
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 			</h2>
 		</a>
 		<button type="button" class="navbar-toggler me-4"
@@ -136,7 +121,6 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarCollapse">
 			<div class="navbar-nav ms-auto p-4 p-lg-0">
-<<<<<<< HEAD
 				<a href="/courseFront/selectAllPage" class="nav-item nav-link active"
 					style="font-size: 26px;">首頁</a>
 				<div class="nav-item dropdown">
@@ -199,52 +183,16 @@
 				<i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
 			</button>
 		</form>
-=======
-				<a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-				<a href="/student/student-update" class="nav-item nav-link">個人中心</a>
-				<div class="nav-item dropdown">
-					<a href="/courseFront/selectAllPage"
-						class="nav-link dropdown-toggle" data-bs-toggle="dropdown">課程</a>
-					<div class="dropdown-menu fade-down m-0">
-						<a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-						<a href="team.html" class="dropdown-item">語言</a> <a
-							href="testimonial.html" class="dropdown-item">程式設計</a> <a
-							href="404.html" class="dropdown-item">藝術</a> <a href="404.html"
-							class="dropdown-item">影片剪輯</a> <a href="404.html"
-							class="dropdown-item">心理學</a> <a href="404.html"
-							class="dropdown-item">科學</a> <a href="404.html"
-							class="dropdown-item">商業</a>
-					</div>
-				</div>
-				<a href="#" class="nav-item nav-link">論壇</a> <a href="#"
-					class="nav-item nav-link">學伴</a> <a href="#"
-					class="nav-item nav-link">商城</a> <a href="message.html"
-					class="nav-item nav-link"><i class="bi bi-chat-dots-fill"
-					style="font-size: 32px;"></i></a> <a href="shop.html"
-					class="nav-item nav-link"><i class="bi bi-cart-fill"
-					style="font-size: 32px;"></i></a>
-			</div>
-			<form action="/student/student-logout" method="post"
-				class="d-none d-lg-block">
-				<button type="submit" class="btn btn-primary py-4 px-lg-5">
-					<i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-				</button>
-			</form>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 	</nav>
 	<!-- Navbar End -->
 	<!-- 自行發揮的空間 -->
 	<div class="container mt-4">
-<<<<<<< HEAD
 		<br>
-=======
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 		<div class="card">
 			<div class="card-header">
 				<h2 class="card-title">個人中心</h2>
 			</div>
 			<!-- 照片上傳部分 -->
-<<<<<<< HEAD
 			<div class="mb-4" style="margin-left: 20px; margin-top: 20px;">
 
 				<img src="/student/images/${student.studentPhoto}" class="img-fluid profile-image"
@@ -255,15 +203,6 @@
 					class="img-fluid profile-image" alt="學生照片" id="currentPhoto"> --%>
 
 			</div>
-=======
- 			<div class="mb-4">
-				
-					
-					<img src="/student/images/${student.studentPhoto} "
-						class="img-fluid profile-image" alt="學生照片" id="currentPhoto">
-
-			</div> 
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
 			<div class="card-body">
 				<form action="/student/StudentInfo" method="post"
@@ -272,7 +211,6 @@
 						type="hidden" name="studentId" value="${student.studentId}">
 					<input type="hidden" name="studentPassword"
 						value="${student.studentPassword}">
-<<<<<<< HEAD
 					<div>
 
 						<%-- <input type="hidden" name="studentPhoto" value="${student.studentPhoto}"> --%>
@@ -280,13 +218,6 @@
 							name="studentPhoto" class="form-control-file"
 							onchange="selectImgFile(this.files)">
 					</div>
-=======
-					
-					<%-- <input type="hidden" name="studentPhoto"
-						value="${student.studentPhoto}"> --%>
-						<input type="file" style="margin-top: 20px;" id="studentPhoto"
-							name="studentPhoto" class="form-control-file" onchange="selectImgFile(this.files)">
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
 					<div class="row">
 						<div class="col-md-6 col-12">
@@ -328,7 +259,6 @@
 									id="studentGender" class="form-control" name="studentGender"
 									required>
 									<option value="Male"
-<<<<<<< HEAD
 										${student.studentGender=='Male' ? 'selected' : '' }>男性
 									</option>
 									<option value="Female"
@@ -337,13 +267,6 @@
 									<option value="Unspecified"
 										${student.studentGender=='Unspecified'
 												? 'selected' : '' }>不顯示</option>
-=======
-										${student.studentGender == 'Male' ? 'selected' : ''}>男性</option>
-									<option value="Female"
-										${student.studentGender == 'Female' ? 'selected' : ''}>女性</option>
-									<option value="Unspecified"
-										${student.studentGender == 'Unspecified' ? 'selected' : ''}>不顯示</option>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 								</select>
 							</div>
 						</div>
@@ -382,7 +305,6 @@
 	</div>
 
 	<!-- Footer Start -->
-<<<<<<< HEAD
 	<div
 		class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
 		data-wow-delay="0.1s">
@@ -398,30 +320,6 @@
 					</p>
 					<p class="mb-2">
 						<i class="fa fa-envelope me-3"></i>academic@shengte.college
-=======
-	<div class="col-12 bg-dark text-light footer pt-5 mt-5 wow fadeIn"
-		data-wow-delay="0.1s">
-		<div class="container py-5">
-			<div class="row g-5">
-				<div class="col-lg-3 col-md-6">
-					<h4 class="text-white mb-3">Quick Link</h4>
-					<a class="btn btn-link" href="">About Us</a> <a
-						class="btn btn-link" href="">Contact Us</a> <a
-						class="btn btn-link" href="">Privacy Policy</a> <a
-						class="btn btn-link" href="">Terms & Condition</a> <a
-						class="btn btn-link" href="">FAQs & Help</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<h4 class="text-white mb-3">聯絡我們</h4>
-					<p class="mb-2">
-						<i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
-					</p>
-					<p class="mb-2">
-						<i class="fa fa-phone-alt me-3"></i>+012 345 67890
-					</p>
-					<p class="mb-2">
-						<i class="fa fa-envelope me-3"></i>info@example.com
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 					</p>
 					<div class="d-flex pt-2">
 						<a class="btn btn-outline-light btn-social" href=""><i
@@ -434,54 +332,15 @@
 							class="fab fa-linkedin-in"></i></a>
 					</div>
 				</div>
-<<<<<<< HEAD
 				<div class="col-lg-4 col-md-6">
 					<h4 class="text-white mb-10">意見信箱</h4>
 					<p>請留下您對我們的寶貴意見</p>
-=======
-				<div class="col-lg-3 col-md-6">
-					<h4 class="text-white mb-3">圖片集錦</h4>
-					<div class="row g-2 pt-2">
-						<div class="col-4">
-							<img class="img-fluid bg-light p-1" src="/img/course-1.jpg"
-								alt="" />
-						</div>
-						<div class="col-4">
-							<img class="img-fluid bg-light p-1" src="/img/course-2.jpg"
-								alt="" />
-						</div>
-						<div class="col-4">
-							<img class="img-fluid bg-light p-1" src="/img/course-3.jpg"
-								alt="" />
-						</div>
-						<div class="col-4">
-							<img class="img-fluid bg-light p-1" src="/img/course-2.jpg"
-								alt="" />
-						</div>
-						<div class="col-4">
-							<img class="img-fluid bg-light p-1" src="/img/course-3.jpg"
-								alt="" />
-						</div>
-						<div class="col-4">
-							<img class="img-fluid bg-light p-1" src="/img/course-1.jpg"
-								alt="" />
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<h4 class="text-white mb-3">意見信箱</h4>
-					<p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 					<div class="position-relative mx-auto" style="max-width: 400px">
 						<input class="form-control border-0 w-100 py-3 ps-4 pe-5"
 							type="text" placeholder="Your email" />
 						<button type="button"
 							class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
-<<<<<<< HEAD
 							送出</button>
-=======
-							SignUp</button>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 					</div>
 				</div>
 			</div>
@@ -495,15 +354,6 @@
 
 						<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
 					</div>
-<<<<<<< HEAD
-=======
-					<div class="col-md-6 text-center text-md-end">
-						<div class="footer-menu">
-							<a href="">Home</a> <a href="">Cookies</a> <a href="">Help</a> <a
-								href="">FQAs</a>
-						</div>
-					</div>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 				</div>
 			</div>
 		</div>
@@ -545,7 +395,6 @@
 		});
 	</script>
 
-<<<<<<< HEAD
 	<script>
 		//studentBirth轉格式
 		document
@@ -583,50 +432,6 @@
 			reader.readAsDataURL(file);
 		}
 	</script>
-=======
-  <script>
-        function upload() {
-            //alert('ok');
-            var form = document.getElementById("photoUploadForm");
-            var formData = new FormData(form);
-
-            fetch('UploadStudentPhoto', {
-                method: 'post',
-                body: formData
-            }).then(function (response) {
-                console.log('status:' + response.status);
-            });
-        }
-        
-        //studentBirth轉格式
-        document.addEventListener('DOMContentLoaded', function() {
-            var birthSpan = document.getElementById('studentBirth');
-            if (birthSpan) {
-                var birthDate = new Date(birthSpan.textContent);
-                var formattedDate = birthDate.getFullYear() + '-' +
-                    (birthDate.getMonth() + 1).toString().padStart(2, '0') + '-' +
-                    birthDate.getDate().toString().padStart(2, '0');
-                birthSpan.textContent = formattedDate;
-                // 更新隱藏欄位的值
-                document.getElementsByName('studentBirth')[0].value = formattedDate;
-            }
-        });
-        
-        function selectImgFile(files) {
-            if (!files.length) {
-                return false;
-            }
-
-            let file = files[0];
-            let reader = new FileReader();
-            reader.onload = function () {
-                document.querySelector('#currentPhoto').src = this.result;
-            };
-
-            reader.readAsDataURL(file);
-        }
-    </script>
->>>>>>> e4147c4ea8a33a128ade5cfded2b8544ac41532d
 
 
 </body>
