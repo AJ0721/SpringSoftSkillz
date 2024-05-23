@@ -14,6 +14,11 @@ public class Citem {
 		this.currency = currency;
 	}
 
+	public Citem (Item item) {
+		this.amount = item.getAmount();
+		this.currency = item.getCurrency();
+	}
+	
 	public Integer getAmount() {
 		return amount;
 	}

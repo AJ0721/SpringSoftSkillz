@@ -113,8 +113,9 @@ public class LineUtil {
 		Integer subtotal = 0;
 		for (ItemInfo i : orderItem) {
 			Double price = (i.getDisPrice() * discount);
-			Double dprice = Math.ceil(price / 100);
+			Long dprice = Math.round(price / 100);
 			Integer afterPrice = dprice.intValue();
+			System.out.println("af:="+afterPrice);
 			Products products = new Products();
 			products.setId(i.getCourseID().toString());
 			products.setName(i.getCourseName());

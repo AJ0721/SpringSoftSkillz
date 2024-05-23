@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.softskillz.courseorder.model.bean.CorderBean;
+import com.softskillz.courseorder.model.bean.MonthlySales;
 
 public interface CourseOrderReporistory extends JpaRepository<CorderBean, String> {
 
@@ -49,4 +50,8 @@ public interface CourseOrderReporistory extends JpaRepository<CorderBean, String
 	
 	@Query("from CorderBean o where o.status = :status")
 	Page<CorderBean> findByStatus(Pageable pageable , @Param("status") String status);
+	
+	//總銷售額圖表
+	@Query("SELECT new com.softskillz.courseorder.model.bean.MonthlySales(SUM(o.afterPrice), MONTH(o.orderDate)) FROM CorderBean o WHERE o.status = '已付款' GROUP BY MONTH(o.orderDate)")
+	List<MonthlySales> findMonthlySales();
 }

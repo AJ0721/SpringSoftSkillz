@@ -18,36 +18,30 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private Integer orderId;//後端
-
-    @Column(name = "student_id")
-    private Integer studentId;//後端
-
-    @Column(name = "coupon_id")
-    private Integer couponId;
+    private Integer orderId;
 
     @Column(name = "total_amount")
     private Integer totalAmount;
 
     @Column(name = "order_status")
-    private String orderStatus;//後端
+    private String orderStatus;
 
     @Column(name = "payment_method")
     private String paymentMethod;
 
     @Column(name = "shipment_status")
-    private String shipmentStatus;//後端
+    private String shipmentStatus;
 
     @Column(name = "shipping_address")
     private String shippingAddress;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "order_date")
-    private LocalDateTime orderDate;//後端
+    private LocalDateTime orderDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "shipment_date")
-    private LocalDateTime shipmentDate;//後端
+    private LocalDateTime shipmentDate;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -57,28 +51,13 @@ public class Order implements Serializable {
         super();
     }
 
+    // Getters and Setters
     public Integer getOrderId() {
         return orderId;
     }
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
-    }
-
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Integer getCouponId() {
-        return couponId;
-    }
-
-    public void setCouponId(Integer couponId) {
-        this.couponId = couponId;
     }
 
     public Integer getTotalAmount() {
@@ -147,9 +126,9 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "Order [orderId=" + orderId + ", studentId=" + studentId + ", couponId=" + couponId + ", totalAmount=" 
-                + totalAmount + ", orderStatus=" + orderStatus + ", paymentMethod=" + paymentMethod 
-                + ", shipmentStatus=" + shipmentStatus + ", shippingAddress=" + shippingAddress + ", orderDate=" 
+        return "Order [orderId=" + orderId + ", totalAmount=" + totalAmount
+                + ", orderStatus=" + orderStatus + ", paymentMethod=" + paymentMethod
+                + ", shipmentStatus=" + shipmentStatus + ", shippingAddress=" + shippingAddress + ", orderDate="
                 + orderDate + ", shipmentDate=" + shipmentDate + ", orderItems=" + orderItems + "]";
     }
 
@@ -160,8 +139,12 @@ public class Order implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Order other = (Order) obj;
         return Objects.equals(orderId, other.orderId);
     }

@@ -122,9 +122,9 @@
                 </table>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary ms-1" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-primary ms-1" id="inn">
                   <i class="bx bx-x d-block d-sm-none"></i>
-                  <span class="d-none d-sm-block">Close</span>
+                  <span class="d-none d-sm-block">輸入</span>
                 </button>
                 <button type="button" class="btn btn-primary ms-1 confirn" data-bs-dismiss="modal">
                   <i class="bx bx-check d-block d-sm-none"></i>
@@ -165,9 +165,20 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/dist/courseorder/js/discount.js"></script>
   <script>
+ 
+    let inn = document.querySelector("#inn");
+    inn.addEventListener("click",()=>{
+    let discount = document.querySelector("#discount");
+    let disID = discount.querySelector(".disID").value="softskillz";
+    let disInfo = discount.querySelector(".disInfo").value="50%off";
+    let disPercent = discount.querySelector(".disPercent").value="50";
+    let startDate = discount.querySelector(".startDate").value="2024-05-27T00:00";
+    let endDate = discount.querySelector(".endDate").value="2024-06-02T00:00";
+    })
+    
   </script>
 </body>
 
-</body>
+
 
 </html>

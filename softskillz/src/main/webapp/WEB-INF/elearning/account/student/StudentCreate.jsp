@@ -323,6 +323,7 @@
 								</div>
 							</div>
 							<div class="button-container">
+								<input type="submit" value="一鍵輸入" class="btn btn-primary onepunch" style="background-color: #09baef; border: 1px solid #09baef">
 								<input type="submit" value="提交" class="btn btn-primary">
 								<input type="reset" value="清除" class="btn btn-secondary">
 							</div>
@@ -392,6 +393,25 @@
 
 		<!-- Template Javascript -->
 		<script src="/js/main.js"></script>
+		<script>
+			let onepunch = document.querySelector(".onepunch");
+			onepunch.addEventListener("click",(e)=>{
+				e.preventDefault();
+			document.getElementById('studentLastName').value = '大';
+            document.getElementById('studentFirstName').value = '耳狗';
+            document.getElementById('studentUsername').value = 'puppy0102';
+            document.getElementById('studentPassword').value = 'puppy0102';
+            document.getElementById('studentBirth').value = '2000-01-02';
+            document.getElementById('studentGender').value = 'Male';
+            document.getElementById('studentEmail').value = 'puppy0102@gmail.com';
+            document.getElementById('studentMobile').value = '0912345678';
+            document.getElementById('country').value = '台灣';
+            document.getElementById('firstLanguage').value = '中文';
+            document.getElementById('studentEducation').value = '大學';
+            document.getElementById('learningFrequency').value = '一週約14到28小時';
+		})
+
+		</script>
 	</body>
 
 	</html>

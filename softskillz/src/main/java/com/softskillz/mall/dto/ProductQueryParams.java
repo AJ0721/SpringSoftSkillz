@@ -59,6 +59,7 @@ public class ProductQueryParams {
         this.offset = offset;
     }
 
+    // 將 orderBy 轉換為資料庫的列名
     public String getOrderByColumn() {
         switch (this.orderBy) {
             case "productId":

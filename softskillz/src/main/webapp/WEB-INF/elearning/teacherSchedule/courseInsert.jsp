@@ -71,51 +71,45 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav
-      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
-    >
-      <a
-        href="/softskillz/fhomepage"
-        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-      >
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+      <a href="/teacherScheduleFront/schedule" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <h2 class="m-0 text-primary">
-          <i class="fa fa-book me-3"></i>SoftSkillz
+          <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+style="max-width: 250px; height: auto; margin-top: 16px" />
         </h2>
       </a>
-      <button
-        type="button"
-        class="navbar-toggler me-4"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-      >
+      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
           <a href="/teacherScheduleFront/schedule" class="nav-item nav-link active"
-            >首頁</a
-          >
+            style="font-size: 26px;">首頁</a>
           <div class="nav-item dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              >課程</a
-            >
+            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px;">課程</a>
             <div class="dropdown-menu fade-down m-0">
               <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
-              <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">查詢課程</a>
+              <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
               <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
             </div>
           </div>
-		      <a href="#" class="nav-item nav-link">個人中心</a>
-          <a href="#" class="nav-item nav-link">論壇</a>
+          <a href="/teacher/teacher-info" class="nav-item nav-link" style="font-size: 26px;">個人中心</a>
+          <a href="#" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
+          <!--老師訊息-->
+          <div class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown" style="font-size: 27px;"><i
+                class="bi bi-chat-square-dots"></i></a>
+            <div class=" dropdown-menu fade-down m-0" id="chatlist">
+            </div>
+          </div>
+          <a href="shop.html" class="nav-item nav-link" style="font-size: 27px;"><i class="bi bi-cart4"></i></a>
         </div>
-	  <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
-	    <button type="submit" class="btn btn-primary py-4 px-lg-5">
-	      <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-	    </button>
-	  </form>
+        <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
+          <button type="submit" class="btn btn-primary py-4 px-lg-5" style="font-size: 26px;">
+            <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+          </button>
+        </form>
     </nav>
     <!-- Navbar End -->
 
@@ -249,12 +243,22 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
                         </div>
                       </div>
 
+                      <!-- 一鍵輸入資料的按鈕 -->
+                      <div class="col-md-8 mb-3">
+                        <button
+                        type="button"
+                        class="btn btn-primary btn-block"
+                         onclick="fillPresetData()">
+                         一鍵輸入資料
+                        </button>
+                      </div>
+
                       <!-- 提交按鈕 -->
                       <div class="col-md-8">
                         <button
                           id="toast-success"
                           type="button"
-                          class="btn btn-primary btn-lg btn-block"
+                          class="btn btn-primary btn-block"
                         >
                           新增課程
                         </button>
@@ -352,7 +356,13 @@ href="/assets/extensions/sweetalert2/sweetalert2.min.css"
      <script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
 
      <script>
-  
+      //一鍵輸入的東東
+     function fillPresetData() {
+    selectCategory('程式設計');
+    document.getElementById('floatingCourseName').value = 'Java 程式設計';
+    document.getElementById('floatingCourseInfo').value = '這是一門介紹 Java 程式設計的課程，適合初學者和有經驗的程式設計師。';
+    document.getElementById('floatingCoursePrice').value = '2000';
+  }
         //選擇課程類別的下拉式選單
         function selectCategory(category) {
           document.getElementById("dropdownMenuCourseCategory").textContent =

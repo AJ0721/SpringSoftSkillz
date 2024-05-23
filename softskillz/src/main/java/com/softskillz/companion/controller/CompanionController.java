@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,8 +64,18 @@ public class CompanionController {
 	};
 	
 	@GetMapping("/companionFrontChatroom")
-	public String companionFrontChatroom() {
-		return "elearning/companion/companionFrontChatroom.jsp";
+	public String companionFrontChatroom(HttpSession session, Model model) {
+		
+		StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+		
+	    if (studentData != null) {
+		String studentNickname =  studentData.getStudentNickname();
+        model.addAttribute("studentNickname", studentNickname);
+        return "elearning/companion/companionFrontChatroom.jsp";
+	    }else {
+	    	model.addAttribute("errorMessageNoStudentData", "請重新登入!");
+			return "elearning/companion/companionFrontIndex.jsp";
+		}
 	};
 	
 	@GetMapping("/companionFrontCenter")
@@ -72,7 +83,7 @@ public class CompanionController {
 		return "elearning/companion/companionFrontCenter.jsp";
 	};
 	
-	// 使用者點選「個人條件設定」時，先判斷學伴資料表有無這個studentId，若無，就新增studentId到sql表
+	// 後台新增
 	@PutMapping("/Insert")
 	@ResponseBody
 	public ModelAndView insert(//@RequestParam("companion_id") Integer companionId,
@@ -101,7 +112,7 @@ public class CompanionController {
 		return view;
 	}
 	
-	// 新增學伴配對 先查詢符合興趣之學伴 再申請配對後 會修改配對紀錄表的狀態欄位 可新增配對時間
+	// 新增學伴配對 先查詢符合興趣之學伴 再申請配對後 會修改配對紀錄表的狀態欄位
 	@PostMapping("/InsertCompanion")
 	public ModelAndView insertCompanion(@RequestParam("companion_id") Integer companionId,
 			@RequestParam("like_or_dislike") String likeOrDislike,
@@ -242,7 +253,7 @@ public class CompanionController {
 	// 前台修改個人條件資料 單筆 抓id
 	@PutMapping("/UpdateMyData")
 	public ModelAndView updateMyData(
-			@RequestParam("companion_id") Integer companionId,
+//			@RequestParam("companion_id") Integer companionId,
 //			@RequestParam("student_id") Integer studentId,
 			@RequestParam("companion_username") String companionUsername,
 			@RequestParam("companion_first_language") String companionFirstLanguage,
@@ -262,7 +273,7 @@ public class CompanionController {
 			CompanionBean companionBean = studentData.getCompanionBean();
 //			StudentBean studentBean = (StudentBean)session.getAttribute("studentBeanID");
 			
-			companionBean.setCompanionId(companionId);
+//			companionBean.setCompanionId(companionId);
 			companionBean.setStudentBeanID(studentData);
 			companionBean.setCompanionFirstLanguage(companionFirstLanguage);
 			companionBean.setCompanionSpeakingLanguage(companionSpeakingLanguage);
@@ -328,40 +339,48 @@ public class CompanionController {
 	// 使用者點選「個人條件設定」時，先判斷學伴資料表有無這個studentId，若無，就新增studentId到sql表
 	@GetMapping("/GetMyData")
 	public ModelAndView getMyData(HttpSession session) {
-		ModelAndView view = new ModelAndView("elearning/companion/companionFrontCenter.jsp");
-		ModelAndView viewErr = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
-		try {
-			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
-			Integer studentId = studentData.getStudentId();
-			String studentNickname = studentData.getStudentNickname();
-			CompanionBean companion = companionService.getByStudentNickname(studentNickname);
-			if (companion != null) {
-				view.addObject("companion", companion);
-				return view;
-			}else {
-//				StudentBean studentBeanID = studentService.getById(studentId);
-				CompanionBean companionBean = new CompanionBean();
-//				StudentBean studentBean = (StudentBean)session.getAttribute("studentID");
-				
-				companionBean.setStudentBeanID(studentData);
-				companionBean.setCompanionFirstLanguage("");
-				companionBean.setCompanionSpeakingLanguage("");
-				companionBean.setCompanionLearningInterest("");
-				companionBean.setCompanionLearningFrequency("");
-				companionBean.setCompanionAboutMe("");
-				companionBean.setCompanionPhoto("companion/CompanionImg/Default.jpg");
-				companionService.insert(companionBean);
-				CompanionBean companion2 = companionService.getByStudentNickname(studentNickname);
-				view.addObject("companion", companion2);
-//				viewErr.addObject("errorMessageErrName", "沒有這個暱稱的資料");
-				return view;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			view.addObject("errorMessageErrName", "An error occurred: " + e.getMessage());
-			return viewErr;
-		}
+	    ModelAndView view = new ModelAndView("elearning/companion/companionFrontCenter.jsp");
+	    ModelAndView viewErr = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
+
+	    try {
+	        StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+
+	        // 檢查 studentData 是否為 null
+	        if (studentData == null) {
+	            viewErr.addObject("errorMessageNoStudentData", "請重新登入");
+	            return viewErr;
+	        }
+
+	        String studentNickname = studentData.getStudentNickname();
+	        Optional<CompanionBean> optionalCompanion = companionService.findByStudentNickname(studentNickname);
+
+	        if (!optionalCompanion.isPresent()) {
+	            // 若 companion 為 null，則創建一個新的 CompanionBean
+	            CompanionBean newCompanionBean = new CompanionBean();
+	            newCompanionBean.setStudentBeanID(studentData);
+	            newCompanionBean.setCompanionFirstLanguage("");
+	            newCompanionBean.setCompanionSpeakingLanguage("");
+	            newCompanionBean.setCompanionLearningInterest("");
+	            newCompanionBean.setCompanionLearningFrequency("");
+	            newCompanionBean.setCompanionAboutMe("");
+	            newCompanionBean.setCompanionPhoto("companion/CompanionImg/Default.jpg");
+	            companionService.saveOrUpdate(newCompanionBean);
+
+	            // 再次查詢新創建的 companion
+	            optionalCompanion = companionService.findByStudentNickname(studentNickname);
+	        }
+
+	        CompanionBean companion = optionalCompanion.orElse(null);
+	        view.addObject("companion", companion);
+	        return view;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        viewErr.addObject("errorMessageErrName", "An error occurred: " + e.getMessage());
+	        viewErr.addObject("errorMessageNoStudentData", "請重新登入!");
+	        return viewErr;
+	    }
 	}
+
 	
 	
 	// 查詢多筆符合條件的學伴後 再申請配對
@@ -375,6 +394,7 @@ public class CompanionController {
 			@RequestParam("companion_learning_frequency") String companionLearningFrequency,
 			HttpSession session) {
 		ModelAndView view = new ModelAndView("elearning/companion/CompanionByMatchRequirement.jsp");
+		ModelAndView viewErr = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
 		try {
 			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
 			String studentNickname = studentData.getStudentNickname();
@@ -392,19 +412,17 @@ public class CompanionController {
 			// 隨機排序
 			Collections.shuffle(companions);
 
-			// 只取前5筆資料，Math.min(companions.size(), 5)，裡面數字決定要取幾筆出來
-			List<CompanionBean> randomCompanions = new ArrayList<>(companions.subList(0, Math.min(companions.size(), 5)));
+			// 只取前8筆資料，Math.min(companions.size(), 8)，裡面數字決定要取幾筆出來
+			List<CompanionBean> randomCompanions = new ArrayList<>(companions.subList(0, Math.min(companions.size(), 8)));
 			view.addObject("companions", randomCompanions);
 			
-			
+			return view;
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());
+			viewErr.addObject("errorMessageNoStudentData", "請重新登入!!");
+			return viewErr;
 		}
-		
-//		session.setAttribute("studentNickname", studentNickname);			
-
-		return view;
 	}
 	
 	// 查詢全部

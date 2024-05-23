@@ -11,17 +11,25 @@ public interface IForumThreadService {
 	ForumThreadDto insertForumThread(ForumThreadDto threadDto);
 
 	// update
-	ForumThreadDto updateForumThreadById(Integer threadId,ForumThreadDto threadDto);
+	ForumThreadDto updateForumThreadById(Integer threadId, ForumThreadDto threadDto);
+
 	StatusEnum updateForumThreadStatus(Integer threadId, StatusEnum newStatus);
 
 	// delete
 	void deleteForumThreadById(Integer threadId);
+
 	void deleteAllForumThreads(List<Integer> threadIds);
 
 	// read
 	List<ForumThreadDto> findThreadsByKeyword(String keyword);
+
 	ForumThreadDto findThreadByThreadId(Integer threadId);
+
 	List<ForumThreadDto> findAllThreads();
+
 	List<ForumThreadDto> findThreadsByTeacherId(Integer teacherId);
+
 	List<ForumThreadDto> findThreadsByStudentId(Integer studentId);
+
+	List<ForumThreadDto> findThreadsByCategory(Integer categoryId);
 }

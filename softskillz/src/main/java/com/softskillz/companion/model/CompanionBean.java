@@ -62,7 +62,7 @@ public class CompanionBean {
 	private Set<CompanionMatchBean> companionMatchB;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "student_id",updatable = false)
+	@JoinColumn(name = "student_id")
 	private StudentBean studentBeanID;
 	
 	public CompanionBean() {

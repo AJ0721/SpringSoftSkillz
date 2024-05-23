@@ -313,7 +313,7 @@
 												<option value="吉布提">吉布提</option>
 											</select><br>
 
-											母語：<span>${student.firstLanguage}</span>&nbsp;&nbsp;
+											母語：<span id="firstLanguageSpan">${student.firstLanguage}</span>&nbsp;&nbsp;
 											<select id="firstLanguage" name="firstLanguage" required>
 												<option value="中文" selected>中文</option>
 												<option value="達利語">達利語</option>
@@ -341,7 +341,7 @@
 											<input type="text" name="studentMobile" value="${student.studentMobile}"
 												required><br>
 
-											教育程度：<span>${student.studentEducation}</span>&nbsp;&nbsp;
+											教育程度：<span id="studentEducationSpan">${student.studentEducation}</span>&nbsp;&nbsp;
 											<select id="studentEducation" name="studentEducation" required>
 												<option value="幼稚園">幼稚園</option>
 												<option value="小學">小學</option>
@@ -353,16 +353,12 @@
 												<option value="博士后">博士后</option>
 											</select><br>
 
-											學習頻率：<span>${student.learningFrequency}</span>&nbsp;&nbsp;
+											學習頻率：<span id="learningFrequencySpan">${student.learningFrequency}</span>&nbsp;&nbsp;
 											<select id="learningFrequency" name="learningFrequency" required>
-												<option value="一週小於14小時" ${student.learningFrequency=='一週小於14小時'
-													? 'selected' : '' }>一週小於14小時</option>
-												<option value="一週約14到28小時" ${student.learningFrequency=='一週約14到28小時'
-													? 'selected' : '' }>一週約14到28小時</option>
-												<option value="一週約28到42小時" ${student.learningFrequency=='一週約28到42小時'
-													? 'selected' : '' }>一週約28到42小時</option>
-												<option value="一週大於42小時" ${student.learningFrequency=='一週大於42小時'
-													? 'selected' : '' }>一週大於42小時</option>
+												<option value="一週小於14小時" >一週小於14小時</option>
+												<option value="一週約14到28小時" >一週約14到28小時</option>
+												<option value="一週約28到42小時" >一週約28到42小時</option>
+												<option value="一週大於42小時" >一週大於42小時</option>
 											</select><br> <br>
 
 											<input type="reset" class="btn btn-primary" value="清除"> <input type="submit"
@@ -399,11 +395,19 @@
 								(birthDate.getMonth() + 1).toString().padStart(2, '0') + '-' +
 								birthDate.getDate().toString().padStart(2, '0');
 							birthSpan.textContent = formattedDate;
+							var studentCountrySpan = document.querySelector("#studentCountrySpan").textContent;
+							document.querySelector("#studentCountry").value = studentCountrySpan;
+
+							var firstLanguageSpan = document.querySelector("#firstLanguageSpan").textContent;
+							document.querySelector("#firstLanguage").value = firstLanguageSpan;
+
+							var studentEducationSpan = document.querySelector("#studentEducationSpan").textContent;
+							document.querySelector("#studentEducation").value = studentEducationSpan;
+
+							var learningFrequencySpan = document.querySelector("#learningFrequencySpan").textContent;
+							document.querySelector("#learningFrequency").value = learningFrequencySpan;
 						});
 
-						var studentCountrySpan = document.querySelector("#studentCountrySpan").textContent;
-
-						document.querySelector("#studentCountry").value = studentCountrySpan;
 
 					</script>
 		</body>

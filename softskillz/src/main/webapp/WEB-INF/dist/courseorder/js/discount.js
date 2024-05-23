@@ -124,11 +124,11 @@ addBtn.addEventListener("click", () => {
     row.innerHTML = "";
 
     row.innerHTML =
-        "<td class='text-center'>" + "<input type='text' class='disID' />" + "</td>" +
-        "<td class='text-center'>" + "<input type='text' class='disInfo'/>" + "</td > " +
-        "<td class='text-center'>" + "<input type='text' class='disPercent' '/>" + "</td>" +
-        "<td class='text-center'>" + "<input type='date' class='startDate' '/>" + "</td>" +
-        "<td class='text-center'>" + "<input type='date' class='endDate' '/>" + "</td>";
+        "<td class='text-center'>" + "<input type='text' class='disID w-75' />" + "</td>" +
+        "<td class='text-center'>" + "<input type='text' class='disInfo w-75'/>" + "</td > " +
+        "<td class='text-center'>" + "<input type='text' class='disPercent w-75' '/>" + "</td>" +
+        "<td class='text-center'>" + "<input type='datetime-local' class='startDate ' '/>" + "</td>" +
+        "<td class='text-center'>" + "<input type='datetime-local' class='endDate ' '/>" + "</td>";
     discount.appendChild(row);
 
 });
@@ -190,11 +190,11 @@ function updateDialog(e) {
             let startDate = new Date(data.startDate)
             let endDate = new Date(data.endDate)
             row.innerHTML =
-                "<td class='text-center '>" + data.disID + "<input type='hidden' class='disID' value='" + data.disID + "'/>" + "</td>" +
-                "<td class='text-center'>" + "<input type='text' class='disInfo' value='" + data.disInfo + "'/>" + "</td > " +
-                "<td class='text-center'>" + "<input type='text' class='disPercent' value='" + data.disPercent + "'/>" + "</td>" +
-                "<td class='text-center'>" + "<input type='date' class='startDate' value='" + dateFormat(startDate) + "'/>" + "</td>" +
-                "<td class='text-center'>" + "<input type='date' class='endDate' value='" + dateFormat(endDate) + "'/>" + "</td>";
+                "<td class='text-center '>" + data.disID + "<input type='hidden' class='disID w-75' value='" + data.disID + "'/>" + "</td>" +
+                "<td class='text-center'>" + "<input type='text' class='disInfo w-75' value='" + data.disInfo + "'/>" + "</td > " +
+                "<td class='text-center'>" + "<input type='text' class='disPercent w-75' value='" + data.disPercent + "'/>" + "</td>" +
+                "<td class='text-center'>" + "<input type='datetime-local' class='startDate w-75' value='" + dateFormat(startDate) + "'/>" + "</td>" +
+                "<td class='text-center'>" + "<input type='datetime-local' class='endDate w-75' value='" + dateFormat(endDate) + "'/>" + "</td>";
             discount.appendChild(row);
             action = "update";
         })
@@ -337,6 +337,7 @@ function getData() {
         "startDate": startDate,
         "endDate": endDate
     }
+    console.log(data);
     return data;
 }
 

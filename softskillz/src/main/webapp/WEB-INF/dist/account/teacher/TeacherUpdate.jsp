@@ -253,12 +253,12 @@
 										value="${teacher.teacherEmail}" required><br> 性別：<span>${teacher.teacherGender}</span>&nbsp;&nbsp;
 									<select name="teacherGender" required>
 										<option value="Male"
-											${student.studentGender=='Male' ? 'selected' : '' }>男性</option>
+											${teacher.teacherGender=='Male' ? 'selected' : '' }>男性</option>
 										<option value="Female"
-											${student.studentGender=='Female' ? 'selected' : '' }>女性</option>
+											${teacher.teacherGender=='Female' ? 'selected' : '' }>女性</option>
 										<option value="Unspecified"
-											${student.studentGender=='Unspecified' ? 'selected' : '' }>不顯示</option>
-									</select><br> 國家：<span>${teacher.teacherCountry}</span>&nbsp;&nbsp;
+											${teacher.teacherGender=='Unspecified' ? 'selected' : '' }>不顯示</option>
+									</select><br> 國家：<span id="teacherCountrySpan">${teacher.teacherCountry}</span>&nbsp;&nbsp;
 									<select id="teacherCountry" name="teacherCountry" required>
 										<option value="阿富汗">阿富汗</option>
 										<option value="阿爾巴尼亞">阿爾巴尼亞</option>
@@ -310,7 +310,7 @@
 									<input type="text" name="teacherMobile"
 										value="${teacher.teacherMobile}" required><br>
 
-									教育程度：<span>${teacher.teacherEducation}</span>&nbsp;&nbsp; <select
+									教育程度：<span id="teacherEducationSpan">${teacher.teacherEducation}</span>&nbsp;&nbsp; <select
 										id="teacherEducation" name="teacherEducation" required>
 										<option value="幼稚園">幼稚園</option>
 										<option value="小學">小學</option>
@@ -320,28 +320,28 @@
 										<option value="碩士">碩士</option>
 										<option value="博士">博士</option>
 										<option value="博士后">博士后</option>
-									</select><br> 教學經驗：<span>${teacher.experience}</span>&nbsp;&nbsp; <select
+									</select><br> 教學經驗：<span id="experienceSpan">${teacher.experience}</span>&nbsp;&nbsp; <select
 										id="experience" name="experience" required>
 										<option value="no_experience" selected>無經驗</option>
-										<option value="1-3y">1-3年</option>
-										<option value="3-5y">3-5年</option>
-										<option value="5-10y">5-10年</option>
-										<option value="more_than_10y">10年以上</option>
+										<option value="1-3年">1-3年</option>
+										<option value="3-5年">3-5年</option>
+										<option value="5-10年">5-10年</option>
+										<option value="10年以上">10年以上</option>
 									</select><br> 
 									
 									在職狀況：<span>${teacher.status}</span>&nbsp;&nbsp;
 									<select id="status" name="status" required>
-										<option value="full_time">全職</option>
-										<option value="part_time">兼職</option>
+										<option value="full_time" ${teacher.status=='full_time' ? 'selected' : '' }>全職</option>
+										<option value="part_time" ${teacher.status=='part_time' ? 'selected' : '' }>兼職</option>
 									</select><br> 
 									
-									一週可授課時數：<span>${teacher.teachTime}</span>&nbsp;&nbsp;
+									一週可授課時數：<span id="teachTimeSpan">${teacher.teachTime}</span>&nbsp;&nbsp;
 									<select id="teachTime" name="teachTime" required>
 										<option value="">不確定</option>
-										<option value="less_10">少於10小時</option>
-										<option value="10_20">10到20小時</option>
-										<option value="20_30">20到30小時</option>
-										<option value="more_30">超過30小時</option>
+										<option value="少於10小時">少於10小時</option>
+										<option value="10到20小時">10到20小時</option>
+										<option value="20到30小時">20到30小時</option>
+										<option value="超過30小時">超過30小時</option>
 									</select><br> <br> <input type="reset" class="btn btn-primary"
 										value="清除"> <input type="submit"
 										class="btn btn-primary" value="提交">
@@ -372,7 +372,7 @@
 
 			<script>
 				document.addEventListener('DOMContentLoaded', function() {
-					var birthSpan = document.getElementById('studentBirth');
+					var birthSpan = document.getElementById('teacherBirth');
 					var birthDate = new Date(birthSpan.textContent);
 					var formattedDate = birthDate.getFullYear()
 							+ '-'
@@ -380,6 +380,21 @@
 									'0') + '-'
 							+ birthDate.getDate().toString().padStart(2, '0');
 					birthSpan.textContent = formattedDate;
+
+					var teacherCountrySpan = document.querySelector("#teacherCountrySpan").textContent;
+					document.querySelector("#teacherCountry").value = teacherCountrySpan;
+
+					var teacherEducationSpan = document.querySelector("#teacherEducationSpan").textContent;
+					document.querySelector("#teacherEducation").value = teacherEducationSpan;
+
+					var experienceSpan = document.querySelector("#experienceSpan").textContent;
+					document.querySelector("#experience").value = experienceSpan;
+					
+					var teachTimeSpan = document.querySelector("#teachTimeSpan").textContent;
+					document.querySelector("#teachTime").value = teachTimeSpan;
+				
+
+
 				});
 			</script>
 </body>

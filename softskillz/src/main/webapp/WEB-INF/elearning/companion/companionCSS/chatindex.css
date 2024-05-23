@@ -137,6 +137,15 @@ button.accent {
     margin-top: 10px;
 }
 
+#user-list-page{
+	    max-width: 700px;
+    background-color: #fff;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+    height: calc(100% - 60px);
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    max-height: 500px;
+}
 
 #chat-page {
     position: relative;

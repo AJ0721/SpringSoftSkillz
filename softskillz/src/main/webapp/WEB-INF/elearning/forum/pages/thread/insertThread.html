@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>SoftSkillz 登入前首頁</title>
+    <title>SoftSkillz 新增文章</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -36,19 +36,16 @@
         .sidebar,
         .my-threads {
             position: sticky;
-            top: 70px;
+            top: 100px;
             max-height: calc(100vh - 70px);
             overflow-y: auto;
-        }
-
-        .sidebar {
             background-color: #e6edf0;
             color: white;
+            height: calc(100vh - 70px);
         }
 
-        .my-threads {
-            background-color: #e6edf0;
-            color: white;
+        .sidebar-content {
+            margin-top: 0px;
         }
 
         .content {
@@ -70,9 +67,7 @@
     <script>
         $(document).ready(function () {
 
-            const { loggedInUser, userType } = retrieveUser();
-            console.log(loggedInUser);
-            validateUser(loggedInUser);
+
 
             //BUTTON PAGE TRANSFER
             $('#cancel').click(function (e) {
@@ -81,61 +76,7 @@
                 // window.location.href = '/forum/adminhome#nav-thread';
             });
 
-            $('#create').click(function (e) {
-                e.preventDefault();
-
-                var forumCategory = $('#category').val();
-                var threadTitle = $('#threadTitle').val().trim();
-                var threadContent = $('#threadContent').val().trim();
-
-                if (threadTitle === "" || threadContent === "") {
-                    Swal.fire('請填寫所有欄位', '', 'error');
-                    return;
-                }
-                // Store input values in an object
-                var threadData = {
-                    forumCategory: {
-                        forumCategoryId: forumCategory
-                    },
-                    threadTitle: threadTitle,
-                    threadContent: threadContent,
-                };
-
-                setUserToDto(threadData, loggedInUser, userType);
-                console.log(threadData);
-
-                fetch('/forum/thread/insert', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(threadData)
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to insert thread to server')
-                        }
-                        return response.json();
-                    })
-                    .then(
-                        newThread => {
-                            console.log('New thread:', newThread);
-                            Swal.fire({
-                                title: '新增成功',
-                                text: '',
-                                icon: 'success',
-                                timer: 2000,
-                                didClose: () => {
-                                    window.location.href = '/forum/home';
-                                }
-                            });
-
-                        }
-                    )
-                    .catch(
-                        error => console.error('Error inserting thread:', error)
-                    )
-            });
+           
 
             // // Function to check if any property value in the object is empty
             // function checkInputs(data) {
@@ -173,187 +114,203 @@
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary">
-                <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
-                    style="max-width: 250px; height: auto; margin-top: 16px" />
-            </h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-                <div class="nav-item dropdown">
-                    <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">課程</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-                        <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
-                        <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
-                        <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
-                        <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
-                        <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
-                        <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
-                    </div>
-                </div>
-                <a href="#" class="nav-item nav-link">論壇</a>
-                <a href="#" class="nav-item nav-link">學伴</a>
-                <a href="#" class="nav-item nav-link">商城</a>
-            </div>
-            <form action="/student/student-loginPage" method="get" class="d-none d-lg-block">
-                <button type="submit" class="btn btn-primary py-4 px-lg-5" style="
-              background-color: #3f6cba;
-              color: white;
-              border: 1px solid transparent;
-            " onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
-                    onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';">
-                    學生登入
-                </button>
-            </form>
-            <form action="/teacher/teacher-loginPage" method="get" class="d-none d-lg-block">
-                <button type="submit" class="btn btn-primary py-4 px-lg-5">
-                    老師登入
-                </button>
-            </form>
-        </div>
-    </nav>
-    <!-- Navbar End -->
+    <div id="navbarContainer" class=""></div>
+    <div id="navbarStudent" class="d-none"></div>
+    <div id="navbarTeacher" class="d-none"></div>
+
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Left Sidebar Container -->
             <div id="leftSidebarContainer" class="col-md-3"></div>
-
-            <!-- Main Content Area -->
             <div class="col-md-9">
                 <div class="row">
-                    <!-- INSERT HTML HERE -->
-                    <div id="main" class="col-md-10">
-                        <header class="mb-3">
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
-                        </header>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="page-heading">
-                                <h3>SoftSkillz - 新增文章</h3>
-                            </div>
 
-                            <!-- display username and logout button -->
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <span id="user-detail"></span>
-                                </div>
-
+                    <header class="mb-3">
+                        <a href="#" class="burger-btn d-block d-xl-none">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                    </header>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="page-heading">
+                            <h3>SoftSkillz - 新增文章</h3>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <span id="user-detail"></span>
                             </div>
                         </div>
-                        <div class="page-content">
-                            <section class="row">
-                                <main class="ml-sm-auto mt-0">
-                                    <!-- INSERT CARD HERE -->
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <form id="createThreadForm">
-                                                <div class="input-group-prepend">
-                                                    <label for="category">文章分類</label>
-                                                </div>
-                                                <select class="form-control" id="category">
-                                                    <option value="">請選擇文章分類</option>
-                                                    <!-- Populate categories here -->
-                                                </select>
-                                                <div class="form-group">
-                                                    <label for="threadTitle">標題</label>
-                                                    <input type="text" class="form-control" id="threadTitle"
-                                                        placeholder="請輸入文章標題">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="threadContent">內文</label>
-                                                    <textarea class="form-control" id="threadContent" rows="3"
-                                                        placeholder="請輸入文章內容"></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        id="cancel">取消</button>
-                                                    <button type="submit" class="btn btn-primary"
-                                                        id="create">新增</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                    </div>
+                    <div class="page-content">
+                        <section class="row col-12">
+                            <main class="ml-sm-auto mt-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form id="createThreadForm">
+                                            <div class="input-group-prepend">
+                                                <label for="category">文章分類</label>
+                                            </div>
+                                            <select class="form-control" id="category">
+                                                <option value="">請選擇文章分類</option>
+                                            </select>
+                                            <div class="form-group">
+                                                <label for="threadTitle">標題</label>
+                                                <input type="text" class="form-control" id="threadTitle"
+                                                    placeholder="請輸入文章標題">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="threadContent">內文</label>
+                                                <textarea class="form-control" id="threadContent" rows="3"
+                                                    placeholder="請輸入文章內容"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-secondary" id="cancel">取消</button>
+                                                <button type="submit" class="btn btn-primary" id="create">新增</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </main>
-                            </section>
-                        </div>
+                                </div>
+                            </main>
+                        </section>
                     </div>
 
 
-                    <!-- Right Sidebar -->
-                    <div id="rightSidebarContainer" class="col-md-2"></div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
-
-
-    <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/lib/wow/wow.min.js"></script>
     <script src="/lib/easing/easing.min.js"></script>
     <script src="/lib/waypoints/waypoints.min.js"></script>
     <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-    <!-- Template Javascript -->
     <script src="/js/main.js"></script>
     <script src="/js/forumGlobalFunction.js"></script>
     <script src="/js/sidebars.js"></script>
-    <!-- <script src="/js/forumThreadDetail.js"></script> -->
-
     <script>
+
+        let loggedInUser;
+        let userType;
+        let isSubmitting = false; // Add a flag to prevent multiple submissions
+
         document.addEventListener('DOMContentLoaded', function () {
-            const { loggedInUser = {} } = retrieveUser() || {};
+            validateUser().then(user => {
+                if (user) {
+                    loggedInUser = user.loggedInUser;
+                    userType = user.userType;
+                    initializePage(loggedInUser, userType);
+                }
+                fetchAndDisplayThreads();
+            });
 
-            // Fetch thread details
-            const threadId = window.location.pathname.split('/').pop();
-            fetch(`/forum/thread/find/id/${threadId}`)
-                .then(response => response.json())
-                .then(thread => {
-                    const { authorName, canEdit } = getUserDetails(thread, loggedInUser);
+            updateNavbar(userType);
 
-                    // Populate thread details
-                    document.getElementById('category').textContent = thread.forumCategory.forumCategoryName;
-                    document.getElementById('username').textContent = authorName;
-                    document.getElementById('threadTitle').textContent = thread.threadTitle;
-                    document.getElementById('threadContent').textContent = thread.threadContent;
+            $('#create').click(function (e) {
+                e.preventDefault();
 
-                    // Add edit/delete buttons if the user can edit
-                    if (canEdit) {
-                        const editButtons = `
+                if (isSubmitting) return; // Prevent multiple submissions
+
+                isSubmitting = true; // Set the flag to true
+
+                var forumCategory = $('#category').val();
+                var threadTitle = $('#threadTitle').val().trim();
+                var threadContent = $('#threadContent').val().trim();
+
+                if (threadTitle === "" || threadContent === "") {
+                    Swal.fire('請填寫所有欄位', '', 'error');
+                    isSubmitting = false; // Reset the flag
+                    return;
+                }
+
+                // Store input values in an object
+                var threadData = {
+                    forumCategory: {
+                        forumCategoryId: forumCategory
+                    },
+                    threadTitle: threadTitle,
+                    threadContent: threadContent,
+                };
+
+                setUserToDto(threadData, loggedInUser, userType);
+                console.log(threadData);
+
+                fetch('/forum/thread/insert', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(threadData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to insert thread to server');
+                        }
+                        return response.json();
+                    })
+                    .then(newThread => {
+                        console.log('New thread:', newThread);
+                        Swal.fire({
+                            title: '新增成功',
+                            text: '',
+                            icon: 'success',
+                            timer: 2000,
+                            didClose: () => {
+                                const { userId } = getLoggedInUserDetails(loggedInUser, userType);
+                                window.location.href = `/forum/f/user/${userType}/${userId}`;
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error inserting thread:', error);
+                    })
+                    .finally(() => {
+                        isSubmitting = false; // Reset the flag after the request completes
+                    });
+            });
+
+            validateUser().then(user => {
+                if (user) {
+                    loggedInUser = user.loggedInUser;
+                    userType = user.userType;
+                    initializePage(loggedInUser, userType);
+                }
+                fetchAndDisplayThreads();
+            });
+
+            updateNavbar(userType);
+
+
+        });
+        const threadId = window.location.pathname.split('/').pop();
+        fetch(`/forum/thread/find/id/${threadId}`)
+            .then(response => response.json())
+            .then(thread => {
+                const { authorName, canEdit } = getUserDetails(thread, loggedInUser);
+
+                document.getElementById('category').textContent = thread.forumCategory.forumCategoryName;
+                document.getElementById('username').textContent = authorName;
+                document.getElementById('threadTitle').textContent = thread.threadTitle;
+                document.getElementById('threadContent').textContent = thread.threadContent;
+
+                if (canEdit) {
+                    const editButtons = `
                             <button type="button" class="btn btn-warning">Edit</button>
                             <button type="button" class="btn btn-danger">Delete</button>
                         `;
-                        document.getElementById('can-edit').innerHTML = editButtons;
-                    }
+                    document.getElementById('can-edit').innerHTML = editButtons;
+                }
 
-                    // Populate comments section
-                    const commentsSection = document.getElementById('commentsSection');
-                    commentsSection.innerHTML = '';
-                    thread.posts.forEach(post => {
-                        const postAuthorName = getUserDetails(post, loggedInUser).authorName;
-                        const postTime = new Date(post.postCreatedTime).toLocaleString();
+                const commentsSection = document.getElementById('commentsSection');
+                commentsSection.innerHTML = '';
+                thread.posts.forEach(post => {
+                    const postAuthorName = getUserDetails(post, loggedInUser).authorName;
+                    const postTime = new Date(post.postCreatedTime).toLocaleString();
 
-                        const postCard = `
+                    const postCard = `
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <h6 class="card-subtitle mb-2 text-muted">作者: ${postAuthorName} | 時間: ${postTime}</h6>
@@ -361,13 +318,11 @@
                                 </div>
                             </div>
                         `;
-                        commentsSection.insertAdjacentHTML('beforeend', postCard);
-                    });
-                })
-                .catch(error => console.error('Error fetching thread details:', error));
-        });
+                    commentsSection.insertAdjacentHTML('beforeend', postCard);
+                });
+            })
+            .catch(error => console.error('Error fetching thread details:', error));
     </script>
-
 </body>
 
 </html>

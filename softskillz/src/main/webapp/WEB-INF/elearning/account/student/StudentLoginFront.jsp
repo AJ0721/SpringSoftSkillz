@@ -31,7 +31,7 @@ body {
 	border-radius: 8px;
 	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 	width: 300px;
-	height: 400px;
+	height: 420px;
 	text-align: center;
 	/* Center the contents */
 }
@@ -101,15 +101,27 @@ button:hover {
 				type="password" id="studentPassword" name="studentPassword"
 				placeholder="Password" required>
 			<button type="submit">Login</button>
+			<button type="submit" id="oneclick" style="background-color: #666d7e;">一鍵輸入</button>
+
 		</form>
 		<div class="links">
-			<a href="/student/student-createPage">註冊</a> <span>|</span> <a
-				href="forgot_password.html">忘記密碼</a>
+			<a href="/student/student-createPage">註冊</a> <span>|</span> &nbsp; <a
+				href="/student/student-forgotPasssword">忘記密碼</a>
 		</div>
 		<br />
 		<div class="message">${loginMsg}</div>
 		<div class="message">${createMsg}</div>
+<br />
 	</div>
+	<script>
+		let oneclick = document.querySelector("#oneclick");
+		oneclick.addEventListener("click",(e)=>{
+				e.preventDefault();
+		 document.querySelector("#usernameOrEmail").value="puppy0102"
+		 document.querySelector("#studentPassword").value="puppy0102"
+	
+		})
+	</script>
 </body>
 
 </html>

@@ -40,7 +40,7 @@ function getDate1() {
 }
 
 function getOrderByDate() {
-  url = "/courseorder/" + date1 + "/" + date2 + "?pid=" + pageNo + "&size=" + size + "&status=" + status;
+  url = "/courseorder/date/" + date1 + "/" + date2 + "?pid=" + pageNo + "&size=" + size + "&status=" + status;
   fetch(url).then(response => {
     if (response.ok) {
       return response.json();

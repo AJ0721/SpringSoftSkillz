@@ -26,7 +26,7 @@ let total = 0;
                   <p class="mb-0">${data[key].courseName}</p>
                 </div>
                 <div class="col-md-4 col-lg-3">
-                  <p class="mb-0">${data[key].qty} x NT$${data[key].disPrice} = NT$${data[key].disPrice * data[key].qty}</p>`
+                  <p class="mb-0 subtotal">${data[key].qty} x NT$${data[key].disPrice} = NT$${data[key].disPrice * data[key].qty}</p>`
             details.appendChild(div);
             total += data[key].disPrice * data[key].qty;
           }
@@ -98,8 +98,17 @@ let total = 0;
       console.log(e.target.value);
       let discount = parseFloat(e.target.value);
       let totalText = document.querySelector("#total");
-      console.log(total);
-      let newTotal = Math.ceil((total * discount) / 100)
-      console.log(newTotal);
-      totalText.innerHTML = "NT$ " + newTotal;
+      let sub = document.querySelectorAll(".subtotal")
+      let total = 0;
+      sub.forEach((ele,index)=>{
+          let temp = ele.innerHTML.split("=")[0].split("x");
+          qty = temp[0].trim();
+          price =Math.round((temp[1].split("$")[1].trim()*discount)/100);
+          console.log(price);
+          let subtotal = (qty*price);
+          // console.log(subtotal);
+          total += subtotal;
+          // console.log("123::"+total);
+      })
+      totalText.innerHTML = "NT$ " + total;
     })

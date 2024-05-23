@@ -26,11 +26,11 @@ public class DiscountBean {
 	@Column(name = "discount_percent")
 	private Double disPercent;
 
-	@JsonFormat(timezone = "GMT+8")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd'T'HH:mm")
 	@Column(name = "start_date")
 	private Date startDate;
 
-	@JsonFormat(timezone = "GMT+8")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd'T'HH:mm")
 	@Column(name = "end_date")
 	private Date endDate;
 

@@ -55,6 +55,8 @@ pageEncoding="UTF-8"%>
       href="/assets/extensions/sweetalert2/sweetalert2.min.css"
     />
 
+      <!--聊天室吧大概-->
+  <link href="/elearning/coursechatroom/chatroom.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -86,19 +88,20 @@ pageEncoding="UTF-8"%>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <a href="/courseFront/selectAllPage" class="nav-item nav-link active">首頁</a>
+              <a href="/courseFront/selectAllPage" class="nav-item nav-link active" style="font-size: 26px">首頁</a>
               <c:if test="${loggedInUser == 'student'}">
                 <div class="nav-item dropdown">
-                  <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">個人中心</a>
+                  <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">個人中心</a>
                   <div class="dropdown-menu fade-down m-0">
+                    <a href="/student/student-info" class="dropdown-item">個人中心</a>
                     <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
                     <a href="/studentReservationFront/reservation" class="dropdown-item">學生預約</a>
                   </div>
               </div>
-                  <a href="#" class="nav-item nav-link">學伴</a>
+                  <a href="#" class="nav-item nav-link" style="font-size: 26px">學伴</a>
               </c:if>
               <div class="nav-item dropdown">
-                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">課程</a>
+                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">課程</a>
                   <div class="dropdown-menu fade-down m-0">
                       <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
                       <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
@@ -109,27 +112,65 @@ pageEncoding="UTF-8"%>
                       <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
                   </div>
               </div>
-              <a href="#" class="nav-item nav-link">論壇</a>
-              <a href="#" class="nav-item nav-link">商城</a>
+              <a href="/forum/home" class="nav-item nav-link" style="font-size: 26px">論壇</a>
+              <a href="#" class="nav-item nav-link" style="font-size: 26px">商城</a>
+              <c:if test="${loggedInUser == 'student'}">
+              <a
+              href="/courseorder/order.do"
+              class="nav-item nav-link"
+              style="font-size: 26px"
+              >訂單</a
+              >
+              <div class="nav-item dropdown">
+                <a
+                  href="#"
+                  class="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  ><i class="bi bi-chat-square-dots" style="font-size: 27px"></i
+                ></a>
+                <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
+              </div>
+              <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a
+                  href="/coursecart/cart.do"
+                  class="nav-item nav-link"
+                  style="font-size: 27px"
+                  ><i class="bi bi-cart4"></i
+                ></a>
+              </div>
+            </c:if>
           </div>
           <div class="navbar-nav p-4 p-lg-0">
               <c:choose>
                   <c:when test="${loggedInUser == 'guest'}">
                       <div class="d-flex align-items-center">
-                          <form id="student-login-form" action="/student/student-loginPage" method="get">
-                              <button type="submit" class="btn btn btn-primary py-4 px-lg-5" style="background-color: #3f6cba; color: white; border: 1px solid transparent;">
+                          <form id="student-login-form" action="/student/student-loginPage" method="get" class="d-none d-lg-block">
+                              <button type="submit" class="btn btn btn-primary py-4 px-lg-5" style="background-color: #3f6cba; color: white; font-size: 26px; border: 1px solid transparent;"
+                              onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
+                              onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';">
                                   學生登入
                               </button>
                           </form>
-                          <form id="teacher-login-form" action="/teacher/teacher-loginPage" method="get">
-                              <button type="submit" class="btn btn-primary py-4 px-lg-5">老師登入</button>
+                          <form id="teacher-login-form" action="/teacher/teacher-loginPage" method="get" class="d-none d-lg-block">
+                              <button type="submit" class="btn btn-primary py-4 px-lg-5" style="font-size: 26px">老師登入</button>
                           </form>
                       </div>
                   </c:when>
                   <c:otherwise>
-                      <form id="student-logout-form" action="/student/student-logout" method="post">
-                          <button type="submit" class="btn btn-primary py-4 px-lg-5">學生登出</button>
-                      </form>
+                    <form
+                    action="/student/student-logout"
+                    method="post"
+                    class="d-none d-lg-block"
+                    th:if="${loggedInUser == 'student'}"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-primary py-4 px-lg-5"
+                      style="font-size: 26px"
+                    >
+                      <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+                    </button>
+                  </form>
                   </c:otherwise>
               </c:choose>
           </div>
@@ -165,10 +206,10 @@ pageEncoding="UTF-8"%>
           <div class="row">
               <div class="col-lg-8">
                   <h2 class="display-8">教師資訊</h2>
-                  <img src="${teacherPhotoPath}" alt="Teacher Photo" class="rounded-circle mb-3" style="width: 150px; height: 150px;" />
-                  <p class="h5">姓名: <span>${teacher.teacherFirstName} ${teacher.teacherLastName}</span></p>
+                  <img src="${teacherPhotoPath}" alt="Teacher Photo" class="rounded-circle mb-3" style="width: 150px; height: 150px;" id="userPhoto"/>
+                  <p class="h5" id="userName">姓名: <span>${teacher.teacherFirstName} ${teacher.teacherLastName}</span></p>
                   <p class="h5">國家 : <span>${teacher.teacherCountry}</span></p>
-                  <p class="h5">教學經驗 : <span>${teacher.experience}</span>年</p>
+                  <p class="h5">教學經驗 : <span>${teacher.experience}</span></p>
                   <p class="h5">教育程度 : <span>${teacher.teacherEducation}</span></p>
                   <p class="h5">專長 : <span>${teacher.strength}</span></p>
               </div>
@@ -259,7 +300,7 @@ pageEncoding="UTF-8"%>
                 <a href="/coursecart/${course.courseID}/5" class="btn btn-primary btn-lg d-block mb-2 cartbtn" id="button5">5堂: NT$ <span id="price5"></span></a>
                 <a href="/coursecart/${course.courseID}/10" class="btn btn-primary btn-lg d-block mb-2 cartbtn" id="button10">10堂: NT$ <span id="price10"></span></a>
                 <a href="/coursecart/${course.courseID}/20" class="btn btn-primary btn-lg d-block  mb-2 cartbtn" id="button20">20堂: NT$ <span id="price20"></span></a>
-                <button type="button" id="chat" data-id="${course.teacherID}" class="btn btn-primary btn-lg d-block">聯繫教師</button>
+                <button type="button" id="chat" data-id="${teacher.teacherIdFormatted}" class="btn btn-primary btn-lg d-block">聯繫教師</button>
             </c:when>
         </c:choose>
     </div>
@@ -350,6 +391,8 @@ pageEncoding="UTF-8"%>
     <script src="/assets/static/js/pages/sweetalert2.js"></script>
     <script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
 
+      <!-- 聊天室吧大概 -->
+  <script src="/elearning/coursechatroom/studentchat.js"></script>
     <script>
       // 浮動按鈕
         $(document).ready(function() {
@@ -417,6 +460,17 @@ pageEncoding="UTF-8"%>
         	      console.error('Error:', error);
         	    });
         }
+
+        let chatBtn = document.querySelector("#chat");
+			chatBtn.addEventListener("click",  ()=> {
+				let userPhoto = document.querySelector("#userPhoto").src;
+				console.log(userPhoto);
+				let userID = chatBtn.dataset.id;
+        let userNameText = document.querySelector("#userName").textContent.split(" ");
+        let userName = userNameText[2]+userNameText[1];
+        console.log(userName);
+				chatroom(userID,userName, userPhoto);
+			})    
     </script>
   </body>
 </html>

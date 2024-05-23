@@ -26,9 +26,9 @@ body, html {
 }
 
 .image-container {
-	width: 800px;
+	width: 850px;
 	/* 图片容器占左侧40%的宽度 */
-	height: 500px;
+	height: 550px;
 	/* 图片容器的高度，占满视口高度 */
 	background-image: url(/dist/account/images/teacher_login01.jpg);
 	background-size: cover;
@@ -39,13 +39,13 @@ body, html {
 .login-container {
 	width: 300px;
 	/* 固定宽度 */
-	height: 400px;
+	height: 450px;
 	padding: 50px;
 	background-color: #ffffff;
 	border-radius: 8px;
 	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 	margin-left: 5%;
-	与图片容器有一定的间距
+	
 }
 
 .logo {
@@ -108,15 +108,26 @@ button:hover {
 				type="password" id="teacherPassword" name="teacherPassword"
 				placeholder="Password" required>
 			<button type="submit">Login</button>
+			<button type="submit" id="oneclick" style="background-color: #666d7e;">一鍵輸入</button>
+
 		</form>
 		<div class="links">
-			<a href="/teacher/teacher-createPage">註冊</a> <span>|</span> <a
-				href="forgot_password.html">忘記密碼</a>
+			<a href="/teacher/teacher-createPage">註冊</a> <span>|</span> &nbsp; <a
+				href="/teacher/teacher-forgotPassword">忘記密碼</a>
 		</div>
 		<br />
 		<div class="message">${loginMsg}</div>
 		<div class="message">${createMsg}</div>
 	</div>
+	<script>
+		let oneclick = document.querySelector("#oneclick");
+		oneclick.addEventListener("click",(e)=>{
+				e.preventDefault();
+		 document.querySelector("#usernameOrEmail").value="minrensogood"
+		 document.querySelector("#teacherPassword").value="minrensogood"
+	
+		})
+	</script>
 </body>
 
 </html>

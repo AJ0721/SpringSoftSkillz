@@ -35,20 +35,27 @@
         .sidebar,
         .my-threads {
             position: sticky;
-            top: 70px;
+            top: 100px;
             max-height: calc(100vh - 70px);
             overflow-y: auto;
-            padding-top: 20px;
-        }
-
-        .sidebar {
             background-color: #e6edf0;
             color: white;
+            height: calc(100vh - 70px);
         }
 
-        .my-threads {
-            background-color: #e6edf0;
-            color: white;
+        body {
+            font-size: 1.25rem;
+
+            .content-container {
+                padding-top: 80px;
+                /* Adjust based on your navbar height */
+            }
+        }
+
+
+        .sidebar-content {
+            margin-top: 0px;
+            /* Adjust based on your navbar height */
         }
 
         .content {
@@ -62,6 +69,14 @@
         .card-body {
             padding: 15px;
         }
+
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1;
+        }
     </style>
     <script src="/js/forumGlobalFunction.js"></script>
 
@@ -69,58 +84,16 @@
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary">
-                <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
-                    style="max-width: 250px; height: auto; margin-top: 16px" />
-            </h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-                <div class="nav-item dropdown">
-                    <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">課程</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-                        <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
-                        <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
-                        <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
-                        <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
-                        <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
-                        <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
-                    </div>
-                </div>
-                <a href="#" class="nav-item nav-link">論壇</a>
-                <a href="#" class="nav-item nav-link">學伴</a>
-                <a href="#" class="nav-item nav-link">商城</a>
-            </div>
-            <form action="/student/student-loginPage" method="get" class="d-none d-lg-block">
-                <button type="submit" class="btn btn-primary py-4 px-lg-5" style="
-              background-color: #3f6cba;
-              color: white;
-              border: 1px solid transparent;
-            " onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
-                    onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';">
-                    學生登入
-                </button>
-            </form>
-            <form action="/teacher/teacher-loginPage" method="get" class="d-none d-lg-block">
-                <button type="submit" class="btn btn-primary py-4 px-lg-5">
-                    老師登入
-                </button>
-            </form>
-        </div>
-    </nav>
+    <div id="navbarContainer" class=""></div>
+    <div id="navbarStudent" class="d-none"></div>
+    <div id="navbarTeacher" class="d-none"></div>
+
+
     <!-- Navbar End -->
-    <div class="container-fluid">
+    <div class="container-fluid content-container">
         <div class="row">
             <!-- Left Sidebar Container -->
-            <div id="leftSidebarContainer" class="col-md-3"></div>
+            <div id="leftSidebarContainer" class="sidebar col-md-3"></div>
 
             <!-- Main Content Area -->
             <div class="col-md-9">
@@ -153,14 +126,15 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <!-- title -->
+                                                        <div class="form-group" id="can-edit">
+                                                            <!-- dynamic edit/delete button -->
+
+                                                        </div>
                                                         <h3 class="p-2   " style="user-select: text;" id="threadTitle"
                                                             readonly>
                                                         </h3>
                                                     </div>
-                                                    <div class="form-group" id="can-edit">
-                                                        <!-- dynamic edit/delete button -->
 
-                                                    </div>
                                                     <div class="form-group">
                                                         <!-- content -->
 
@@ -202,7 +176,7 @@
 
                     <!-- Right Sidebar -->
 
-                    <div id="rightSidebarContainer" class="col-md-2">
+                    <div id="rightSidebarContainer" class="sidebar col-md-2">
                     </div>
                 </div>
             </div>
@@ -226,16 +200,24 @@
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
     <script src="/js/sidebars.js"></script>
+
     <script src="/js/forumThreadDetail.js"></script>
     <script src="/js/forumPostDetail.js"></script>
 
     <script>
 
-        validateUser();
+        document.addEventListener('DOMContentLoaded', function () {
+            validateUser().then(user => {
+                if (user) {
+                    initializePage(user.loggedInUser, user.userType);
+                }
+                fetchAndDisplayThreads();
+            });
 
-        const { loggedInUser, userType = {} } = retrieveUser() || {};    // validateUser(loggedInUser);
-        console.log(loggedInUser);
-        console.log(userType);
+            updateNavbar(userType);
+
+
+        });
 
 
     </script>

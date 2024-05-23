@@ -27,6 +27,10 @@ public class ForumThreadController {
 	// find threads by username
 
 	// find threads by category
+	@GetMapping("/category/{categoryId}")
+	public List<ForumThreadDto> findThreadsByCategory(@PathVariable Integer categoryId) {
+		return forumThreadService.findThreadsByCategory(categoryId);
+	}
 
 	@PostMapping("/insert")
 	public ResponseEntity<ForumThreadDto> insertThread(@RequestBody ForumThreadDto threadDto) {

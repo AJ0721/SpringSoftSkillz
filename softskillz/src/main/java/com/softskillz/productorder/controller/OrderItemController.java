@@ -1,6 +1,5 @@
 package com.softskillz.productorder.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class OrderItemController {
         return new ResponseEntity<>(orderItems, HttpStatus.OK);
     }
 
-    // 根據 ID 獲取單個訂單項目
+    // 根據ID獲取單個訂單項目
     @GetMapping("/{id}")
     public ResponseEntity<OrderItem> getOrderItemById(@PathVariable Integer id) {
         OrderItem orderItem = orderItemService.findOrderItemById(id);

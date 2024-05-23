@@ -74,7 +74,7 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
     >
       <a
-        href="/courseFront/selectAllPage"
+        href="/softskillz/fhomepage"
         class="navbar-brand d-flex align-items-center px-4 px-lg-5"
       >
         <h2 class="m-0 text-primary">
@@ -96,7 +96,10 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a href="/courseFront/selectAllPage" class="nav-item nav-link active"
+          <a
+            href="/courseFront/selectAllPage"
+            class="nav-item nav-link active"
+            style="font-size: 26px"
             >首頁</a
           >
           <div class="nav-item dropdown">
@@ -104,9 +107,11 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
               href="/student/personal-center"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
+              style="font-size: 26px"
               >個人中心</a
             >
             <div class="dropdown-menu fade-down m-0">
+              <a href="/student/student-info" class="dropdown-item">個人中心</a>
               <a href="/studentScheduleFront/schedule" class="dropdown-item"
                 >學生行事曆</a
               >
@@ -117,12 +122,13 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
               >
             </div>
           </div>
-          <a href="#" class="nav-item nav-link">學伴</a>
+          <a href="#" class="nav-item nav-link" style="font-size: 26px">學伴</a>
           <div class="nav-item dropdown">
             <a
               href="/courseFront/selectAllPage"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
+              style="font-size: 26px"
               >課程</a
             >
             <div class="dropdown-menu fade-down m-0">
@@ -161,8 +167,36 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
               >
             </div>
           </div>
-          <a href="#" class="nav-item nav-link">論壇</a>
-          <a href="#" class="nav-item nav-link">商城</a>
+          <a
+            href="/forum/home"
+            class="nav-item nav-link"
+            style="font-size: 26px"
+            >論壇</a
+          >
+          <a href="#" class="nav-item nav-link" style="font-size: 26px">商城</a>
+          <a
+            href="/courseorder/order.do"
+            class="nav-item nav-link"
+            style="font-size: 26px"
+            >訂單</a
+          >
+          <div class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              ><i class="bi bi-chat-square-dots" style="font-size: 27px"></i
+            ></a>
+            <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
+          </div>
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a
+              href="/coursecart/cart.do"
+              class="nav-item nav-link"
+              style="font-size: 27px"
+              ><i class="bi bi-cart4"></i
+            ></a>
+          </div>
         </div>
         <div class="navbar-nav p-4 p-lg-0">
           <c:choose>
@@ -172,6 +206,7 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
                   id="student-login-form"
                   action="/student/student-loginPage"
                   method="get"
+                  class="d-none d-lg-block"
                 >
                   <button
                     type="submit"
@@ -179,8 +214,11 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
                     style="
                       background-color: #3f6cba;
                       color: white;
+                      font-size: 26px;
                       border: 1px solid transparent;
                     "
+                    onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
+                    onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';"
                   >
                     學生登入
                   </button>
@@ -189,8 +227,13 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
                   id="teacher-login-form"
                   action="/teacher/teacher-loginPage"
                   method="get"
+                  class="d-none d-lg-block"
                 >
-                  <button type="submit" class="btn btn-primary py-4 px-lg-5">
+                  <button
+                    type="submit"
+                    class="btn btn-primary py-4 px-lg-5"
+                    style="font-size: 26px"
+                  >
                     老師登入
                   </button>
                 </form>
@@ -198,12 +241,17 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
             </c:when>
             <c:otherwise>
               <form
-                id="student-logout-form"
                 action="/student/student-logout"
                 method="post"
+                class="d-none d-lg-block"
+                th:if="${loggedInUser == 'student'}"
               >
-                <button type="submit" class="btn btn-primary py-4 px-lg-5">
-                  學生登出
+                <button
+                  type="submit"
+                  class="btn btn-primary py-4 px-lg-5"
+                  style="font-size: 26px"
+                >
+                  <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
                 </button>
               </form>
             </c:otherwise>

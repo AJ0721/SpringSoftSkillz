@@ -65,17 +65,39 @@
       .text-secondary {
         color: #6c757d !important;
       }
-      .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-      }
-      .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #004085;
-      }
+
       .input-group {
         width: auto;
       }
+
+      /* 分頁按鈕樣式 */
+      .pagination .page-item .page-link {
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        transition: all 0.3s;
+      }
+
+      .pagination .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+
+      .pagination .page-item .page-link:hover {
+        color: #0056b3;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+      }
+
+      .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+      }
+
     </style>
 
   </head>
@@ -96,183 +118,101 @@
     </div>
     <!-- Spinner End -->
     <!-- Navbar Start -->
-    <nav
-            class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
-    >
-      <a
-              href="/softskillz/fhomepage"
-              class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-      >
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+      <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <h2 class="m-0 text-primary">
-          <img
-                  src="/account/images/softskillz_logo.png"
-                  alt="SoftSkillz"
-                  class="me-3"
-                  style="max-width: 250px; height: auto; margin-top: 16px"
-          />
+          <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+               style="max-width: 250px; height: auto; margin-top: 16px;">
         </h2>
       </a>
-      <button
-              type="button"
-              class="navbar-toggler me-4"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"
-      >
+      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a
-                  href="/softskillz/fhomepage"
-                  class="nav-item nav-link active"
-                  style="font-size: 26px"
-          >首頁</a
-          >
+          <a href="/courseFront/selectAllPage" class="nav-item nav-link active" style="font-size: 26px">首頁</a>
           <div class="nav-item dropdown">
-            <a
-                    href="/student/student-info"
-                    th:if="${loggedInUser == 'student'}"
-                    class="nav-link dropdown-toggle"
-                    data-bs-toggle="dropdown"
-            >個人中心</a
-            >
+            <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+               style="font-size: 26px">個人中心</a>
             <div class="dropdown-menu fade-down m-0">
-              <a
-                      href="/student/student-info"
-                      th:if="${loggedInUser == 'student'}"
-                      class="dropdown-item"
-              >個人中心</a
-              >
-              <a
-                      href="/studentScheduleFront/schedule"
-                      th:if="${loggedInUser == 'student'}"
-                      class="dropdown-item"
-              >學生行事曆</a
-              >
-              <a
-                      href="/studentReservationFront/reservation"
-                      th:if="${loggedInUser == 'student'}"
-                      class="dropdown-item"
-              >學生預約</a
-              >
+              <a href="/student/student-info" class="dropdown-item">個人中心</a>
+              <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
+              <a href="/studentReservationFront/reservation" class="dropdown-item">學生預約</a>
             </div>
           </div>
+          <!--             首頁學伴選單 -->
           <div class="nav-item dropdown">
-            <a
-                    href="/courseFront/selectAllPage"
-                    class="nav-link dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    style="font-size: 26px"
-            >課程</a
-            >
+            <a href="/companionFrontIndex" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+               style="font-size: 26px">學伴</a>
             <div class="dropdown-menu fade-down m-0">
-              <a href="/courseFront/selectAllPage" class="dropdown-item"
-              >所有課程</a
-              >
-              <a
-                      href="/courseFront/selectAllPage?category=語言"
-                      class="dropdown-item"
-              >語言</a
-              >
-              <a
-                      href="/courseFront/selectAllPage?category=程式設計"
-                      class="dropdown-item"
-              >程式設計</a
-              >
-              <a
-                      href="/courseFront/selectAllPage?category=藝術"
-                      class="dropdown-item"
-              >藝術</a
-              >
-              <a
-                      href="/courseFront/selectAllPage?category=影片剪輯"
-                      class="dropdown-item"
-              >影片剪輯</a
-              >
-              <a
-                      href="/courseFront/selectAllPage?category=科學"
-                      class="dropdown-item"
-              >科學</a
-              >
-              <a
-                      href="/courseFront/selectAllPage?category=商業"
-                      class="dropdown-item"
-              >商業</a
-              >
+              <a href="/companionFrontIndex" class="dropdown-item">學伴配對</a>
+              <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
             </div>
           </div>
-          <a href="#" class="nav-item nav-link" style="font-size: 26px">論壇</a>
-          <a href="/mall/frontend" class="nav-item nav-link" style="font-size: 26px">商城</a>
+          <!--             首頁學伴選單 -->
+          <div class="nav-item dropdown">
+            <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+               style="font-size: 26px">課程</a>
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
+              <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
+              <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
+              <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
+              <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
+              <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
+              <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
+            </div>
+          </div>
+          <a href="/forum/home" class="nav-item nav-link" style="font-size: 26px">論壇</a>
+          <div class="nav-item dropdown">
+            <a href="/mall/frontend" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown"
+               style="font-size: 26px">商城</a>
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/mall/frontend" class="dropdown-item">商城</a>
+              <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+            </div>
+          </div>
+
+          <a href="/courseorder/order.do" class="nav-item nav-link" style="font-size: 26px">訂單</a>
+          <div class="nav-item dropdown">
+            <a
+                    href="#"
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+            ><i class="bi bi-chat-square-dots" style="font-size: 27px"></i
+            ></a>
+            <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
+          </div>
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a
+                    href="/coursecart/cart.do"
+                    class="nav-item nav-link"
+                    style="font-size: 27px"
+            ><i class="bi bi-cart4"></i
+            ></a>
+          </div>
+        </div>
+        <div class="navbar-nav p-4 p-lg-0">
+          <form
+                  action="/student/student-logout"
+                  method="post"
+                  class="d-none d-lg-block">
+            <button
+                    type="submit"
+                    class="btn btn-primary py-4 px-lg-5"
+                    style="font-size: 26px">
+              <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+            </button>
+          </form>
         </div>
       </div>
-      <form
-              action="/student/student-loginPage"
-              method="get"
-              class="d-none d-lg-block"
-      >
-        <button
-                type="submit"
-                class="btn btn-primary py-4 px-lg-5"
-                style="
-            background-color: #3f6cba;
-            color: white;
-            font-size: 26px;
-            border: 1px solid transparent;
-          "
-                onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
-                onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';"
-        >
-          學生登入
-        </button>
-      </form>
-      <form
-              action="/teacher/teacher-loginPage"
-              method="get"
-              class="d-none d-lg-block"
-      >
-        <button
-                type="submit"
-                class="btn btn-primary py-4 px-lg-5"
-                style="font-size: 26px"
-        >
-          老師登入
-        </button>
-      </form>
     </nav>
     <!-- Navbar End -->
-
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header">
-      <div class="container py-5">
-        <div class="row justify-content-center">
-          <div class="col-lg-10 text-center">
-            <h1 class="display-3 text-white animated slideInDown">商城</h1>
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item">
-                  <a class="text-white" href="#">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                  <a class="text-white" href="#">Pages</a>
-                </li>
-                <li
-                  class="breadcrumb-item text-white active"
-                  aria-current="page"
-                >
-                  商城
-                </li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Header End -->
 
     <!-- 中間內容 -->
     <section>
       <!-- 新的導航列開始 -->
-      <div class="container py-2">
+      <div style="margin-top: 20px" class="container py-2">
         <div class="d-flex justify-content-end">
           <div class="btn-group">
             <div class="nav-item dropdown">
@@ -298,11 +238,22 @@
             <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3">
               <strong class="d-block py-2">共找到 <span id="productCount">0</span> 項商品</strong>
               <div class="ms-auto">
+
+                <!-- 商品分類篩選 下拉式選單 -->
+                <select id="categoryFilter" class="form-select d-inline-block w-auto border pt-1 me-2">
+                  <option value="">所有分類</option>
+                  <option value="實體教材">實體教材</option>
+                  <option value="周邊商品">周邊商品</option>
+                  <option value="教材影片">教材影片</option>
+                </select>
+
+                <!-- 商品排序 下拉式選單 -->
                 <select id="sortSelect" class="form-select d-inline-block w-auto border pt-1">
                   <option value="created_date,desc">最新</option>
                   <option value="price,asc">價格：低到高</option>
                   <option value="price,desc">價格：高到低</option>
                 </select>
+
               </div>
             </header>
             <div class="row" id="productList">
@@ -408,6 +359,7 @@
     <!-- 商品列表顯示及操作的JS -->
     <script>
       $(document).ready(function () {
+
         // 當前頁面
         let currentPage = 1;
         // 每頁顯示的商品數量
@@ -420,6 +372,7 @@
         function fetchProducts() {
           // 獲取分類篩選的值
           const sort = $('#sortSelect').val().split(',');
+          const category = $('#categoryFilter').val();
           sortColumn = sort[0];
           sortOrder = sort[1];
 
@@ -431,7 +384,8 @@
               orderBy: sortColumn, // 排序列
               sort: sortOrder, // 排序方式
               limit: limit, // 每頁顯示的商品數量
-              offset: (currentPage - 1) * limit // 分頁偏移量
+              offset: (currentPage - 1) * limit, // 分頁偏移量
+              category: category // 商品分類
             },
             success: function (data) {
               // 清空商品列表
@@ -477,13 +431,30 @@
 
               // 清空並重建分頁按鈕
               $('#pagination').empty();
+              // 添加「上一頁」按鈕
+              $('#pagination').append(`
+                        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    `);
               // 根據總數據量和每頁顯示的數量計算總頁數
               for (let i = 1; i <= Math.ceil(data.total / limit); i++) {
-                // 添加分頁按鈕
-                $('#pagination').append(`<li class="page-item ${i === currentPage ? 'active' : ''}">
-              <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-            </li>`);
+                $('#pagination').append(`
+                            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                                <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                            </li>
+                        `);
               }
+              // 添加「下一頁」按鈕
+              $('#pagination').append(`
+                        <li class="page-item ${currentPage === Math.ceil(data.total / limit) ? 'disabled' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    `);
             }
           });
         }
@@ -551,7 +522,7 @@
         }
 
         // 搜索、篩選和排序條件的變化事件
-        $('#sortSelect').on('change', function () {
+        $('#categoryFilter, #sortSelect').on('change', function () {
           currentPage = 1; // 重置到第一頁
           fetchProducts(); // 重新獲取商品數據
         });

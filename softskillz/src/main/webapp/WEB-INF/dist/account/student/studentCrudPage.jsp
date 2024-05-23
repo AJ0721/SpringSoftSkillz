@@ -309,7 +309,7 @@ td.dataTables_empty {
 											<td>
 												<form method="get" action="StudentSelectOne"
 																		style="display: inline;">
-													ID搜尋：<input type="text" name="studentId"></input>&nbsp;&nbsp;<input
+													ID搜尋：<input type="text" name="studentId" required></input>&nbsp;&nbsp;<input
 																			type="submit" class="btn btn-primary" value="搜尋"></input>
 												</form>
 											</td>

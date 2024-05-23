@@ -74,10 +74,10 @@
                     /* 滑鼠懸停樣式 */
                   }
 
-                  button:hover {
-                    background-color: #0056b3;
-                    /* 滑鼠懸停時的背景顏色 */
-                  }
+/*                   button:hover { */
+/*                     background-color: #0056b3; */
+/*                     /* 滑鼠懸停時的背景顏色 */ */
+/*                   } */
 
                   .index {
                     background-color: #dc3545;
@@ -287,10 +287,14 @@
 
                   .card {
                     width: 300px;
-                    height: 400px;
+                    height: 460px;
                     perspective: 1000px;
                     border: 0px;
                   }
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
                   .card-front,
                   .card-back {
@@ -298,7 +302,7 @@
                     height: 100%;
                     position: absolute;
                     backface-visibility: hidden;
-                    transition: transform 0.6s;
+                    transition: transform 0.4s;
                     border-radius: 10px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                   }
@@ -339,83 +343,209 @@
                     color: #333;
                   }
 
-                  .card:hover .card-front {
-                    transform: rotateY(180deg);
-                  }
+.card-front {
+    transform: rotateY(0deg);
+}
 
-                  .card:hover .card-back {
-                    transform: rotateY(360deg);
-                  }
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.card.show-back .card-front {
+    transform: rotateY(180deg);
+}
+
+.card.show-back .card-back {
+    transform: rotateY(360deg);
+}
+
+                  
+                  button .icon {
+    width: 1em; 
+    height: 1em; 
+    margin-right: 4px;
+}
                 </style>
               </head>
 
               <body>
-                <!-- Spinner Start -->
-                <div id="spinner"
-                  class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-                  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
+              <!-- Spinner Start -->
+              <div id="spinner"
+                class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
+                  <span class="sr-only">Loading...</span>
                 </div>
-                <!-- Spinner End -->
+              </div>
+              <!-- Spinner End -->
 
-                <!-- Navbar Start -->
-                <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-                  <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                    <h2 class="m-0 text-primary">
-                      <i class="fa fa-book me-3"></i>SoftSkillz
-                    </h2>
-                  </a>
-                  <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto p-4 p-lg-0">
-                      <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-                      <a href="about.html" class="nav-item nav-link">About</a>
-                      <a href="#" class="nav-item nav-link">個人中心</a>
-                      <div class="nav-item dropdown">
-                        <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle"
-                          data-bs-toggle="dropdown">課程</a>
-                        <div class="dropdown-menu fade-down m-0">
-                          <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-                          <a href="team.html" class="dropdown-item">語言</a>
-                          <a href="testimonial.html" class="dropdown-item">程式設計</a>
-                          <a href="404.html" class="dropdown-item">藝術</a>
-                          <a href="404.html" class="dropdown-item">影片剪輯</a>
-                          <a href="404.html" class="dropdown-item">心理學</a>
-                          <a href="404.html" class="dropdown-item">科學</a>
-                          <a href="404.html" class="dropdown-item">商業</a>
-                        </div>
-                      </div>
-                      <a href="#" class="nav-item nav-link">論壇</a>
-                      <!--             首頁學伴選單 -->
-                      <div class="nav-item dropdown">
-                        <a href="/companionFrontIndex" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">學伴</a>
-                        <div class="dropdown-menu fade-down m-0">
-                          <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
-                          <a href="/companionFrontChatroom" class="dropdown-item">學伴聊天室</a>
-                        </div>
-                      </div>
-                      <!--             首頁學伴選單 --> <a href="#" class="nav-item nav-link">商城</a>
-                      <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu fade-down m-0">
-                          <a href="team.html" class="dropdown-item">Our Team</a>
-                          <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                          <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                      </div>
-                      <a href="contact.html" class="nav-item nav-link">Contact</a>
-                    </div>
-                    <form action="/student/student-logout" method="post" class="d-none d-lg-block">
-                      <button type="submit" class="btn btn-primary py-4 px-lg-5">
-                        <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-                      </button>
-                    </form>
-                </nav>
-                <!-- Navbar End -->
+      <!-- Navbar Start -->
+<nav
+      class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
+    >
+      <a
+        href="/courseFront/selectAllPage"
+        class="navbar-brand d-flex align-items-center px-4 px-lg-5"
+      >
+        <h2 class="m-0 text-primary">
+          <img
+            src="/account/images/softskillz_logo.png"
+            alt="SoftSkillz"
+            class="me-3"
+            style="max-width: 250px; height: auto; margin-top: 16px"
+          />
+        </h2>
+      </a>
+      <button
+        type="button"
+        class="navbar-toggler me-4"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+          <a
+            href="/courseFront/selectAllPage"
+            class="nav-item nav-link active"
+            style="font-size: 26px"
+            >首頁</a
+          >
+          <div class="nav-item dropdown">
+            <a
+              href="/student/personal-center"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >個人中心</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/student/student-info" class="dropdown-item">個人中心</a>
+              <a href="/studentScheduleFront/schedule" class="dropdown-item"
+                >學生行事曆</a
+              >
+              <a
+                href="/studentReservationFront/reservation"
+                class="dropdown-item"
+                >學生預約</a
+              >
+              <a href="/courseorder/order.do" class="dropdown-item">課程訂單</a>
+            </div>
+          </div>
+          <!--             首頁學伴選單 -->
+          <div class="nav-item dropdown">
+            <a
+              href="/companionFrontIndex"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >學伴</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/companionFrontIndex" class="dropdown-item">學伴配對</a>
+              <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
+            </div>
+          </div>
+          <!--             首頁學伴選單 -->
+          <div class="nav-item dropdown">
+            <a
+              href="/courseFront/selectAllPage"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >課程</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/courseFront/selectAllPage" class="dropdown-item"
+                >所有課程</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=語言"
+                class="dropdown-item"
+                >語言</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=程式設計"
+                class="dropdown-item"
+                >程式設計</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=藝術"
+                class="dropdown-item"
+                >藝術</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=影片剪輯"
+                class="dropdown-item"
+                >影片剪輯</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=科學"
+                class="dropdown-item"
+                >科學</a
+              >
+              <a
+                href="/courseFront/selectAllPage?category=商業"
+                class="dropdown-item"
+                >商業</a
+              >
+            </div>
+          </div>
+          <a
+            href="/forum/home"
+            class="nav-item nav-link"
+            style="font-size: 26px"
+            >論壇</a
+          >
+          <div class="nav-item dropdown">
+            <a
+              href="/mall/frontend"
+              class="nav-item nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >商城</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/mall/frontend" class="dropdown-item">商城</a>
+              <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+            </div>
+          </div>
+          <div class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              ><i class="bi bi-chat-square-dots" style="font-size: 27px"></i
+            ></a>
+            <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
+          </div>
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a
+              href="/coursecart/cart.do"
+              class="nav-item nav-link"
+              style="font-size: 27px"
+              ><i class="bi bi-cart4"></i
+            ></a>
+          </div>
+        </div>
+        <div class="navbar-nav p-4 p-lg-0">
+          <form
+            action="/student/student-logout"
+            method="post"
+            class="d-none d-lg-block"
+          >
+            <button
+              type="submit"
+              class="btn btn-primary py-4 px-lg-5"
+              style="font-size: 26px"
+            >
+              <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+      <!-- Navbar End -->
 
                 <!-- 自行發揮的空間 -->
 
@@ -449,9 +579,9 @@
                               <form method="get" action="../GetCompanionByMatchRequirement" id="getCompanionUsername">
                                 <div class="col-auto" style="margin: 15px 0;">
                                   <label for="" class="fs-5 mb-2 fw-bold">選擇你要的學伴配對條件</label><br>
-                                  <label for="">請輸入你的帳號名稱 </label><input class="form-control" type="text"
-                                    name="student_nickname" style="border-radius: 10px;text-align: center;"
-                                    placeholder="請輸入英文名稱" id="" />
+<!--                                   <label for="">請輸入你的帳號名稱 </label><input class="form-control" type="text" -->
+<!--                                     name="student_nickname" style="border-radius: 10px;text-align: center;" -->
+<!--                                     placeholder="請輸入英文名稱" id="" /> -->
                                   <!-- 											<div class="popup; text-warning" id="popupEng">請輸入英文字！</div> -->
                                 </div>
                                 <div style="margin: 15px 0;">
@@ -532,7 +662,9 @@
 
                         <div id="content2" align="center">
                           <div class="m-4">
-                            <h5>你已送出申請的學伴資料</h5>
+                            <h4>我的學伴</h4>
+                            <h6>&nbsp;</h6>
+                            <h6 style="margin:5px;color:#0066CC">點擊卡片進行翻轉</h6>
                           </div>
 
                           <div class="card-container">
@@ -555,6 +687,19 @@
                                     <p class="card-subtitle">學習興趣：<%=
                                         companionMatch.getCompanionBId().getCompanionLearningInterest()%>
                                     </p>
+                                    <p class="card-text">
+                                    <a href="/companionFrontChatroom"><button title="like" id="likeOrDislike" data-count="0" type="submit"
+                                        name="like_or_dislike" value="like" class="fw-bold">
+                                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z"/></svg> 
+                                        進入聊天室</button></a>
+                                    </p>
+                                    
+                                    <p class="card-text">
+                                    <button class="btn btn-outline-light btn-lg" style="border:0px;padding:5px">
+                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M512 80c8.8 0 16 7.2 16 16V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V96c0-8.8 7.2-16 16-16H512zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM208 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm-32 32c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16H304c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80H176zM376 144c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376z"/></svg>
+                                    </button>
+                                    </p>
+                                    
                                   </div>
                                   <div class="card-back">
                                     <h2 class="card-title">暱稱：<%=
@@ -575,7 +720,12 @@
                                     <p class="card-text">關於我：<%=
                                         companionMatch.getCompanionBId().getCompanionAboutMe()%>
                                     </p>
-
+									<p class="card-text">
+                                    <button class="btn btn-outline-light btn-lg" style="border:0px;padding:5px">
+                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M142.9 142.9c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5c0 0 0 0 0 0H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5c7.7-21.8 20.2-42.3 37.8-59.8zM16 312v7.6 .7V440c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l41.6-41.6c87.6 86.5 228.7 86.2 315.8-1c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.2 62.2-162.7 62.5-225.3 1L185 329c6.9-6.9 8.9-17.2 5.2-26.2s-12.5-14.8-22.2-14.8H48.4h-.7H40c-13.3 0-24 10.7-24 24z"/></svg>
+                                    </button>
+                                    </p>
+									
                                   </div>
                                 </div>
 
@@ -583,7 +733,8 @@
                                 <%} }%>
                           </div>
 
-                          <div><button class="index">回首頁</button></div>
+                          <div><button class="index btn btn-primary mt-4"
+                            style="background-color:#ACD4D6;border:0px;border-radius:8px">回首頁</button></div>
                         </div>
 
 
@@ -593,98 +744,52 @@
 
 
 
-                        <!-- Footer Start -->
-                        <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn"
-                          data-wow-delay="0.1s">
-                          <div class="container py-5">
-                            <div class="row g-5">
-                              <div class="col-lg-3 col-md-6">
-                                <h4 class="text-white mb-3">Quick Link</h4>
-                                <a class="btn btn-link" href="">About Us</a>
-                                <a class="btn btn-link" href="">Contact Us</a>
-                                <a class="btn btn-link" href="">Privacy Policy</a>
-                                <a class="btn btn-link" href="">Terms & Condition</a>
-                                <a class="btn btn-link" href="">FAQs & Help</a>
-                              </div>
-                              <div class="col-lg-3 col-md-6">
-                                <h4 class="text-white mb-3">聯絡我們</h4>
-                                <p class="mb-2">
-                                  <i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA
-                                </p>
-                                <p class="mb-2">
-                                  <i class="fa fa-phone-alt me-3"></i>+012 345 67890
-                                </p>
-                                <p class="mb-2">
-                                  <i class="fa fa-envelope me-3"></i>info@example.com
-                                </p>
-                                <div class="d-flex pt-2">
-                                  <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                                  <a class="btn btn-outline-light btn-social" href=""><i
-                                      class="fab fa-facebook-f"></i></a>
-                                  <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                                  <a class="btn btn-outline-light btn-social" href=""><i
-                                      class="fab fa-linkedin-in"></i></a>
-                                </div>
-                              </div>
-                              <div class="col-lg-3 col-md-6">
-                                <h4 class="text-white mb-3">圖片集錦</h4>
-                                <div class="row g-2 pt-2">
-                                  <div class="col-4">
-                                    <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
-                                  </div>
-                                  <div class="col-4">
-                                    <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
-                                  </div>
-                                  <div class="col-4">
-                                    <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
-                                  </div>
-                                  <div class="col-4">
-                                    <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="" />
-                                  </div>
-                                  <div class="col-4">
-                                    <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="" />
-                                  </div>
-                                  <div class="col-4">
-                                    <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-lg-3 col-md-6">
-                                <h4 class="text-white mb-3">意見信箱</h4>
-                                <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                                <div class="position-relative mx-auto" style="max-width: 400px">
-                                  <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
-                                    placeholder="Your email" />
-                                  <button type="button"
-                                    class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
-                                    SignUp
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="container">
-                            <div class="copyright">
-                              <div class="row">
-                                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                                  &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
-                                  Right Reserved.
+                         <!-- Footer Start -->
+  <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+      <div class="row g-5">
+        <div class="col-lg-8 col-md-6">
+          <h4 class="text-white mb-3">聯絡我們</h4>
+          <p class="mb-2">
+            <i class="fa fa-map-marker-alt me-3"></i>320桃園市中壢區新生路二段421號
+          </p>
+          <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
+          <p class="mb-2">
+            <i class="fa fa-envelope me-3"></i>academic@shengte.college
+          </p>
+          <div class="d-flex pt-2">
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <h4 class="text-white mb-10">意見信箱</h4>
+          <p>請留下您對我們的寶貴意見</p>
+          <div class="position-relative mx-auto" style="max-width: 400px">
+            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
+            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+              送出
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="copyright">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
+            Right Reserved.
 
-                                  <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                                </div>
-                                <div class="col-md-6 text-center text-md-end">
-                                  <div class="footer-menu">
-                                    <a href="">Home</a>
-                                    <a href="">Cookies</a>
-                                    <a href="">Help</a>
-                                    <a href="">FQAs</a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Footer End -->
+            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer End -->
 
                         <!-- Back to Top -->
                         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
@@ -701,6 +806,7 @@
 
                         <!-- Template Javascript -->
                         <script src="/js/main.js"></script>
+                        
                         <script>
                           // 監聽 tab 的點擊事件
                           document.getElementById('tab1').addEventListener('click', function () {
@@ -727,6 +833,27 @@
                             location.href = "/companionFrontIndex"
                           })
                         </script>
+                        
+                       <script>
+                       document.addEventListener('DOMContentLoaded', function () {
+                    	    const cards = document.querySelectorAll('.card');
+                    	    
+                    	    cards.forEach(function(card) {
+                    	        const cardFront = card.querySelector('.card-front');
+                    	        const cardBack = card.querySelector('.card-back');
+                    	        
+                    	        cardFront.addEventListener('click', function(event) {
+                    	            card.classList.toggle('show-back');
+                    	        });
+                    	        
+                    	        cardBack.addEventListener('click', function(event) {
+                    	            card.classList.remove('show-back');
+                    	        });
+                    	    });
+                    	});
+
+      				</script>
+      				
               </body>
 
               </html>

@@ -18,6 +18,10 @@ public interface TeacherRepository extends JpaRepository<TeacherBean, Integer> {
    @Query("FROM TeacherBean tb WHERE tb.teacherEmail = :tEmail AND tb.teacherPassword = :tPassword")
    Optional<TeacherBean> findByEmail(@Param("tEmail") String teacherEmail, @Param("tPassword") String teacherPassword);
    
+   // 用信箱找帳號，因為信箱是unique，所以用信箱就可以找到該帳號
+   @Query("FROM TeacherBean tb WHERE tb.teacherEmail = :tEmail")
+   Optional<TeacherBean> findTeacherByEmail(@Param("tEmail") String teacherEmail);
+   
    TeacherBean findByTeacherIdFormatted (String teacherFormatID);
 
 }

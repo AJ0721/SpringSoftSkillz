@@ -46,8 +46,6 @@ function connectWebSocket(userID) {
     websocket.onmessage = function (event) {
         getChatlist(sendOutUser);
         let photourl = null;
-        console.log("photo=" + photourl);
-        console.log(JSON.parse(event.data));
         let socketdata = JSON.parse(event.data)
         if (!chatPopup) {
             fetch("/chat/chatroom/" + socketdata.sendOutUser)
@@ -229,7 +227,6 @@ function chatroom(userID, userName, userPhotoURL) {
 
 
 
-
 function addMessageToChatWindow(sender, message) {
     var messageDiv = document.createElement("div"); // 创建新消息元素
 
@@ -241,7 +238,8 @@ function addMessageToChatWindow(sender, message) {
 }
 
 function getChatlist(userID) {
-    fetch("/chat/teacherList/" + userID)
+    console.log(userID);
+    fetch("/chat/studentList/" + userID)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -253,6 +251,8 @@ function getChatlist(userID) {
             appendUl(data);
         })
 }
+
+
 
 function appendUl(data) {
     const dropdownMenu = document.querySelector("#chatlist");
@@ -327,7 +327,6 @@ function history(chatroomID) {
             }
         })
 }
-
 function detectAndConvertURLs(message) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     var hasURL = false; // 用于标记消息中是否存在 URL

@@ -1,15 +1,16 @@
 package com.softskillz.forum.model.dto;
 
-public class TeacherDto {
-    private int teacherId;
-    private String teacherUserName;
-    private String teacherCountry;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-    public TeacherDto() {
-    }
+public class TeacherDto implements UserDto {
+	private int teacherId;
+	private String teacherUserName;
+	private String teacherCountry;
+
+	public TeacherDto() {
+	}
 
 	public TeacherDto(int teacherId, String teacherUserName, String teacherCountry) {
-		super();
 		this.teacherId = teacherId;
 		this.teacherUserName = teacherUserName;
 		this.teacherCountry = teacherCountry;
@@ -22,7 +23,6 @@ public class TeacherDto {
 	public void setTeacherId(int teacherId) {
 		this.teacherId = teacherId;
 	}
-
 
 	public String getTeacherUserName() {
 		return teacherUserName;
@@ -40,8 +40,9 @@ public class TeacherDto {
 		this.teacherCountry = teacherCountry;
 	}
 
-
-    
-    
-
+	@Override
+    @JsonIgnore
+	public String getIdentifier() {
+		return teacherUserName;
+	}
 }

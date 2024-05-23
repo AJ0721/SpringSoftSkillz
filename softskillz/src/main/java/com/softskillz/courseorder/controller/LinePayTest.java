@@ -145,6 +145,9 @@ public class LinePayTest {
 		}
 		List<ItemInfo> orederItem = coService.getItem(orderID);
 		Item item = LineUtil.getItemByOrder(orederItem, disPercent);
+		Citem citem = new Citem(item);
+		System.out.println(citem);
+		session.setAttribute("citem", citem);
 		String url = null;
 		String reqUrl = "https://sandbox-api-pay.line.me/v3/payments/request";
 		String requestUri = "/v3/payments/request";
@@ -175,16 +178,11 @@ public class LinePayTest {
 		Integer price = coService.getORDByID(orderID).getOrderPrice();
 		DiscountBean discount = (DiscountBean) session.getAttribute("discount");
 		
-		if (discount != null) {
-			Double disPrice = Math.ceil((price * discount.getDisPercent() / 100));
-			System.out.println(price);
-			price = disPrice.intValue();
-		}
+
 
 		String conUrl = "https://sandbox-api-pay.line.me/v3/payments/" + transactionId + "/confirm";
-		Citem citem = new Citem();
-		citem.setAmount(price.intValue());
-		citem.setCurrency("TWD");
+		Citem citem =  (Citem) session.getAttribute("citem");
+
 
 		ObjectMapper om1 = new ObjectMapper();
 		String jsonStr = om1.writeValueAsString(citem);
@@ -204,8 +202,9 @@ public class LinePayTest {
 		System.out.println(jsonResponse);
 		if (returnCode.equals("0000")) {
 			System.out.println("你好");
-			coService.payOrder(orderID, "已付款", "LinePay", discount);
+			coService.payOrder(orderID, "已付款", "LinePay", discount,citem.getAmount());
 			session.removeAttribute("discount");
+			session.removeAttribute("citem");
 		}
 		return "forward:/courseorder/order.do";
 	}

@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.companion.model.CompanionBean;
 import com.softskillz.companion.model.CompanionMatchBean;
 import com.softskillz.companion.model.CompanionMatchService;
 import com.softskillz.companion.model.CompanionService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CompanionMatchController {
@@ -39,14 +42,19 @@ public class CompanionMatchController {
 //	}
 	// 查詢單筆 id
 	@GetMapping("/GetCompanionMatchById")
-	public ModelAndView getCompanionById(@RequestParam("nickname")String studentNickname) {
+	public ModelAndView getCompanionById(HttpSession session) {
 		ModelAndView view = new ModelAndView("elearning/companion/selectMatchById.jsp");
-		ModelAndView view2 = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
-		System.out.println(studentNickname);
-	    if (studentNickname == null) {
-	        return view2;
-	    }
+		ModelAndView viewErr = new ModelAndView("elearning/companion/companionFrontIndex.jsp");
+		
 		try {
+			StudentBean studentData = (StudentBean) session.getAttribute("studentData");
+			String studentNickname = studentData.getStudentNickname();
+			System.out.println(studentNickname);
+			
+			if (studentNickname == null | studentData == null) {
+		    	viewErr.addObject("errorMessageNoStudentData", "請重新登入");
+		        return viewErr;
+		    }else {
 			CompanionBean companionBeanA = companionService.getByStudentNickname(studentNickname);
 			Set<CompanionMatchBean> companionMatch = null;
 			if (companionBeanA != null) {
@@ -61,13 +69,16 @@ public class CompanionMatchController {
 		        	companionMatches.add(match);
 		        	}
 				}
-			view.addObject("companionMatch", companionMatches);
+				view.addObject("companionMatch", companionMatches);
+				}
+				return view;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			view2.addObject("errorMessage", "An error occurred: " + e.getMessage());
+			viewErr.addObject("errorMessage", "An error occurred: " + e.getMessage());
+			viewErr.addObject("errorMessageNoStudentData", "請重新登入");
+			return viewErr;
 		}
-		return view;
 
 	}
 	

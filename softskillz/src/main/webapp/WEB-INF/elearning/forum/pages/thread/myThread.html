@@ -1,95 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Threads Management</title>
+    <meta charset="utf-8" />
+    <title>SoftSkillz 登入前首頁</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap5.min.css">
+    <!-- Favicon -->
+    <link href="/img/favicon.ico" rel="icon" />
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <style>
+        .sidebar,
+        .my-threads {
+            position: sticky;
+            top: 70px;
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+            background-color: #e6edf0;
+            color: white;
+            height: calc(100vh - 70px);
+        }
+
+        .content-container {
+            margin-top: 90px;
+        }
+
+        .content {
+            padding-top: 20px;
+        }
+
+        .thread-card {
+            width: 100%;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+            }
+        }
+
+        body {
+            font-size: 1.25rem;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container mt-5">
-        <h3>我的文章</h3>
-        <div class="mb-3">
-            <button class="btn btn-success" id="createNewThread">Create New Thread</button>
-            <button class="btn btn-danger" id="deleteSelectedThreads">Delete</button>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="thread-table">
-                <thead>
-                    <tr class="text-center">
-                        <th><input class="form-check-input" type="checkbox" id="selectAllThreads"></th>
-                        <th>ID</th>
-                        <th>Author</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Likes</th>
-                        <th>Comments</th>
-                        <th>Creation Time</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="threadList">
-                    <!-- Thread rows will be dynamically populated here -->
-                </tbody>
-            </table>
+    <!-- Navbar Start -->
+    <div id="navbarContainer"></div>
+    <div id="navbarStudent" class="d-none"></div>
+    <div id="navbarTeacher" class="d-none"></div>
+
+    <!-- Navbar End -->
+
+    <div class="container-fluid content-container">
+        <div class="row">
+            <!-- Left Sidebar Container -->
+            <div id="leftSidebarContainer" class="sidebar col-md-3"></div>
+
+            <!-- Main Content Area -->
+            <div class="col-md-9 main-content">
+                <div class="row">
+                    <!-- Data Table -->
+
+                    <div class="form-group mb-0">
+                        <button type="button" class="btn icon border-0  btn-lg" id="cancel">
+                            <i class="bi bi-arrow-left-circle fa-2x " style="color:#5585b5"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-12 content">
+
+
+                        <div class="d-flex justify-content-end mb-2">
+                            <span id="user-detail"></span>
+                        </div>
+
+                        <h3>我的文章</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered border-5 table-hover rounded-3" id="thread-table">
+                                <thead>
+                                    <tr class="text-center text-lg">
+                                        <!-- <th><input class="form-check-input" type="checkbox" id="selectAllThreads"></th> -->
+                                        <th>ID</th>
+                                        <th>標題</th>
+                                        <th>分類</th>
+                                        <th>喜歡</th>
+                                        <th>留言數</th>
+                                        <th>創建時間</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="threadList">
+                                    <!-- Thread rows will be dynamically populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+    <script src="/js/forumGlobalFunction.js"></script>
+    <script src="/js/sidebars.js"></script>
+
     <script>
-        $(document).ready(function () {
-            let userId = 3;  // Replace with the actual user ID
-            let userType = 'student';  // Replace with the actual user type ('student' or 'teacher')
+        document.addEventListener('DOMContentLoaded', function () {
+            validateUser().then(user => {
+                if (user) {
+                    initializePage(user.loggedInUser, user.userType);
+                    updateNavbar(user.userType);  // Correctly pass userType to updateNavbar
+                    fetchUserThreads(user.loggedInUser, user.userType);
+                }
+            }).catch(error => console.error('Error validating user:', error));
 
-            let apiUrl = `http://localhost:8080/forum/thread/${userType}id/${userId}`;
+            // Function to fetch threads based on user type and ID
+            function fetchUserThreads(loggedInUser, userType) {
+                console.log('Fetching threads for user:', loggedInUser, 'with type:', userType); // Add log for debugging
+                let url;
 
-            function fetchThreads() {
-                return fetch(apiUrl)
-                    .then(response => response.json())
-                    .catch(error => {
-                        console.error('Error fetching threads:', error);
-                    });
+                if (userType === 'STUDENT') {
+                    url = `/forum/thread/studentid/${loggedInUser.studentId}`;
+                } else if (userType === 'TEACHER') {
+                    url = `/forum/thread/teacherid/${loggedInUser.teacherId}`;
+                } else {
+                    throw new Error('Invalid user type');
+                }
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Threads fetched:', data); // Add log for debugging
+                        if ($.fn.DataTable.isDataTable('#thread-table')) {
+                            // If DataTable already exists, clear and add new data
+                            var table = $('#thread-table').DataTable();
+                            table.clear().rows.add(data).draw();
+                        } else {
+                            // Initialize DataTable if it doesn't exist
+                            $('#thread-table').DataTable({
+                                data: data,
+                                columns: [
+                                    // {
+                                    //     data: null,
+                                    //     orderable: false,
+                                    //     defaultContent: '<input class="form-check-input" type="checkbox">'
+                                    // },
+                                    { data: 'threadId' },
+
+                                    {
+                                        data: 'threadTitle',
+                                        render: function (data, type, row) {
+                                            return `<a href="/forum/f/thread/id/${row.threadId}" class="thread-link">${data}</a>`;
+                                        }
+                                    },
+                                    { data: 'forumCategory.forumCategoryName' },
+                                    { data: 'threadUpvoteCount' },
+                                    { data: 'threadResponseCount' },
+                                    {
+                                        data: 'threadCreatedTime',
+                                        render: function (data) {
+                                            return data.split('T')[0]; // Format date to YYYY-MM-DD
+                                        }
+                                    }
+                                ],
+                                language: {
+                                    url: "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"
+                                },
+                                paging: true,
+                                lengthChange: true,
+                                pageLength: 5, // Default number of entries per page
+                                lengthMenu: [
+                                    [5, 10, 25, 50, -1],
+                                    [5, 10, 25, 50, "全部"]
+                                ], // Custom options for page entries
+                                searching: false,
+                                ordering: true,
+                                info: true,
+                                autoWidth: false,
+                                responsive: true
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching threads:', error));
             }
 
-            function populateTable(threads) {
-                let threadList = $('#threadList');
-                threadList.empty();
-                threads.forEach(thread => {
-                    let row = `
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox" data-id="${thread.id}"></td>
-                            <td>${thread.id}</td>
-                            <td>${thread.author}</td>
-                            <td>${thread.title}</td>
-                            <td>${thread.category}</td>
-                            <td>${thread.likes}</td>
-                            <td>${thread.comments}</td>
-                            <td>${thread.creationTime}</td>
-                            <td>${thread.status}</td>
-                        </tr>
-                    `;
-                    threadList.append(row);
-                });
 
-                $('#thread-table').DataTable();
-            }
+            
 
-            fetchThreads().then(threads => {
-                populateTable(threads);
+
+            $('#cancel').click(function (e) {
+                window.history.go(-1);
+                return false;
             });
 
-            $('#selectAllThreads').on('change', function() {
-                $('input[type="checkbox"]').prop('checked', this.checked);
-            });
-
-            // Additional functionalities for create and delete can be added here
-        });
+        })
     </script>
+
 </body>
+
 </html>

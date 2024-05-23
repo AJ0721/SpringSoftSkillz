@@ -15,6 +15,26 @@ $(document).ready(function () {
 
     fetchThreadDetails(threadId);
 
+
+    //BUTTONS
+    // SUBMIT POST
+    $(document).on('click', '.submit-reply', function (e) {
+        e.preventDefault();
+        const $form = $(this).closest('form');
+        const postContent = $form.find('textarea').val().trim();
+        const parentPostId = $form.find('.parentPostId').val();
+        if (postContent === "") {
+            Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+            return;
+        }
+        const postDto = {
+            postContent: postContent,
+            thread: { threadId: threadId },
+            parentPost: parentPostId ? { postId: parentPostId } : null,
+        };
+        submitPost(postDto, threadId);
+    });
+
     // EDIT THREAD
     $(document).on('click', '#edit-thread', function (e) {
         e.preventDefault(); // Prevent default action

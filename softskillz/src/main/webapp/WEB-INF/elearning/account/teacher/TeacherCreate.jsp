@@ -359,10 +359,10 @@
 								<label for="teachTime" class="form-label">一週可授課時數</label> <select
 									id="teachTime" class="form-control" name="teachTime" required>
 									<option value="">不確定</option>
-									<option value="less_10">少於10小時</option>
-									<option value="10_20">10到20小時</option>
-									<option value="20_30">20到30小時</option>
-									<option value="more_30">超過30小時</option>
+									<option value="少於10小時">少於10小時</option>
+									<option value="10到20小時">10到20小時</option>
+									<option value="20到30小時">20到30小時</option>
+									<option value="超過30小時">超過30小時</option>
 								</select>
 							</div>
 						</div>
@@ -377,6 +377,7 @@
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="button-container">
+								<input type="submit" value="一鍵輸入" class="btn btn-primary onepunch" style="background-color: #09baef; border: 1px solid #09baef">
 								<input type="submit" value="提交" class="btn btn-primary">
 								<input type="reset" value="清除" class="btn btn-secondary">
 							</div>
@@ -456,6 +457,27 @@
 							document.getElementById('strengthRemaining').innerText = "剩餘 "
 									+ remaining + " 字符";
 						});
+
+		let onepunch = document.querySelector(".onepunch");
+			onepunch.addEventListener("click",(e)=>{
+				e.preventDefault();
+			document.getElementById('teacherLastName').value = '漩渦';
+            document.getElementById('teacherFirstName').value = '鳴人';
+            document.getElementById('teacherUserName').value = 'minrensogood';
+            document.getElementById('teacherPassword').value = 'minrensogood';
+            document.getElementById('teacherBirth').value = '1985-05-15';
+            document.getElementById('teacherGender').value = 'male';
+            document.getElementById('teacherEmail').value = 'minren@gmail.com';
+            document.getElementById('teacherMobile').value = '0987654321';
+            document.getElementById('teacherCountry').value = '比利時';
+            document.getElementById('subject').value = '數學';
+            document.getElementById('teacherEducation').value = '碩士';
+            document.getElementById('experience').value = '5-10年';
+            document.getElementById('status').value = 'full_time';
+            document.getElementById('teachTime').value = '10到20小時';
+            document.getElementById('strength').value = '專精於數學教學，能夠有效提升學生的學習成效。';
+		})
+
 	</script>
 
 </body>

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
+
 
 @Service
 @Transactional
@@ -49,6 +51,34 @@ public class CompanionService {
 		return null;
 	}
 	
+//    @Transactional
+//    public Optional<CompanionBean> findByStudentNickname(String studentNickname) {
+//        return companionRepos.findBystudentNickname(studentNickname);
+//    }
+//
+//    @Transactional
+//    public CompanionBean saveOrUpdate(CompanionBean companion) {
+//        return companionRepos.save(companion);
+//    }
+	
+	@Autowired
+    private EntityManager entityManager;
+	
+    @Transactional
+    public Optional<CompanionBean> findByStudentNickname(String studentNickname) {
+        // 使用 JPQL 查詢
+        return entityManager.createQuery(
+            "SELECT c FROM CompanionBean c JOIN c.studentBeanID s WHERE s.studentNickname = :nickname", 
+            CompanionBean.class
+        ).setParameter("nickname", studentNickname).getResultStream().findFirst();
+    }
+
+    @Transactional
+    public CompanionBean saveOrUpdate(CompanionBean companion) {
+        // 使用 EntityManager 的 merge 方法來處理分離的實體
+        return entityManager.merge(companion);
+    }
+    
 	public List<CompanionBean> getByMatchRequirement(
 			String companionLearningInterest,
 			String companionGender,

@@ -70,7 +70,7 @@ public class ChatController {
 				TeacherBean teacher = tService.findByFormatID(cr.getUser2());
 				if (teacher != null) {
 					user = new ChatRoomUser(cr.getUser2(),
-							(teacher.getTeacherLastName() + teacher.getTeacherFirstName()), teacher.getTeacherPhoto());
+							(teacher.getTeacherLastName() + teacher.getTeacherFirstName()), "/teacher/images/"+teacher.getTeacherPhoto());
 				} else {
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
 				}
@@ -80,7 +80,7 @@ public class ChatController {
 				TeacherBean teacher = tService.findByFormatID(cr.getUser1());
 				if (teacher != null) {
 					user = new ChatRoomUser(cr.getUser1(),
-							(teacher.getTeacherLastName() + teacher.getTeacherFirstName()), teacher.getTeacherPhoto());
+							(teacher.getTeacherLastName() + teacher.getTeacherFirstName()),"/teacher/images/"+teacher.getTeacherPhoto());
 				} else {
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
 				}
@@ -105,7 +105,7 @@ public class ChatController {
 				StudentBean studnet = stService.findStudentByFormatID(cr.getUser2());
 				if (studnet != null) {
 					user = new ChatRoomUser(cr.getUser2(),
-							(studnet.getStudentLastName() + studnet.getStudentFirstName()), studnet.getStudentPhoto());
+							(studnet.getStudentLastName() + studnet.getStudentFirstName()), "/student/images/"+studnet.getStudentPhoto());
 				} else {
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
 				}
@@ -114,8 +114,8 @@ public class ChatController {
 				System.out.println("u1:" + cr.getUser1());
 				StudentBean studnet = stService.findStudentByFormatID(cr.getUser1());
 				if (studnet != null) {
-					user = new ChatRoomUser(cr.getUser2(),
-							(studnet.getStudentLastName() + studnet.getStudentFirstName()), studnet.getStudentPhoto());
+					user = new ChatRoomUser(cr.getUser1(),
+							(studnet.getStudentLastName() + studnet.getStudentFirstName()), "/student/images/"+studnet.getStudentPhoto());
 				} else {
 					user = new ChatRoomUser("system", "貓貓管理員", "/teacher/images/teacher01.jpg");
 				}
@@ -134,7 +134,8 @@ public class ChatController {
 		StudentBean studentBean = stService.findStudentByFormatID(userID);
 		if (studentBean != null) {
 			user.setUserID(studentBean.getStudentIdFormatted());
-			user.setUserPhoto(studentBean.getStudentPhoto());
+			user.setUserName(studentBean.getStudentLastName() + studentBean.getStudentFirstName());
+			user.setUserPhoto("/student/images/"+studentBean.getStudentPhoto());
 		} else {
 			user.setUserID("system");
 			user.setUserPhoto("/teacher/images/teacher01.jpg");
@@ -150,7 +151,7 @@ public class ChatController {
 		StudentBean student = (StudentBean) session.getAttribute("studentData");
 		ChatRoomUser user = new ChatRoomUser();
 		user.setUserID(student.getStudentIdFormatted());
-		user.setUserPhoto(student.getStudentPhoto());
+		user.setUserPhoto("/student/images/"+student.getStudentPhoto());
 		user.setUserName(student.getStudentLastName() + student.getStudentFirstName());
 		return user;
 	}
@@ -161,7 +162,7 @@ public class ChatController {
 		TeacherBean teacher = (TeacherBean) session.getAttribute("teacherData");
 		ChatRoomUser user = new ChatRoomUser();
 		user.setUserID(teacher.getTeacherIdFormatted());
-		user.setUserPhoto(teacher.getTeacherPhoto());
+		user.setUserPhoto("/teacher/images/"+teacher.getTeacherPhoto());
 		user.setUserName((teacher.getTeacherLastName() + teacher.getTeacherFirstName()));
 		return user;
 	}
@@ -174,7 +175,7 @@ public class ChatController {
 		ChatRoomUser user = new ChatRoomUser();
 		if (teacherBean != null) {
 			user.setUserID(teacherBean.getTeacherIdFormatted());
-			user.setUserPhoto(teacherBean.getTeacherPhoto());
+			user.setUserPhoto("/teacher/images/"+teacherBean.getTeacherPhoto());
 			user.setUserName((teacherBean.getTeacherLastName() + teacherBean.getTeacherFirstName()));
 		} else {
 			user.setUserID("system");

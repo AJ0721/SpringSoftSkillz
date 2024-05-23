@@ -1,73 +1,86 @@
 $(document).ready(function () {
-
     // Fetch thread details and comments
     const pathname = window.location.pathname;
     const parts = pathname.split("/");
     const threadId = parts[parts.length - 1];
 
-    //--------------------THREAD--------------------
-
-    // fetchThreadDetails(threadId);
-
 
     //--------------------POST--------------------
 
     // SUBMIT POST
+    // $(document).on('click', '.reply-btn', function () {
+    //     const postId = $(this).data('post-id');
+    
+    //     // Hide all buttons
+    //     $('.edit-btn, .delete-btn, .reply-btn').hide();
+    
+    //     const replyFormHtml = `
+    //         <form class="reply-form mt-2">
+    //             <div class="form-group ">
+    //                 <textarea class="form-control border border-4 rounded-4 reply-content" rows="3"></textarea>
+    //             </div>
+    //             <div class="d-flex justify-content-end mb-2">
+    //                 <button type="button" class="btn btn-secondary mt-2 cancel-reply me-2">取消</button>
+    //                 <button type="submit" class="submit-reply btn btn-primary mt-2">送出</button>
+    //             </div>
+    //             <input type="hidden" class="parentPostId" value="${postId}">
+    //         </form>
+    //     `;
+    //     const commentElement = $(this).closest('li').find('.reply-form-container').first();
+    //     commentElement.html(replyFormHtml);
+    
+    //     // Cancel Reply Button
+    //     $(document).one('click', '.cancel-reply', function () {
+    //         $(this).closest('.reply-form-container').empty();
+    
+    //         // Restore all buttons
+    //         $('.edit-btn, .delete-btn, .reply-btn').show();
+    //     });
+    
+    //     // Submit Reply Button
+    //     $(document).one('click', '.submit-reply', function (e) {
+    //         e.preventDefault();
+    //         const replyContent = $(this).closest('form').find('.reply-content').val().trim();
+    //         if (replyContent === "") {
+    //             Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+    //             return;
+    //         }
+    //         const parentPostId = $(this).closest('form').find('.parentPostId').val();
+    //         const postDto = {
+    //             postContent: replyContent,
+    //             parentPost: { postId: parentPostId },
+    //             thread: { threadId: threadId }
+    //         };
+    //         submitPost(postDto, threadId);
+    
+    //         // Restore all buttons
+    //         $('.edit-btn, .delete-btn, .reply-btn').show();
+    //     });
+    // });
 
-    $(document).on('click', '.submit-reply', function (e) {
-        e.preventDefault();
-
-        checkAndValidateUser().then(user => {
-            if (!user) return;
-            const $form = $(this).closest('form');
-            const postContent = $form.find('textarea').val().trim();
-            const parentPostId = $form.find('.parentPostId').val();
-            if (postContent === "") {
-                Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
-                return;
-            }
-            const postDto = {
-                postContent: postContent,
-                thread: { threadId: threadId },
-                parentPost: parentPostId ? { postId: parentPostId } : null,
-            };
-            submitPost(postDto, threadId);
-        });
-    });
     //EDIT POST
 
-    // Edit Button
-    $(document).on('click', '.edit-btn', function (e) {
-
-        e.preventDefault();
-        if (!loggedInUser) {
-            Swal.fire('請先登入', '', 'warning');
-            return;
-        }
+   
+    $(document).on('click', '.edit-btn', function () {
         const postId = $(this).data('post-id');
         const postElement = $(this).closest('li');
-        const postContentElement = postElement.find('.post-content');
+        const postContentElement = postElement.find('.post-content').first();
         const currentContent = postContentElement.text().trim();
-
+    
+        // Hide all buttons
+        $('.edit-btn, .delete-btn, .reply-btn').hide();
+    
         // Make content editable
         postContentElement.attr('contenteditable', 'true').focus();
-
-        // Hide the edit, delete, and reply buttons
-        postElement.find('.edit-btn, .delete-btn, .reply-btn').hide();
-
+    
         // Show the update and cancel buttons
         $(this).after(`
-        <button class="btn btn-sm btn-primary update-btn me-2" data-post-id="${postId}">更新</button>
-        <button class="btn btn-sm btn-secondary cancel-edit" data-post-id="${postId}">取消</button>
-    `);
-
+            <button class="btn btn-sm btn-primary update-btn me-2" data-post-id="${postId}">更新</button>
+            <button class="btn btn-sm btn-secondary cancel-edit" data-post-id="${postId}">取消</button>
+        `);
+    
         // Update Button
-        $(document).on('click', '.update-btn', function (e) {
-            e.preventDefault();
-            if (!loggedInUser) {
-                Swal.fire('請先登入', '', 'warning');
-                return;
-            }
+        $(document).one('click', '.update-btn', function () {
             const updatedContent = postContentElement.text().trim();
             if (updatedContent === "") {
                 Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
@@ -78,25 +91,26 @@ $(document).ready(function () {
                 thread: { threadId: threadId }
             };
             updatePost(postId, postDto);
+    
+            // Restore all buttons
+            $('.edit-btn, .delete-btn, .reply-btn').show();
+            postElement.find('.update-btn, .cancel-edit').remove();
+            postContentElement.attr('contenteditable', 'false');
         });
-
+    
         // Cancel Edit Button
-        $(document).on('click', '.cancel-edit', function () {
+        $(document).one('click', '.cancel-edit', function () {
             postContentElement.text(currentContent).attr('contenteditable', 'false');
             $(this).siblings('.update-btn').remove();
             $(this).remove();
-            postElement.find('.edit-btn, .delete-btn, .reply-btn').show(); // Show the edit, delete, and reply buttons again
+    
+            // Restore all buttons
+            $('.edit-btn, .delete-btn, .reply-btn').show();
         });
-    });;
-
+    });
 
     //DELETE POST
-    $(document).on('click', '.delete-btn', function (e) {
-        e.preventDefault();
-        if (!loggedInUser) {
-            Swal.fire('請先登入', '', 'warning');
-            return;
-        }
+    $(document).on('click', '.delete-btn', function () {
         const postId = $(this).data('post-id');
         Swal.fire({
             title: '確認是否刪除留言?',
@@ -111,16 +125,17 @@ $(document).ready(function () {
             }
         });
     });
-
-
 });
+
+
 
 //--------------------POST--------------------
 
 //FUNCTION: POST CAN EDIT (COMMENT HTML) 
 function createCommentHtml(post) {
+
     const { loggedInUser } = retrieveUser();
-    const { authorId, authorName, canEdit } = getUserDetails(post, loggedInUser);
+    const { authorId, authorName, canEdit = false } = getUserDetails(post, loggedInUser);
     const formattedDate = new Date(post.postCreatedTime).toLocaleString();
 
     return `
@@ -140,7 +155,6 @@ function createCommentHtml(post) {
 </li>
     `;
 }
-
 
 
 // FUNCTION: UPDATE POST

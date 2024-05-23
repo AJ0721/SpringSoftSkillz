@@ -10,13 +10,12 @@ import java.util.Optional;
 @Service
 @Transactional
 public class OrderService {
-    
+
     @Autowired
     private OrderRepository orderRepository;
 
     // 建立新訂單
     public Order insertOrder(Order order) {
-    	
         return orderRepository.save(order);
     }
 
@@ -25,21 +24,21 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    // 根據 ID 讀取單個訂單
+    // 根據ID讀取單個訂單
     public Order getById(Integer id) {
         Optional<Order> optional = orderRepository.findById(id);
-        
-        if (optional.isPresent()) {
-        	return optional.get();
-		}
-        return null;
-	}
+        return optional.orElse(null);
+    }
+
+    // 根據訂單ID查找訂單
+    public Order findOrderById(Integer orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        return order.orElse(null);
+    }
 
     // 更新訂單
-    public Order updateOrder( Order orderDetails) {
-         
-                return orderRepository.save(orderDetails);
-           
+    public Order updateOrder(Order orderDetails) {
+        return orderRepository.save(orderDetails);
     }
 
     // 刪除訂單，返回是否成功刪除

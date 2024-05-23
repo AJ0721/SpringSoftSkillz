@@ -129,7 +129,7 @@ public class CourseOrderController {
 		return pageOrder;
 	}
 
-	@GetMapping("/{d1}/{d2}")
+	@GetMapping("/date/{d1}/{d2}")
 	@ResponseBody
 	public Page<Order> getPageOrderByDate(@PathVariable("d1") String date1,
 			@PathVariable(value = "d2", required = false) String date2,
@@ -137,10 +137,12 @@ public class CourseOrderController {
 			@RequestParam(value = "size", defaultValue = "10") Integer size,
 			@RequestParam(value = "sort", defaultValue = "orderDate") String sort,
 			@RequestParam(value = "direction", defaultValue = "DESC") String sortDirection,
-			@RequestParam(value = "status", defaultValue = "已付款") String status) {
+			@RequestParam(value = "status", defaultValue = "已付款") String status,HttpSession session) {
 		System.out.println("d1:" + date1);
 		System.out.println("d2:" + date2);
 		Integer studentID = 1;
+		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
+		studentID = studentBean.getStudentId();
 		Direction direction = Direction.fromString(sortDirection);
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
 		Page<Order> pageOrder = coService.getPageByStudentIDAndDate(pageable, date1, date2,studentID,status);

@@ -128,4 +128,11 @@ public class ForumThreadService implements IForumThreadService {
 		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());
 	}
 
+	@Override
+	public List<ForumThreadDto> findThreadsByCategory(Integer categoryId) {
+		List<ForumThreadModel> threads = forumThreadRepository.findByForumCategoryModelForumCategoryId(categoryId);
+        return threads.stream()
+                      .map(IDtoConverter.INSTANCE::toForumThreadDto)
+                      .collect(Collectors.toList());
+    }
 }

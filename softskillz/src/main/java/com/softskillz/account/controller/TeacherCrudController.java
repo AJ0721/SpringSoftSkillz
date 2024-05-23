@@ -6,12 +6,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.bean.StudentNewPwdBean;
 import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.account.model.bean.TeacherNewPwdBean;
 import com.softskillz.account.model.service.TeacherService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -234,7 +240,7 @@ public class TeacherCrudController {
 		} else {
 			m.addAttribute("createMsg", "帳號創建成功");
 		}
-		return "/dist/account/teacher/TeacherLoginFront.jsp";
+		return "/elearning/account/teacher/TeacherLoginFront.jsp";
 	}
 
 	// 個人中心，修改資料
@@ -345,5 +351,149 @@ public class TeacherCrudController {
 
 		return fileName;
 	}
+	
+	/************************************
+	 * 寄驗證碼
+	 * 
+	 * @throws jakarta.mail.MessagingException
+	 *************************************/
+	
+	// 忘記密碼網頁
+	@GetMapping({ "/teacher-forgotPassword" })
+	public String teacherForgotPassword() {
+		return "/elearning/account/teacher/TeacherForgotPwd.jsp";
+	}
+	
+	@PostMapping("/TeacherForgotPwd")
+	public String insertForgotPwd(@RequestParam("teacherEmail") String teacherEmail, Model model)
+			throws MessagingException, jakarta.mail.MessagingException {
+		String token = UUID.randomUUID().toString();
+		Optional<TeacherBean> optional = teacherService.findTeacherByEmail(teacherEmail);
+		if (optional != null && optional.isPresent()) {
+			TeacherBean teacherBean = optional.get();
+			int tId = teacherBean.getTeacherId();
+			TeacherNewPwdBean bean = new TeacherNewPwdBean();
+			bean.settId(tId);
+			bean.setToken(token);
+			bean.setTeacherRegistrationDate(LocalDateTime.now());
+
+			teacherService.insertForgotPwd(bean);
+			String receivers = teacherEmail;
+			String subject = "忘記密碼通知信";
+			
+			String resetPwdLink = "http://localhost:8080/teacher/reset-password?token="+token;
+			String content = mailContent(resetPwdLink);
+			String from = "SoftSkillz<itslowei@gmail.com>";
+			teacherService.sendPlainText(receivers, subject, content, from);
+			model.addAttribute("msg", "信件已發送，請前往信箱查看");
+//			return "/student/student-forgotPasssword"; 錯誤！redirect會清空attribute，controller的寫法要用redirect寫
+			return "/elearning/account/teacher/TeacherForgotPwd.jsp";
+		}
+		model.addAttribute("msg", "該信箱尚未註冊");
+		return "/elearning/account/teacher/TeacherForgotPwd.jsp";
+	}
+
+
+	private String mailContent(String resetLink) {
+	    String content = "<!DOCTYPE html>"
+	            + "<html lang='zh-TW'>"
+	            + "<body>"
+	            + "    <div style='background-color: #ffffff; width: 80%; max-width: 600px; padding: 20px; border: 5px solid #ccc; border-radius: 20px;'>"
+	            + "        <div style='text-align: center; background-color: #ffffff;'>"
+	            + "            <h1 style='color: #386391;'>重設密碼</h1>"
+	            + "            <p>請點擊以下連結，以設定一組新的密碼：</p>"
+	            + "            <a href='" + resetLink + "' style='display: inline-block; width: 250px; background-color: #386391; color: white; text-align: center; padding: 10px 0; text-decoration: none; border-radius: 5px; font-size: 20px; margin: 20px 0;'>設定新密碼</a>"
+	            + "            <p>如果您沒有請求重設密碼，請忽略這封郵件。</p>"
+	            + "            <p>from SoftSkillz Team</p>"
+	            + "        </div>"
+	            + "    </div>"
+	            + "</body>"
+	            + "</html>";
+	    return content;
+	}
+	
+
+	@GetMapping("/reset-password")
+	public String resetPassword(@RequestParam("token") String token, HttpSession session) {
+		
+		System.out.println("token : " + token);
+		
+		/* 紀錄當前時間 */
+		LocalDateTime now = LocalDateTime.now();
+
+		/* 創建一個Optional物件 */
+		Optional<TeacherNewPwdBean> optionalToken = teacherService.findToken(token);
+
+		/* 驗證此token是否存在並回傳布林值 */
+		boolean exist = optionalToken.isPresent();
+
+		if (exist) {
+			/* 如果此資料存在，創建他的bean物件 */
+			TeacherNewPwdBean resetBean = optionalToken.get();
+			System.out.println("token : " + resetBean.getToken());
+			System.out.println("studentID : " + resetBean.gettId());
+			
+			/* 設定session提供後續作使用 */
+			session.setAttribute("forgetMemberBean", resetBean);
+
+			/* 紀錄此筆ID */
+			Integer thisID = resetBean.getTokenId();
+
+			/* 抓取創建時間 */
+			LocalDateTime harvestTime = resetBean.getTeacherRegistrationDate();
+
+			/* 抓取此token資料使否使用過 */
+			//boolean used = resetBean.isUsed();
+
+			/* 取得當前時間與創建時間之間的時間差 */
+			long minutesDifference = ChronoUnit.MINUTES.between(harvestTime, now);
+
+			/* 判斷時間差是否大於15 */
+			boolean timeOut = minutesDifference > 15;
+
+			if (timeOut == false) {
+				/* 比較TOKEN */
+				if (token.equals(resetBean.getToken())) {
+					teacherService.deleteToken(thisID);
+					//驗證成功
+					return "/elearning/account/teacher/TeacherResetPwd.jsp";
+				} else {
+					//驗證失敗
+					teacherService.deleteToken(thisID);
+					return "/elearning/account/teacher/TokenErr.jsp";
+				}
+			} else {
+				//這個token超時
+				teacherService.deleteToken(thisID);
+				return "/elearning/account/teacher/TokenTimeOut.jsp";
+			}
+		} else {
+			//這個token不存在
+			return "/elearning/account/teacher/TokenNotExist.jsp";
+		}
+
+	}
+	
+	@PostMapping("/TeacherResetPwd")
+	public String studentResetPassword(@RequestParam("teacherPassword") String teacherPassword,
+	        HttpSession session, Model model) {
+		
+		TeacherNewPwdBean forgetMemberBean = (TeacherNewPwdBean) session.getAttribute("forgetMemberBean");
+	    
+	    if (forgetMemberBean == null) {
+	        model.addAttribute("msg", "無效的請求，請重新申請重設密碼");
+	        System.out.println("無效的請求，請重新申請重設密碼");
+	        return "redirect:/teacher/teacher-forgotPasssword";
+	    }
+
+	    Integer tId = forgetMemberBean.gettId();
+	    System.out.println("會員ID: " + tId);
+	    TeacherBean forgetPasswordMember = teacherService.findById(tId);
+	    forgetPasswordMember.setTeacherPassword(teacherPassword);
+	    teacherService.updateTeacherBean(forgetPasswordMember);
+	    return "redirect:/teacher/teacher-loginPage";
+	}
+	
+	
 
 }

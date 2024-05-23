@@ -22,6 +22,7 @@ import com.softskillz.courseorder.model.bean.CorderBean;
 import com.softskillz.courseorder.model.bean.DiscountBean;
 import com.softskillz.courseorder.model.bean.ItemBean;
 import com.softskillz.courseorder.model.bean.ItemInfo;
+import com.softskillz.courseorder.model.bean.MonthlySales;
 import com.softskillz.courseorder.model.bean.Order;
 import com.softskillz.courseorder.model.repository.CourseOrderReporistory;
 import com.softskillz.courseorder.model.service.CourseOrderService;
@@ -41,6 +42,10 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
 	@Autowired
 	private ReentrantLock lock;
+	
+	public List<MonthlySales> getMonthlySales() {
+        return coRepo.findMonthlySales();
+    }
 
 	@Scheduled(fixedDelay = 1000) // 每秒检查一次
 	public void processDelayedOrders() {
@@ -227,19 +232,17 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 	}
 
 	@Override
-	public CorderBean payOrder(String orderID, String status, String method, DiscountBean discount) {
+	public CorderBean payOrder(String orderID, String status, String method, DiscountBean discount,Integer price) {
 		CorderBean corderBean = coRepo.findById(orderID).get();
 		delayQueue.remove(corderBean);
 		if (discount!=null) {
 			String disID = discount.getDisID();
 			Double disPercent = discount.getDisPercent();
 			corderBean.setDisPercent(disPercent);
-			Double afterPrice = Math.ceil((corderBean.getOrderPrice() * disPercent / 100));
-			Integer newPrice = afterPrice.intValue();
 			corderBean.setDisNo(disID);
-			corderBean.setAfterPrice(newPrice);
+			corderBean.setAfterPrice(price);
 		} else {
-			corderBean.setAfterPrice(corderBean.getOrderPrice());
+			corderBean.setAfterPrice(price);
 		}
 		corderBean.setStatus(status);
 		corderBean.setMethod(method);

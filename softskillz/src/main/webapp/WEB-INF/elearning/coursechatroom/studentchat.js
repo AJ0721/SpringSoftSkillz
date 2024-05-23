@@ -61,6 +61,7 @@ function connectWebSocket(userID) {
                 }).then(data => {
                     console.log(data);
                     photourl = data.userPhoto;
+                    console.log("photo=" + photourl);
                     chatroom(data.userID, data.userName, photourl);
                     addMessageToChatWindow("接收到", socketdata.msg);
                 })
@@ -133,7 +134,7 @@ function generateChatRoomId(user1, user2) {
 
 function chatroom(userID, userName, userPhotoURL) {
     let chatPopup = document.querySelector(".chat-popup");
-
+    console.log("123"+userPhotoURL);
     // 如果已有弹出框，先移除以确保不会有多余的绑定
     if (!chatPopup) {
 

@@ -32,7 +32,7 @@ public interface CourseOrderService {
 
 	Integer adminUpdateOrder(String orderID, String status);
 
-	CorderBean payOrder(String orderID, String status, String method,DiscountBean discount);
+	CorderBean payOrder(String orderID, String status, String method,DiscountBean discount,Integer price);
 
 	Page<Order> getPageOrder(Pageable pageable);
 

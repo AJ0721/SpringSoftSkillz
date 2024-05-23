@@ -4,337 +4,364 @@
 <head>
     <meta charset="utf-8">
     <title>結帳頁面</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="" name="keywords"/>
+    <meta content="" name="description"/>
 
     <!-- Favicon -->
-    <link href="/img/favicon.ico" rel="icon">
+    <link href="/img/favicon.ico" rel="icon"/>
 
     <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
-        rel="stylesheet">
+            href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+            rel="stylesheet"/>
 
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"/>
 
     <!-- Libraries Stylesheet -->
-    <link href="/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/lib/animate/animate.min.css" rel="stylesheet"/>
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"/>
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
 
     <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet"/>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
-            <span class="sr-only">Loading...</span>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+    <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h2 class="m-0 text-primary">
+            <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+                 style="max-width: 250px; height: auto; margin-top: 16px;">
+        </h2>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="/courseFront/selectAllPage" class="nav-item nav-link active" style="font-size: 26px">首頁</a>
+            <div class="nav-item dropdown">
+                <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                   style="font-size: 26px">個人中心</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/student/student-info" class="dropdown-item">個人中心</a>
+                    <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
+                    <a href="/studentReservationFront/reservation" class="dropdown-item">學生預約</a>
+                </div>
+            </div>
+            <!--             首頁學伴選單 -->
+            <div class="nav-item dropdown">
+                <a href="/companionFrontIndex" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                   style="font-size: 26px">學伴</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/companionFrontIndex" class="dropdown-item">學伴配對</a>
+                    <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
+                </div>
+            </div>
+            <!--             首頁學伴選單 -->
+            <div class="nav-item dropdown">
+                <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                   style="font-size: 26px">課程</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
+                    <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
+                    <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
+                    <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
+                    <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
+                    <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
+                    <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
+                </div>
+            </div>
+            <a href="/forum/home" class="nav-item nav-link" style="font-size: 26px">論壇</a>
+            <div class="nav-item dropdown">
+                <a href="/mall/frontend" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                   style="font-size: 26px">商城</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/mall/frontend" class="dropdown-item">商城</a>
+                    <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+                </div>
+            </div>
+
+            <a href="/courseorder/order.do" class="nav-item nav-link" style="font-size: 26px">訂單</a>
+            <div class="nav-item dropdown">
+                <a
+                        href="#"
+                        class="nav-link dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                ><i class="bi bi-chat-square-dots" style="font-size: 27px"></i
+                ></a>
+                <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
+            </div>
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a
+                        href="/coursecart/cart.do"
+                        class="nav-item nav-link"
+                        style="font-size: 27px"
+                ><i class="bi bi-cart4"></i
+                ></a>
+            </div>
+        </div>
+        <div class="navbar-nav p-4 p-lg-0">
+            <form
+                    action="/student/student-logout"
+                    method="post"
+                    class="d-none d-lg-block">
+                <button
+                        type="submit"
+                        class="btn btn-primary py-4 px-lg-5"
+                        style="font-size: 26px">
+                    <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+                </button>
+            </form>
         </div>
     </div>
-    <!-- Spinner End -->
+</nav>
+<!-- Navbar End -->
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>SoftSkillz</h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/softskillz/fhomepage" class="nav-item nav-link active">首頁</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <div class="nav-item dropdown">
-                    <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">課程</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
-                        <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
-                        <a href="/courseFront/selectAllPage?category=程式設計" class="dropdown-item">程式設計</a>
-                        <a href="/courseFront/selectAllPage?category=藝術" class="dropdown-item">藝術</a>
-                        <a href="/courseFront/selectAllPage?category=影片剪輯" class="dropdown-item">影片剪輯</a>
-                        <a href="/courseFront/selectAllPage?category=科學" class="dropdown-item">科學</a>
-                        <a href="/courseFront/selectAllPage?category=商業" class="dropdown-item">商業</a>
-                    </div>
-                </div>
-                <a href="#" class="nav-item nav-link">論壇</a>
-                <a href="#" class="nav-item nav-link">學伴</a>
-                <a href="#" class="nav-item nav-link">商城</a>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-            </div>
-            <a href="" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Log in / Sign up<i
-                    class="fa fa-arrow-right ms-3"></i></a>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-
-    <!-- Checkout Start -->
-    <section class="my-5">
-        <div class="container">
-            <div class="row">
-                <!-- Checkout Form -->
-                <div class="col-lg-8">
-                    <div class="card border shadow-0">
-                        <div class="m-4">
-                            <h4 class="card-title mb-4">結帳資訊</h4>
-                            <form id="checkoutForm">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">姓名</label>
-                                    <input type="text" class="form-control" id="name" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">手機</label>
-                                    <input type="text" class="form-control" id="phone" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="postalCode" class="form-label">郵政編碼</label>
-                                    <input type="text" class="form-control" id="postalCode" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">地址</label>
-                                    <input type="text" class="form-control" id="address" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="note" class="form-label">備註</label>
-                                    <input type="text" class="form-control" id="note" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">付款方式</label>
-                                    <div class="d-flex justify-content-between">
-                                        <div id="pay-method-option-item-cc"
-                                            class="pay-method-option-item selected text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
-                                            role="button" style="width: 30%;">
-                                            <img src="/img/productorder/ecpay.jpg" class="img-fluid mb-2" alt="信用卡">
-                                            <span>信用卡</span>
-                                        </div>
-                                        <div id="pay-method-option-item-cvs"
-                                            class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
-                                            role="button" style="width: 30%;">
-                                            <img src="/img/productorder/ecpay2.jpg" class="img-fluid mb-2" alt="超商付款">
-                                            <span>超商付款</span>
-                                        </div>
-                                        <div id="pay-method-option-item-installment"
-                                            class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
-                                            role="button" style="width: 30%;">
-                                            <img src="/img/productorder/LINEPAY.jpg" class="img-fluid mb-2"
-                                                alt="LINE PAY">
-                                            <span>LINE PAY</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" id="confirmPaymentButton"
-                                    class="btn btn-primary w-100">確認付款</button>
-                                <button type="button" class="btn btn-primary w-100" onclick="testPay()">確認付款2</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Order Summary -->
-                <div class="col-lg-4">
-                    <div class="card mb-3 border shadow-0">
-                        <div class="card-body">
-                            <h5 class="card-title">訂單明細</h5>
-                            <div class="d-flex justify-content-between">
-                                <p class="mb-2">小計:</p>
-                                <p id="checkout-subtotal" class="mb-2">$0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="mb-2">優惠券編號:</p>
-                                <p id="checkout-discount-code" class="mb-2 text-success"></p>
+<!-- Checkout Start -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <!-- Checkout Form -->
+            <div class="col-lg-8">
+                <div class="card border shadow-0">
+                    <div class="m-4">
+                        <h4 class="card-title mb-4">結帳資訊</h4>
+                        <form id="checkoutForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="couponCode" class="form-label">優惠券代碼</label>
-                                <input type="text" class="form-control" id="couponCode" name="couponCode" required>
+                                <label for="phone" class="form-label">手機</label>
+                                <input type="text" class="form-control" id="phone" required>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="mb-2">已套用優惠券折扣:</p>
-                                <p id="checkout-discount" class="mb-2 text-success">-$0</p>
+                            <div class="mb-3">
+                                <label for="postalCode" class="form-label">郵政編碼</label>
+                                <input type="text" class="form-control" id="postalCode" required>
                             </div>
-                            <hr />
-                            <div class="d-flex justify-content-between">
-                                <p class="mb-2">總金額:</p>
-                                <p id="checkout-grand-total" class="mb-2 fw-bold">0</p>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">地址</label>
+                                <input type="text" class="form-control" id="address" required>
                             </div>
-                            <a href="#" class="btn btn-primary w-100">返回商城</a>
+                            <div class="mb-3">
+                                <label for="note" class="form-label">備註</label>
+                                <input type="text" class="form-control" id="note" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">付款方式</label>
+                                <div class="d-flex justify-content-between">
+                                    <div id="pay-method-option-item-cc"
+                                         class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
+                                         role="button" style="width: 30%;">
+                                        <img src="/img/productorder/ecpay.jpg" class="img-fluid mb-2" alt="信用卡">
+                                        <span>信用卡</span>
+                                    </div>
+                                    <div id="pay-method-option-item-cvs"
+                                         class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
+                                         role="button" style="width: 30%;">
+                                        <img src="/img/productorder/ecpay2.jpg" class="img-fluid mb-2" alt="超商付款">
+                                        <span>超商付款</span>
+                                    </div>
+                                    <div id="pay-method-option-item-installment"
+                                         class="pay-method-option-item text-center border rounded p-2 d-flex flex-column justify-content-between align-items-center"
+                                         role="button" style="width: 30%;">
+                                        <img src="/img/productorder/LINEPAY.jpg" class="img-fluid mb-2"
+                                             alt="LINE PAY">
+                                        <span>LINE PAY</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 一鍵輸入按鈕 -->
+                            <button type="button" id="fillFormButton" class="btn btn-secondary w-100 mb-3">輸入資訊
+                            </button>
+                            <button type="button" id="confirmPaymentButton" class="btn btn-primary w-100">確認付款
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card mb-3 border shadow-0">
+                    <div class="card-body">
+                        <h5 class="card-title">訂單明細</h5>
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">小計:</p>
+                            <p id="checkout-subtotal" class="mb-2">$0</p>
                         </div>
+                        <hr/>
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">總金額:</p>
+                            <p id="checkout-grand-total" class="mb-2 fw-bold">0</p>
+                        </div>
+                        <a href="#" class="btn btn-primary w-100">返回商城</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Checkout End -->
+    </div>
+</section>
+<!-- Checkout End -->
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">快速鏈結</h4>
-                    <a class="btn btn-link" href="">關於我們</a>
-                    <a class="btn btn-link" href="">聯絡我們</a>
-                    <a class="btn btn-link" href="">隱私政策</a>
-                    <a class="btn btn-link" href="">條款及條件</a>
-                    <a class="btn btn-link" href="">常見問題與幫助</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">聯絡方式</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 街道, 紐約, 美國</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-8 col-md-6">
+                <h4 class="text-white mb-3">聯絡我們</hhed>
+                    <p class="mb-2">
+                        <i class="fa fa-map-marker-alt me-3"></i>320桃園市中壢區新生路二段421號
+                    </p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
+                    <p class="mb-2">
+                        <i class="fa fa-envelope me-3"></i>academic@shengte.college
+                    </p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">圖片集錦</h4>
-                    <div class="row g-2 pt-2">
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="/img/course-2.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="/img/course-3.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="/img/course-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">意見信箱</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button"
-                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br><br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
-                        </div>
-                    </div>
+            <div class="col-lg-4 col-md-6">
+                <h4 class="text-white mb-10">意見信箱</h4>
+                <p>請留下您對我們的寶貴意見</p>
+                <div class="position-relative mx-auto" style="max-width: 400px">
+                    <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text"
+                           placeholder="Your email"/>
+                    <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                        送出
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Footer End -->
+    <div class="container">
+        <div class="copyright">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; <a class="border-bottom" href="#">Soft Skillz</a>, All
+                    Right Reserved.
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/wow/wow.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/wow/wow.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/waypoints/waypoints.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <script>
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
 
-        function testPay() {
-            let total = document.getElementById("checkout-grand-total").textContent;
-            console.log(total);
-            window.location.href = `/productcart/createOrder?grandTotal=${total}`
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // 解析URL參數
+        const urlParams = new URLSearchParams(window.location.search);
+        const subtotal = urlParams.get('subtotal');
+        const grandTotal = urlParams.get('grandTotal');
 
-        }
+        // 更新頁面上的金額
+        document.getElementById('checkout-subtotal').innerText = `$${subtotal}`;
+        document.getElementById('checkout-grand-total').innerText = `$${grandTotal}`;
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Parse URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const subtotal = urlParams.get('subtotal');
-            const discount = urlParams.get('discount');
-            const grandTotal = urlParams.get('grandTotal');
-
-            // Update amounts on the page
-            document.getElementById('checkout-subtotal').innerText = `$${subtotal}`;
-            document.getElementById('checkout-discount').innerText = `-$${discount}`;
-            document.getElementById('checkout-grand-total').innerText = `$${grandTotal}`;
-
-            // Payment method selection handling
-            const paymentOptions = document.querySelectorAll('.pay-method-option-item');
-
-            paymentOptions.forEach(option => {
-                option.addEventListener('click', function () {
-                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
+        // 付款方式選擇處理
+        const paymentOptions = document.querySelectorAll('.pay-method-option-item');
+        let selectedPaymentMethod = null;
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function () {
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPaymentMethod = this.querySelector('span').innerText;
             });
+        });
 
-            // Confirm payment button handling
-            document.getElementById('confirmPaymentButton').addEventListener('click', function () {
-                const order = {
-                    studentId: document.getElementById('name').value,
-                    couponId: document.getElementById('checkout-discount-code').innerText,
-                    shippingAddress: document.getElementById('address').value,
-                    paymentMethod: 'LINE PAY',
-                    totalAmount: parseInt(grandTotal.replace('$', ''))
-                };
+        // 一鍵輸入按鈕的處理
+        document.getElementById('fillFormButton').addEventListener('click', function () {
+            document.getElementById('name').value = '李筱涵';
+            document.getElementById('phone').value = '0912345678';
+            document.getElementById('postalCode').value = '320';
+            document.getElementById('address').value = '320桃園市中壢區定寧路31號';
+            document.getElementById('note').value = '幫我分開包裝謝謝~';
+        });
 
-                fetch('/api/orders/create', {
+        // 確認付款按鈕的處理
+        document.getElementById('confirmPaymentButton').addEventListener('click', function () {
+            const order = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                postalCode: document.getElementById('postalCode').value,
+                address: document.getElementById('address').value,
+                note: document.getElementById('note').value,
+                paymentMethod: selectedPaymentMethod,
+                subtotal: subtotal,
+                grandTotal: grandTotal
+            };
+
+            // 將訂單信息存儲在sessionStorage中
+            sessionStorage.setItem('orderInfo', JSON.stringify(order));
+
+            const orderData = {
+                shippingAddress: order.address,
+                paymentMethod: order.paymentMethod,
+                totalAmount: parseInt(grandTotal)
+            };
+
+            fetch('/productcart/createOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            }).then(response => {
+                return response.json();
+            }).then(orderId => {
+                const data = {
+                    total: parseInt(grandTotal),
+                    orderId: orderId
+                }
+                fetch('/LinePayReqV2', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(order)
+                    body: JSON.stringify(data)
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Order created:', data);
-                        // Handle success - Redirect to payment URL
-                        if (data) {
-                            const transactionId = data.transactionId;
-                            window.location.href = `/LinePayReqV2?transactionId=${transactionId}`;
-                        }
+                    .then(response => response.text())
+                    .then(paymentUrl => {
+                        window.location.href = paymentUrl;
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        // Handle error
                     });
+            }).catch(error => {
+                console.error('Error:', error);
             });
         });
-    </script>
+    });
+</script>
+
 </body>
 
 </html>

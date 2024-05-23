@@ -7,12 +7,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.bean.StudentNewPwdBean;
 import com.softskillz.account.model.service.StudentService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -222,8 +226,7 @@ public class StudentCrudController {
 		insertBean.setStudentRegistrationDate(now); // 設置註冊日期為當前日期
 
 		// 如果未提供照片，則使用預設照片
-		insertBean.setStudentPhoto(studentPhoto != null ? studentPhoto
-				: "student01.jpg");
+		insertBean.setStudentPhoto(studentPhoto != null ? studentPhoto : "student01.jpg");
 		insertBean.setStudentRegistrationDate(now); // 設置註冊日期為當前日期
 
 		StudentBean resultBean = studentService.insert(insertBean);
@@ -276,13 +279,12 @@ public class StudentCrudController {
 		studentBean.setStudentGender(studentGender);
 		studentBean.setStudentBirth(date);
 		studentBean.setStudentMobile(studentMobile);
-		
-		if(!studentPhoto.isEmpty() && studentPhoto.getSize() > 0) {
+
+		if (!studentPhoto.isEmpty() && studentPhoto.getSize() > 0) {
 			String studentPhotoFileName = processImage(studentPhoto);
 			// 存進資料庫
 			studentBean.setStudentPhoto(studentPhotoFileName);
 		}
-		
 
 		studentService.updateStudentBean(studentBean);
 
@@ -324,15 +326,169 @@ public class StudentCrudController {
 			System.out.println("upload directory created");
 		}
 
-		
 		File saveFilePath = new File(saveFileDir, fileName);
-		
-		//上傳檔案路徑到專案
+
+		// 上傳檔案路徑到專案
 		mf.transferTo(saveFilePath);
-		
+
 		System.out.println("saveFilePath:" + saveFilePath);
 
 		return fileName;
 	}
+
+	/************************************
+	 * 寄驗證碼
+	 * 
+	 * @throws jakarta.mail.MessagingException
+	 *************************************/
+
+	// 忘記密碼網頁
+	@GetMapping({ "/student-forgotPasssword" })
+	public String studentForgotPassword() {
+		return "/elearning/account/student/StudentForgotPwd.jsp";
+	}
+
+	// 重設密碼網頁
+//	@GetMapping({ "/student-resetPasssword" })
+//	public String studentResetPassword() {
+//		return "/elearning/account/student/StudentResetPwd.jsp";
+//	}
+
+	@PostMapping("/StudentForgotPwd")
+	public String insertForgotPwd(@RequestParam("studentEmail") String studentEmail, Model model)
+			throws MessagingException, jakarta.mail.MessagingException {
+		String token = UUID.randomUUID().toString();
+		Optional<StudentBean> optional = studentService.findStudentByEmail(studentEmail);
+		if (optional != null && optional.isPresent()) {
+			StudentBean studentBean = optional.get();
+			int sId = studentBean.getStudentId();
+			StudentNewPwdBean bean = new StudentNewPwdBean();
+			bean.setsId(sId);
+			bean.setToken(token);
+			bean.setStudentRegistrationDate(LocalDateTime.now());
+
+			studentService.insertForgotPwd(bean);
+			String receivers = studentEmail;
+			String subject = "忘記密碼通知信";
+			
+			String resetPwdLink = "http://localhost:8080/student/reset-password?token="+token;
+			String content = mailContent(resetPwdLink);
+			String from = "SoftSkillz<itslowei@gmail.com>";
+			studentService.sendPlainText(receivers, subject, content, from);
+			model.addAttribute("msg", "信件已發送，請前往信箱查看");
+//			return "/student/student-forgotPasssword"; 錯誤！redirect會清空attribute，controller的寫法要用redirect寫
+			return "/elearning/account/student/StudentForgotPwd.jsp";
+		}
+		model.addAttribute("msg", "該信箱尚未註冊");
+		return "/elearning/account/student/StudentForgotPwd.jsp";
+	}
+
+	//redirect就是呼叫controller的url，不攜帶資料
+	//沒有redirect就是呼叫jsp的路徑
+    //private String mailContent(String string, String string2) {
+    //String content="welcome";
+    //return content;
+    //}
+
+	private String mailContent(String resetLink) {
+	    String content = "<!DOCTYPE html>"
+	            + "<html lang='zh-TW'>"
+	            + "<body>"
+	            + "    <div style='background-color: #ffffff; width: 80%; max-width: 600px; padding: 20px; border: 5px solid #ccc; border-radius: 20px;'>"
+	            + "        <div style='text-align: center; background-color: #ffffff;'>"
+	            + "            <h1 style='color: #386391;'>重設密碼</h1>"
+	            + "            <p>請點擊以下連結，以設定一組新的密碼：</p>"
+	            + "            <a href='" + resetLink + "' style='display: inline-block; width: 250px; background-color: #386391; color: white; text-align: center; padding: 10px 0; text-decoration: none; border-radius: 5px; font-size: 20px; margin: 20px 0;'>設定新密碼</a>"
+	            + "            <p>如果您沒有請求重設密碼，請忽略這封郵件。</p>"
+	            + "            <p>from SoftSkillz Team</p>"
+	            + "        </div>"
+	            + "    </div>"
+	            + "</body>"
+	            + "</html>";
+	    return content;
+	}
+
+	@GetMapping("/reset-password")
+	public String resetPassword(@RequestParam("token") String token, HttpSession session) {
+		
+		System.out.println("token : " + token);
+		
+		/* 紀錄當前時間 */
+		LocalDateTime now = LocalDateTime.now();
+
+		/* 創建一個Optional物件 */
+		Optional<StudentNewPwdBean> optionalToken = studentService.findToken(token);
+
+		/* 驗證此token是否存在並回傳布林值 */
+		boolean exist = optionalToken.isPresent();
+
+		if (exist) {
+			/* 如果此資料存在，創建他的bean物件 */
+			StudentNewPwdBean resetBean = optionalToken.get();
+			System.out.println("token : " + resetBean.getToken());
+			System.out.println("studentID : " + resetBean.getsId());
+			
+			/* 設定session提供後續作使用 */
+			session.setAttribute("forgetMemberBean", resetBean);
+
+			/* 紀錄此筆ID */
+			Integer thisID = resetBean.getTokenId();
+
+			/* 抓取創建時間 */
+			LocalDateTime harvestTime = resetBean.getStudentRegistrationDate();
+
+			/* 抓取此token資料使否使用過 */
+			//boolean used = resetBean.isUsed();
+
+			/* 取得當前時間與創建時間之間的時間差 */
+			long minutesDifference = ChronoUnit.MINUTES.between(harvestTime, now);
+
+			/* 判斷時間差是否大於15 */
+			boolean timeOut = minutesDifference > 15;
+
+			if (timeOut == false) {
+				/* 比較TOKEN */
+				if (token.equals(resetBean.getToken())) {
+					studentService.deleteToken(thisID);
+					//驗證成功
+					return "/elearning/account/student/StudentResetPwd.jsp";
+				} else {
+					//驗證失敗
+					studentService.deleteToken(thisID);
+					return "/elearning/account/student/TokenErr.jsp";
+				}
+			} else {
+				//這個token超時
+				studentService.deleteToken(thisID);
+				return "/elearning/account/student/TokenTimeOut.jsp";
+			}
+		} else {
+			//這個token不存在
+			return "/elearning/account/student/TokenNotExist.jsp";
+		}
+
+	}
+	
+	@PostMapping("/StudentResetPwd")
+	public String studentResetPassword(@RequestParam("studentPassword") String studentPassword,
+	        HttpSession session, Model model) {
+		
+	    StudentNewPwdBean forgetMemberBean = (StudentNewPwdBean) session.getAttribute("forgetMemberBean");
+	    
+	    if (forgetMemberBean == null) {
+	        model.addAttribute("msg", "無效的請求，請重新申請重設密碼");
+	        System.out.println("無效的請求，請重新申請重設密碼");
+	        return "redirect:/student/student-forgotPasssword";
+	    }
+
+	    Integer sId = forgetMemberBean.getsId();
+	    System.out.println("會員ID: " + sId);
+	    StudentBean forgetPasswordMember = studentService.findById(sId);
+	    forgetPasswordMember.setStudentPassword(studentPassword);
+	    studentService.updateStudentBean(forgetPasswordMember);
+	    return "redirect:/student/student-loginPage";
+	}
+
+
 
 }

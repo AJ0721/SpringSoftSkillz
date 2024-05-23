@@ -42,7 +42,7 @@ $(document).ready(function () {
         });
     
         // Submit Reply Button
-        $(document).one('click', '.submit-reply', function (e) {
+       $(document).one('submit', '.reply-form', function (e) {
             e.preventDefault();
             const replyContent = $(this).closest('form').find('.reply-content').val().trim();
             if (replyContent === "") {
@@ -197,6 +197,11 @@ function deletePost(postId) {
 
             console.log('Deleted post ID:', postId);
             $(`li[data-post-id="${postId}"]`).remove();
+        })
+        .then(deletedPost => {
+            Swal.fire("刪除成功", "", "success");
+            console.log('deleted post:', deletedPost);
+           
         })
         .catch(error => console.error('Error deleting post:', error));
 }
