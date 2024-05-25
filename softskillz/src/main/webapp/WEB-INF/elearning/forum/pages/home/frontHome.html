@@ -8,9 +8,6 @@
   <meta content="" name="keywords" />
   <meta content="" name="description" />
 
-
-
-
   <!-- Favicon -->
   <link href="/img/favicon.ico" rel="icon" />
 
@@ -37,6 +34,21 @@
 
 
   <style>
+    .老師 {
+      font-weight: bold;
+      color: blue;
+    }
+
+    .學生 {
+      font-weight: bold;
+      color: green;
+    }
+
+    .管理員 {
+      font-weight: bold;
+      color: red;
+    }
+
     .sidebar,
     .my-threads {
       position: sticky;
@@ -55,6 +67,21 @@
         padding-top: 80px;
         /* Adjust based on your navbar height */
       }
+    }
+
+    .老師 {
+      font-weight: bold;
+      color: blue;
+    }
+
+    .學生 {
+      font-weight: bold;
+      color: green;
+    }
+
+    .管理員 {
+      font-weight: bold;
+      color: red;
     }
 
 
@@ -146,12 +173,7 @@
         }
         fetchAndDisplayThreads();
       });
-
-      updateNavbar(userType);
-
-
     });
-
 
 
     document.addEventListener('visibilitychange', function () {

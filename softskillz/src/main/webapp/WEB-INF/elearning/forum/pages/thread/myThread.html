@@ -39,7 +39,7 @@
         .sidebar,
         .my-threads {
             position: sticky;
-            top: 70px;
+            top: 100px;
             max-height: calc(100vh - 70px);
             overflow-y: auto;
             background-color: #e6edf0;
@@ -47,8 +47,19 @@
             height: calc(100vh - 70px);
         }
 
-        .content-container {
-            margin-top: 90px;
+        body {
+            font-size: 1.25rem;
+
+            .content-container {
+                padding-top: 80px;
+                /* Adjust based on your navbar height */
+            }
+        }
+
+
+        .sidebar-content {
+            margin-top: 0px;
+            /* Adjust based on your navbar height */
         }
 
         .content {
@@ -63,30 +74,12 @@
             padding: 15px;
         }
 
+
         .navbar {
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1;
-        }
-
-        .main-content {
-            padding: 20px;
-        }
-
-        @media (max-width: 992px) {
-            .main-content {
-                margin-left: 0;
-            }
-
-            .sidebar {
-                position: static;
-                height: auto;
-            }
-        }
-
-        body {
-            font-size: 1.25rem;
         }
     </style>
 </head>
@@ -109,19 +102,22 @@
                 <div class="row">
                     <!-- Data Table -->
 
-                    <div class="form-group mb-0">
+                    <div class="form-group mt-2 mb-0 ">
                         <button type="button" class="btn icon border-0  btn-lg" id="cancel">
                             <i class="bi bi-arrow-left-circle fa-2x " style="color:#5585b5"></i>
                         </button>
+
                     </div>
+
                     <div class="col-md-12 content">
-
-
-                        <div class="d-flex justify-content-end mb-2">
-                            <span id="user-detail"></span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3>我的文章</h3>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <span id="user-detail"></span>
+                                </div>
+                            </div>
                         </div>
-
-                        <h3>我的文章</h3>
                         <div class="table-responsive">
                             <table class="table table-bordered border-5 table-hover rounded-3" id="thread-table">
                                 <thead>
@@ -171,13 +167,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            validateUser().then(user => {
+
+            getLoggedInUser().then(user => {
                 if (user) {
                     initializePage(user.loggedInUser, user.userType);
-                    updateNavbar(user.userType);  // Correctly pass userType to updateNavbar
+                    updateNavbar(user.userType);
                     fetchUserThreads(user.loggedInUser, user.userType);
                 }
-            }).catch(error => console.error('Error validating user:', error));
+            });
+
 
             // Function to fetch threads based on user type and ID
             function fetchUserThreads(loggedInUser, userType) {
@@ -255,7 +253,7 @@
             }
 
 
-            
+
 
 
             $('#cancel').click(function (e) {

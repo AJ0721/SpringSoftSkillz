@@ -137,11 +137,11 @@
                         <div class="card border shadow-0 mb-4">
                             <div class="m-4">
                                 <h5>結帳資訊</h5>
-                                <p>姓名: <span id="order-name"></span></p>
-                                <p>手機: <span id="order-phone"></span></p>
-                                <p>郵政編碼: <span id="order-postalCode"></span></p>
-                                <p>地址: <span id="order-address"></span></p>
-                                <p>備註: <span id="order-note"></span></p>
+                                <p>姓名: <span th:text="${order.customerName}"></span></p>
+                                <p>電話: <span th:text="${order.phone}"></span></p>
+                                <p>郵政編碼: <span th:text="${order.postalCode}"></span></p>
+                                <p>收貨地址: <span th:text="${order.shippingAddress}"></span></p>
+                                <p>備註: <span th:text="${order.notes}"></span></p>
                                 <p>訂單號: <span th:text="${order.orderId}"></span></p>
                                 <p>訂單日期: <span
                                         th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
@@ -150,6 +150,7 @@
                                 <p>付款方式: <span th:text="${order.paymentMethod}"></span></p>
                                 <p>訂單狀態: <span th:text="${order.orderStatus}"></span></p>
                             </div>
+
                         </div>
                     </div>
                     <div class="card border shadow-0 mb-4">
@@ -165,7 +166,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="item : ${order.orderItems}">
+                                <tr th:each="item:${order.orderItems}">
                                     <td th:text="${item.productName}"></td>
                                     <td th:text="${item.quantity}"></td>
                                     <td th:text="${item.productPrice}"></td>
@@ -183,7 +184,6 @@
             </div>
         </div>
         <!-- Order Detail -->
-    </div>
     </div>
 </section>
 <!-- 中間內容結束 -->
@@ -242,24 +242,9 @@
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
-
-<!-- 我的JavaScript -->
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // 從 sessionStorage 中獲取訂單信息
-        const orderInfo = JSON.parse(sessionStorage.getItem('orderInfo'));
 
-        if (orderInfo) {
-            document.getElementById('order-name').innerText = orderInfo.name;
-            document.getElementById('order-phone').innerText = orderInfo.phone;
-            document.getElementById('order-postalCode').innerText = orderInfo.postalCode;
-            document.getElementById('order-address').innerText = orderInfo.address;
-            document.getElementById('order-note').innerText = orderInfo.note;
-            document.getElementById('order-paymentMethod').innerText = orderInfo.paymentMethod;
-            document.getElementById('order-subtotal').innerText = `$${orderInfo.subtotal}`;
-            document.getElementById('order-grandTotal').innerText = `$${orderInfo.grandTotal}`;
-        }
-    });
 </script>
+
 </body>
 </html>

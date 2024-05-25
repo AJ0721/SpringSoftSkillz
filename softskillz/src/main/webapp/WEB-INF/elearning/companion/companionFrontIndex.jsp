@@ -72,6 +72,15 @@
             }
         }
     </script>
+    <script type="text/javascript">
+        window.onload = function() {
+            // 在頁面加載時檢查是否有錯誤信息
+            var successUpdate = '<c:out value="${successUpdate}" />';
+            if (successUpdate !== '') {
+                alert(successUpdate);
+            }
+        }
+    </script>
     </head>
 
     <body>

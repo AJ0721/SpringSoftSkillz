@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.softskillz.account.model.bean.StudentBean;
@@ -191,6 +192,45 @@ public class StudentCrudController {
 		return "/elearning/account/student/StudentCreate.jsp";
 	}
 
+	//確認帳號是否存在
+	@GetMapping("/checkAccount")
+	@ResponseBody
+	public Boolean checkAccount(@RequestParam("username")String username) {
+		
+		Boolean result = studentService.checkAccout(username);
+		
+		return result;
+	}
+	
+	@GetMapping("/checkMail")
+	@ResponseBody
+	public Boolean checkMail(@RequestParam("usermail")String usermail) {
+		
+		Boolean result = studentService.checkMail(usermail);
+		
+		return result;
+	}
+	
+	@GetMapping("/checkPhone")
+	@ResponseBody
+	public Boolean checkPhone(@RequestParam("userphone")String userphone) {
+		
+		Boolean result = studentService.checkPhone(userphone);
+		
+		return result;
+	}
+	
+	@GetMapping("/checkNickname")
+	@ResponseBody
+	public Boolean checkNickname(@RequestParam("nickname")String nickname) {
+		
+		Boolean result = studentService.checkNickname(nickname);
+		
+		return result;
+	}
+
+	
+	
 	// 新增, 學生註冊
 	@PostMapping("/student-create")
 	public String studentInsert(@RequestParam("studentLastName") String studentLastName,
@@ -318,7 +358,8 @@ public class StudentCrudController {
 		fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + raNumber
 				+ extension;
 
-		String saveFileDirPath = "/Users/Wei/iSpan/SoftSkillz-git/softskillz/src/main/webapp/WEB-INF/dist/account/student/images/";
+		String saveFileDirPath = "/Users/wumengyan/Documents/Action/workspace/softskillz/src/main/webapp/WEB-INF/dist/account/student/images/";
+//		String saveFileDirPath = "/Users/Wei/iSpan/SoftSkillz-git/softskillz/src/main/webapp/WEB-INF/dist/account/student/images/";
 		File saveFileDir = new File(saveFileDirPath);
 
 		if (!saveFileDir.exists()) {

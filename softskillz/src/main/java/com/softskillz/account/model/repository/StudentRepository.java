@@ -21,7 +21,20 @@ public interface StudentRepository extends JpaRepository<StudentBean, Integer> {
     Optional<StudentBean> findStudentByEmail(@Param("sEmail") String studentEmail);
 
 	StudentBean findByStudentIdFormatted(String studentIdFormatted);
-
+	
+	//創帳號查找重複資料
+	//帳號重複
+	@Query("from StudentBean sb where sb.studentUsername = :sUsername")
+	Optional<StudentBean> checkAccout(@Param("sUsername")String username);
+	//信箱重複
+	@Query("from StudentBean sb where sb.studentEmail = :sEmail")
+	Optional<StudentBean> checkMail(@Param("sEmail")String email);
+	//手機重複
+	@Query("from StudentBean sb where sb.studentMobile = :sMobile")
+	Optional<StudentBean> checkPhone(@Param("sMobile")String phone);
+	//暱稱重複
+	@Query("from StudentBean sb where sb.studentNickname = :sNickname")
+	Optional<StudentBean> checkNickname(@Param("sNickname")String nickname);
 }
 	
 

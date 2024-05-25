@@ -286,6 +286,7 @@ public class CompanionController {
 			}
 			
 			companionService.update(companionBean);
+			view.addObject("successUpdate", "個人條件更新成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			view.addObject("errorMessage", "An error occurred: " + e.getMessage());

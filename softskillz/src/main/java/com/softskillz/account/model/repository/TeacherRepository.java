@@ -24,4 +24,14 @@ public interface TeacherRepository extends JpaRepository<TeacherBean, Integer> {
    
    TeacherBean findByTeacherIdFormatted (String teacherFormatID);
 
+    //創帳號查找重複資料
+ 	//帳號重複
+ 	@Query("from TeacherBean tb where tb.teacherUserName = :tUsername")
+ 	Optional<TeacherBean> checkAccout(@Param("tUsername")String username);
+ 	//信箱重複
+ 	@Query("from TeacherBean tb where tb.teacherEmail = :tEmail")
+ 	Optional<TeacherBean> checkMail(@Param("tEmail")String email);
+ 	//手機重複
+ 	@Query("from TeacherBean tb where tb.teacherMobile = :tMobile")
+ 	Optional<TeacherBean> checkPhone(@Param("tMobile")String phone);
 }

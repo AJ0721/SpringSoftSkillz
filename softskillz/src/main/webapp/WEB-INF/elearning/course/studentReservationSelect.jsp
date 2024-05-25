@@ -74,7 +74,7 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
     >
       <a
-        href="/softskillz/fhomepage"
+        href="/courseFront/selectAllPage"
         class="navbar-brand d-flex align-items-center px-4 px-lg-5"
       >
         <h2 class="m-0 text-primary">
@@ -120,9 +120,24 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
                 class="dropdown-item"
                 >學生預約</a
               >
+              <a href="/courseorder/order.do" class="dropdown-item">課程訂單</a>
             </div>
           </div>
-          <a href="#" class="nav-item nav-link" style="font-size: 26px">學伴</a>
+          <!--             首頁學伴選單 -->
+          <div class="nav-item dropdown">
+            <a
+              href="/companionFrontIndex"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >學伴</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/companionFrontIndex" class="dropdown-item">學伴配對</a>
+              <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
+            </div>
+          </div>
+          <!--             首頁學伴選單 -->
           <div class="nav-item dropdown">
             <a
               href="/courseFront/selectAllPage"
@@ -173,13 +188,19 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
             style="font-size: 26px"
             >論壇</a
           >
-          <a href="#" class="nav-item nav-link" style="font-size: 26px">商城</a>
-          <a
-            href="/courseorder/order.do"
-            class="nav-item nav-link"
-            style="font-size: 26px"
-            >訂單</a
-          >
+          <div class="nav-item dropdown">
+            <a
+              href="/mall/frontend"
+              class="nav-item nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >商城</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/mall/frontend" class="dropdown-item">商城</a>
+              <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+            </div>
+          </div>
           <div class="nav-item dropdown">
             <a
               href="#"
@@ -199,63 +220,19 @@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
           </div>
         </div>
         <div class="navbar-nav p-4 p-lg-0">
-          <c:choose>
-            <c:when test="${loggedInUser == 'guest'}">
-              <div class="d-flex align-items-center">
-                <form
-                  id="student-login-form"
-                  action="/student/student-loginPage"
-                  method="get"
-                  class="d-none d-lg-block"
-                >
-                  <button
-                    type="submit"
-                    class="btn btn btn-primary py-4 px-lg-5"
-                    style="
-                      background-color: #3f6cba;
-                      color: white;
-                      font-size: 26px;
-                      border: 1px solid transparent;
-                    "
-                    onmouseover="this.style.backgroundColor='lightblue'; this.style.borderColor='transparent';"
-                    onmouseout="this.style.backgroundColor='#3f6cba'; this.style.borderColor='transparent';"
-                  >
-                    學生登入
-                  </button>
-                </form>
-                <form
-                  id="teacher-login-form"
-                  action="/teacher/teacher-loginPage"
-                  method="get"
-                  class="d-none d-lg-block"
-                >
-                  <button
-                    type="submit"
-                    class="btn btn-primary py-4 px-lg-5"
-                    style="font-size: 26px"
-                  >
-                    老師登入
-                  </button>
-                </form>
-              </div>
-            </c:when>
-            <c:otherwise>
-              <form
-                action="/student/student-logout"
-                method="post"
-                class="d-none d-lg-block"
-                th:if="${loggedInUser == 'student'}"
-              >
-                <button
-                  type="submit"
-                  class="btn btn-primary py-4 px-lg-5"
-                  style="font-size: 26px"
-                >
-                  <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-                </button>
-              </form>
-            </c:otherwise>
-          </c:choose>
+          <form
+            action="/student/student-logout"
+            method="post"
+            class="d-none d-lg-block"
+          >
+            <button
+              type="submit"
+              class="btn btn-primary py-4 px-lg-5"
+              style="font-size: 26px"
+            >
+              <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+            </button>
+          </form>
         </div>
       </div>
     </nav>

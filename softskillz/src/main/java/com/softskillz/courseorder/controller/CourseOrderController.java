@@ -57,10 +57,9 @@ public class CourseOrderController {
 	@ResponseBody
 	public String doOrder(@PathVariable("tot")Integer total, HttpSession session) {
 
-		Integer studentID = 1;
 		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
 //
-		studentID = studentBean.getStudentId();
+		Integer studentID = studentBean.getStudentId();
 
 		Long time = System.currentTimeMillis();
 		Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("coursecart");
@@ -80,9 +79,8 @@ public class CourseOrderController {
 //	@GetMapping
 	@ResponseBody
 	public List<Order> getOrder(HttpSession session) {
-		Integer studentID = 1;// 先頂著
 		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
-		studentID = studentBean.getStudentId();
+		Integer studentID = studentBean.getStudentId();
 		List<Order> orders = coService.studentORD(studentID);
 		return orders;
 	}
@@ -118,9 +116,8 @@ public class CourseOrderController {
 			@RequestParam(value = "sort", defaultValue = "orderID") String sort,
 			@RequestParam(value = "direction", defaultValue = "DESC") String sortDirection,
 			@RequestParam(value = "status", defaultValue = "已付款") String status,HttpSession session) {
-		Integer studentID = 1;
 		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
-		studentID = studentBean.getStudentId();
+		Integer studentID = studentBean.getStudentId();
 		Direction direction = Direction.fromString(sortDirection);
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
 		Page<Order> pageOrder = coService.getPageByStudentID(pageable, studentID, status);
@@ -140,9 +137,8 @@ public class CourseOrderController {
 			@RequestParam(value = "status", defaultValue = "已付款") String status,HttpSession session) {
 		System.out.println("d1:" + date1);
 		System.out.println("d2:" + date2);
-		Integer studentID = 1;
 		StudentBean studentBean = (StudentBean) session.getAttribute("studentData");
-		studentID = studentBean.getStudentId();
+		Integer studentID = studentBean.getStudentId();
 		Direction direction = Direction.fromString(sortDirection);
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
 		Page<Order> pageOrder = coService.getPageByStudentIDAndDate(pageable, date1, date2,studentID,status);

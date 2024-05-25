@@ -160,19 +160,19 @@
 					</div>
 				</div>
 				<a href="/courseorder/order.do" class="nav-item nav-link"
-					style="font-size: 26px;">訂單</a> <a href="#"
-					class="nav-item nav-link" style="font-size: 26px;">論壇</a> <a
-					href="#" class="nav-item nav-link" style="font-size: 26px;">商城</a>
+					style="font-size: 26px;">訂單</a>
+					<a href="/forum/home" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
+					<a href="/mall/frontend" class="nav-item nav-link" style="font-size: 26px;">商城</a>
 
 				<div class="nav-item dropdown">
 					<a href="#" class="nav-link dropdown-toggle "
 						data-bs-toggle="dropdown"><i class="bi bi-chat-square-dots"
-						style="font-size: 32px;"></i></a>
+						style="font-size: 27px;"></i></a>
 					<div class=" dropdown-menu fade-down m-0" id="chatlist"></div>
 				</div>
 				<div class="navbar-nav ms-auto p-4 p-lg-0 ">
 					<a href="/coursecart/cart.do" class="nav-item nav-link "
-						style="font-size: 32px;"><i class="bi bi-cart4"></i></a>
+						style="font-size: 27px;"><i class="bi bi-cart4"></i></a>
 				</div>
 			</div>
 		</div>

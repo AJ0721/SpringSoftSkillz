@@ -32,6 +32,21 @@
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet" />
     <style>
+        .老師 {
+            font-weight: bold;
+            color: blue;
+        }
+
+        .學生 {
+            font-weight: bold;
+            color: green;
+        }
+
+        .管理員 {
+            font-weight: bold;
+            color: red;
+        }
+
         .sidebar,
         .my-threads {
             position: sticky;
@@ -52,6 +67,12 @@
             }
         }
 
+        .custom-height {
+            height: 300px;
+            /* Adjust this value to your desired height */
+            overflow-y: auto;
+            /* Add scrollbar if content overflows */
+        }
 
         .sidebar-content {
             margin-top: 0px;
@@ -138,10 +159,12 @@
                                                     <div class="form-group">
                                                         <!-- content -->
 
-                                                        <h6 class="rounded-4 p-2 border p-3" id="threadContent"
-                                                            readonly>
 
-                                                        </h6>
+                                                        <h5 class="rounded-4 p-2 border p-3 .custom-height"
+                                                            id="threadContent" readonly>
+
+                                                        </h5>
+
                                                     </div>
                                                     <!-- Reply Form -->
                                                     <div class="mt-4">
@@ -206,18 +229,15 @@
 
     <script>
 
+
         document.addEventListener('DOMContentLoaded', function () {
             validateUser().then(user => {
                 if (user) {
                     initializePage(user.loggedInUser, user.userType);
                 }
-                fetchAndDisplayThreads();
             });
-
-            updateNavbar(userType);
-
-
         });
+
 
 
     </script>

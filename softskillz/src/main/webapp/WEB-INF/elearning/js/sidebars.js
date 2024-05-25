@@ -4,12 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (user) {
             loggedInUser = user.loggedInUser;
             userType = user.userType;
-            initializePage(loggedInUser, userType);
             updateNavbar(userType);
         } else {
             loadNavbars(); // Load default navbars if no user is logged in
         }
-        fetchAndDisplayThreads();
+      
     });
 });
 

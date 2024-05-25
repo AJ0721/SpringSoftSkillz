@@ -60,15 +60,26 @@ public class CourseFrontController {
 
 	// AJAX 請求所有課程資料
 	@GetMapping("/selectAllCourses")
-	@ResponseBody // 指明返回的是 JSON 數據
-	public ResponseEntity<List<CourseBean>> getAllCourses(@RequestParam(required = false) String category) {
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> getAllCourses(@RequestParam(required = false) String category,
+			@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+
 		List<CourseBean> courses;
 		if (category == null || category.equals("所有課程")) {
 			courses = courseService.findAllCourses();
 		} else {
 			courses = courseService.findCoursesByCategory(category);
 		}
-		return ResponseEntity.ok(courses); // 返回包含課程列表的 ResponseEntity
+
+		int start = (page - 1) * size;
+		int end = Math.min(start + size, courses.size());
+		List<CourseBean> paginatedCourses = courses.subList(start, end);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("courses", paginatedCourses);
+		response.put("totalItems", courses.size());
+
+		return ResponseEntity.ok(response);
 	}
 
 	// 課程詳情頁面

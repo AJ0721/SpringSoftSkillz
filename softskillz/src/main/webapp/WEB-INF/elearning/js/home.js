@@ -9,13 +9,13 @@
  }
 
 // Create a thread card HTML
-function createThreadCard(thread, authorName, createdTime) {
+function createThreadCard(thread, authorName, createdTime, authorType) {
     return `
         <div class="col-12 mb-4" id="thread-${thread.threadId}">
             <div class="bg-white p-3 border border-3 rounded-3 thread-card">
                 <h5>${thread.threadTitle}</h5>
-                <h6 class="text-muted">作者: ${authorName}</h6>
-                <h6 class="text-muted">時間: ${createdTime}</h6>
+                <h5 class="text-muted">作者: <span class="${authorType}">${authorName}</span></h5>
+                <h5 class="text-muted">時間: ${createdTime}</h5>
                 <p>${thread.threadContent.substring(0, 100)}...</p>
                 <a href="/forum/f/thread/id/${thread.threadId}" class="btn btn-link p-0">查看更多</a>
             </div>
@@ -30,9 +30,12 @@ function displayThreads(threads) {
     threads.sort((a, b) => new Date(b.threadCreatedTime) - new Date(a.threadCreatedTime));
 
     threads.forEach(thread => {
-        const { authorName } = getUserDetails(thread);
+        const { authorName, authorType } = getUserDetails(thread);
+
+
+      
         const createdTime = new Date(thread.threadCreatedTime).toLocaleString();
-        const threadCard = createThreadCard(thread, authorName, createdTime);
+        const threadCard = createThreadCard(thread, authorName, createdTime, authorType);
         threadList.insertAdjacentHTML('beforeend', threadCard);
     });
 }

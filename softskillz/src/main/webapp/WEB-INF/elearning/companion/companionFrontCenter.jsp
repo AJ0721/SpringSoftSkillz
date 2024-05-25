@@ -84,7 +84,7 @@ function upload() {
 </script>
       <style>
         #img {
-          width: 150px;
+          width: 170px;
           height: auto;
         }
 #TABLE{
@@ -92,13 +92,13 @@ overflow-x: auto; /* 水平溢出時顯示滾動條 */
 }
 
         
-        tr:nth-child(even) {
-  		background-color: #FFFAFA;
-		}
+/*         tr:nth-child(even) { */
+/*   		background-color: #FFFAFA; */
+/* 		} */
 		
 		/* 鼠標懸停時的背景色 */
 		tr:hover {
-		background-color: #D2E9FF;
+		background-color: #c0d2ea;
 		}
 		
 		#thOfTable{
@@ -106,34 +106,38 @@ overflow-x: auto; /* 水平溢出時顯示滾動條 */
 		}
         
         input {
-height:30px;
-border:solid 1px;
-border-radius: 5px;
-    width: 100px;
+        margin:15px;
+height:50px;
+border:solid 1px #ECF5FF;
+border-radius: 10px;
+    width: 250px;
     text-align: center;
     font-size: 17px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
 }
         select {
-height:30px;
-border:solid 1px;
-border-radius: 5px;
-    width: 110px;
+        margin:15px;
+height:50px;
+border:solid 1px #ECF5FF;
+border-radius: 10px;
+    width: 250px;
     text-align: center;
     font-size: 17px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
 }
 textarea {
-    border: solid 1px;
-    border-radius: 5px;
-    width: 140px;
-    text-align: center;
+margin:15px;
+    border:solid 1px #ECF5FF;
+    border-radius: 10px;
+    width: 250px;
     font-size: 17px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
     resize: none;
-    height: 100px;
-    line-height: 1.4; /* 減少行高，可以設置為任何小於1的值 */
-    padding-top: 28px; /* 增加內邊距以便垂直居中 */
+    height: 180px;
+    line-height: 1.3; /* 減少行高，可以設置為任何小於1的值 */
+    padding-top:15px;
+    padding-left:10px;
+    padding-right:10px;
 }
 
 textarea::-webkit-scrollbar {
@@ -365,22 +369,85 @@ textarea::-webkit-scrollbar-thumb:hover {
 <jsp:useBean id="companion" scope="request" class="com.softskillz.companion.model.CompanionBean" />
 <jsp:useBean id="student" scope="request" class="com.softskillz.account.model.bean.StudentBean" />
 <form action="/UpdateMyData" method="post">
+<input type="hidden" name="_method" value="PUT">
 <div id="TABLE" align="center" class="mt-3">
-<table id="TABLE" >
+<table id="TABLE">
 <tr id="thOfTable" style="background-color:white" align="center">
 <!-- <th>學伴編號<th>學生會員編號 -->
-<th>暱稱<th>母語<th>其他會說語言<th>學習興趣<th>學習頻率<th>關於我<th>照片<th>選擇照片<th>上傳
+<!-- <th>暱稱<th>母語<th><th>學習興趣<th>學習頻率<th>關於我<th>照片<th>選擇照片<th>上傳 -->
 </tr>
+<tr align="center" style="height: 240px;">
+<td colspan="2"><img id="img" src="${companion.companionPhoto}" alt="個人照片">
+<div>
+<input type="file" name="companion_photo" id="fileNameDisplay" style="display: none;" onchange="updateFileName()"/>
+<button type="button" onclick="document.getElementById('fileNameDisplay').click()" class="btn btn-primary" style="height:35px ;width:90px; border-radius:8px;margin:5px;background-color:#92afd6;border:0px">選擇檔案</button>
+
+<button type="button" onclick="upload()" class="btn btn-primary" style="height:35px ;width:90px; border-radius:8px;margin:5px;background-color:#92afd6;border:0px">上傳照片</button>
+</div>
+<td rowspan="2"align="center">
+關於我
+</td>
+<td rowspan="2"><textarea name="companion_about_me"><%= companion.getCompanionAboutMe() %></textarea>
+</tr>
+
 <tr align="center">
-<input type="hidden" value="<%= companion.getCompanionId()%>" name="companion_id" readonly style="background-color: #FFF2F2">
-<input type="hidden" value="<%= companion.getStudentBeanID().getStudentId() %>" name="student_id" readonly style="background-color: #FFF2F2">
-<td><input type="text" value="<%= companion.getStudentBeanID().getStudentNickname() %>" name="companion_username" readonly style="background-color: #FFF2F2">
+<%-- <input type="hidden" value="${companion.getStudentBeanID()}" name="studentBeanID"> --%>
+<tr align="center">
+<td>學生會員編號
+<input type="hidden" value="<%= companion.getCompanionId()%>" name="companion_id" readonly style="background-color: #D2E9FF">
+<td><input type="text" value="<%= companion.getStudentBeanID().getStudentId() %>" name="student_id" readonly style="background-color: #D2E9FF">
+
+<td>暱稱
+<td><input type="text" value="<%= companion.getStudentBeanID().getStudentNickname() %>" name="companion_username" readonly style="background-color: #D2E9FF">
 <%-- <tr><td>學伴性別<td><input type="text" value="<%= companion.getCompanionGender() %>" name="companion_gender"> --%>
 <%-- <tr><td>學伴生日<td><input type="text" value="<%= outputFormat.format(inputFormat.parse(companion.getCompanionBirth())) %>" name="companion_birth"> --%>
-<td><input type="text" value="<%= companion.getCompanionFirstLanguage() %>" name="companion_first_language">
-<td><input type="text" value="<%= companion.getCompanionSpeakingLanguage() %>" name="companion_speaking_language">
-<td><input type="text" value="<%= companion.getCompanionLearningInterest() %>" name="companion_learning_interest">
 
+<tr align="center">
+<td>母語
+<td><select name="companion_first_language">
+                            <option value="<%= companion.getCompanionFirstLanguage() %>"><%= companion.getCompanionFirstLanguage() %></option>
+	                        <option value="">請選擇</option>
+                            <option value="中文">中文</option>
+                            <option value="英文">英文</option>
+                            <option value="日文">日文</option>
+                            <option value="韓文">韓文</option>
+                            <option value="德文">德文</option>
+                            <option value="法文">法文</option>
+                            <option value="西班牙文">西語</option>
+</select>
+
+<%-- <input type="text" value="<%= companion.getCompanionFirstLanguage() %>" name="companion_first_language"> --%>
+
+<td>其他會說語言
+<td><select name="companion_speaking_language">
+                            <option value="<%= companion.getCompanionSpeakingLanguage() %>"><%= companion.getCompanionSpeakingLanguage() %></option>
+                            <option value="">請選擇</option>
+                            <option value="中文">中文</option>
+                            <option value="英文">英文</option>
+                            <option value="日文">日文</option>
+                            <option value="韓文">韓文</option>
+                            <option value="德文">德文</option>
+                            <option value="法文">法文</option>
+                            <option value="西班牙文">西語</option>
+</select>
+<%-- <input type="text" value="<%= companion.getCompanionSpeakingLanguage() %>" name="companion_speaking_language"> --%>
+
+
+<tr align="center">
+<td>學習興趣
+<td><select name="companion_learning_interest">
+                            <option value="<%= companion.getCompanionLearningInterest() %>"><%= companion.getCompanionLearningInterest() %></option>
+                            <option value="">請選擇</option>
+                            <option value="程式設計">程式設計</option>
+                            <option value="電腦繪圖">電腦繪圖</option>
+                            <option value="語言學習">語言學習</option>
+                            <option value="數位行銷">數位行銷</option>
+                            <option value="音樂創作">音樂創作</option>
+</select>
+<%-- <input type="text" value="<%= companion.getCompanionLearningInterest() %>" name="companion_learning_interest"> --%>
+
+<td>
+學習頻率
 <td>
 <select name="companion_learning_frequency">
 <% 
@@ -397,24 +464,15 @@ textarea::-webkit-scrollbar-thumb:hover {
                              <option value="每週1-3次">每週1-3次</option>
                             <option value="每週4-7次">每週4-7次</option>
                              <% } %>
-                          </select>
-<td><textarea name="companion_about_me"><%= companion.getCompanionAboutMe() %></textarea>
-<td><img id="img" src="${companion.companionPhoto}" alt="個人照片">
+</select>
 
-<td>
-<input type="file" name="companion_photo" id="fileNameDisplay" style="display: none;" onchange="updateFileName()"/>
-<button type="button" onclick="document.getElementById('fileNameDisplay').click()" class="btn btn-primary" style="width:100px; border-radius:8px">選擇檔案</button>
-<td>
-<button type="button" onclick="upload()" class="btn btn-primary" style="width:60px; border-radius:8px">上傳</button>
 
-<input type="hidden" name="_method" value="PUT">
-<%-- <input type="hidden" value="${companion.getStudentBeanID()}" name="studentBeanID"> --%>
 
 </table>
 </div>
-<button type="submit" class="btn btn-primary m-3" style="border-radius:8px">送出</button>
+<button type="submit" class="btn btn-primary m-3" style="border-radius:8px;width:72px">送出</button>
 </form>
-<div><a href="/companionFrontIndex"><button class="index btn btn-primary" style="background-color:#7D7DFF; border:0px; border-radius:8px">回首頁</button></a></div>
+<!-- <div><a href="/companionFrontIndex"><button class="index btn btn-primary mt-3" style="background-color:#ACD4D6; border:0px; border-radius:8px">回首頁</button></a></div> -->
                       
                         </div>
                 

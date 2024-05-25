@@ -137,8 +137,8 @@
                         <h4 class="card-title mb-4">結帳資訊</h4>
                         <form id="checkoutForm">
                             <div class="mb-3">
-                                <label for="name" class="form-label">姓名</label>
-                                <input type="text" class="form-control" id="name" required>
+                                <label for="customer_name" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="customer_name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">手機</label>
@@ -153,8 +153,8 @@
                                 <input type="text" class="form-control" id="address" required>
                             </div>
                             <div class="mb-3">
-                                <label for="note" class="form-label">備註</label>
-                                <input type="text" class="form-control" id="note" required>
+                                <label for="notes" class="form-label">備註</label>
+                                <input type="text" class="form-control" id="notes" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">付款方式</label>
@@ -204,7 +204,7 @@
                             <p class="mb-2">總金額:</p>
                             <p id="checkout-grand-total" class="mb-2 fw-bold">0</p>
                         </div>
-                        <a href="#" class="btn btn-primary w-100">返回商城</a>
+                        <a href="/mall/frontend" class="btn btn-primary w-100">返回商城</a>
                     </div>
                 </div>
             </div>
@@ -218,20 +218,16 @@
     <div class="container py-5">
         <div class="row g-5">
             <div class="col-lg-8 col-md-6">
-                <h4 class="text-white mb-3">聯絡我們</hhed>
-                    <p class="mb-2">
-                        <i class="fa fa-map-marker-alt me-3"></i>320桃園市中壢區新生路二段421號
-                    </p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
-                    <p class="mb-2">
-                        <i class="fa fa-envelope me-3"></i>academic@shengte.college
-                    </p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                <h4 class="text-white mb-3">聯絡我們</h4>
+                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>320桃園市中壢區新生路二段421號</p>
+                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> 03 453 2632</p>
+                <p class="mb-2"><i class="fa fa-envelope me-3"></i>academic@shengte.college</p>
+                <div class="d-flex pt-2">
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <h4 class="text-white mb-10">意見信箱</h4>
@@ -299,21 +295,21 @@
 
         // 一鍵輸入按鈕的處理
         document.getElementById('fillFormButton').addEventListener('click', function () {
-            document.getElementById('name').value = '李筱涵';
+            document.getElementById('customer_name').value = '李筱涵';
             document.getElementById('phone').value = '0912345678';
             document.getElementById('postalCode').value = '320';
             document.getElementById('address').value = '320桃園市中壢區定寧路31號';
-            document.getElementById('note').value = '幫我分開包裝謝謝~';
+            document.getElementById('notes').value = '幫我分開包裝謝謝~';
         });
 
         // 確認付款按鈕的處理
         document.getElementById('confirmPaymentButton').addEventListener('click', function () {
             const order = {
-                name: document.getElementById('name').value,
+                name: document.getElementById('customer_name').value,
                 phone: document.getElementById('phone').value,
                 postalCode: document.getElementById('postalCode').value,
                 address: document.getElementById('address').value,
-                note: document.getElementById('note').value,
+                notes: document.getElementById('notes').value,
                 paymentMethod: selectedPaymentMethod,
                 subtotal: subtotal,
                 grandTotal: grandTotal
@@ -323,10 +319,18 @@
             sessionStorage.setItem('orderInfo', JSON.stringify(order));
 
             const orderData = {
+                customerName: order.name,
                 shippingAddress: order.address,
                 paymentMethod: order.paymentMethod,
-                totalAmount: parseInt(grandTotal)
+                totalAmount: parseInt(grandTotal),
+                phone: document.getElementById('phone').value,
+                postalCode: document.getElementById('postalCode').value,
+                notes: document.getElementById('notes').value
+
             };
+
+            // 打印orderData以進行檢查
+            console.log('Order data:', orderData);
 
             fetch('/productcart/createOrder', {
                 method: 'POST',
@@ -335,12 +339,19 @@
                 },
                 body: JSON.stringify(orderData)
             }).then(response => {
-                return response.json();
+                if (response.ok) {
+                    console.log(response)
+                    return response.json();
+                }
             }).then(orderId => {
                 const data = {
                     total: parseInt(grandTotal),
                     orderId: orderId
-                }
+                };
+
+                // 打印data以進行檢查
+                console.log('LinePay data:', data);
+
                 fetch('/LinePayReqV2', {
                     method: 'POST',
                     headers: {
@@ -357,10 +368,12 @@
                     });
             }).catch(error => {
                 console.error('Error:', error);
+
             });
         });
     });
 </script>
+
 
 </body>
 

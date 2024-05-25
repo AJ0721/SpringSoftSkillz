@@ -99,7 +99,7 @@ style="max-width: 250px; height: auto; margin-top: 16px" />
             </div>
           </div>
           <a href="/teacher/teacher-info" class="nav-item nav-link" style="font-size: 26px;">個人中心</a>
-          <a href="#" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
+          <a href="/forum/home" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
           <!--老師訊息-->
           <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown" style="font-size: 27px;"><i
@@ -107,7 +107,6 @@ style="max-width: 250px; height: auto; margin-top: 16px" />
             <div class=" dropdown-menu fade-down m-0" id="chatlist">
             </div>
           </div>
-          <a href="shop.html" class="nav-item nav-link" style="font-size: 27px;"><i class="bi bi-cart4"></i></a>
         </div>
         <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
           <button type="submit" class="btn btn-primary py-4 px-lg-5" style="font-size: 26px;">

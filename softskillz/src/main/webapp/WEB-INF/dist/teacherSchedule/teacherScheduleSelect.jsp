@@ -301,7 +301,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/companionIndex.html" class="submenu-link"
+                    <a href="/companionIndex" class="submenu-link"
                       >學伴資料管理</a
                     >
                   </li>

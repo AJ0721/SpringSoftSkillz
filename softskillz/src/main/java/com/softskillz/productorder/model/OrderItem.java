@@ -1,6 +1,6 @@
 package com.softskillz.productorder.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,7 +42,8 @@ public class OrderItem implements Serializable {
     @Column(name = "sub_total")
     private Integer subTotal;
 
-    @JsonBackReference
+    //    @JsonBackReference
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id", insertable = false, updatable = false)
     private Order order;
@@ -122,11 +123,10 @@ public class OrderItem implements Serializable {
                 "orderItemId=" + orderItemId +
                 ", orderId=" + orderId +
                 ", productId=" + productId +
-                ", productName=" + productName +
+                ", productName='" + productName + '\'' +
                 ", quantity=" + quantity +
                 ", productPrice=" + productPrice +
                 ", subTotal=" + subTotal +
-                ", order=" + order +
                 '}';
     }
 }

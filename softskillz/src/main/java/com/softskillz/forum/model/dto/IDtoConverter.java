@@ -1,7 +1,5 @@
 package com.softskillz.forum.model.dto;
 
-import java.util.Locale.Category;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

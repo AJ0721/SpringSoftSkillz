@@ -81,9 +81,50 @@ public class StudentService {
 		return null;
 	}
 
+	public Boolean checkAccout(String username) {
+
+		Optional<StudentBean> result = studentRepository.checkAccout(username);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean checkMail(String mail) {
+
+		Optional<StudentBean> result = studentRepository.checkMail(mail);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean checkPhone(String phone) {
+
+		Optional<StudentBean> result = studentRepository.checkPhone(phone);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Boolean checkNickname(String nickname) {
+
+		Optional<StudentBean> result = studentRepository.checkNickname(nickname);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
 	// Create,新增,註冊學生
 	public StudentBean insert(StudentBean students) {
-		return studentRepository.save(students);
+		try {
+			return studentRepository.save(students);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
 	}
 

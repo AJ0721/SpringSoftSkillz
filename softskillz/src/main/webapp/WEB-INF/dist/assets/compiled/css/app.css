@@ -18607,7 +18607,7 @@ body .bi:before,
 .sidebar-wrapper .menu .sidebar-title {
   padding: 0 1rem;
   margin: 1.5rem 0 1rem;
-  font-size: 1rem;
+  font-size: 26px;
   list-style: none;
   font-weight: 600;
   color: #25396f;
@@ -18615,7 +18615,7 @@ body .bi:before,
 .sidebar-wrapper .menu .sidebar-link {
   display: block;
   padding: 0.7rem 1rem;
-  font-size: 1rem;
+  font-size: 22px;
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
@@ -18685,7 +18685,7 @@ body .bi:before,
   padding: 0.7rem 2rem;
   display: block;
   color: #25396f;
-  font-size: 0.85rem;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: 0.5px;
   transition: all 0.3s;

@@ -25,9 +25,77 @@
 
                 <style>
                   #img {
-                    width: 170px;
-                    height: auto;
-                  }
+              width: 180px;
+              height: auto;
+              margin:7px;
+            }
+            input {
+        margin:15px;
+height:50px;
+border:solid 1px #ECF5FF;
+border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    font-size: 17px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
+}
+        select {
+        margin:15px;
+height:50px;
+border:solid 1px #ECF5FF;
+border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    font-size: 17px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
+}
+textarea {
+margin:15px;
+    border:solid 1px #ECF5FF;
+    border-radius: 10px;
+    width: 250px;
+    font-size: 17px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
+    resize: none;
+    height: 180px;
+    line-height: 1.3; /* 減少行高，可以設置為任何小於1的值 */
+    padding-top:15px;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px; /* 捲動條寬度 */
+  opacity: 0; /* 預設不顯示 */
+  visibility: hidden;
+}
+
+/* 滑鼠懸停在textarea上時顯示捲動條 */
+textarea:hover::-webkit-scrollbar {
+  opacity: 1; /* 顯示捲動條 */
+  visibility: visible;
+}
+
+/* 捲動條軌道 */
+textarea::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* 捲動條軌道背景色 */
+}
+
+/* 捲動條滑塊 */
+textarea::-webkit-scrollbar-thumb {
+  background-color: #888; /* 捲動條滑塊顏色 */
+  border-radius: 5px; /* 捲動條滑塊圓角 */
+}
+
+/* 捲動條滑塊懸停效果 */
+textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* 捲動條滑塊懸停時的顏色 */
+}
+#aboutMe{
+ word-wrap: break-word;
+white-space: normal;
+max-width: 200px;
+}
                 </style>
               </head>
 
@@ -81,8 +149,8 @@
                           </div>
                         </div>
                       </div>
-                      <!-- 側邊欄 -->
- <div class="sidebar-menu">
+                    <!-- 側邊欄 -->
+          <div class="sidebar-menu">
             <ul class="menu">
               <li class="sidebar-item active">
                 <a href="/softskillz/newhomepage" class="sidebar-link">
@@ -236,9 +304,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/mall/mallProductAll" class="submenu-link"
-                      >商品管理</a
-                    >
+                    <a href="/mall/backend" class="submenu-link">商品管理</a>
                   </li>
                 </ul>
               </li>
@@ -250,10 +316,10 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/order" class="submenu-link">商品訂單管理</a>
+                    <a href="/order/all" class="submenu-link">商品訂單管理</a>
                   </li>
                   <li class="submenu-item">
-                    <a href="/order/create" class="submenu-link"
+                    <a href="/order/createPage" class="submenu-link"
                       >新增商品訂單</a
                     >
                   </li>
@@ -301,12 +367,20 @@
                 </ul>
               </li>
 
-              <br/>
-              <form action="/admin/admin-logout" method="post" style="text-align: center; margin: 0 auto">
+              <br />
+              <form
+                action="/admin/admin-logout"
+                method="post"
+                style="text-align: center; margin: 0 auto"
+              >
                 <button
                   type="submit"
                   class="btn rounded-pill"
-                  style="background-color: #3f6cba; color: white"
+                  style="
+                    background-color: #3f6cba;
+                    color: white;
+                    font-size: 20px;
+                  "
                 >
                   <i class="bi bi-person-circle"></i>&nbsp;登出
                 </button>
@@ -342,46 +416,50 @@
                                 <%-- <jsp:useBean id="student" scope="request"
                                   class="com.softskillz.account.model.bean.StudentBean" /> --%>
                                 <table>
+                                <tr>
+                                    <td colspan="2" align="right"><img id="img"
+                                        src="${companion.companionPhoto}"
+                                        alt="Companion_Photo" name="companion_photo"></td>
+                                        <td colspan="2" align="left" valign="top" class="p-3" id="aboutMe">
+                                        關於我：<br><br>
+                                        <%= companion.getCompanionAboutMe() %>
+                                        </td>
                                   <tr>
-                                    <td>學伴編號
-                                    <td><input type="text" disabled value="<%= companion.getCompanionId()%>">
-                                  <tr>
+<!--                                     <td>學伴編號 -->
+<%--                                     <td><input type="text" disabled value="<%= companion.getCompanionId()%>"> --%>
                                     <td>學生會員編號
                                     <td><input type="text" disabled
                                         value="<%= companion.getStudentBeanID().getStudentId() %>">
-                                  <tr>
-                                    <td>學伴帳號名稱
+                                  
+                                    <td>暱稱
                                     <td><input type="text" disabled
                                         value="<%= companion.getStudentBeanID().getStudentNickname() %>">
-                                  <tr>
-                                    <td>學伴性別
+                                        <tr>
+                                        <td>性別
                                     <td><input type="text" disabled
                                         value="<%= companion.getStudentBeanID().getStudentGender() %>">
-                                  <tr>
-                                    <td>學伴生日
+                                  
+                                    <td>生日
                                     <td><input class="birth" type="text" disabled
                                         value="<%= outputFormat.format(companion.getStudentBeanID().getStudentBirth())%>">
-                                  <tr>
-                                    <td>學伴母語
+                                        <tr>
+                                        <td>母語
                                     <td><input type="text" disabled
                                         value="<%= companion.getCompanionFirstLanguage() %>">
-                                  <tr>
-                                    <td>學伴會說語言
+                                    
+                                 
+                                    <td>其他會說語言
                                     <td><input type="text" disabled
                                         value="<%= companion.getCompanionSpeakingLanguage() %>">
-                                  <tr>
-                                    <td>學伴學習興趣
+                                         <tr>
+                                    <td>學習興趣
                                     <td><input type="text" disabled
                                         value="<%= companion.getCompanionLearningInterest() %>">
-                                  <tr>
-                                    <td>學伴學習頻率
+                                  
+                                    <td>學習頻率
                                     <td><input type="text" disabled
                                         value="<%= companion.getCompanionLearningFrequency() %>">
-                                  <tr>
-                                    <td>學伴照片
-                                    <td><img id="img"
-                                        src="${pageContext.request.contextPath}${companion.studentBeanID.studentPhoto}"
-                                        alt="Companion_Photo" name="companion_photo">
+                                  
                                 </table>
 
                                 <div><a href="/companionIndex" style="text-decoration: none;"><button

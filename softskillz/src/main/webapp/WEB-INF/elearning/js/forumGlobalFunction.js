@@ -6,6 +6,8 @@
 window.retrieveUser = function () {
     const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
     const userType = sessionStorage.getItem('userType');
+    console.log('retrieveUser - Retrieved from session storage:', { loggedInUser, userType });
+
     return { loggedInUser, userType };
 };
 
@@ -13,7 +15,7 @@ window.initializePage = function (loggedInUser, userType) {
     console.log("User logged in:", loggedInUser);
     console.log("User type:", userType);
     displayUserDetails(loggedInUser, userType);
-    updateNavbar(userType);
+    // updateNavbar(userType);
 }
 
 // Function to validate user by fetching from the session
@@ -27,9 +29,10 @@ window.validateUser = function () {
         })
         .then(user => {
             if (!user) {
-                displayUserDetails(null);
+                displayUserDetails(null, null);
                 return null;
             }
+
             sessionStorage.setItem('loggedInUser', JSON.stringify(user));
             return fetch('/session/user-type');
         })
@@ -59,6 +62,15 @@ window.checkAndValidateUser = function () {
     });
 };
 
+window.getLoggedInUser = function () {
+    const { loggedInUser, userType } = retrieveUser();
+    if (loggedInUser && userType) {
+        return Promise.resolve({ loggedInUser, userType });
+    } else {
+        return validateUser();
+    }
+};
+
 
 
 // Function to display user details
@@ -72,6 +84,8 @@ window.displayUserDetails = function (loggedInUser, userType) {
         userDetailElement.innerHTML = `<h6 class="mb-0 text-primary">Guest</h6>`;
     }
 };
+
+
 
 window.getUserName = function (user, userType) {
     switch (userType) {
@@ -107,16 +121,12 @@ window.getLoggedInUserDetails = function (user, userType) {
 };
 // Function to convert user type to Mandarin for display
 window.toZhUserType = function (userType) {
-    switch (userType) {
-        case "ADMIN":
-            return '管理員';
-        case "STUDENT":
-            return '學生';
-        case "TEACHER":
-            return '老師';
-        default:
-            return '未知';
-    }
+    const userTypeMap = {
+        ADMIN: '管理員',
+        STUDENT: '學生',
+        TEACHER: '老師',
+    };
+    return userTypeMap[userType] || '未知';
 };
 
 //GET POST/THREAD AUTHOR DETAILS TO DISPLAY

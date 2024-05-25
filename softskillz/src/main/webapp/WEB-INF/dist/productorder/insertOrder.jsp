@@ -271,69 +271,76 @@
                     <section class="section">
                         <div class="card">
                             <div class="card-header">
+                                <!-- 新增商品訂單表單部分 -->
                                 <h4 class="card-title">新增商品訂單</h4>
                             </div>
                             <div class="card-body">
-                                <form id="orderForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="orderDate">訂單日期:</label>
-                                                <input type="datetime-local" class="form-control" id="orderDate"
-                                                       name="order_date">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="totalAmount">總金額:</label>
-                                                <input type="number" class="form-control" id="totalAmount"
-                                                       name="total_amount" placeholder="總金額">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">訂單狀態:</label>
-                                                <select class="form-control" id="orderStatus" name="order_status">
-                                                    <option value="">請選擇訂單狀態</option>
-                                                    <option value="支付成功">支付成功</option>
-                                                    <option value="支付失敗">支付失敗</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="paymentMethod">付款方式:</label>
-                                                <select class="form-control" id="paymentMethod" name="payment_method">
-                                                    <option value="">請選擇付款方式</option>
-                                                    <option value="綠界">綠界</option>
-                                                    <option value="LINE PAY">LINE PAY</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shipmentDate" class="form-label">出貨日期:</label>
-                                        <input type="datetime-local" class="form-control" id="shipmentDate"
-                                               name="shipment_date">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shipmentStatus" class="form-label">出貨狀態:</label>
-                                        <select class="form-control" id="shipmentStatus" name="shipment_status">
-                                            <option value="">請選擇出貨狀態</option>
-                                            <option value="已出貨">已出貨</option>
-                                            <option value="處理運送中">處理運送中</option>
-                                            <option value="未出貨">未出貨</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shippingAddress" class="form-label">收貨地址:</label>
-                                        <input type="text" class="form-control" id="shippingAddress"
-                                               name="shipping_address" required>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="button" class="btn btn-primary" id="submitOrder">提交</button>
-                                        <button type="button" class="btn btn-secondary" id="autoFillOrder">一鍵輸入
-                                        </button>
-                                        <a href="/order/all" class="btn btn-secondary">返回訂單列表</a>
-                                    </div>
 
-                                </form>
+                                <div class="form-group">
+                                    <label for="orderDate">訂單日期:</label>
+                                    <input type="datetime-local" class="form-control" id="orderDate" name="order_date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="totalAmount">總金額:</label>
+                                    <input type="number" class="form-control" id="totalAmount" name="total_amount"
+                                           placeholder="總金額">
+                                </div>
+                                <div class="form-group">
+                                    <label for="orderStatus">訂單狀態:</label>
+                                    <select class="form-control" id="orderStatus" name="order_status">
+                                        <option value="">請選擇訂單狀態</option>
+                                        <option value="已付款">已付款</option>
+                                        <option value="未付款">未付款</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="paymentMethod">付款方式:</label>
+                                    <select class="form-control" id="paymentMethod" name="payment_method">
+                                        <option value="">請選擇付款方式</option>
+                                        <option value="綠界">綠界</option>
+                                        <option value="LINE PAY">LINE PAY</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shipmentDate">出貨日期:</label>
+                                    <input type="datetime-local" class="form-control" id="shipmentDate"
+                                           name="shipment_date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="shipmentStatus">出貨狀態:</label>
+                                    <select class="form-control" id="shipmentStatus" name="shipment_status">
+                                        <option value="">請選擇出貨狀態</option>
+                                        <option value="已出貨">已出貨</option>
+                                        <option value="未出貨">未出貨</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customerName">收貨人姓名:</label>
+                                    <input type="text" class="form-control" id="customerName" name="customer_name"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">電話:</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="postalCode">郵遞區號:</label>
+                                    <input type="text" class="form-control" id="postalCode" name="postal_code" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shippingAddress">收貨地址:</label>
+                                    <input type="text" class="form-control" id="shippingAddress" name="shipping_address"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notes">備註:</label>
+                                    <input type="text" class="form-control" id="notes" name="notes">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary" id="submitOrder">提交</button>
+                                    <button type="button" class="btn btn-secondary" id="autoFillOrder">一鍵輸入</button>
+                                    <a href="/order/all" class="btn btn-secondary">返回訂單列表</a>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -341,6 +348,7 @@
             </div>
         </div>
     </div>
+
     <footer>
         <div class="footer clearfix mb-0 text-muted">
             <div class="float-start">
@@ -375,7 +383,11 @@
                 paymentMethod: $('#paymentMethod').val(),
                 shipmentDate: $('#shipmentDate').val(),
                 shipmentStatus: $('#shipmentStatus').val(),
-                shippingAddress: $('#shippingAddress').val()
+                customerName: $('#customerName').val(),
+                phone: $('#phone').val(),
+                postalCode: $('#postalCode').val(),
+                shippingAddress: $('#shippingAddress').val(),
+                notes: $('#notes').val()
             };
 
             $.ajax({
@@ -408,14 +420,18 @@
         $('#autoFillOrder').click(function () {
             $('#orderDate').val(new Date().toISOString().slice(0, 16));
             $('#totalAmount').val(646);
-            $('#orderStatus').val('支付成功');
+            $('#orderStatus').val('已付款');
             $('#paymentMethod').val('綠界');
             $('#shipmentDate').val(new Date().toISOString().slice(0, 16));
             $('#shipmentStatus').val('已出貨');
-            $('#shippingAddress').val('新竹市東區光復路700號');
+            $('#customerName').val('林佳穎');
+            $('#phone').val('0912345678');
+            $('#postalCode').val('320');
+            $('#shippingAddress').val('320桃園市中壢區中華路一段450號');
+            $('#notes').val('請在5/31前送達');
         });
-    });
 
+    });
 </script>
 </body>
 </html>

@@ -47,6 +47,7 @@ function connectWebSocket(userID) {
         getChatlist(sendOutUser);
         let photourl = null;
         let socketdata = JSON.parse(event.data)
+        let chatPopup = document.querySelector(".chat-popup");
         if (!chatPopup) {
             fetch("/chat/chatroom/" + socketdata.sendOutUser)
                 .then(response => {
@@ -57,7 +58,7 @@ function connectWebSocket(userID) {
                     console.log(data);
                     photourl = data.userPhoto;
                     chatroom(data.userID,data.userName, photourl);
-                    addMessageToChatWindow("接收到", socketdata.msg);
+                    // addMessageToChatWindow("接收到", socketdata.msg);
                 })
         } else {
 
@@ -312,10 +313,10 @@ function history(chatroomID) {
             console.log(data.content);
             content = data.content.reverse();
             for (let key in content) {
-                console.log(content[key].msg);
+                // console.log(content[key].msg);
                 let messageElement = document.createElement("div");
-                console.log(content[key].sendOutUser);
-                console.log(sendOutUser);
+                // console.log(content[key].sendOutUser);
+                // console.log(sendOutUser);
                 if (content[key].sendOutUser == sendOutUser) {
                     messageElement.className = "message message-sent";
                 } else {

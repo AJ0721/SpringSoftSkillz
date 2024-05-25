@@ -200,7 +200,8 @@
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="form-group mandatory">
-								<label for="teacherUserName" class="form-label">帳號</label> <input
+								<label for="teacherUserName" class="form-label">帳號<small
+									style="color: red" id="userSpan" hidden>帳號重複</small></label> <input
 									type="text" id="teacherUserName" class="form-control"
 									placeholder="Username" name="teacherUserName" required>
 							</div>
@@ -214,14 +215,14 @@
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="form-group mandatory">
-								<label for="teacherBirth" class="form-label">出生日期</label> <input
+								<label for="teacherBirth" class="form-label">出生日期</label><input
 									type="date" id="teacherBirth" class="form-control"
 									name="teacherBirth" required>
 							</div>
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="form-group mandatory">
-								<label for="teacherGender" class="form-label">性別</label> <select
+								<label for="teacherGender" class="form-label">性別</label><select
 									id="teacherGender" class="form-control" name="teacherGender"
 									required>
 									<option value="male">男性</option>
@@ -232,21 +233,23 @@
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="form-group mandatory">
-								<label for="teacherEmail" class="form-label">電子信箱</label> <input
+								<label for="teacherEmail" class="form-label">電子信箱<small
+									style="color: red" id="mailSpan" hidden>信箱重複</small></label> <input
 									type="email" id="teacherEmail" class="form-control"
 									placeholder="Email" name="teacherEmail" required>
 							</div>
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="form-group mandatory">
-								<label for="teacherMobile" class="form-label">手機號碼</label> <input
+								<label for="teacherMobile" class="form-label">手機號碼<small
+									style="color: red" id="phoneSpan" hidden>號碼重複</small></label> <input
 									type="text" id="teacherMobile" class="form-control"
 									placeholder="Mobile Number" name="teacherMobile" required>
 							</div>
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="form-group">
-								<label for="teacherCountry" class="form-label">國家</label> <select
+								<label for="teacherCountry" class="form-label">國家</label><select
 									id="teacherCountry" class="form-control" name="teacherCountry"
 									required>
 									<option value="阿富汗">阿富汗</option>
@@ -377,9 +380,11 @@
 						</div>
 						<div class="col-md-6 col-12">
 							<div class="button-container">
-								<input type="submit" value="一鍵輸入" class="btn btn-primary onepunch" style="background-color: #09baef; border: 1px solid #09baef">
-								<input type="submit" value="提交" class="btn btn-primary">
-								<input type="reset" value="清除" class="btn btn-secondary">
+								<input type="submit" value="一鍵輸入"
+									class="btn btn-primary onepunch"
+									style="background-color: #09baef; border: 1px solid #09baef">
+								<input type="submit" value="提交" class="btn btn-primary" id="submit">
+								<input type="reset" value="清除" class="btn btn-secondary" id = "reset">
 							</div>
 						</div>
 					</div>
@@ -458,6 +463,8 @@
 									+ remaining + " 字符";
 						});
 
+		
+		//一鍵輸入假資料
 		let onepunch = document.querySelector(".onepunch");
 			onepunch.addEventListener("click",(e)=>{
 				e.preventDefault();
@@ -477,7 +484,94 @@
             document.getElementById('teachTime').value = '10到20小時';
             document.getElementById('strength').value = '專精於數學教學，能夠有效提升學生的學習成效。';
 		})
-
+		
+	    let userstatus="";
+	    let phonestatus="";
+	    let emailstatus="";
+		//信箱重複
+			let teacherEmail = document.querySelector("#teacherEmail");
+			teacherEmail.addEventListener("input",(e)=>{
+				let useremail = teacherEmail.value;
+				fetch("/teacher/checkMail?usermail="+useremail)
+				.then(response=>{
+					if(response.ok){
+						return response.json();
+					}
+				})
+				.then(data=>{
+					console.log(data)
+					emailstatus=data;
+					if(data){
+						document.querySelector("#mailSpan").hidden = false;
+					}else{
+						document.querySelector("#mailSpan").hidden = true;
+					}
+					disabledBtn(userstatus,phonestatus,emailstatus)
+				})
+				
+			})
+		//帳號重複
+		let teacherUserName = document.querySelector("#teacherUserName");
+			teacherUserName.addEventListener("input",(e)=>{
+				let username = teacherUserName.value;
+				fetch("/teacher/checkAccount?username="+username)
+				.then(response=>{
+					if(response.ok){
+						return response.json();
+					}
+				})
+				.then(data=>{
+					console.log(data)
+					userstatus=data;
+					if(data){
+						document.querySelector("#userSpan").hidden = false;
+					}else{
+						document.querySelector("#userSpan").hidden = true;
+					}
+					disabledBtn(userstatus,phonestatus,emailstatus)
+				})
+				
+			})
+			//手機重複
+			let teacherMobile = document.querySelector("#teacherMobile");
+			teacherMobile.addEventListener("keyup",(e)=>{
+				let userphone = teacherMobile.value;
+				fetch("/teacher/checkPhone?userphone="+userphone)
+				.then(response=>{
+					if(response.ok){
+						return response.json();
+					}
+				})
+				.then(data=>{
+					console.log(data)
+					phonestatus=data;
+					if(data){
+						document.querySelector("#phoneSpan").hidden = false;
+					}else{
+						document.querySelector("#phoneSpan").hidden = true;
+					}
+					disabledBtn(userstatus,phonestatus,emailstatus)
+				})
+				})
+				
+				function disabledBtn(u,p,m){
+				
+				if(!u&&!p&&!m){
+					console.log("123");
+					document.querySelector("#submit").disabled = false;
+				}
+				else{
+					document.querySelector("#submit").disabled = true;
+				}
+			}
+				
+				let reset = document.querySelector("#reset");
+			reset.addEventListener("click",()=>{
+				document.querySelector("#submit").disabled = false;
+				document.querySelector("#userSpan").hidden = true;
+				document.querySelector("#mailSpan").hidden = true;
+				document.querySelector("#phoneSpan").hidden = true;				
+			})
 	</script>
 
 </body>

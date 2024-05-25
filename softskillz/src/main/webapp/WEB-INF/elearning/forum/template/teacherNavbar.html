@@ -1,42 +1,40 @@
- <!-- Navbar Start -->
- <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky p-0">
-    <a href="/teacherScheduleFront/schedule" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-      <h2 class="m-0 text-primary">
-        <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
-style="max-width: 250px; height: auto; margin-top: 16px" />
-      </h2>
-    </a>
-    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
-      data-bs-target="#navbarCollapse">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <div class="navbar-nav ms-auto p-4 p-lg-0">
-        <a href="/teacherScheduleFront/schedule" class="nav-item nav-link active"
-          style="font-size: 26px;">首頁</a>
-        <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px;">課程</a>
-          <div class="dropdown-menu fade-down m-0">
-            <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
-            <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
-            <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
-          </div>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky p-0">
+  <a href="/teacherScheduleFront/schedule" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+    <h2 class="m-0 text-primary">
+      <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+        style="max-width: 250px; height: auto; margin-top: 16px" />
+    </h2>
+  </a>
+  <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <div class="navbar-nav ms-auto p-4 p-lg-0">
+      <a href="/teacherScheduleFront/schedule" class="nav-item nav-link active" style="font-size: 26px;">首頁</a>
+      <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px;">課程</a>
+        <div class="dropdown-menu fade-down m-0">
+          <a href="/teacherScheduleFront/teacherInsertCourse" class="dropdown-item">新增課程</a>
+          <a href="/teacherScheduleFront/teacherSelectCourse" class="dropdown-item">查詢課程</a>
+          <a href="/teacherScheduleFront/teacherInsertSchedule" class="dropdown-item">新增行事曆</a>
         </div>
-        <a href="/teacher/teacher-info" class="nav-item nav-link" style="font-size: 26px;">個人中心</a>
-        <a href="#" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
-        <!--老師訊息-->
-        <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown" style="font-size: 27px;"><i
-              class="bi bi-chat-square-dots"></i></a>
-          <div class=" dropdown-menu fade-down m-0" id="chatlist">
-          </div>
-        </div>
-        <a href="shop.html" class="nav-item nav-link" style="font-size: 27px;"><i class="bi bi-cart4"></i></a>
       </div>
-      <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
-        <button type="submit" class="btn btn-primary py-4 px-lg-5" style="font-size: 26px;">
-          <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-        </button>
-      </form>
-  </nav>
-  <!-- Navbar End -->
+      <a href="/teacher/teacher-info" class="nav-item nav-link" style="font-size: 26px;">個人中心</a>
+      <a href="#" class="nav-item nav-link" style="font-size: 26px;">論壇</a>
+      <!--老師訊息-->
+      <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown" style="font-size: 27px;"><i
+            class="bi bi-chat-square-dots"></i></a>
+        <div class=" dropdown-menu fade-down m-0" id="chatlist">
+        </div>
+      </div>
+      
+    </div>
+    <form action="/teacher/teacher-logout" method="post" class="d-none d-lg-block">
+      <button type="submit" class="btn btn-primary py-4 px-lg-5" style="font-size: 26px;">
+        <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+      </button>
+    </form>
+</nav>
+<!-- Navbar End -->

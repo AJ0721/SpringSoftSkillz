@@ -1,8 +1,7 @@
 $(document).ready(function () {
 
     // USER VALIDATION
-    const { loggedInUser = {} } = retrieveUser() || {};    // validateUser(loggedInUser);
-    // displayUserDetails();
+    const { loggedInUser = {} } = retrieveUser() || {};    // validateUser
 
 
     // Fetch thread details and comments
@@ -13,24 +12,6 @@ $(document).ready(function () {
     //--------------------THREAD--------------------
 
     fetchThreadDetails(threadId);
-
-    // SUBMIT POST
-    $(document).on('click', '.submit-reply', function (e) {
-        e.preventDefault();
-        const $form = $(this).closest('form');
-        const postContent = $form.find('textarea').val().trim();
-        const parentPostId = $form.find('.parentPostId').val();
-        if (postContent === "") {
-            Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
-            return;
-        }
-        const postDto = {
-            postContent: postContent,
-            thread: { threadId: threadId },
-            parentPost: parentPostId ? { postId: parentPostId } : null,
-        };
-        submitPost(postDto, threadId);
-    });
 
 
 
@@ -82,13 +63,10 @@ $(document).ready(function () {
 
     });
 
-
-
-
     // DELETE THREAD
     $(document).on('click', '#delete-thread', function (e) {
         e.preventDefault();
-        
+
 
         const threadId = $(this).data('thread-id');
 
@@ -107,7 +85,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteThread(threadId);
-                Swal.fire("刪除成功","","success")
+                Swal.fire("刪除成功", "", "success")
                 window.location.href = `/forum/home`
             }
         });
@@ -129,18 +107,23 @@ $('#cancel').click(function (e) {
 // FUNCTION: DISPLAY THREAD DETAILS
 function displayThreadDetails(data) {
     const { loggedInUser } = retrieveUser();
-    const { authorName, canEdit } = getUserDetails(data, loggedInUser);
+    const { authorName, canEdit , authorType} = getUserDetails(data, loggedInUser);
 
     $('#category').text(data.forumCategory.forumCategoryName);
-    $('#username').text(authorName);
+
+    // Apply the appropriate class based on the author's role
+
+
+    $('#username').text(authorName).addClass(authorType);
+
     $('#threadTitle').text(data.threadTitle);
     $('#threadContent').text(data.threadContent);
 
     if (canEdit) {
         $('#can-edit').html(`
             <div class="d-flex justify-content-end">
-                <button class="btn btn-sm btn-warning me-2" id="edit-thread">編輯</button>
-                <button class="btn btn-sm btn-danger" id="delete-thread" data-thread-id="${data.threadId}">刪除</button>
+                <button class="btn  btn-warning me-2  border rounded-3" id="edit-thread"><i class="bi bi-pencil-square "></i></button>
+                <button class="btn  border rounded-3 btn-danger" id="delete-thread" data-thread-id="${data.threadId}"><i class="bi bi-trash"></i></button>
             </div>
         `);
     }
@@ -207,7 +190,7 @@ function deleteThread(threadId) {
                 icon: 'success',
                 showConfirmButton: true
             });
-            
+
         })
         .catch(error => {
             console.error('Error deleting thread:', error);

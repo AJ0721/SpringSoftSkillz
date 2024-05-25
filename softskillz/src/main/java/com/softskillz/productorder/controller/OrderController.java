@@ -5,6 +5,7 @@ import com.softskillz.productorder.model.OrderService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +60,11 @@ public class OrderController {
             @RequestParam("payment_method") String paymentMethod,
             @RequestParam("shipment_date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime shipmentDate,
             @RequestParam("shipment_status") String shipmentStatus,
-            @RequestParam("shipping_address") String shippingAddress) {
+            @RequestParam("shipping_address") String shippingAddress,
+            @RequestParam("customer_name") String customerName,
+            @RequestParam("phone") String phone,
+            @RequestParam("postal_code") String postalCode,
+            @RequestParam("notes") String notes) {
 
         Order order = orderService.getById(orderId);
         if (order != null) {
@@ -70,6 +75,10 @@ public class OrderController {
             order.setShipmentDate(shipmentDate);
             order.setShipmentStatus(shipmentStatus);
             order.setShippingAddress(shippingAddress);
+            order.setCustomerName(customerName);
+            order.setPhone(phone);
+            order.setPostalCode(postalCode);
+            order.setNotes(notes);
 
             orderService.updateOrder(order);
             return ResponseEntity.ok("訂單更新成功！");
@@ -83,4 +92,24 @@ public class OrderController {
         orderService.deleteOrder(orderId);
         return ResponseEntity.ok("訂單已刪除！");
     }
+
+    @GetMapping("/details/{orderId}")
+    public ResponseEntity<Order> getOrderDetails(@PathVariable("orderId") Integer orderId, Model model) {
+        Order order = orderService.findOrderById(orderId);
+        model.addAttribute("order", order);
+        if (order != null) {
+            System.out.println("Order: " + order); // 打印訂單詳情以檢查數據
+            System.out.println("Order details: " + order.getOrderItems());
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //查詢所有訂單
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
 }

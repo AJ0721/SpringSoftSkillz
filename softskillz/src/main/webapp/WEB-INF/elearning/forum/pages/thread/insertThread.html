@@ -76,7 +76,7 @@
                 // window.location.href = '/forum/adminhome#nav-thread';
             });
 
-           
+
 
             // // Function to check if any property value in the object is empty
             // function checkInputs(data) {
@@ -143,28 +143,31 @@
                     <div class="page-content">
                         <section class="row col-12">
                             <main class="ml-sm-auto mt-0">
-                                <div class="card">
+                                <div class="card  border  border-3 rounded-3">
                                     <div class="card-body">
-                                        <form id="createThreadForm">
-                                            <div class="input-group-prepend">
+                                        <form id="createThreadForm" class="h5">
+                                            <div class="input-group-prepend ">
                                                 <label for="category">文章分類</label>
                                             </div>
-                                            <select class="form-control" id="category">
+                                            <select class="form-control mt-2 mb-3 bg-white  border  border-3 rounded-3 "
+                                                id="category">
                                                 <option value="">請選擇文章分類</option>
                                             </select>
-                                            <div class="form-group">
-                                                <label for="threadTitle">標題</label>
-                                                <input type="text" class="form-control" id="threadTitle"
-                                                    placeholder="請輸入文章標題">
+                                            <div class="form-group mt-2 mb-3  ">
+                                                <label for="threadTitle" class="mb-1">標題</label>
+                                                <input type="text" class="form-control border  border-3 rounded-3"
+                                                    id="threadTitle" placeholder="請輸入文章標題">
                                             </div>
-                                            <div class="form-group">
-                                                <label for="threadContent">內文</label>
-                                                <textarea class="form-control" id="threadContent" rows="3"
-                                                    placeholder="請輸入文章內容"></textarea>
+                                            <div class="form-group mt-2 mb-3">
+                                                <label for="threadContent mb-1">內文</label>
+                                                <textarea class="form-control  border  border-3 rounded-3"
+                                                    id="threadContent" rows="10" placeholder="請輸入文章內容"></textarea>
                                             </div>
-                                            <div class="form-group">
-                                                <button type="button" class="btn btn-secondary" id="cancel">取消</button>
-                                                <button type="submit" class="btn btn-primary" id="create">新增</button>
+                                            <div class="form-group mt-2 d-flex justify-content-end">
+
+                                                <button type="button" class="btn btn-warning me-2"
+                                                    id="cancel">取消</button>
+                                                <button type="submit" class="btn btn-success" id="create">新增</button>
                                             </div>
                                         </form>
                                     </div>
@@ -198,14 +201,14 @@
         let isSubmitting = false; // Add a flag to prevent multiple submissions
 
         document.addEventListener('DOMContentLoaded', function () {
-            validateUser().then(user => {
+
+            getLoggedInUser().then(user => {
                 if (user) {
-                    loggedInUser = user.loggedInUser;
-                    userType = user.userType;
-                    initializePage(loggedInUser, userType);
+                    initializePage(user.loggedInUser, user.userType);
                 }
-                fetchAndDisplayThreads();
             });
+
+
 
             updateNavbar(userType);
 

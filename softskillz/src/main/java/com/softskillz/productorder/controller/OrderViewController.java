@@ -51,6 +51,10 @@ public class OrderViewController {
     @GetMapping("/all")
     public String getOrderAll(Model model) {
         List<Order> orders = orderService.getAllOrders();
+        for (Order cat : orders) {
+            System.out.println("order: " + cat);
+            System.out.println("order item: " + cat.getOrderId());
+        }
         model.addAttribute("orders", orders);
         return "/dist/productorder/getOrderAll.jsp"; // getOrderAll.jsp 是顯示所有訂單的頁面
     }
@@ -111,6 +115,7 @@ public class OrderViewController {
 
         // 添加所有訂單到模型中以便在 getOrderAll.jsp 顯示
         List<Order> orders = orderService.getAllOrders();
+
         model.addAttribute("orders", orders);
 
         // 重定向到顯示所有訂單的頁面

@@ -56,7 +56,7 @@ white-space: normal;
         }
         
         tr:nth-child(odd) {
-  		background-color: #FFF2F2;
+  		background-color: #ECF5FF;
 		}
 		
 		#ptitle{
@@ -129,8 +129,8 @@ white-space: normal;
 						</div>
 					</div>
 				</div>
-				<!-- 側邊欄 -->
-<div class="sidebar-menu">
+	                   <!-- 側邊欄 -->
+          <div class="sidebar-menu">
             <ul class="menu">
               <li class="sidebar-item active">
                 <a href="/softskillz/newhomepage" class="sidebar-link">
@@ -284,9 +284,7 @@ white-space: normal;
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/mall/mallProductAll" class="submenu-link"
-                      >商品管理</a
-                    >
+                    <a href="/mall/backend" class="submenu-link">商品管理</a>
                   </li>
                 </ul>
               </li>
@@ -298,10 +296,10 @@ white-space: normal;
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/order" class="submenu-link">商品訂單管理</a>
+                    <a href="/order/all" class="submenu-link">商品訂單管理</a>
                   </li>
                   <li class="submenu-item">
-                    <a href="/order/create" class="submenu-link"
+                    <a href="/order/createPage" class="submenu-link"
                       >新增商品訂單</a
                     >
                   </li>
@@ -349,12 +347,20 @@ white-space: normal;
                 </ul>
               </li>
 
-              <br/>
-              <form action="/admin/admin-logout" method="post" style="text-align: center; margin: 0 auto">
+              <br />
+              <form
+                action="/admin/admin-logout"
+                method="post"
+                style="text-align: center; margin: 0 auto"
+              >
                 <button
                   type="submit"
                   class="btn rounded-pill"
-                  style="background-color: #3f6cba; color: white"
+                  style="
+                    background-color: #3f6cba;
+                    color: white;
+                    font-size: 20px;
+                  "
                 >
                   <i class="bi bi-person-circle"></i>&nbsp;登出
                 </button>
@@ -406,13 +412,13 @@ white-space: normal;
                           </div>
                           
                           <div class="col-4">
-                            <button class="btn btn-outline-primary" id="prevPage" type="button"
+                            <button class="btn btn-outline-primary btn-sm" id="prevPage" type="button"
                               onclick="changePage(-1)">上一頁</button>
                             <c:forEach var="i" begin="1" end="${totalPages}" step="1">
-                              <button class="btn btn-primary" id="myPage" type="button" style="display: inline-block;"
+                              <button class="btn btn-primary btn-sm" id="myPage" type="button" style="display: inline-block;"
                                 onclick="change(${i})">${i}</button>
                             </c:forEach>
-                            <button class="btn btn-outline-primary" id="nextPage" type="button" style="display: inline-block;"
+                            <button class="btn btn-outline-primary btn-sm" id="nextPage" type="button" style="display: inline-block;"
                               onclick="changePage(1)">下一頁</button>
                         </div>
                         </div>
@@ -425,7 +431,7 @@ white-space: normal;
                         <div align="center" class="mt-5">
                         
                         <a href="/companionIndex" style="text-decoration: none;">
-                        <button class="index btn btn-primary" style="background-color:#7D7DFF; border:0px">回首頁</button></a>
+                        <button class="index btn btn-primary" style="background-color:#ACD4D6; border:0px">返回學伴資料管理</button></a>
                         </div>
 <!--                       </div> -->
                       <!-- 我的div -->
@@ -598,8 +604,8 @@ white-space: normal;
 					                const deleteButton = event.target;
 					                // 使用 Swal.fire 顯示彈窗
 					                Swal.fire({
-					                    title: "確定要刪除這筆資料嗎？",
-					                    text: "刪除後資料無法復原",
+					                    title: "確定要清除這筆資料嗎？",
+					                    text: "清除後資料無法復原",
 					                    icon: "question",
 					                    confirmButtonText: "確定",
 					                    cancelButtonText: "取消",

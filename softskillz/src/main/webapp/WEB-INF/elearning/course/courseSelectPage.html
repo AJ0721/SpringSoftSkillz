@@ -123,15 +123,41 @@
                 class="dropdown-item"
                 >學生預約</a
               >
+              <a
+                href="/courseorder/order.do"
+                th:if="${loggedInUser == 'student'}"
+                class="dropdown-item"
+                >課程訂單</a
+              >
             </div>
           </div>
-          <a
-            href="/companionFrontIndex"
-            th:if="${loggedInUser == 'student'}"
-            class="nav-item nav-link"
-            style="font-size: 26px"
-            >學伴</a
-          >
+          <div class="nav-item dropdown" th:if="${loggedInUser == 'student'}">
+            <a
+              href="/companionFrontIndex"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              th:if="${loggedInUser == 'student'}"
+              >學伴</a
+            >
+            <div
+              class="dropdown-menu fade-down m-0"
+              th:if="${loggedInUser == 'student'}"
+            >
+              <a
+                href="/companionFrontIndex"
+                class="dropdown-item"
+                th:if="${loggedInUser == 'student'}"
+                >學伴配對</a
+              >
+              <a
+                href="/GetMyData"
+                class="dropdown-item"
+                th:if="${loggedInUser == 'student'}"
+                >個人條件設定</a
+              >
+            </div>
+          </div>
           <div class="nav-item dropdown">
             <a
               href="/courseFront/selectAllPage"
@@ -182,19 +208,19 @@
             style="font-size: 26px"
             >論壇</a
           >
-          <a
-            href="/mall/frontend"
-            class="nav-item nav-link"
-            style="font-size: 26px"
-            >商城</a
-          >
-          <a
-            href="/courseorder/order.do"
-            class="nav-item nav-link"
-            style="font-size: 26px"
-            th:if="${loggedInUser == 'student'}"
-            >訂單</a
-          >
+          <div class="nav-item dropdown">
+            <a
+              href="/mall/frontend"
+              class="nav-item nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              style="font-size: 26px"
+              >商城</a
+            >
+            <div class="dropdown-menu fade-down m-0">
+              <a href="/mall/frontend" class="dropdown-item">商城</a>
+              <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+            </div>
+          </div>
           <div class="nav-item dropdown" th:if="${loggedInUser == 'student'}">
             <a
               href="#"
@@ -389,10 +415,6 @@
         var itemsPerPage = 10;
         var currentPage = 1;
 
-        // 獲取 URL 查詢參數中的 loggedInUser
-        var urlParams = new URLSearchParams(window.location.search);
-        var loggedInUser = urlParams.get("user") || "guest";
-
         function truncateText(text, limit) {
           if (text.length > limit) {
             return text.substring(0, limit) + "...";
@@ -406,32 +428,32 @@
           data.forEach(function (course) {
             $("#cards").append(
               `<div class="col-12 col-md-8 mb-4">
-                          <div class="card mx-auto">
-                              <div class="card-body">
-                                  <div class="row">
-                                      <div class="col-lg-10">
-                                          <h4 class="card-title">
-                                              <a href="/courseFront/courseDetail/${
-                                                course.courseID
-                                              }">${course.courseName}</a>
-                                          </h4>
-                                          <p class="card-text"><small class="text-muted">${
-                                            course.courseCategory
-                                          }</small></p>
-                                          <p class="card-text">${truncateText(
-                                            course.courseInfo,
-                                            250
-                                          )}</p>
-                                      </div>
-                                      <div class="col-lg-2 text-end">
-                                          <p class="card-text" style="font-size: 1.5em;">${
-                                            course.coursePrice
-                                          }元</p>
-                                      </div>
-                                  </div>
+                  <div class="card mx-auto">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-lg-10">
+                                  <h4 class="card-title">
+                                      <a href="/courseFront/courseDetail/${
+                                        course.courseID
+                                      }">${course.courseName}</a>
+                                  </h4>
+                                  <p class="card-text"><small class="text-muted">${
+                                    course.courseCategory
+                                  }</small></p>
+                                  <p class="card-text">${truncateText(
+                                    course.courseInfo,
+                                    250
+                                  )}</p>
+                              </div>
+                              <div class="col-lg-2 text-end">
+                                  <p class="card-text" style="font-size: 1.5em;">${
+                                    course.coursePrice
+                                  }元</p>
                               </div>
                           </div>
-                      </div>`
+                      </div>
+                  </div>
+              </div>`
             );
           });
         }
@@ -441,8 +463,8 @@
           for (let i = 1; i <= totalPages; i++) {
             $(".pagination").append(
               `<li class="page-item ${i === currentPage ? "active" : ""}">
-                          <a class="page-link" href="#" onclick="fetchCourses(${i})">${i}</a>
-                      </li>`
+                  <a class="page-link" href="#" data-page="${i}">${i}</a>
+              </li>`
             );
           }
         }
@@ -452,11 +474,14 @@
           var category = urlParams.get("category") || "所有課程";
 
           $.ajax({
-            url: `/courseFront/selectAllCourses?page=${page}&category=${category}`,
+            url: `/courseFront/selectAllCourses?page=${page}&size=${itemsPerPage}&category=${category}`,
             type: "GET",
             success: function (response) {
-              renderCards(response);
-              renderPagination(Math.ceil(response.length / itemsPerPage));
+              var courses = response.courses;
+              renderCards(courses);
+              var totalPages = Math.ceil(response.totalItems / itemsPerPage);
+              currentPage = page; // 更新當前頁面
+              renderPagination(totalPages);
               console.log("Received data:", response);
             },
             error: function (xhr, status, error) {
@@ -464,6 +489,13 @@
             },
           });
         }
+
+        $(document).on("click", ".page-link", function (e) {
+          e.preventDefault();
+          var page = $(this).data("page");
+          fetchCourses(page);
+        });
+
         fetchCourses(1);
       });
     </script>

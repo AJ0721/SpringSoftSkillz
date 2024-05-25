@@ -68,10 +68,10 @@ pageEncoding="UTF-8"%>
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-      <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+      <a href="/courseFront/selectAllPage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
           <h2 class="m-0 text-primary">
-            <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
-            style="max-width: 250px; height: auto; margin-top: 16px;">
+              <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
+                   style="max-width: 250px; height: auto; margin-top: 16px;">
           </h2>
       </a>
       <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -80,17 +80,28 @@ pageEncoding="UTF-8"%>
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <div class="navbar-nav ms-auto p-4 p-lg-0">
               <a href="/courseFront/selectAllPage" class="nav-item nav-link active" style="font-size: 26px">首頁</a>
-                <div class="nav-item dropdown">
-                  <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">個人中心</a>
+              <div class="nav-item dropdown">
+                  <a href="/student/personal-center" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                     style="font-size: 26px">個人中心</a>
                   <div class="dropdown-menu fade-down m-0">
-                    <a href="/student/student-info" class="dropdown-item">個人中心</a>
-                    <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
-                    <a href="/studentReservationFront/reservation" class="dropdown-item">學生預約</a>
+                      <a href="/student/student-info" class="dropdown-item">個人中心</a>
+                      <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
+                      <a href="/studentReservationFront/reservation" class="dropdown-item">學生預約</a>
+                      <a href="/courseorder/order.do" class="dropdown-item">課程訂單</a>
                   </div>
               </div>
-                  <a href="/companionFrontIndex" class="nav-item nav-link" style="font-size: 26px">學伴</a>
+              <!--             首頁學伴選單 -->
               <div class="nav-item dropdown">
-                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">課程</a>
+              <a href="/companionFrontIndex" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">學伴</a>
+              <div class="dropdown-menu fade-down m-0">
+                  <a href="/companionFrontIndex" class="dropdown-item">學伴配對</a>
+                  <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
+                </div>
+              </div>
+             <!--             首頁學伴選單 --> 
+              <div class="nav-item dropdown">
+                  <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                     style="font-size: 26px">課程</a>
                   <div class="dropdown-menu fade-down m-0">
                       <a href="/courseFront/selectAllPage" class="dropdown-item">所有課程</a>
                       <a href="/courseFront/selectAllPage?category=語言" class="dropdown-item">語言</a>
@@ -102,39 +113,44 @@ pageEncoding="UTF-8"%>
                   </div>
               </div>
               <a href="/forum/home" class="nav-item nav-link" style="font-size: 26px">論壇</a>
-              <a href="/mall/frontend" class="nav-item nav-link" style="font-size: 26px">商城</a>
-              <a href="/courseorder/order.do" class="nav-item nav-link" style="font-size: 26px">訂單</a>
               <div class="nav-item dropdown">
-                <a
-                  href="#"
-                  class="nav-link dropdown-toggle"
-                  data-bs-toggle="dropdown"
+                <a href="/mall/frontend" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                   style="font-size: 26px">商城</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/mall/frontend" class="dropdown-item">商城</a>
+                    <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+                </div>
+            </div>
+              <div class="nav-item dropdown">
+                  <a
+                          href="#"
+                          class="nav-link dropdown-toggle"
+                          data-bs-toggle="dropdown"
                   ><i class="bi bi-chat-square-dots" style="font-size: 27px"></i
-                ></a>
-                <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
+                  ></a>
+                  <div class="dropdown-menu fade-down m-0" id="chatlist"></div>
               </div>
               <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a
-                  href="/coursecart/cart.do"
-                  class="nav-item nav-link"
-                  style="font-size: 27px"
+                  <a
+                          href="/coursecart/cart.do"
+                          class="nav-item nav-link"
+                          style="font-size: 27px"
                   ><i class="bi bi-cart4"></i
-                ></a>
+                  ></a>
               </div>
           </div>
           <div class="navbar-nav p-4 p-lg-0">
-            <form
-            action="/student/student-logout"
-            method="post"
-            class="d-none d-lg-block">
-            <button
-            type="submit"
-            class="btn btn-primary py-4 px-lg-5"
-            style="font-size: 26px">
-            <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
-          </button>
-        </form>
-
+              <form
+                      action="/student/student-logout"
+                      method="post"
+                      class="d-none d-lg-block">
+                  <button
+                          type="submit"
+                          class="btn btn-primary py-4 px-lg-5"
+                          style="font-size: 26px">
+                      <i class="bi bi-person-circle"></i>&nbsp;&nbsp;登出
+                  </button>
+              </form>
           </div>
       </div>
   </nav>

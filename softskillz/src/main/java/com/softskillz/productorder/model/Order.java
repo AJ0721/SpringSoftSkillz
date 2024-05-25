@@ -1,13 +1,21 @@
 package com.softskillz.productorder.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import org.springframework.format.annotation.DateTimeFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "orders")
@@ -43,7 +51,19 @@ public class Order implements Serializable {
     @Column(name = "shipment_date")
     private LocalDateTime shipmentDate;
 
-    @JsonManagedReference
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "notes")
+    private String notes;
+
+    //    @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<OrderItem> orderItems = new HashSet<>();
 
@@ -116,6 +136,38 @@ public class Order implements Serializable {
         this.shipmentDate = shipmentDate;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public Set<OrderItem> getOrderItems() {
         return orderItems;
     }
@@ -126,10 +178,20 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "Order [orderId=" + orderId + ", totalAmount=" + totalAmount
-                + ", orderStatus=" + orderStatus + ", paymentMethod=" + paymentMethod
-                + ", shipmentStatus=" + shipmentStatus + ", shippingAddress=" + shippingAddress + ", orderDate="
-                + orderDate + ", shipmentDate=" + shipmentDate + ", orderItems=" + orderItems + "]";
+        return "Order{" +
+                "orderId=" + orderId +
+                ", totalAmount=" + totalAmount +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", shipmentStatus='" + shipmentStatus + '\'' +
+                ", shippingAddress='" + shippingAddress + '\'' +
+                ", orderDate=" + orderDate +
+                ", shipmentDate=" + shipmentDate +
+                ", customerName='" + customerName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 
     @Override

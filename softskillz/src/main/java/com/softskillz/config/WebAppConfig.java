@@ -181,8 +181,6 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 		registry.addViewController("/softskilz.homepage").setViewName("account/homepage/BackendPage.jsp");
 
-		registry.addViewController("/softskillz/homepage").setViewName("pages/backendPage.jsp");
-
 		// 後台模版首頁index.html
 		registry.addViewController("/softskillz/newhomepage").setViewName("dist/index.html");
 

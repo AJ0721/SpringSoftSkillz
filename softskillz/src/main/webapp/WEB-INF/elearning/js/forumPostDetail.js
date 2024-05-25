@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    // Fetch thread details and comments
+
     const pathname = window.location.pathname;
     const parts = pathname.split("/");
     const threadId = parts[parts.length - 1];
@@ -8,77 +8,75 @@ $(document).ready(function () {
     //--------------------POST--------------------
 
     // SUBMIT POST
-    // $(document).on('click', '.reply-btn', function () {
-    //     const postId = $(this).data('post-id');
-    
-    //     // Hide all buttons
-    //     $('.edit-btn, .delete-btn, .reply-btn').hide();
-    
-    //     const replyFormHtml = `
-    //         <form class="reply-form mt-2">
-    //             <div class="form-group ">
-    //                 <textarea class="form-control border border-4 rounded-4 reply-content" rows="3"></textarea>
-    //             </div>
-    //             <div class="d-flex justify-content-end mb-2">
-    //                 <button type="button" class="btn btn-secondary mt-2 cancel-reply me-2">取消</button>
-    //                 <button type="submit" class="submit-reply btn btn-primary mt-2">送出</button>
-    //             </div>
-    //             <input type="hidden" class="parentPostId" value="${postId}">
-    //         </form>
-    //     `;
-    //     const commentElement = $(this).closest('li').find('.reply-form-container').first();
-    //     commentElement.html(replyFormHtml);
-    
-    //     // Cancel Reply Button
-    //     $(document).one('click', '.cancel-reply', function () {
-    //         $(this).closest('.reply-form-container').empty();
-    
-    //         // Restore all buttons
-    //         $('.edit-btn, .delete-btn, .reply-btn').show();
-    //     });
-    
-    //     // Submit Reply Button
-    //     $(document).one('click', '.submit-reply', function (e) {
-    //         e.preventDefault();
-    //         const replyContent = $(this).closest('form').find('.reply-content').val().trim();
-    //         if (replyContent === "") {
-    //             Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
-    //             return;
-    //         }
-    //         const parentPostId = $(this).closest('form').find('.parentPostId').val();
-    //         const postDto = {
-    //             postContent: replyContent,
-    //             parentPost: { postId: parentPostId },
-    //             thread: { threadId: threadId }
-    //         };
-    //         submitPost(postDto, threadId);
-    
-    //         // Restore all buttons
-    //         $('.edit-btn, .delete-btn, .reply-btn').show();
-    //     });
-    // });
+    $(document).on('click', '.reply-btn', function () {
+        const postId = $(this).data('post-id');
+
+        // Hide all buttons
+        $('.edit-btn, .delete-btn, .reply-btn').hide();
+
+        const replyFormHtml = `
+            <form class="reply-form mt-2">
+                <div class="form-group ">
+                    <textarea class="form-control border border-4 rounded-4 reply-content" rows="3"></textarea>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-secondary mt-2 cancel-reply me-2">取消</button>
+                    <button type="submit" class="submit-reply btn btn-primary mt-2">送出</button>
+                </div>
+                <input type="hidden" class="parentPostId" value="${postId}">
+            </form>
+        `;
+        const commentElement = $(this).closest('li').find('.reply-form-container').first();
+        commentElement.html(replyFormHtml);
+
+        // Cancel Reply Button
+        $(document).one('click', '.cancel-reply', function () {
+            $(this).closest('.reply-form-container').empty();
+
+            // Restore all buttons
+            $('.edit-btn, .delete-btn, .reply-btn').show();
+        });
+
+        // Submit Reply Button
+        $(document).one('click', '.submit-reply', function (e) {
+            e.preventDefault();
+            const replyContent = $(this).closest('form').find('.reply-content').val().trim();
+            if (replyContent === "") {
+                Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+                return;
+            }
+            const parentPostId = $(this).closest('form').find('.parentPostId').val();
+            const postDto = {
+                postContent: replyContent,
+                parentPost: { postId: parentPostId },
+                thread: { threadId: threadId }
+            };
+            submitPost(postDto, threadId);
+
+            // Restore all buttons
+            $('.edit-btn, .delete-btn, .reply-btn').show();
+        });
+    });
 
     //EDIT POST
-
-   
     $(document).on('click', '.edit-btn', function () {
         const postId = $(this).data('post-id');
         const postElement = $(this).closest('li');
         const postContentElement = postElement.find('.post-content').first();
         const currentContent = postContentElement.text().trim();
-    
+
         // Hide all buttons
         $('.edit-btn, .delete-btn, .reply-btn').hide();
-    
+
         // Make content editable
         postContentElement.attr('contenteditable', 'true').focus();
-    
+
         // Show the update and cancel buttons
         $(this).after(`
             <button class="btn btn-sm btn-primary update-btn me-2" data-post-id="${postId}">更新</button>
             <button class="btn btn-sm btn-secondary cancel-edit" data-post-id="${postId}">取消</button>
         `);
-    
+
         // Update Button
         $(document).one('click', '.update-btn', function () {
             const updatedContent = postContentElement.text().trim();
@@ -91,19 +89,19 @@ $(document).ready(function () {
                 thread: { threadId: threadId }
             };
             updatePost(postId, postDto);
-    
+
             // Restore all buttons
             $('.edit-btn, .delete-btn, .reply-btn').show();
             postElement.find('.update-btn, .cancel-edit').remove();
             postContentElement.attr('contenteditable', 'false');
         });
-    
+
         // Cancel Edit Button
         $(document).one('click', '.cancel-edit', function () {
             postContentElement.text(currentContent).attr('contenteditable', 'false');
             $(this).siblings('.update-btn').remove();
             $(this).remove();
-    
+
             // Restore all buttons
             $('.edit-btn, .delete-btn, .reply-btn').show();
         });
@@ -139,17 +137,21 @@ function createCommentHtml(post) {
     const formattedDate = new Date(post.postCreatedTime).toLocaleString();
 
     return `
-    <li class="list-unstyled comment border-start border-light border-3 p-2 mb-3 pl-0" data-post-id="${post.postId}">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <p><strong>${authorName} (${authorId})</strong></p>
+    <li class="list-unstyled comment border-start border-primary border-3 p-2 ml-0 mb-3 pl-0" data-post-id="${post.postId}">
+    <div class="d-flex justify-content-between align-items-center mb-0">
+    
+    <div class="d-flex justify-content-start">   
+        <p class="me-3 "><strong>${authorName}</strong></p>
+        <span class="text-muted">${formattedDate}</span>
+        </div>
         <span class="d-flex">
-            <button class="me-2 btn btn-sm btn-success reply-btn" data-post-id="${post.postId}">回覆</button>
-            ${canEdit ? `<button class="me-2 btn btn-sm btn-warning edit-btn" data-post-id="${post.postId}">編輯</button>` : ''}
-            ${canEdit ? `<button class="btn btn-sm btn-danger delete-btn" data-post-id="${post.postId}">刪除</button>` : ''}
+            <button class="me-2 btn  btn-success reply-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-reply-fill"></i></button>
+            ${canEdit ? `<button class="me-2 btn  btn-warning edit-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-pencil-square "></i></button>` : ''}
+            ${canEdit ? `<button class="btn  btn-danger delete-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-trash"></i></button>` : ''}
         </span>
     </div>
     <p class="post-content p-2">${post.postContent}</p>
-    <p class="text-muted"><small>${formattedDate}</small></p>
+ 
     <div class="reply-form-container"></div>
     <ul class="child-comments"></ul>
 </li>
@@ -244,8 +246,8 @@ function attachReplyButtonEvents(posts, threadId) {
                 <textarea class="form-control border border-4 rounded-4 reply-content" rows="3"></textarea>
             </div>
             <div class="d-flex justify-content-end mb-2">
-                <button type="button" class="btn btn-secondary mt-2 cancel-reply me-2">取消</button>
-                <button type="submit" class="submit-reply btn btn-primary mt-2">送出</button>
+                <button type="button" class="btn btn-secondary mt-2 cancel-reply me-2 border rounded-3">取消</button>
+                <button type="submit" class="submit-reply btn btn-primary mt-2 border rounded-3">送出</button>
             </div>
             <input type="hidden" class="parentPostId" value="${postId}">
         </form>

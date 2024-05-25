@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.bean.TeacherNewPwdBean;
 import com.softskillz.account.model.repository.TeacherEmailRepository;
@@ -75,7 +76,39 @@ public class TeacherService {
 
 	// 新增,註冊老師
 	public TeacherBean insert(TeacherBean teachers) {
-		return teacherRepository.save(teachers);
+		try {
+			return teacherRepository.save(teachers);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Boolean checkAccout(String username) {
+
+		Optional<TeacherBean> result = teacherRepository.checkAccout(username);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean checkMail(String mail) {
+
+		Optional<TeacherBean> result = teacherRepository.checkMail(mail);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean checkPhone(String phone) {
+
+		Optional<TeacherBean> result = teacherRepository.checkPhone(phone);
+		if (result.isPresent()) {
+			return true;
+		}
+		return false;
 	}
 
 	public TeacherBean findByFormatID(String tfID) {
@@ -88,54 +121,54 @@ public class TeacherService {
 		return teacherRepository.save(teacherBean);
 
 	}
-	
+
 	/************************************
 	 * 忘記密碼
-	 * @Autowired
-	private JavaMailSender javaMailSender;
+	 * 
+	 * @Autowired private JavaMailSender javaMailSender;
 	 *************************************/
 	// 用帳號找信箱
-		public Optional<TeacherBean> findTeacherByEmail(String teacherEmail) {
-			Optional<TeacherBean> resultOptional = teacherRepository.findTeacherByEmail(teacherEmail);
+	public Optional<TeacherBean> findTeacherByEmail(String teacherEmail) {
+		Optional<TeacherBean> resultOptional = teacherRepository.findTeacherByEmail(teacherEmail);
 
-			boolean result = resultOptional.isPresent();
+		boolean result = resultOptional.isPresent();
 
-			if (result) {
-				return resultOptional;
-			}
-			return null;
+		if (result) {
+			return resultOptional;
 		}
-		
-		public void sendPlainText(String receivers, String subject, String content, String from)
-				throws jakarta.mail.MessagingException {
-			MimeMessage mailMessage = javaMailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mailMessage, true, "UTF-8");
+		return null;
+	}
 
-			helper.setTo(receivers);
-			helper.setSubject(subject);
-			helper.setText(content, true);
-			helper.setFrom(from);
+	public void sendPlainText(String receivers, String subject, String content, String from)
+			throws jakarta.mail.MessagingException {
+		MimeMessage mailMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mailMessage, true, "UTF-8");
 
-			javaMailSender.send(mailMessage);
-		}
-		
-		/************************************
-		 * token表操作
-		 *************************************/
-		// 把新密碼放進去
-		public TeacherNewPwdBean insertForgotPwd(TeacherNewPwdBean newPwd) {
-			return teacherEmailRepository.save(newPwd);
-		}
+		helper.setTo(receivers);
+		helper.setSubject(subject);
+		helper.setText(content, true);
+		helper.setFrom(from);
 
-		// 把新密碼放進去
-		public Optional<TeacherNewPwdBean> findToken(String token) {
-			return teacherEmailRepository.findToken(token);
-		}
+		javaMailSender.send(mailMessage);
+	}
 
-		// Delete, 刪除
-		// 對應token此表的id
-		public void deleteToken(Integer tokenId) {
-			teacherEmailRepository.deleteById(tokenId);
-		}
-	
+	/************************************
+	 * token表操作
+	 *************************************/
+	// 把新密碼放進去
+	public TeacherNewPwdBean insertForgotPwd(TeacherNewPwdBean newPwd) {
+		return teacherEmailRepository.save(newPwd);
+	}
+
+	// 把新密碼放進去
+	public Optional<TeacherNewPwdBean> findToken(String token) {
+		return teacherEmailRepository.findToken(token);
+	}
+
+	// Delete, 刪除
+	// 對應token此表的id
+	public void deleteToken(Integer tokenId) {
+		teacherEmailRepository.deleteById(tokenId);
+	}
+
 }

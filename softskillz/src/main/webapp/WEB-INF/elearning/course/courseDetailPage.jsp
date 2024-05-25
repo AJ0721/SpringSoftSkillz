@@ -77,7 +77,7 @@ pageEncoding="UTF-8"%>
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-      <a href="/softskillz/fhomepage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+      <a href="/courseFront/selectAllPage" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
           <h2 class="m-0 text-primary">
             <img src="/account/images/softskillz_logo.png" alt="SoftSkillz" class="me-3"
             style="max-width: 250px; height: auto; margin-top: 16px;">
@@ -96,9 +96,16 @@ pageEncoding="UTF-8"%>
                     <a href="/student/student-info" class="dropdown-item">個人中心</a>
                     <a href="/studentScheduleFront/schedule" class="dropdown-item">學生行事曆</a>
                     <a href="/studentReservationFront/reservation" class="dropdown-item">學生預約</a>
+                    <a href="/courseorder/order.do" class="dropdown-item">課程訂單</a>
                   </div>
               </div>
-                  <a href="#" class="nav-item nav-link" style="font-size: 26px">學伴</a>
+              <div class="nav-item dropdown">
+                <a href="/companionFrontIndex" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">學伴</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/companionFrontIndex" class="dropdown-item">學伴配對</a>
+                    <a href="/GetMyData" class="dropdown-item">個人條件設定</a>
+                  </div>
+                </div>
               </c:if>
               <div class="nav-item dropdown">
                   <a href="/courseFront/selectAllPage" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="font-size: 26px">課程</a>
@@ -113,14 +120,15 @@ pageEncoding="UTF-8"%>
                   </div>
               </div>
               <a href="/forum/home" class="nav-item nav-link" style="font-size: 26px">論壇</a>
-              <a href="#" class="nav-item nav-link" style="font-size: 26px">商城</a>
+              <div class="nav-item dropdown">
+                <a href="/mall/frontend" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                   style="font-size: 26px">商城</a>
+                <div class="dropdown-menu fade-down m-0">
+                    <a href="/mall/frontend" class="dropdown-item">商城</a>
+                    <a href="/order/searchorder" class="dropdown-item">查詢訂單</a>
+                </div>
+            </div>
               <c:if test="${loggedInUser == 'student'}">
-              <a
-              href="/courseorder/order.do"
-              class="nav-item nav-link"
-              style="font-size: 26px"
-              >訂單</a
-              >
               <div class="nav-item dropdown">
                 <a
                   href="#"

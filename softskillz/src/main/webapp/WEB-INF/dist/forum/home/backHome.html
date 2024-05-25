@@ -466,6 +466,13 @@
                                         aria-labelledby="nav-threads-tab">
                                         <button class="btn btn-success mb-3" id="createNewThread">新增文章</button>
                                         <button class="btn btn-danger mb-3" id="deleteSelectedThreads">刪除</button>
+
+                                        <button class="btn btn-warning mb-3 " id="exportExcel"
+                                            onclick="downloadExcel()">匯出Excel</button>
+                                        <button class="btn btn-warning mb-3" id="exportJson"
+                                            onclick="downloadJson()">匯出Json</button>
+
+
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover" id="thread-table">
                                                 <thead>
@@ -673,64 +680,60 @@
             });
 
 
+            // Redirect to assigned tab based on hash in URL
+            var hash = window.location.hash;
+            console.log(`tabhash:${hash}`);
+
+            $('.nav-tabs a[href="' + hash + '"]').tab('show');
+            switch (hash) {
+                case '#nav-category':
+                    $('#categoryList').empty();
+                    fetchCategories()
+                        .then(categories => {
+                            displayCategoriesTab(categories);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching categories:", error);
+                            $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
+                        });
+                    break;
+                case '#nav-thread':
+                    $('#threadList').empty();
+                    fetchThreads()
+                        .then(threads => {
+                            displayThreadsTab(threads);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching threads:", error);
+                            $('#threadList').html('<tr><td colspan="9">資料載入失敗，請重新整理。</td></tr>');
+                        });
+                    break;
+                case '#nav-post':
+                    $('#postList').empty();
+                    fetchPosts()
+                        .then(posts => {
+                            displayPostsTab(posts);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching posts:", error);
+                            $('#postList').html('<tr><td colspan="10">資料載入失敗，請重新整理。</td></tr>');
+                        });
+                    break;
+            }
+
+
         });
 
-
-        // Redirect to assigned tab based on hash in URL
-        var hash = window.location.hash;
-        console.log(`tabhash:${hash}`);
-
-        $('.nav-tabs a[href="' + hash + '"]').tab('show');
-        switch (hash) {
-            case '#nav-category':
-                $('#categoryList').empty();
-                fetchCategories()
-                    .then(categories => {
-                        displayCategoriesTab(categories);
-                    })
-                    .catch(error => {
-                        console.error("Error fetching categories:", error);
-                        $('#categoryList').html('<tr><td colspan="5">資料載入失敗，請重新整理。</td></tr>');
-                    });
-                break;
-            case '#nav-thread':
-                $('#threadList').empty();
-                fetchThreads()
-                    .then(threads => {
-                        displayThreadsTab(threads);
-                    })
-                    .catch(error => {
-                        console.error("Error fetching threads:", error);
-                        $('#threadList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
-                    });
-                break;
-            case '#nav-post':
-                $('#postList').empty();
-                fetchPosts()
-                    .then(posts => {
-                        displayPostsTab(posts);
-                    })
-                    .catch(error => {
-                        console.error("Error fetching posts:", error);
-                        $('#postList').html('<tr><td colspan="13">資料載入失敗，請重新整理。</td></tr>');
-                    });
-                break;
+        function downloadJson() {
+            window.location.href = '/api/export/threads/json';
         }
 
-        //CLICK: SYNC TAB WITH HASH
-        const navLinks = document.querySelectorAll('#nav-tabs-list .nav-link');
+        function downloadExcel() {
+            window.location.href = '/api/export/threads/excel';
+        }
 
-        // Add click event listeners to each nav link
-        navLinks.forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault();
-                const tabHash = this.getAttribute('href');
-                console.log(`tabhash:${tabHash}`);
-                window.location.hash = tabHash;
-                //use window.location.hash = tabHash to change the hash without navigating to a new page
 
-            });
-        });
+
 
 
 

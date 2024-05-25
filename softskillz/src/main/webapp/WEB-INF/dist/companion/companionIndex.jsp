@@ -135,7 +135,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- 側邊欄 -->
+<!-- 側邊欄 -->
           <div class="sidebar-menu">
             <ul class="menu">
               <li class="sidebar-item active">
@@ -290,9 +290,7 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/mall/mallProductAll" class="submenu-link"
-                      >商品管理</a
-                    >
+                    <a href="/mall/backend" class="submenu-link">商品管理</a>
                   </li>
                 </ul>
               </li>
@@ -304,10 +302,10 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/order" class="submenu-link">商品訂單管理</a>
+                    <a href="/order/all" class="submenu-link">商品訂單管理</a>
                   </li>
                   <li class="submenu-item">
-                    <a href="/order/create" class="submenu-link"
+                    <a href="/order/createPage" class="submenu-link"
                       >新增商品訂單</a
                     >
                   </li>
@@ -355,12 +353,20 @@
                 </ul>
               </li>
 
-              <br/>
-              <form action="/admin/admin-logout" method="post" style="text-align: center; margin: 0 auto">
+              <br />
+              <form
+                action="/admin/admin-logout"
+                method="post"
+                style="text-align: center; margin: 0 auto"
+              >
                 <button
                   type="submit"
                   class="btn rounded-pill"
-                  style="background-color: #3f6cba; color: white"
+                  style="
+                    background-color: #3f6cba;
+                    color: white;
+                    font-size: 20px;
+                  "
                 >
                   <i class="bi bi-person-circle"></i>&nbsp;登出
                 </button>

@@ -307,7 +307,7 @@ charset=UTF-8" pageEncoding="UTF-8"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/companionIndex.html" class="submenu-link"
+                    <a href="/companionIndex" class="submenu-link"
                       >學伴資料管理</a
                     >
                   </li>
@@ -585,7 +585,7 @@ function calculatePercentages(counts) {
 // 根據百分比生成顏色的函數
 function generateColors(percentages) {
   return percentages.map(percentage => {
-    if (percentage >= 80) return '#FF4560'; // 百分比大於等於 80%
+    if (percentage >= 80) return '#425169'; // 百分比大於等於 80%
     if (percentage >= 50) return '#425169'; // 百分比大於等於 50%
     return '#008FFB'; // 其他情況
   });

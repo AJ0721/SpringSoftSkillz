@@ -169,7 +169,7 @@
                         </a>
                         <ul class="submenu">
                             <li class="submenu-item">
-                                <a href="/studentSchedule/selectAllPage" class="submenu-link">查詢學生行事曆</a>
+                                <a href="/studentSchedule/selectAllPage" class="submenu-link">查詢學生行事曶</a>
                             </li>
                         </ul>
                     </li>
@@ -295,10 +295,15 @@
                                         <th>付款方式</th>
                                         <th>出貨日期</th>
                                         <th>出貨狀態</th>
+                                        <th>收貨人姓名</th>
+                                        <th>電話</th>
+                                        <th>郵遞區號</th>
+                                        <th>備註</th>
                                         <th>訂單詳情</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
+
 
                                     <tbody>
                                     <%
@@ -325,11 +330,22 @@
                                         <td><%= currentOrder.getShipmentStatus() != null
                                                 ? currentOrder.getShipmentStatus() : "未出貨" %>
                                         </td>
-                                        <td>
-                                            <a href=/order/order/<%=currentOrder.getOrderId() %>
- class="btn btn-info"
-                                               style="color: #FFFFFF; background-color: #425169;">查看詳情</a>
+                                        <td><%= currentOrder.getCustomerName() %>
                                         </td>
+                                        <td><%= currentOrder.getPhone() %>
+                                        </td>
+                                        <td><%= currentOrder.getPostalCode() %>
+                                        </td>
+                                        <td><%= currentOrder.getNotes() != null ? currentOrder.getNotes() : "無備註" %>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info view-detail-btn"
+                                                    style="color: #FFFFFF; background-color: #425169;"
+                                                    data-order-id="<%= currentOrder.getOrderId() %>">查看詳情
+                                            </button>
+                                        </td>
+
+
                                         <td>
                                             <form method="get"
                                                   action="/api/order/searchforupdate/<%= currentOrder.getOrderId() %>"
@@ -401,11 +417,11 @@
                                     <select class="form-control" id="orderStatus"
                                             name="order_status">
                                         <option value="">請選擇</option>
-                                        <option value="支付成功" ${order.orderStatus=='支付成功'
-                                                ? 'selected' : '' }>支付成功
+                                        <option value="已付款" ${order.orderStatus=='已付款'
+                                                ? 'selected' : '' }>已付款
                                         </option>
-                                        <option value="支付失敗" ${order.orderStatus=='支付失敗'
-                                                ? 'selected' : '' }>支付失敗
+                                        <option value="未付款" ${order.orderStatus=='未付款'
+                                                ? 'selected' : '' }>未付款
                                         </option>
                                     </select>
                                 </div>
@@ -447,6 +463,26 @@
                                     <input type="text" class="form-control" id="address"
                                            name="shipping_address" value="${order.shippingAddress}">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="customerName" class="form-label">收貨人姓名:</label>
+                                    <input type="text" class="form-control" id="customerName"
+                                           name="customer_name" value="${order.customerName}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">電話:</label>
+                                    <input type="text" class="form-control" id="phone"
+                                           name="phone" value="${order.phone}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="postalCode" class="form-label">郵遞區號:</label>
+                                    <input type="text" class="form-control" id="postalCode"
+                                           name="postal_code" value="${order.postalCode}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">備註:</label>
+                                    <input type="text" class="form-control" id="notes"
+                                           name="notes" value="${order.notes}">
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
@@ -457,6 +493,24 @@
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <!-- 訂單詳情模態框 -->
+            <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderDetailModalLabel">訂單詳情</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="orderDetailContent"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -484,186 +538,225 @@
 
 <script>
     $(document).ready(function () {
-            // 解析 URL 參數
-            const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('orderId');
-            const transactionId = urlParams.get('transactionId');
+        // 初始化 DataTable
+        $('#orders').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json" // 使用中文介面
+            },
+            "paging": true, // 啟用表格分頁
+            "lengthChange": true, // 允許用戶改變分頁設置
+            "searching": true, // 啟用快速搜索
+            "ordering": true, // 啟用排序
+            "info": true, // 顯示頁腳信息
+            "autoWidth": false, // 禁用自動調整列寬
+            "responsive": true // 啟用響應式布局
+        });
 
-            // if (orderId && transactionId) {
-            // 使用 AJAX 請求加載訂單詳情
-            //     $.ajax({
-            //         url: '/api/orders/' + orderId,
-            //         method: 'GET',
-            //         success: function (data) {
-            //             // 將訂單詳情顯示在頁面上
-            //             $('#order-name').text(data.name);
-            //             $('#order-phone').text(data.phone);
-            //             $('#order-postalCode').text(data.postalCode);
-            //             $('#order-address').text(data.address);
-            //             $('#order-note').text(data.note);
-            //             $('#order-id').text(data.orderId);
-            //             $('#order-date').text(data.orderDate);
-            //             $('#order-totalAmount').text(data.totalAmount);
-            //             $('#order-paymentMethod').text(data.paymentMethod);
-            //             $('#order-status').text(data.orderStatus);
-            //         },
-            //         error: function (xhr, status, error) {
-            //             console.error('Error loading order details:', error);
-            //             alert('無法加載訂單詳情，請稍後重試。');
-            //         }
-            //     });
-            // } else {
-            //     alert('缺少必要的訂單參數。');
-            // }
+        // 「查看詳情」按鈕事件監聽器
+        $('.view-detail-btn').click(function (e) {
+            e.preventDefault();
+            var orderId = $(this).data('order-id'); // 從按鈕獲取訂單ID
+            $.ajax({
+                url: '/api/order/details/' + orderId,
+                method: 'GET',
+                success: function (order) {
+                    console.log('Order details:', order); // 打印訂單詳情以檢查數據
+                    // 使用 JavaScript 格式化日期
+                    var orderDate = new Date(order.orderDate).toLocaleString();
+                    var shipmentDate = order.shipmentDate ? new Date(order.shipmentDate).toLocaleString() : '未出貨';
 
-            $('#orders').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json" // 使用中文介面
+
+                    // 成功獲取數據後，填充到模態框中
+                    var orderDetailContent = `
+                        <h5>結帳資訊</h5>
+                        <p>姓名: ${order.customerName}</p>
+                        <p>電話: ${order.phone}</p>
+                        <p>郵政編碼: ${order.postalCode}</p>
+                        <p>收貨地址: ${order.shippingAddress}</p>
+                        <p>備註: ${order.notes}</p>
+                        <p>訂單號: ${order.orderId}</p>
+                        <p>訂單日期: ${orderDate}</p>
+                        <p>總金額: ${order.totalAmount}</p>
+                        <p>付款方式: ${order.paymentMethod}</p>
+                        <p>訂單狀態: ${order.orderStatus}</p>
+                        <h5>訂單項目</h5>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>產品名稱</th>
+                                    <th>數量</th>
+                                    <th>價格</th>
+                                    <th>小計</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                    order.orderItems.forEach(function (item) {
+                        orderDetailContent += `
+                            <tr>
+                                <td>` + item.productName + `</td>
+                                <td>` + item.quantity + `</td>
+                                <td>` + item.productPrice + `</td>
+                                <td>` + item.subTotal + `</td>
+                            </tr>`;
+                    });
+                    orderDetailContent += `
+                            </tbody>
+                        </table>`;
+                    $('#orderDetailContent').html(orderDetailContent);
+                    // 顯示模態框
+                    $('#orderDetailModal').modal('show');
                 },
-                "paging": true, // 啟用表格分頁
-                "lengthChange": true, // 允許用戶改變分頁設置
-                "searching": true, // 啟用快速搜索
-                "ordering": true, // 啟用排序
-                "info": true, // 顯示頁腳信息
-                "autoWidth": false, // 禁用自動調整列寬
-                "responsive": true // 啟用響應式布局
+                error: function (xhr, status, error) {
+                    console.error('Failed to fetch order details:', error);
+                    alert('無法獲取訂單詳情，請稍後重試。');
+                }
             });
+        });
 
-            $('#createOrderLink').click(function (e) {
-                e.preventDefault(); // 阻止默認的連結行為
+        $('#createOrderLink').click(function (e) {
+            e.preventDefault(); // 阻止默認的連結行為
 
-                // 執行AJAX請求
-                $.ajax({
-                    url: '/order/createPage', // 你的API端點URL
-                    type: 'GET', // 請求類型 (根據需要更改為POST)
-                    success: function (response) {
-                        // 成功後，重定向到所需頁面
-                        window.location.href = '/order/createPage'; // 更改為你想重定向的頁面URL
-                    },
-                    error: function (xhr, status, error) {
-                        // 處理任何錯誤
-                        Swal.fire('錯誤', '無法創建訂單，請稍後重試。', 'error');
-                    }
-                });
+            // 執行AJAX請求
+            $.ajax({
+                url: '/order/createPage', // 你的API端點URL
+                type: 'GET', // 請求類型 (根據需要更改為POST)
+                success: function (response) {
+                    // 成功後，重定向到所需頁面
+                    window.location.href = '/order/createPage'; // 更改為你想重定向的頁面URL
+                },
+                error: function (xhr, status, error) {
+                    // 處理任何錯誤
+                    Swal.fire('錯誤', '無法創建訂單，請稍後重試。', 'error');
+                }
             });
+        });
 
-            // 監聽更新按鈕的事件
-            $('.edit-btn').click(function (e) {
-                e.preventDefault();
-                var orderId = $(this).data('order-id'); // 從按鈕獲取訂單ID
-                console.log('Fetching details for order ID:', orderId);
-                $.ajax({
-                    url: '/api/order/searchforupdate/' + orderId,
-                    method: 'GET',
-                    success: function (order) {
-                        // 成功獲取數據後，填充到模態框中
-                        $('#updateOrderModal #id').val(order.orderId);
-                        $('#updateOrderModal #date').val(order.orderDate);
-                        $('#updateOrderModal #total').val(order.totalAmount);
-                        $('#updateOrderModal #orderStatus').val(order.orderStatus);
-                        $('#updateOrderModal #paymentMethod').val(order.paymentMethod);
-                        $('#updateOrderModal #shipmentDate').val(order.shipmentDate);
-                        $('#updateOrderModal #shipmentStatus').val(order.shipmentStatus);
-                        $('#updateOrderModal #address').val(order.shippingAddress);
+        // 監聽更新按鈕的事件
+        $('.edit-btn').click(function (e) {
+            e.preventDefault();
+            var orderId = $(this).data('order-id'); // 從按鈕獲取訂單ID
+            console.log('Fetching details for order ID:', orderId);
+            $.ajax({
+                url: '/api/order/searchforupdate/' + orderId,
+                method: 'GET',
+                success: function (order) {
+                    // 成功獲取數據後，填充到模態框中
+                    $('#updateOrderModal #id').val(order.orderId);
+                    $('#updateOrderModal #date').val(order.orderDate);
+                    $('#updateOrderModal #total').val(order.totalAmount);
+                    $('#updateOrderModal #orderStatus').val(order.orderStatus);
+                    $('#updateOrderModal #paymentMethod').val(order.paymentMethod);
+                    $('#updateOrderModal #shipmentDate').val(order.shipmentDate);
+                    $('#updateOrderModal #shipmentStatus').val(order.shipmentStatus);
+                    $('#updateOrderModal #address').val(order.shippingAddress);
+                    $('#updateOrderModal #customerName').val(order.customerName);
+                    $('#updateOrderModal #phone').val(order.phone);
+                    $('#updateOrderModal #postalCode').val(order.postalCode);
+                    $('#updateOrderModal #notes').val(order.notes);
 
-                        // 顯示模態框
-                        $('#updateOrderModal').modal('show');
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Failed to fetch order details:', error);
-                        alert('無法獲取訂單詳情，請稍後重試。');
-                    }
-                });
+                    // 顯示模態框
+                    $('#updateOrderModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Failed to fetch order details:', error);
+                    alert('無法獲取訂單詳情，請稍後重試。');
+                }
             });
+        });
 
-            // 在模態框中綁定更新確認按鈕事件
-            $('#confirmUpdateBtn').click(function (e) {
-                e.preventDefault();
-                // 使用SweetAlert顯示確認提示
-                Swal.fire({
-                    title: '確定要更新嗎?',
-                    text: "確認後將會更新此訂單資料。",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: '取消',
-                    confirmButtonText: '確認更新'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // 发送AJAX请求更新订单
-                        var form = $('#updateOrderForm'); // 確保你的表單有一個ID
-                        $.ajax({
+        // 在模態框中綁定更新確認按鈕事件
+        $('#confirmUpdateBtn').click(function (e) {
+            e.preventDefault();
+            // 使用SweetAlert顯示確認提示
+            Swal.fire({
+                title: '確定要更新嗎?',
+                text: "確認後將會更新此訂單資料。",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: '取消',
+                confirmButtonText: '確認更新'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 发送AJAX请求更新订单
+                    var form = $('#updateOrderForm'); // 確保你的表單有一個ID
+                    $.ajax({
                             url: form.attr('action'), // 使用表單的 action 属性作為 URL
                             type: 'PUT', // 或 'PUT' 根據你的伺服器需求
                             data: form.serialize(), // 序列化表單數據
-                            success: function (response) {
-                                Swal.fire('更新成功', '', 'success');
-                                window.location.href = "/order/all"
-                            },
-                            error: function (xhr) {
-                                Swal.fire('更新失敗', '', 'error');
-                            }
-                        });
-                    }
-                });
-            });
-            // 監聽刪除按鈕的事件
-            $('.delete-btn').click(function (e) {
-                e.preventDefault();
-                var form = $(this).closest('form');
-                Swal.fire({
-                    title: '確定要刪除嗎?',
-                    text: "刪除後將無法復原",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: '取消刪除',
-                    confirmButtonText: '刪除'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: form.attr('action'),
-                            type: 'POST',
-                            data: form.serialize(),
                             success: function () {
-                                Swal.fire('刪除成功', '', 'success').then(() => {
+                                Swal.fire('更新成功', '', 'success').then(() => {
                                     window.location.href = "/order/all";
                                 });
                             },
                             error: function (xhr, status, error) {
-                                Swal.fire('刪除失敗', '', 'error');
+                                Swal.fire('更新失敗', '', 'error');
                             }
-                        });
-                    }
-                });
+                        }
+                    );
+                }
             });
+        });
 
-            // 處理表單提交邏輯
-            $('#updateOrderForm').on('submit', function (e) {
-                e.preventDefault(); // 阻止默認提交
 
-                var formData = $(this).serialize(); // 序列化表单数据为查询字符串
-
-                // 发送AJAX请求更新订单
-                $.ajax({
-                    url: $(this).attr('action'), // 表單的action值，提交地址
-                    type: 'POST',
-                    data: formData + '&_method=PUT', // 表單數據，附加PUT方法覆蓋
-                    success: function (order) {
-                        console.log("Received order data:", order);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Failed to fetch order details:', xhr, status, error);
-                        alert('找不到，請重試!');
-                    }
-                });
+        // 監聽刪除按鈕的事件
+        $('.delete-btn').click(function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            Swal.fire({
+                title: '確定要刪除嗎?',
+                text: "刪除後將無法復原",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: '取消刪除',
+                confirmButtonText: '刪除'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: 'POST',
+                        data: form.serialize(),
+                        success: function () {
+                            Swal.fire('刪除成功', '', 'success').then(() => {
+                                window.location.href = "/order/all";
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire('刪除失敗', '', 'error');
+                        }
+                    });
+                }
             });
-        }
-    )
+        });
+
+        // 處理表單提交邏輯
+        $('#updateOrderForm').on('submit', function (e) {
+            e.preventDefault(); // 阻止默認提交
+
+            var formData = $(this).serialize(); // 序列化表单数据为查询字符串
+
+            // 发送AJAX请求更新订单
+            $.ajax({
+                url: $(this).attr('action'), // 表單的action值，提交地址
+                type: 'POST',
+                data: formData + '&_method=PUT', // 表單數據，附加PUT方法覆蓋
+                success: function (order) {
+                    console.log("Received order data:", order);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Failed to fetch order details:', xhr, status, error);
+                    alert('找不到，請重試!');
+                }
+            });
+        });
+    })
     ;
+
 </script>
+
 
 </body>
 

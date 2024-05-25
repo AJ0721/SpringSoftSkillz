@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.softskillz.account.model.bean.StudentBean;
@@ -57,6 +58,36 @@ public class TeacherCrudController {
 		return "/elearning/account/teacher/TeacherCreate.jsp";
 	}
 
+	//確認帳號是否存在
+	@GetMapping("/checkAccount")
+	@ResponseBody
+	public Boolean checkAccount(@RequestParam("username")String username) {
+		
+		Boolean result = teacherService.checkAccout(username);
+		
+		
+		return result;
+	}
+	
+	@GetMapping("/checkMail")
+	@ResponseBody
+	public Boolean checkMail(@RequestParam("usermail")String usermail) {
+		
+		Boolean result = teacherService.checkMail(usermail);
+		
+		return result;
+	}
+	
+	@GetMapping("/checkPhone")
+	@ResponseBody
+	public Boolean checkPhone(@RequestParam("userphone")String userphone) {
+		
+		Boolean result = teacherService.checkPhone(userphone);
+		
+		return result;
+	}
+	
+	
 	// 後台，印舊資料
 	@GetMapping({ "/teacher-update" })
 	public String goToStudentUpdate(@RequestParam("teacherId") Integer teacherId, Model m) {
@@ -333,7 +364,8 @@ public class TeacherCrudController {
 		fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + raNumber
 				+ extension;
 
-		String saveFileDirPath = "/Users/Wei/iSpan/SoftSkillz-git/softskillz/src/main/webapp/WEB-INF/dist/account/teacher/images/";
+		String saveFileDirPath = "/Users/wumengyan/Documents/Action/workspace/softskillz/src/main/webapp/WEB-INF/dist/account/teacher/images/";
+//		String saveFileDirPath = "/Users/Wei/iSpan/SoftSkillz-git/softskillz/src/main/webapp/WEB-INF/dist/account/teacher/images/";
 		File saveFileDir = new File(saveFileDirPath);
 
 		if (!saveFileDir.exists()) {
