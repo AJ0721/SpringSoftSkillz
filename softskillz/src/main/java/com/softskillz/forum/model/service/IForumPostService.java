@@ -9,21 +9,29 @@ import com.softskillz.forum.model.dto.ForumThreadDto;
 public interface IForumPostService {
 
 	// insert
-	ForumPostDto insertForumPost(ForumPostDto postDto);	
-	
-	//update
+	ForumPostDto insertForumPost(ForumPostDto postDto);
+
+	// update
 	ForumPostDto updateForumPostById(ForumPostDto postDto, Integer postId);
+
 	StatusEnum updateForumPostStatus(Integer postId, StatusEnum newStatus);
-	
-	//delete
+
+	// delete
+	void softDeleteForumPostById(Integer postId);
+
 	void deleteForumPostById(Integer postId);
-	void deleteAllForumPost(List<Integer>postIds);
-	
-	//read
+
+	void deleteAllForumPost(List<Integer> postIds);
+
+	// read
 	ForumPostDto findPostById(Integer postId);
+
 	List<ForumPostDto> findAllPosts();
+
 	List<ForumPostDto> findPostsByTeacherId(Integer teacherId);
+
 	List<ForumPostDto> findPostsByStudentId(Integer studentId);
+
 	List<ForumPostDto> findPostsByThreadId(Integer threadId);
-	
+
 }

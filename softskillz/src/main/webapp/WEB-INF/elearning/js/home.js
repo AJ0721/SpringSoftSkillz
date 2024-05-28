@@ -1,12 +1,12 @@
- // Fetch threads from server
- function fetchThreads() {
+// Fetch threads from server
+function fetchThreads() {
     return fetch('/forum/thread/find-all')
-       .then(response => response.json())
-       .catch(error => {
-          console.error('Error fetching threads:', error);
-          return [];
-       });
- }
+        .then(response => response.json())
+        .catch(error => {
+            console.error('Error fetching threads:', error);
+            return [];
+        });
+}
 
 // Create a thread card HTML
 function createThreadCard(thread, authorName, createdTime, authorType) {
@@ -33,7 +33,7 @@ function displayThreads(threads) {
         const { authorName, authorType } = getUserDetails(thread);
 
 
-      
+
         const createdTime = new Date(thread.threadCreatedTime).toLocaleString();
         const threadCard = createThreadCard(thread, authorName, createdTime, authorType);
         threadList.insertAdjacentHTML('beforeend', threadCard);

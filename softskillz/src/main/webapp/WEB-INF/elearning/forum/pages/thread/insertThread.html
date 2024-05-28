@@ -124,59 +124,70 @@
             <div id="leftSidebarContainer" class="col-md-3"></div>
             <div class="col-md-9">
                 <div class="row">
+                    <div class="col-md-10 content">
 
-                    <header class="mb-3">
-                        <a href="#" class="burger-btn d-block d-xl-none">
-                            <i class="bi bi-justify fs-3"></i>
-                        </a>
-                    </header>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="page-heading">
-                            <h3>SoftSkillz - 新增文章</h3>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span id="user-detail"></span>
+                        <div id="threadList" class="row">
+
+                            <header class="mb-3">
+                                <a href="#" class="burger-btn d-block d-xl-none">
+                                    <i class="bi bi-justify fs-3"></i>
+                                </a>
+                            </header>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="page-heading">
+                                    <h3>SoftSkillz - 新增文章</h3>
+                                </div>
+
+                            </div>
+                            <div class="page-content">
+                                <section class="row col-12">
+                                    <div id="threadInsert" class="row">
+
+                                        <main class="ml-sm-auto mt-0">
+                                            <div class="card  border  border-3 rounded-3">
+                                                <div class="card-body">
+                                                    <form id="createThreadForm" class="h5">
+                                                        <div class="input-group-prepend ">
+                                                            <label for="category">文章分類</label>
+                                                        </div>
+                                                        <select
+                                                            class="form-control mt-2 mb-3 bg-white  border  border-3 rounded-3 "
+                                                            id="category">
+                                                            <option value="">請選擇文章分類</option>
+                                                        </select>
+                                                        <div class="form-group mt-2 mb-3  ">
+                                                            <label for="threadTitle" class="mb-1">標題</label>
+                                                            <input type="text"
+                                                                class="form-control border  border-3 rounded-3"
+                                                                id="threadTitle" placeholder="請輸入文章標題">
+                                                        </div>
+                                                        <div class="form-group mt-2 mb-3">
+                                                            <label for="threadContent mb-1">內文</label>
+                                                            <textarea class="form-control  border  border-3 rounded-3"
+                                                                id="threadContent" rows="10"
+                                                                placeholder="請輸入文章內容"></textarea>
+                                                        </div>
+                                                        <div class="form-group mt-2 d-flex justify-content-end">
+
+                                                            <button type="button" class="btn btn-warning me-2"
+                                                                id="cancel">取消</button>
+                                                            <button type="submit" class="btn btn-success"
+                                                                id="create">新增</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </main>
+                                    </div>
+                                </section>
                             </div>
                         </div>
                     </div>
-                    <div class="page-content">
-                        <section class="row col-12">
-                            <main class="ml-sm-auto mt-0">
-                                <div class="card  border  border-3 rounded-3">
-                                    <div class="card-body">
-                                        <form id="createThreadForm" class="h5">
-                                            <div class="input-group-prepend ">
-                                                <label for="category">文章分類</label>
-                                            </div>
-                                            <select class="form-control mt-2 mb-3 bg-white  border  border-3 rounded-3 "
-                                                id="category">
-                                                <option value="">請選擇文章分類</option>
-                                            </select>
-                                            <div class="form-group mt-2 mb-3  ">
-                                                <label for="threadTitle" class="mb-1">標題</label>
-                                                <input type="text" class="form-control border  border-3 rounded-3"
-                                                    id="threadTitle" placeholder="請輸入文章標題">
-                                            </div>
-                                            <div class="form-group mt-2 mb-3">
-                                                <label for="threadContent mb-1">內文</label>
-                                                <textarea class="form-control  border  border-3 rounded-3"
-                                                    id="threadContent" rows="10" placeholder="請輸入文章內容"></textarea>
-                                            </div>
-                                            <div class="form-group mt-2 d-flex justify-content-end">
+                    <!-- Right Sidebar -->
+                    <div id="rightSidebarContainer" class="sidebar col-md-2">
+                        <div id="user-detail"></div>
 
-                                                <button type="button" class="btn btn-warning me-2"
-                                                    id="cancel">取消</button>
-                                                <button type="submit" class="btn btn-success" id="create">新增</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </main>
-                        </section>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -192,8 +203,8 @@
     <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/js/main.js"></script>
-    <script src="/js/forumGlobalFunction.js"></script>
     <script src="/js/sidebars.js"></script>
+    <script src="/js/home.js"></script>
     <script>
 
         let loggedInUser;
@@ -202,15 +213,16 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
-            getLoggedInUser().then(user => {
-                if (user) {
-                    initializePage(user.loggedInUser, user.userType);
-                }
+            document.addEventListener('DOMContentLoaded', function () {
+                validateUser().then(user => {
+                    if (user) {
+                        initializePage(user.loggedInUser, user.userType);
+                    }
+                });
             });
 
 
-
-            updateNavbar(userType);
+            // updateNavbar(userType);
 
             $('#create').click(function (e) {
                 e.preventDefault();
@@ -281,50 +293,10 @@
                     userType = user.userType;
                     initializePage(loggedInUser, userType);
                 }
-                fetchAndDisplayThreads();
             });
 
-            updateNavbar(userType);
-
-
         });
-        const threadId = window.location.pathname.split('/').pop();
-        fetch(`/forum/thread/find/id/${threadId}`)
-            .then(response => response.json())
-            .then(thread => {
-                const { authorName, canEdit } = getUserDetails(thread, loggedInUser);
 
-                document.getElementById('category').textContent = thread.forumCategory.forumCategoryName;
-                document.getElementById('username').textContent = authorName;
-                document.getElementById('threadTitle').textContent = thread.threadTitle;
-                document.getElementById('threadContent').textContent = thread.threadContent;
-
-                if (canEdit) {
-                    const editButtons = `
-                            <button type="button" class="btn btn-warning">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        `;
-                    document.getElementById('can-edit').innerHTML = editButtons;
-                }
-
-                const commentsSection = document.getElementById('commentsSection');
-                commentsSection.innerHTML = '';
-                thread.posts.forEach(post => {
-                    const postAuthorName = getUserDetails(post, loggedInUser).authorName;
-                    const postTime = new Date(post.postCreatedTime).toLocaleString();
-
-                    const postCard = `
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h6 class="card-subtitle mb-2 text-muted">作者: ${postAuthorName} | 時間: ${postTime}</h6>
-                                    <p class="card-text">${post.postContent}</p>
-                                </div>
-                            </div>
-                        `;
-                    commentsSection.insertAdjacentHTML('beforeend', postCard);
-                });
-            })
-            .catch(error => console.error('Error fetching thread details:', error));
     </script>
 </body>
 

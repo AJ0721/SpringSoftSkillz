@@ -191,5 +191,8 @@ public class ForumPostModel {
 		this.forumImageModel = forumImageModel;
 	}
 
+	public void setStatusDeleted() {
+		this.postStatus= StatusEnum.DELETED;
+	}
 	
 }

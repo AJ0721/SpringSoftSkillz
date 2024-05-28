@@ -117,7 +117,7 @@ public class StudentCrudController {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = simpleDateFormat.parse(studentBirth);
 
-		StudentBean studentBean = new StudentBean();
+		StudentBean studentBean = studentService.findById(studentId);
 		studentBean.setStudentId(studentId);
 		studentBean.setStudentLastName(studentLastName);
 		studentBean.setStudentFirstName(studentFirstName);

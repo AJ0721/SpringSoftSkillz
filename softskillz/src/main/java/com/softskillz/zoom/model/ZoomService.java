@@ -5,10 +5,13 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,9 @@ public class ZoomService {
 
 	@Value("${zoom.create.meeting.url:https://api.zoom.us/v2/users/me/meetings}")
 	private String createMeetingUrl;
+	
+//	@Value("${zoom.delete.meeting.url:https://api.zoom.us/v2/meetings/}")
+//    private String deleteMeetingUrl;
 
 	private final RestTemplate restTemplate;
 
@@ -42,7 +48,6 @@ public class ZoomService {
 		String accessToken = getAccessToken();
 		return createZoomMeeting(accessToken, startTime, meetingName, meetingType);
 	}
-
 
 	private String getAccessToken() throws Exception {
 		HttpHeaders headers = createHeaders();
@@ -89,4 +94,32 @@ public class ZoomService {
 			throw new Exception("Failed to create meeting: " + response.getStatusCode());
 		}
 	}
+
+//	public void deleteMeeting(String meetingUrl) throws Exception {
+//        String meetingId = extractMeetingId(meetingUrl);
+//        String accessToken = getAccessToken();
+//        deleteZoomMeeting(accessToken, meetingId);
+//    }
+//
+//    private String extractMeetingId(String meetingUrl) {
+//        // 提取會議ID
+//        return meetingUrl.substring(meetingUrl.lastIndexOf("/") + 1);
+//    }
+//
+//    private void deleteZoomMeeting(String accessToken, String meetingId) throws Exception {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Authorization", "Bearer " + accessToken);
+//        headers.add("Content-Type", "application/json");
+//
+//        HttpEntity<String> request = new HttpEntity<>(null, headers);
+//        String deleteUrl = deleteMeetingUrl + meetingId;
+//
+//        ResponseEntity<String> response = restTemplate.exchange(deleteUrl, HttpMethod.DELETE, request, String.class);
+//
+//        if (!response.getStatusCode().is2xxSuccessful()) {
+//            throw new Exception("Failed to delete meeting: " + response.getStatusCode());
+//        } else {
+//            System.out.println("Meeting deleted successfully");
+//        }
+//    }
 }

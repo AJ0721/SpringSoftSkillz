@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.softskillz.forum.model.StatusEnum;
 import com.softskillz.forum.model.dto.ForumThreadDto;
 import com.softskillz.forum.model.dto.IDtoConverter;
+import com.softskillz.forum.model.model.ForumPostModel;
 import com.softskillz.forum.model.model.ForumThreadModel;
+import com.softskillz.forum.model.repository.ForumPostRepository;
 import com.softskillz.forum.model.repository.ForumThreadRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +23,8 @@ public class ForumThreadService implements IForumThreadService {
 
 	@Autowired
 	private ForumThreadRepository forumThreadRepository;
+	@Autowired
+	private ForumPostRepository forumPostRepository;
 
 	// insert
 	@Override
@@ -69,6 +73,21 @@ public class ForumThreadService implements IForumThreadService {
 
 	// Delete
 	@Override
+	public void softDeleteForumThreadById(Integer threadId) {
+		ForumThreadModel thread = forumThreadRepository.findById(threadId)
+				.orElseThrow(() -> new EntityNotFoundException("Invalid thread ID:" + threadId));
+		thread.setStatusDeleted();
+		forumThreadRepository.save(thread);
+		
+		// Soft delete all posts under this thread
+        List<ForumPostModel> posts = forumPostRepository.findPostsByThreadId(threadId);
+        for (ForumPostModel post : posts) {
+            post.setStatusDeleted();
+            forumPostRepository.save(post);
+        }
+	}
+
+	@Override
 	public void deleteForumThreadById(Integer threadId) {
 		if (!forumThreadRepository.existsById(threadId)) {
 			throw new EntityNotFoundException("Thread ID not found: " + threadId);
@@ -84,17 +103,17 @@ public class ForumThreadService implements IForumThreadService {
 		}
 
 		for (Integer id : threadIds) {
-	        if (!forumThreadRepository.existsById(id)) {
-	            throw new EntityNotFoundException("Thread ID not found: " + id);
-	        }
-	    }
+			if (!forumThreadRepository.existsById(id)) {
+				throw new EntityNotFoundException("Thread ID not found: " + id);
+			}
+		}
 		forumThreadRepository.deleteAllByIdInBatch(threadIds);
 	}
 
 	// Read all threads
-	@Override
+	@Override //only find active threads
 	public List<ForumThreadDto> findAllThreads() {
-		List<ForumThreadModel> threads = forumThreadRepository.findAll();
+		List<ForumThreadModel> threads = forumThreadRepository.findAllActiveThreads();
 		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());
 	}
 
@@ -128,11 +147,11 @@ public class ForumThreadService implements IForumThreadService {
 		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());
 	}
 
+	//Get threads by category ID
 	@Override
 	public List<ForumThreadDto> findThreadsByCategory(Integer categoryId) {
 		List<ForumThreadModel> threads = forumThreadRepository.findByForumCategoryModelForumCategoryId(categoryId);
-        return threads.stream()
-                      .map(IDtoConverter.INSTANCE::toForumThreadDto)
-                      .collect(Collectors.toList());
-    }
+		return threads.stream().map(IDtoConverter.INSTANCE::toForumThreadDto).collect(Collectors.toList());
+	}
+
 }

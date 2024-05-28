@@ -35,6 +35,18 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "teacherId")
 public class TeacherBean {
 
+	@Override
+	public String toString() {
+		return "TeacherBean [teacherId=" + teacherId + ", teacherFirstName=" + teacherFirstName + ", teacherLastName="
+				+ teacherLastName + ", teacherUserName=" + teacherUserName + ", teacherRegistrationDate="
+				+ teacherRegistrationDate + ", teacherGender=" + teacherGender + ", teacherBirth=" + teacherBirth
+				+ ", teacherMobile=" + teacherMobile + ", teacherEmail=" + teacherEmail + ", teacherPassword="
+				+ teacherPassword + ", teacherCountry=" + teacherCountry + ", teacherPhoto=" + teacherPhoto
+				+ ", subject=" + subject + ", experience=" + experience + ", status=" + status + ", teacherEducation="
+				+ teacherEducation + ", certification=" + certification + ", teachTime=" + teachTime + ", strength="
+				+ strength + "]";
+	}
+
 	public TeacherBean() {
 	}
 

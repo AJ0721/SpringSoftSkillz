@@ -148,7 +148,7 @@
 					<!-- 照片上傳部分 -->
 					<div class="mb-4" style="margin-left: 20px; margin-top: 20px;">
 
-						<img src="${teacher.teacherPhoto}" class="img-fluid profile-image" alt="老師照片"
+						<img src="/teacher/images/${teacher.teacherPhoto}" class="img-fluid profile-image" alt="老師照片"
 							id="currentPhoto">
 
 					</div>

@@ -555,6 +555,8 @@
         // 「查看詳情」按鈕事件監聽器
         $('.view-detail-btn').click(function (e) {
             e.preventDefault();
+
+
             var orderId = $(this).data('order-id'); // 從按鈕獲取訂單ID
             $.ajax({
                 url: '/api/order/details/' + orderId,
@@ -569,16 +571,17 @@
                     // 成功獲取數據後，填充到模態框中
                     var orderDetailContent = `
                         <h5>結帳資訊</h5>
-                        <p>姓名: ${order.customerName}</p>
-                        <p>電話: ${order.phone}</p>
-                        <p>郵政編碼: ${order.postalCode}</p>
-                        <p>收貨地址: ${order.shippingAddress}</p>
-                        <p>備註: ${order.notes}</p>
-                        <p>訂單號: ${order.orderId}</p>
-                        <p>訂單日期: ${orderDate}</p>
-                        <p>總金額: ${order.totalAmount}</p>
-                        <p>付款方式: ${order.paymentMethod}</p>
-                        <p>訂單狀態: ${order.orderStatus}</p>
+                        <p>姓名:` + order.customerName + `</p>
+                        <p>電話:` + order.phone + `</p>
+                        <p>郵政編碼: ` + order.postalCode + `</p>
+                        <p>收貨地址: ` + order.shippingAddress + `</p>
+                        <p>備註: : ` + order.notes + `</p>
+                        <p>訂單號: : ` + order.orderId + `</p>
+                        <p>訂單日期:  ` + orderDate + `</p>
+                        <p>總金額: : ` + order.totalAmount + `</p>
+                        <p>付款方式: : ` + order.paymentMethod + `</p>
+                        <p>訂單狀態: : ` + order.orderStatus + `</p>
+
                         <h5>訂單項目</h5>
                         <table class="table table-bordered">
                             <thead>
@@ -602,6 +605,8 @@
                     orderDetailContent += `
                             </tbody>
                         </table>`;
+
+                    console.log("innerHTML : " + orderDetailContent);
                     $('#orderDetailContent').html(orderDetailContent);
                     // 顯示模態框
                     $('#orderDetailModal').modal('show');

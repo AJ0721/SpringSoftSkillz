@@ -445,7 +445,7 @@
             document.getElementById('studentPassword').value = 'puppy0102';
             document.getElementById('studentBirth').value = '2000-01-02';
             document.getElementById('studentGender').value = 'Male';
-            document.getElementById('studentEmail').value = 'puppy0102@gmail.com';
+            document.getElementById('studentEmail').value = 'angelwu0310@gmail.com';
             document.getElementById('studentMobile').value = '0912345678';
             document.getElementById('country').value = '台灣';
             document.getElementById('firstLanguage').value = '中文';

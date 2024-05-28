@@ -60,8 +60,16 @@ public class ForumThreadController {
 	}
 
 	// Delete a thread by ID
+	
+	@DeleteMapping("/soft-delete/{threadId}")
+	public  ResponseEntity<Void> softDeleteThread(@PathVariable Integer threadId) {
+		forumThreadService.softDeleteForumThreadById(threadId);
+		return ResponseEntity.noContent().build();
+	}
+	
+	
 	@DeleteMapping("/delete/{threadId}")
-	public String deleteThread(@PathVariable int threadId) {
+	public String deleteThread(@PathVariable Integer threadId) {
 
 		forumThreadService.deleteForumThreadById(threadId);
 		return "Deleted thread ID:" + threadId;

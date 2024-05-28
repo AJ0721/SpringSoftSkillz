@@ -221,5 +221,9 @@ public class ForumThreadModel {
 	public void setForumImageModel(List<ForumImageModel> forumImageModel) {
 		this.forumImageModel = forumImageModel;
 	}
+	
+	public void setStatusDeleted() {
+		this.threadStatus=StatusEnum.DELETED;
+	}
 
 }

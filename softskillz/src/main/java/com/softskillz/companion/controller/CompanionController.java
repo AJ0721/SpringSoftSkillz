@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -476,7 +475,8 @@ public class CompanionController {
 		System.out.println("fileName:" + fileName);
 		
 		
-		String saveFileDirPath = "C:\\Users\\Denton\\Documents\\softskillzworkspace\\softskillz\\src\\main\\webapp\\WEB-INF\\dist\\companion\\CompanionImg";
+//		String saveFileDirPath = "C:\\Users\\Denton\\Documents\\softskillzworkspace\\softskillz\\src\\main\\webapp\\WEB-INF\\dist\\companion\\CompanionImg";
+		String saveFileDirPath = "/Users/wumengyan/Documents/Action/workspace/softskillz/src/main/webapp/WEB-INF/dist/companion/CompanionImg";
 		File saveFileDir = new File(saveFileDirPath);
 		
 		if(!saveFileDir.exists()) {

@@ -27,6 +27,7 @@ import com.softskillz.courseorder.model.bean.CartItem;
 import com.softskillz.courseorder.model.bean.CorderBean;
 import com.softskillz.courseorder.model.bean.ItemInfo;
 import com.softskillz.courseorder.model.bean.Order;
+import com.softskillz.courseorder.model.service.impl.CourseOrderItemServiceImpl;
 import com.softskillz.courseorder.model.service.impl.CourseOrderServiceImpl;
 import com.softskillz.util.LineUtil;
 
@@ -38,6 +39,9 @@ public class CourseOrderController {
 
 	@Autowired
 	private CourseOrderServiceImpl coService;
+	
+	@Autowired
+	private CourseOrderItemServiceImpl ciService;
 
 	@GetMapping("/order.do")
 	public String processAction(HttpSession session) {
@@ -68,7 +72,7 @@ public class CourseOrderController {
 		corderBean.setOrderID(orderID);
 		corderBean.setStudentID(studentID);// 從session要使用者資料
 		corderBean.setOrderDate(new Date(time));
-		corderBean.setCancelDate(new Date(time + 30 * 60 * 1000));
+		corderBean.setCancelDate(new Date(time + 2 * 60 * 1000));
 		corderBean.setOrderPrice(total);
 		corderBean.setStatus("未付款");
 		coService.insertORD(corderBean, cart);
@@ -147,4 +151,14 @@ public class CourseOrderController {
 	}
 
 
+	@GetMapping("/test")
+	@ResponseBody
+	public String  test() {
+		
+		ciService.updateStatus(1, 1, 3);
+		
+		return"";
+	}
+	
+	
 }

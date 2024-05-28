@@ -248,7 +248,7 @@ style="max-width: 250px; height: auto; margin-top: 16px" />
                         type="button"
                         class="btn btn-primary btn-block"
                          onclick="fillPresetData()">
-                         一鍵輸入資料
+                         一鍵輸入
                         </button>
                       </div>
 
@@ -359,7 +359,7 @@ style="max-width: 250px; height: auto; margin-top: 16px" />
      function fillPresetData() {
     selectCategory('程式設計');
     document.getElementById('floatingCourseName').value = 'Java 程式設計';
-    document.getElementById('floatingCourseInfo').value = '這是一門介紹 Java 程式設計的課程，適合初學者和有經驗的程式設計師。';
+    document.getElementById('floatingCourseInfo').value = '這門Java入門線上課程專為初學者設計，幫助您從零開始學習Java程式設計。課程涵蓋基本概念、語法結構、物件導向程式設計(OOP)以及常見的Java應用。透過循序漸進的教學方式，您將學習如何撰寫和執行Java程式、使用數據結構、處理例外狀況，並進一步瞭解Java的核心庫。課程還包括豐富的實作練習和專案，讓您在實際操作中鞏固所學知識。無論您是想成為專業程式設計師，還是希望提升職場競爭力，這門課程都能為您打下堅實的基礎。快來加入我們，開始您的Java學習之旅吧！';
     document.getElementById('floatingCoursePrice').value = '2000';
   }
         //選擇課程類別的下拉式選單

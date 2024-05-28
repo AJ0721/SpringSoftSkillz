@@ -1,7 +1,6 @@
 package com.softskillz.coursechatdemo.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +29,6 @@ import com.softskillz.coursechatdemo.model.ChatHistoryServiceImpl;
 import com.softskillz.coursechatdemo.model.ChatRoom;
 import com.softskillz.coursechatdemo.model.ChatRoomServiceImpl;
 import com.softskillz.coursechatdemo.model.ChatRoomUser;
-import com.softskillz.courseorder.model.service.impl.StudentServiceImpl;
-import com.softskillz.courseorder.model.service.impl.TeacherServiceImpl;
 import com.softskillz.util.Util;
 
 import jakarta.servlet.http.HttpSession;

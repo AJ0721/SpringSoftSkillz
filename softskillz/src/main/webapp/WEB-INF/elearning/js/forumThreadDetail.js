@@ -12,8 +12,23 @@ $(document).ready(function () {
     //--------------------THREAD--------------------
 
     fetchThreadDetails(threadId);
-
-
+    // SUBMIT POST
+    $(document).on('click', '.submit-reply', function (e) {
+        e.preventDefault();
+        const $form = $(this).closest('form');
+        const postContent = $form.find('textarea').val().trim();
+        const parentPostId = $form.find('.parentPostId').val();
+        if (postContent === "") {
+            Swal.fire('不接受無字天書 (╯>д<)╯', '', 'error');
+            return;
+        }
+        const postDto = {
+            postContent: postContent,
+            thread: { threadId: threadId },
+            parentPost: parentPostId ? { postId: parentPostId } : null,
+        };
+        submitPost(postDto, threadId);
+    });
 
     // EDIT THREAD
     $(document).on('click', '#edit-thread', function (e) {
@@ -107,7 +122,7 @@ $('#cancel').click(function (e) {
 // FUNCTION: DISPLAY THREAD DETAILS
 function displayThreadDetails(data) {
     const { loggedInUser } = retrieveUser();
-    const { authorName, canEdit , authorType} = getUserDetails(data, loggedInUser);
+    const { authorName, canEdit, authorType } = getUserDetails(data, loggedInUser);
 
     $('#category').text(data.forumCategory.forumCategoryName);
 
@@ -175,7 +190,7 @@ function updateThread(threadId, threadDto) {
 
 // FUNCTION: DELETE THREAD
 function deleteThread(threadId) {
-    fetch(`/forum/thread/delete/${threadId}`, {
+    fetch(`/forum/thread/soft-delete/${threadId}`, {
         method: 'DELETE'
     })
         .then(response => {

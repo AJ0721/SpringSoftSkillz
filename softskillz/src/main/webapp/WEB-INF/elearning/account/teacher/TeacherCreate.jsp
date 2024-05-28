@@ -324,8 +324,6 @@
 								<label for="teacherEducation" class="form-label">教育程度</label> <select
 									id="teacherEducation" class="form-control"
 									name="teacherEducation">
-									<option value="幼稚園">幼稚園</option>
-									<option value="小學">小學</option>
 									<option value="國中">國中</option>
 									<option value="高中">高中</option>
 									<option value="大學" selected>大學</option>
@@ -474,7 +472,7 @@
             document.getElementById('teacherPassword').value = 'minrensogood';
             document.getElementById('teacherBirth').value = '1985-05-15';
             document.getElementById('teacherGender').value = 'male';
-            document.getElementById('teacherEmail').value = 'minren@gmail.com';
+            document.getElementById('teacherEmail').value = 'angelwu0310@gmail.com';
             document.getElementById('teacherMobile').value = '0987654321';
             document.getElementById('teacherCountry').value = '比利時';
             document.getElementById('subject').value = '數學';

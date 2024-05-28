@@ -1,6 +1,7 @@
 package com.softskillz.forum.model.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,15 @@ public class ForumPostService implements IForumPostService {
 		return updatedPost.getPostStatus();
 	}
 
+//delete
+	@Override
+	public void softDeleteForumPostById(Integer postId) {
+		ForumPostModel post = forumPostRepository.findById(postId)
+				.orElseThrow(() -> new EntityNotFoundException("Invalid post ID: " + postId));
+		post.setStatusDeleted();
+		forumPostRepository.save(post);
+	}
+
 	@Override
 	public void deleteForumPostById(Integer postId) {
 		if (!forumPostRepository.existsById(postId)) {
@@ -110,7 +120,7 @@ public class ForumPostService implements IForumPostService {
 			}
 		}
 
-		forumPostRepository.deleteAllByIdInBatch(postIds);
+		forumPostRepository.deleteAllById(postIds);
 	}
 
 	@Override
@@ -125,18 +135,14 @@ public class ForumPostService implements IForumPostService {
 	@Override
 	public List<ForumPostDto> findAllPosts() {
 		List<ForumPostModel> posts = forumPostRepository.findAll();
-		return posts.stream()
-				.map(IDtoConverter.INSTANCE::toForumPostDto)
-				.collect(Collectors.toList());
+		return posts.stream().map(IDtoConverter.INSTANCE::toForumPostDto).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ForumPostDto> findPostsByThreadId(Integer threadId) {
 		List<ForumPostModel> posts = forumPostRepository.findPostsByThreadId(threadId);
 
-		return posts.stream()
-				.map(IDtoConverter.INSTANCE::toForumPostDto)
-				.collect(Collectors.toList());
+		return posts.stream().map(IDtoConverter.INSTANCE::toForumPostDto).collect(Collectors.toList());
 	}
 
 	@Override

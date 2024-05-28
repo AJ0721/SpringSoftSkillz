@@ -137,8 +137,33 @@
 							th:if="${loggedInUser == 'student'}" class="dropdown-item">學生預約</a>
 					</div>
 				</div>
-				<a href="#" th:if="${loggedInUser == 'student'}"
-					class="nav-item nav-link" style="font-size: 26px;">學伴</a>
+				<div class="nav-item dropdown" th:if="${loggedInUser == 'student'}">
+					<a
+					  href="/companionFrontIndex"
+					  class="nav-link dropdown-toggle"
+					  data-bs-toggle="dropdown"
+					  style="font-size: 26px"
+					  th:if="${loggedInUser == 'student'}"
+					  >學伴</a
+					>
+					<div
+					  class="dropdown-menu fade-down m-0"
+					  th:if="${loggedInUser == 'student'}"
+					>
+					  <a
+						href="/companionFrontIndex"
+						class="dropdown-item"
+						th:if="${loggedInUser == 'student'}"
+						>學伴配對</a
+					  >
+					  <a
+						href="/GetMyData"
+						class="dropdown-item"
+						th:if="${loggedInUser == 'student'}"
+						>個人條件設定</a
+					  >
+					</div>
+				  </div>
 				<div class="nav-item dropdown">
 					<a href="/courseFront/selectAllPage"
 						class="nav-link dropdown-toggle" data-bs-toggle="dropdown"

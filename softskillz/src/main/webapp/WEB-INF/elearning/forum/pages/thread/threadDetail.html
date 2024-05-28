@@ -32,6 +32,21 @@
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet" />
     <style>
+        .deleted-post {
+            color: gray;
+            /* Change text color to gray */
+            font-style: italic;
+            /* Italicize the text */
+            background-color: #f8f8f8;
+            /* Light gray background */
+            padding: 5px;
+            /* Add some padding */
+            border: 1px solid #e0e0e0;
+            /* Add a light border */
+            border-radius: 3px;
+            /* Rounded corners */
+        }
+
         .老師 {
             font-weight: bold;
             color: blue;
@@ -100,6 +115,7 @@
         }
     </style>
     <script src="/js/forumGlobalFunction.js"></script>
+    <script src="/js/home.js"></script>
 
 </head>
 
@@ -121,80 +137,87 @@
                 <div class="row">
                     <!-- Thread Boxes -->
                     <div class="col-md-10 content">
-                        <div id="threadDetail" class="row">
-                            <div class="page-content">
-                                <section class="row">
-                                    <main class="ml-sm-auto mt-0">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="form-group mb-0">
-                                                    <button type="button" class="btn icon border-0  btn-lg" id="cancel">
-                                                        <i class="bi bi-arrow-left-circle fa-2x "
-                                                            style="color:#5585b5"></i>
-                                                    </button>
+                        <div id="threadList" class="row">
+                            <div id="threadDetail" class="row">
+                                <div class="page-content">
+                                    <section class="row">
+                                        <main class="ml-sm-auto mt-0">
+                                            <div class="card">
+
+
+                                                <div class="card-header">
+                                                    <div class="form-group mb-0">
+                                                        <button type="button" class="btn icon border-0  btn-lg"
+                                                            id="cancel">
+                                                            <i class="bi bi-arrow-left-circle fa-2x "
+                                                                style="color:#5585b5"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <form>
+                                                <div class="card-body">
+                                                    <form>
 
-                                                    <label for="category">分類: </label>
-                                                    <span class=" p-2 mb-3 " style="user-select: text;" id="category"
-                                                        readonly>
-                                                    </span>
-                                                    <div class="mb-3">
-                                                        <label for="username">作者:</label>
-                                                        <span class="p-2" id="username"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <!-- title -->
-                                                        <div class="form-group" id="can-edit">
-                                                            <!-- dynamic edit/delete button -->
-
+                                                        <label for="category">分類: </label>
+                                                        <span class=" p-2 mb-3 " style="user-select: text;"
+                                                            id="category" readonly>
+                                                        </span>
+                                                        <div class="mb-3">
+                                                            <label for="username">作者:</label>
+                                                            <span class="p-2" id="username"></span>
                                                         </div>
-                                                        <h3 class="p-2   " style="user-select: text;" id="threadTitle"
-                                                            readonly>
-                                                        </h3>
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <!-- title -->
+                                                            <div class="form-group" id="can-edit">
+                                                                <!-- dynamic edit/delete button -->
 
-                                                    <div class="form-group">
-                                                        <!-- content -->
-
-
-                                                        <h5 class="rounded-4 p-2 border p-3 .custom-height"
-                                                            id="threadContent" readonly>
-
-                                                        </h5>
-
-                                                    </div>
-                                                    <!-- Reply Form -->
-                                                    <div class="mt-4">
-                                                        <h5>我要留言</h5>
-                                                        <form id="replyForm">
-                                                            <div class="form-group">
-                                                                <textarea class=" rounded-4 form-control "
-                                                                    id="postContent"></textarea>
                                                             </div>
-                                                            <input type="hidden" class="parentPostId" value="">
-                                                            <button type="submit"
-                                                                class="submit-reply btn btn-primary mt-2">送出</button>
-                                                        </form>
-                                                    </div>
-
-                                                    <!-- Comments Section -->
-                                                    <div class="card-body">
-                                                        <h5>-您已進入討論區-</h5>
-                                                        <div id="commentsSection">
-                                                            <!-- Comments will be dynamically populated here -->
+                                                            <h3 class="p-2   " style="user-select: text;"
+                                                                id="threadTitle" readonly>
+                                                            </h3>
                                                         </div>
 
-                                                    </div>
-                                                </form>
+                                                        <div class="form-group">
+                                                            <!-- content -->
+
+
+                                                            <h5 class="rounded-4 p-2 border p-3 .custom-height"
+                                                                id="threadContent" readonly>
+
+                                                            </h5>
+
+                                                        </div>
+                                                        <!-- Reply Form -->
+                                                        <div class="mt-4">
+                                                            <h5>我要留言</h5>
+                                                            <form id="replyForm">
+                                                                <div class="form-group">
+                                                                    <textarea class=" rounded-4 form-control "
+                                                                        id="postContent"></textarea>
+                                                                </div>
+                                                                <input type="hidden" class="parentPostId" value="">
+                                                                <button type="submit"
+                                                                    class="submit-reply btn btn-primary mt-2">送出</button>
+                                                            </form>
+                                                        </div>
+
+                                                        <!-- Comments Section -->
+                                                        <div class="card-body">
+                                                            <h5>-您已進入討論區-</h5>
+                                                            <div id="commentsSection">
+                                                                <!-- Comments will be dynamically populated here -->
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+
                                             </div>
-                                        </div>
-                                    </main>
+                                </div>
+                                </main>
                                 </section>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Right Sidebar -->

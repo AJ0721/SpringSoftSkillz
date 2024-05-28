@@ -17,6 +17,8 @@ import jakarta.persistence.Table;
 @Component
 public class ItemBean {
 
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "item_id")
@@ -146,4 +148,10 @@ public class ItemBean {
 		this.courseBean2 = courseBean2;
 	}
 
+	@Override
+	public String toString() {
+		return "ItemBean [itemID=" + itemID + ", orderID=" + orderID + ", courseID=" + courseID + ", coursePrice="
+				+ coursePrice + ", qty=" + qty + ", disPercent=" + disPercent + ", disPrice=" + disPrice + ", subtotal="
+				+ subtotal + ", itemStatus=" + itemStatus + "]";
+	}
 }

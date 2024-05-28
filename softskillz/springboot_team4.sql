@@ -33,10 +33,6 @@ CREATE TABLE student (
   student_id_formatted AS ('s' + CAST(student_id AS NVARCHAR(10))),
 );
 
-INSERT INTO student VALUES('成圓','羅','123456','阿瘸','20200101','male','19920716','091234567','123@123','123456','彎彎','img/roger.jpg','大學',0,0,'中文','每週1-3次')
-INSERT INTO student VALUES('生達','蔡','999999','vincent','20210202','male','19850716','099999999','999@999','999999','桃園','img/vincent.jpg','大學',0,0,'英文','無')
-INSERT INTO student VALUES('奕兆','陳','888888','leon','20220303','male','19860515','091212567','1231@123','123456','彎彎','img/roger.jpg','大學',0,0,'中文','無')
-
 --老師
 CREATE TABLE teacher (
  teacher_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -62,10 +58,6 @@ CREATE TABLE teacher (
  teacher_course_status INT CHECK (teacher_course_status IN (0, 1))DEFAULT 0,
  teacher_id_formatted AS ('t' + CAST(teacher_id AS NVARCHAR(10))),
 );
-
-INSERT INTO teacher VALUES('汶安','熊','teacherBear','20200101','male','19950402','091234567','teacherBear@mail.com','123456','彎彎','teacher01.jpg','全',4,'full_time','國中','無','50','少一個腎',0,0)
-INSERT INTO teacher VALUES('Taro','莊','cutietaro','19991201','male','19750802','090000000','cutietaro@mail.com','000000','桃園','teacher02.jpg','全',20,'full_time','大學','有','100','愛念',0,0)
-INSERT INTO teacher VALUES('Jingle','莊','dr.huluhulu','20001101','male','19850302','091111111','dr.huluhulu@mail.com','111111','桃園','teacher03.jpg','全',10,'full_time','大學','有','80','啥都不會',0,0)
 
 SELECT * FROM teacher;
 DROP TABLE teacher;
@@ -102,13 +94,6 @@ CREATE TABLE course
     FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );
 
-INSERT INTO course
-    (teacher_id, course_name, course_info, course_category, course_price)
-VALUES
-    (1, '高中英文', '高中英文超前部署', '英文', 1000),
-    (2, '基礎化學', '打好化學基礎', '化學', 2000),
-    (3, '進階Java', '從入門到放棄','Java', 3000);
-
 SELECT * FROM course;
 DROP TABLE course;
 
@@ -131,13 +116,6 @@ CREATE TABLE teacher_schedule
     FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );
 
-INSERT INTO teacher_schedule
-    (teacher_id, course_date, teacher_time_slots)
-VALUES
-    (1, '2024-06-01', '000000000011111000000000'),
-    (2, '2024-06-02', '000000011000011000000000'),
-    (3, '2024-06-03', '000000000000001111000000');
-
 SELECT * FROM teacher_schedule;
 DROP TABLE teacher_schedule;
 
@@ -159,12 +137,8 @@ CREATE TABLE student_reservation
     FOREIGN KEY (teacher_schedule_id) REFERENCES teacher_schedule(teacher_schedule_id)
 );
 
-INSERT INTO student_reservation
-    (course_id, teacher_schedule_id, reservation_date,student_id,student_time_slots,total_hours)
-VALUES
-    (1, 1, '2024-01-20', 1, '000000000000011000000000', 2),
-    (2, 2, '2024-01-21', 2, '000000000000000100000000', 1),
-    (3, 3, '2024-01-22', 3, '000000000000000000011000', 2);
+ALTER TABLE student_reservation
+ADD zoom_meeting_url VARCHAR(255);
 
 SELECT * FROM student_reservation;
 DROP TABLE student_reservation;
@@ -226,12 +200,6 @@ FOREIGN KEY (student_id) REFERENCES student(student_id),
 );
 
 select * from corder
-INSERT INTO corder VALUES('1','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
-INSERT INTO corder VALUES('2','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
-INSERT INTO corder VALUES('3','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
-INSERT INTO corder VALUES('4','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
-INSERT INTO corder VALUES('5','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
-INSERT INTO corder VALUES('6','1','1234','2020-01-01','2020-01-01 00:30:00','LinePay','已付款')
 
 ALTER TABLE corder
 ADD discount_id varchar(255),
@@ -297,9 +265,6 @@ sendtime DATETIME2(3) not null
 )
 
 
-
-
-
 --商城
 
 --(商品表)
@@ -329,7 +294,7 @@ DROP TABLE IF EXISTS orders;
 
 -- 創建 orders 表
 CREATE TABLE orders (
-    order_id INT PRIMARY KEY IDENTITY(1, 1),
+    order_id INT PRIMARY KEY IDENTITY(2001, 1),
     order_date DATETIME2 NOT NULL,
     total_amount INT NOT NULL,
     order_status NVARCHAR(50) DEFAULT N'未付款',
@@ -384,15 +349,6 @@ VALUES
 (2, '中文', '英文', '程式設計', '每週1-3次', '寫程式能夠訓練我的邏輯思考能力','companion/CompanionImg/Chris.jpg'),
 (3, '中文', '日文', '電腦繪圖', '每週1-3次', '我希望能畫出人氣漫畫','companion/CompanionImg/Yoona.jpg');
 
-CREATE TABLE companion_match (
-    match_id INT IDENTITY PRIMARY KEY not null,
-    fk_student_a_id INT,
-    fk_student_b_id INT,
-	match_request VARCHAR(10) CHECK (match_request IN ('Yes', 'No')) not null,
-    FOREIGN KEY (fk_student_a_id) REFERENCES learning_companion(companion_id),
-    FOREIGN KEY (fk_student_b_id) REFERENCES learning_companion(companion_id),
-);
-
 -- 資料表2 companion_match 已配對學伴
 CREATE TABLE companion_match (
     match_id INT IDENTITY PRIMARY KEY not null,
@@ -403,6 +359,8 @@ CREATE TABLE companion_match (
     FOREIGN KEY (fk_student_b_id) REFERENCES learning_companion(companion_id),
 );
 
+
+SELECT * FROM learning_companion;
 DROP TABLE companion_match
 
 UPDATE [learning_companion]
@@ -465,7 +423,6 @@ END
 WHERE student_id BETWEEN 1 AND 20;
 
 --論壇
-
 CREATE TABLE forum_category (
     forum_category_id INT PRIMARY KEY IDENTITY(1,1),
     forum_category_name NVARCHAR(100) NOT NULL,
@@ -601,7 +558,7 @@ CREATE TABLE forum_post (
     CONSTRAINT FK_thread_id FOREIGN KEY(thread_id) REFERENCES forum_thread(thread_id) ON DELETE CASCADE,
 	CONSTRAINT FK_post_creator1 FOREIGN KEY(post_student_id) REFERENCES student(student_id),
     CONSTRAINT FK_post_creator2 FOREIGN KEY(post_teacher_id) REFERENCES teacher(teacher_id),
-	CONSTRAINT FK_post_parent_post FOREIGN KEY (parent_post_id) REFERENCES forum_post(post_id),
+	CONSTRAINT FK_post_parent_post FOREIGN KEY (parent_post_id) REFERENCES forum_post(post_id) ON DELETE CASCADE,
 	CONSTRAINT CHK_post_hierarchy CHECK (parent_post_id IS NULL OR parent_post_id <> post_id),
 );
 

@@ -118,6 +118,15 @@ button:hover {
 		<br />
 		<div class="message">${loginMsg}</div>
 		<div class="message">${createMsg}</div>
+		<br />
+		<button
+        type="button"
+        class="forum-button btn btn-primary"
+        onclick="forumLoginData()"
+        style="margin-top: 80px"
+      >
+        論壇一鍵輸入
+      </button>
 	</div>
 	<script>
 		let oneclick = document.querySelector("#oneclick");
@@ -127,6 +136,11 @@ button:hover {
 		 document.querySelector("#teacherPassword").value="minrensogood"
 	
 		})
+
+		function forumLoginData() {
+        document.getElementById("usernameOrEmail").value = "fang59";
+        document.getElementById("teacherPassword").value = "R(40w6FcTi";
+      }
 	</script>
 </body>
 

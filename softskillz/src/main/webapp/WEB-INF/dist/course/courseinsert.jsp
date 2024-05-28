@@ -240,7 +240,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                   </li>
                 </ul>
               </li>
-
               <li class="sidebar-title">課程訂單管理</li>
               <li class="sidebar-item has-sub">
                 <a href="#" class="sidebar-link">
@@ -269,9 +268,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/mall/mallProductAll" class="submenu-link"
-                      >商品管理</a
-                    >
+                    <a href="/mall/backend" class="submenu-link">商品管理</a>
                   </li>
                 </ul>
               </li>
@@ -283,10 +280,10 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="/order" class="submenu-link">商品訂單管理</a>
+                    <a href="/order/all" class="submenu-link">商品訂單管理</a>
                   </li>
                   <li class="submenu-item">
-                    <a href="/order/create" class="submenu-link"
+                    <a href="/order/createPage" class="submenu-link"
                       >新增商品訂單</a
                     >
                   </li>
@@ -343,7 +340,11 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 <button
                   type="submit"
                   class="btn rounded-pill"
-                  style="background-color: #3f6cba; color: white"
+                  style="
+                    background-color: #3f6cba;
+                    color: white;
+                    font-size: 20px;
+                  "
                 >
                   <i class="bi bi-person-circle"></i>&nbsp;登出
                 </button>
@@ -532,6 +533,17 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                         </div>
                       </div>
 
+                      <!-- 一鍵輸入資料的按鈕 -->
+                      <div class="col-md-8 mb-3">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-lg btn-block"
+                          onclick="fillCourseData()"
+                        >
+                          一鍵輸入
+                        </button>
+                      </div>
+
                       <!-- 提交按鈕 -->
                       <div class="col-md-8">
                         <button
@@ -577,6 +589,15 @@ uri="http://java.sun.com/jsp/jstl/core"%>
     <script src="/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
 
     <script>
+      //一鍵輸入的東東
+      function fillCourseData() {
+        selectCategory("藝術");
+        document.getElementById("floatingCourseName").value = "國畫入門";
+        document.getElementById("floatingCourseInfo").value =
+          "專為對中國傳統藝術感興趣的學習者設計，無需任何繪畫基礎。課程內容涵蓋國畫的基本工具和材料介紹，如毛筆、宣紙、墨和顏料，並詳細講解各種基本技法，包括勾線、渲染、暈染和點描。您將學習如何創作花鳥、山水和人物等經典題材的國畫作品。透過循序漸進的教學方式，您將掌握國畫的基本技法和創作技巧。每節課都配有詳細的示範視頻、實作練習和作品解析，幫助您在實際操作中鞏固所學知識。我們還提供個性化的反饋和專業指導，確保您能夠快速提升自己的國畫水平。不論您是希望發展新的興趣愛好，還是計劃深入研究傳統藝術，這門課程都能為您提供全面的支持和幫助。探索國畫的魅力，創作出屬於您的藝術作品。";
+        document.getElementById("floatingCoursePrice").value = "2580";
+      }
+
       // 選擇教師的下拉式選單
       function selectTeacher(id, text) {
         document.getElementById("dropdownMenuTeacherID").textContent = text; // 更新按鈕文字以反映當前選擇

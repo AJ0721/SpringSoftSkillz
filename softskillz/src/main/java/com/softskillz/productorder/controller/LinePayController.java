@@ -9,10 +9,10 @@ import com.softskillz.productorder.model.OrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,15 +23,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.HandlerMapping;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Controller
 public class LinePayController {
+
+    private static final String CHANNEL_ID = "2005240710";
+    private static final String CHANNEL_SECRET = "5bc37ed2718a69e0eb4227a716f44636";
+    private static final String LINE_PAY_URL = "https://sandbox-api-pay.line.me/v2/payments/request";
+    private static final String CONFIRM_URL = "http://localhost:8080/LinePayConV2";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -39,86 +42,110 @@ public class LinePayController {
     @Autowired
     private OrderService orderService;
 
-    private static final String ChannelId = "2005240710";
-    private static final String ChannelSecret = "5bc37ed2718a69e0eb4227a716f44636";
-    private static final String LINE_PAY_URL = "https://sandbox-api-pay.line.me/v2/payments/request";
 
-    private static final AtomicInteger counter = new AtomicInteger(1); // Simple counter for generating order IDs
-    @Qualifier("stompWebSocketHandlerMapping")
-    @Autowired
-    private HandlerMapping stompWebSocketHandlerMapping;
-
+    /**
+     * 發送付款請求到 Line Pay
+     *
+     * @param requestBody 請求的參數，包含 total 金額
+     * @param session HTTP 會話物件
+     * @return 返回 Line Pay 付款頁面的 URL
+     */
     @PostMapping(path = "/LinePayReqV2", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> requestPayment(@RequestBody Map<String, Integer> map, HttpSession session)
-            throws IOException {
-        Integer total = map.get("total");
-        Integer orderId = map.get("orderId");
+    public ResponseEntity<String> requestPayment(@RequestBody Map<String, Integer> requestBody, HttpSession session) {
+        Integer total = requestBody.get("total");
+        Integer orderId = (Integer) session.getAttribute("orderId");
         session.setAttribute("total", total);
-        session.setAttribute("orderId", orderId);
 
-        LinePayRequest item = new LinePayRequest(total, "TWD", String.valueOf(orderId), "商品",
-                "http://localhost:8080/LinePayConV2");
+        LinePayRequest linePayRequest = new LinePayRequest(total, "TWD", String.valueOf(orderId), "商品", CONFIRM_URL);
 
-        ObjectMapper om = new ObjectMapper();
-        String jsonStr = om.writeValueAsString(item);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String requestJson = objectMapper.writeValueAsString(linePayRequest);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("X-LINE-ChannelId", ChannelId);
-        headers.add("X-LINE-ChannelSecret", ChannelSecret);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("X-LINE-ChannelId", CHANNEL_ID);
+            headers.add("X-LINE-ChannelSecret", CHANNEL_SECRET);
 
-        HttpEntity<String> reqEntity = new HttpEntity<>(jsonStr, headers);
-        ResponseEntity<String> repEntity = restTemplate.exchange(LINE_PAY_URL, HttpMethod.POST, reqEntity,
-                String.class);
+            HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(LINE_PAY_URL, HttpMethod.POST, requestEntity,
+                    String.class);
 
-        JsonNode jsonResponse = om.readTree(repEntity.getBody());
-        String returnCode = jsonResponse.get("returnCode").asText();
-        System.out.println("r:" + jsonResponse);
-        String url = null;
-        if (returnCode.equals("0000")) {
-            url = jsonResponse.get("info").get("paymentUrl").get("web").asText();
+            JsonNode jsonResponse = objectMapper.readTree(responseEntity.getBody());
+            String returnCode = jsonResponse.get("returnCode").asText();
+            //log.info("Line Pay 回應：{}", jsonResponse);
+
+            if (returnCode.equals("0000")) {
+                String paymentUrl = jsonResponse.get("info").get("paymentUrl").get("web").asText();
+                return ResponseEntity.ok(paymentUrl);
+            } else {
+                //log.error("呼叫 Line Pay API 失敗，錯誤碼：{}", returnCode);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("呼叫 Line Pay API 失敗");
+            }
+        } catch (IOException e) {
+            //log.error("序列化 LinePayRequest 失敗", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("序列化 LinePayRequest 失敗");
         }
-        return ResponseEntity.ok().body(url);
     }
 
+
+    /**
+     * 接收 Line Pay 的付款確認通知
+     *
+     * @param transactionId 交易 ID
+     * @param session HTTP 會話物件
+     * @param model Spring MVC 的 Model
+     * @return 返回訂單詳情頁面
+     */
     @GetMapping("/LinePayConV2")
-    public String confirmPayment(@RequestParam("transactionId") String transactionId, HttpSession session, Model model)
-            throws IOException {
-        System.out.println("11111111111111");
+    public String confirmPayment(@RequestParam("transactionId") String transactionId, HttpSession session,
+            Model model) {
+        //log.info("確認付款，交易編號：{}", transactionId);
 
         Integer total = (Integer) session.getAttribute("total");
-        String conUrl = "https://sandbox-api-pay.line.me/v2/payments/" + transactionId + "/confirm";
-        LinePayConfirmation confirmItem = new LinePayConfirmation(total, "TWD");
+        String confirmUrl = String.format("https://sandbox-api-pay.line.me/v2/payments/%s/confirm", transactionId);
+        LinePayConfirmation confirmation = new LinePayConfirmation(total, "TWD");
 
-        ObjectMapper om = new ObjectMapper();
-        String jsonStr = om.writeValueAsString(confirmItem);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String confirmationJson = objectMapper.writeValueAsString(confirmation);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("X-LINE-ChannelId", ChannelId);
-        headers.add("X-LINE-ChannelSecret", ChannelSecret);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("X-LINE-ChannelId", CHANNEL_ID);
+            headers.add("X-LINE-ChannelSecret", CHANNEL_SECRET);
 
-        HttpEntity<String> reqEntity = new HttpEntity<>(jsonStr, headers);
-        System.out.println("123123213213");
-        ResponseEntity<String> repEntity = restTemplate.exchange(conUrl, HttpMethod.POST, reqEntity, String.class);
-        JsonNode jsonResponse = om.readTree(repEntity.getBody());
-        String returnCode = jsonResponse.get("returnCode").asText();
-        System.out.println(returnCode);
+            HttpEntity<String> requestEntity = new HttpEntity<>(confirmationJson, headers);
+            //log.info("向 Line Pay 發送確認請求...");
+            ResponseEntity<String> responseEntity = restTemplate.exchange(confirmUrl, HttpMethod.POST, requestEntity,
+                    String.class);
 
-        if (returnCode.equals("0000")) {
-            Integer orderId = (Integer) session.getAttribute("orderId");
-            Order order = orderService.findOrderById(orderId);
-            if (order != null) {
-                order.setOrderStatus("支付成功");
-                Order order2 = orderService.updateOrder(order);
-                model.addAttribute("order", order2);
-                session.removeAttribute("cart");
-                session.removeAttribute("orderId");
-                session.removeAttribute("total");
-                System.out.println("0000");
+            JsonNode jsonResponse = objectMapper.readTree(responseEntity.getBody());
+            String returnCode = jsonResponse.get("returnCode").asText();
+            //log.info("Line Pay 回應：{}", returnCode);
+
+            if (returnCode.equals("0000")) {
+                Integer orderId = (Integer) session.getAttribute("orderId");
+                Order order = orderService.findOrderById(orderId);
+                if (order != null) {
+                    order.setOrderStatus("支付成功");
+                    Order updatedOrder = orderService.updateOrder(order);
+                    model.addAttribute("order", updatedOrder);
+                    session.removeAttribute("cart");
+                    session.removeAttribute("orderId");
+                    session.removeAttribute("total");
+                    //log.info("付款成功，訂單編號：{}", orderId);
+                } else {
+                    //log.warn("訂單不存在，訂單編號：{}", orderId);
+                }
+            } else {
+                //log.error("付款失敗，錯誤碼：{}", returnCode);
             }
+        } catch (IOException e) {
+            //log.error("序列化 LinePayConfirmation 失敗", e);
         }
         return "/elearning/productorder/orderdetail.html";
     }
+
 }

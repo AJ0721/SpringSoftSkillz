@@ -16,6 +16,8 @@ public interface IForumThreadService {
 	StatusEnum updateForumThreadStatus(Integer threadId, StatusEnum newStatus);
 
 	// delete
+	void softDeleteForumThreadById(Integer threadId);
+
 	void deleteForumThreadById(Integer threadId);
 
 	void deleteAllForumThreads(List<Integer> threadIds);

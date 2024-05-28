@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 @RequestMapping("/productcart")
@@ -39,6 +40,8 @@ public class ShoppingCartController {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    private static final AtomicInteger counter = new AtomicInteger(1);
 
     // 處理產品詳細資料
     @GetMapping("/detail")
@@ -170,9 +173,14 @@ public class ShoppingCartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("購物車為空");
         }
 
+        // 不需要設置 orderId,讓資料庫自動生成
+        // order.setOrderId(counter.getAndIncrement());
+
         order.setOrderDate(LocalDateTime.now());
         order.setOrderStatus("未付款");
         Order savedOrder = orderService.insertOrder(order);
+        session.setAttribute("orderId", savedOrder.getOrderId());
+        session.setAttribute("total", order.getTotalAmount());  // 將 total 設置到 session 中
 
         for (Map.Entry<Integer, ProductCartItem> entry : cart.entrySet()) {
             ProductCartItem cartItem = entry.getValue();
@@ -186,7 +194,8 @@ public class ShoppingCartController {
             orderItemService.createOrderItem(orderItem);
         }
 
-        session.setAttribute("orderId", savedOrder.getOrderId());
+        System.out.println("創建訂單成功,訂單編號：" + savedOrder.getOrderId());
         return ResponseEntity.ok(savedOrder.getOrderId().toString());
     }
+
 }

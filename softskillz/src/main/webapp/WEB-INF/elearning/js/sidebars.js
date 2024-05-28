@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             loadNavbars(); // Load default navbars if no user is logged in
         }
-      
+
     });
 });
 
@@ -80,7 +80,7 @@ function fetchThreadsByCategory(categoryId) {
             const threadContent = document.getElementById('threadList');
             threadContent.innerHTML = '';
             displayThreads(threads);
-            document.getElementById('user-detail').innerHTML = userDetailContent;
+            // document.getElementById('user-detail').innerHTML = userDetailContent;
         })
         .catch(error => console.error('Error fetching threads by category:', error));
 }

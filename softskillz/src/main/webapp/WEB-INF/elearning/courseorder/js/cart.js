@@ -26,7 +26,7 @@ window.addEventListener("load",() => {
       let selectedOption10 = data[key].quantity == 10 ? 'selected' : '';
       let selectedOption20 = data[key].quantity == 20 ? 'selected' : '';
       row.innerHTML =
-        "<td class='text-center align-middle'><img class='img-fluid' src='/teacher/images/" + data[key].course.teacherPhoto + "'></td>" +
+        "<td class='text-center align-middle' ><img class='rounded-circle' src='/teacher/images/" + data[key].course.teacherPhoto + " 'style='width: 150px; height: 150px;'></td>" +
         "<td class='text-center align-middle'>" + data[key].course.teacherName + "</td>" +
         "<td class='text-center align-middle'>" + data[key].course.courseName + "</td>" +
         "<td class='text-center align-middle'>" + data[key].course.courseInfo + "</td>" +

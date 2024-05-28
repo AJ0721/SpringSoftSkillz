@@ -1,9 +1,7 @@
 $(document).ready(function () {
-
     const pathname = window.location.pathname;
     const parts = pathname.split("/");
     const threadId = parts[parts.length - 1];
-
 
     //--------------------POST--------------------
 
@@ -38,7 +36,7 @@ $(document).ready(function () {
         });
 
         // Submit Reply Button
-        $(document).one('click', '.submit-reply', function (e) {
+        $(document).getElementById('commentsSection').one('click', '.submit-reply', function (e) {
             e.preventDefault();
             const replyContent = $(this).closest('form').find('.reply-content').val().trim();
             if (replyContent === "") {
@@ -58,7 +56,7 @@ $(document).ready(function () {
         });
     });
 
-    //EDIT POST
+    // EDIT POST
     $(document).on('click', '.edit-btn', function () {
         const postId = $(this).data('post-id');
         const postElement = $(this).closest('li');
@@ -107,7 +105,7 @@ $(document).ready(function () {
         });
     });
 
-    //DELETE POST
+    // DELETE POST
     $(document).on('click', '.delete-btn', function () {
         const postId = $(this).data('post-id');
         Swal.fire({
@@ -123,69 +121,13 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Fetch comments on page load
+    fetchComments(threadId);
 });
 
-
-
-//--------------------POST--------------------
-
-//FUNCTION: POST CAN EDIT (COMMENT HTML) 
-function createCommentHtml(post) {
-
-    const { loggedInUser } = retrieveUser();
-    const { authorId, authorName, canEdit = false } = getUserDetails(post, loggedInUser);
-    const formattedDate = new Date(post.postCreatedTime).toLocaleString();
-
-    return `
-    <li class="list-unstyled comment border-start border-primary border-3 p-2 ml-0 mb-3 pl-0" data-post-id="${post.postId}">
-    <div class="d-flex justify-content-between align-items-center mb-0">
-    
-    <div class="d-flex justify-content-start">   
-        <p class="me-3 "><strong>${authorName}</strong></p>
-        <span class="text-muted">${formattedDate}</span>
-        </div>
-        <span class="d-flex">
-            <button class="me-2 btn  btn-success reply-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-reply-fill"></i></button>
-            ${canEdit ? `<button class="me-2 btn  btn-warning edit-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-pencil-square "></i></button>` : ''}
-            ${canEdit ? `<button class="btn  btn-danger delete-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-trash"></i></button>` : ''}
-        </span>
-    </div>
-    <p class="post-content p-2">${post.postContent}</p>
- 
-    <div class="reply-form-container"></div>
-    <ul class="child-comments"></ul>
-</li>
-    `;
-}
-
-
-// FUNCTION: UPDATE POST
-function updatePost(postId, postDto) {
-    fetch(`/forum/post/update/${postId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postDto)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update post');
-            }
-            return response.json();
-        })
-        .then(updatedPost => {
-            Swal.fire("更新成功", "", "success");
-            console.log('Updated post:', updatedPost);
-            fetchComments(updatedPost.thread.threadId);
-        })
-        .catch(error => console.error('Error updating post:', error));
-}
-
-
-// FUNCTION: DELETE POST
 function deletePost(postId) {
-    fetch(`/forum/post/delete/${postId}`, {
+    fetch(`/forum/post/soft-delete/${postId}`, {
         method: 'DELETE'
     })
         .then(response => {
@@ -194,13 +136,46 @@ function deletePost(postId) {
             }
 
             console.log('Deleted post ID:', postId);
-            $(`li[data-post-id="${postId}"]`).remove();
+            // Select the post element by its specific id
+            const postElement = $(`li[data-post-id="${postId}"]`);
+            // Ensure only the selected post's content is updated
+            postElement.children('.post-content').text('已刪除').addClass('deleted-post');
+            // Hide the action buttons for the deleted post
+            postElement.children('.post-actions').find('.edit-btn, .delete-btn, .reply-btn').hide();
         })
         .catch(error => console.error('Error deleting post:', error));
 }
 
 
-// FUNCTION: FETCH ALL POSTS BY THREAD ID
+// Ensure that child posts are not affected
+function createCommentHtml(post) {
+    const { loggedInUser } = retrieveUser();
+    const { authorId, authorName, canEdit = false } = getUserDetails(post, loggedInUser);
+    const formattedDate = new Date(post.postCreatedTime).toLocaleString();
+
+    return `
+    <li class="list-unstyled comment border-start border-primary border-3 p-2 ml-0 mb-3 pl-0" data-post-id="${post.postId}">
+        <div class="d-flex justify-content-between align-items-center mb-0">
+            <div class="d-flex justify-content-start">   
+                <p class="me-3"><strong>${authorName}</strong></p>
+                <span class="text-muted">${formattedDate}</span>
+            </div>
+            <span class="d-flex post-actions">
+                ${post.postStatus !== 'DELETED' ? `
+                <button class="me-2 btn btn-success reply-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-reply-fill"></i></button>
+                ${canEdit ? `<button class="me-2 btn btn-warning edit-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-pencil-square"></i></button>` : ''}
+                ${canEdit ? `<button class="btn btn-danger delete-btn border rounded-3" data-post-id="${post.postId}"><i class="bi bi-trash"></i></button>` : ''}
+                ` : ''}
+            </span>
+        </div>
+        <p class="post-content p-2 ${post.postStatus === 'DELETED' ? 'deleted-post' : ''}">${post.postStatus === 'DELETED' ? '已刪除' : post.postContent}</p>
+        <div class="reply-form-container"></div>
+        <ul class="child-comments"></ul>
+    </li>
+    `;
+}
+
+// Ensure fetchComments handles both active and deleted posts correctly
 function fetchComments(threadId) {
     fetch(`/forum/post/find-all/thread?id=${threadId}`)
         .then(response => {
@@ -215,7 +190,6 @@ function fetchComments(threadId) {
         .catch(error => console.error('Error fetching comments:', error));
 }
 
-// FUNCTION: DISPLAY POSTS IN COMMENT SECTION
 function displayComments(posts, threadId) {
     const commentsSection = $('#commentsSection');
     commentsSection.empty();
@@ -224,7 +198,6 @@ function displayComments(posts, threadId) {
     attachReplyButtonEvents(posts, threadId);
 }
 
-// FUNCTION: APPEND COMMENTS RECURSIVELY
 function appendComments(posts, parentPostId = null, parentElement) {
     posts.forEach(post => {
         if ((post.parentPost && post.parentPost.postId === parentPostId) || (!post.parentPost && !parentPostId)) {
@@ -236,13 +209,12 @@ function appendComments(posts, parentPostId = null, parentElement) {
     });
 }
 
-// FUNCTION: ATTACH REPLY BUTTON EVENTS
 function attachReplyButtonEvents(posts, threadId) {
     $(document).on('click', '.reply-btn', function () {
         const postId = $(this).data('post-id');
         const replyFormHtml = `
         <form class="reply-form mt-2">
-            <div class="form-group ">
+            <div class="form-group">
                 <textarea class="form-control border border-4 rounded-4 reply-content" rows="3"></textarea>
             </div>
             <div class="d-flex justify-content-end mb-2">
@@ -260,9 +232,8 @@ function attachReplyButtonEvents(posts, threadId) {
         $(this).closest('.reply-form-container').empty();
     });
 }
-// FUNCTION: SUBMIT POST
-function submitPost(postDto, threadId) {
 
+function submitPost(postDto, threadId) {
     const { loggedInUser, userType } = retrieveUser();
     setUserToDto(postDto, loggedInUser, userType);
 

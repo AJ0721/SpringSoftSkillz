@@ -28,14 +28,14 @@ public class ForumPostController {
 	// insert
 	@PostMapping("/insert")
 	public ForumPostDto insertPost(@RequestBody ForumPostDto postDto) {
-		
+
 		// Hardcode the admin ID
-				if (postDto.getAdmin() == null) {
-				    AdminDto adminDto = new AdminDto();
-				    adminDto.setAdminId(1);  
-				    postDto.setAdmin(adminDto);  
-				    postDto.getAdmin().setAdminId(1);  
-				} 
+		if (postDto.getAdmin() == null) {
+			AdminDto adminDto = new AdminDto();
+			adminDto.setAdminId(1);
+			postDto.setAdmin(adminDto);
+			postDto.getAdmin().setAdminId(1);
+		}
 		return forumPostService.insertForumPost(postDto);
 
 	}
@@ -55,9 +55,15 @@ public class ForumPostController {
 	}
 
 	// Delete by Id
+
+	@DeleteMapping("/soft-delete/{postId}")
+	public ResponseEntity<Void> softDeletPost(@PathVariable Integer postId) {
+		forumPostService.softDeleteForumPostById(postId);
+		return ResponseEntity.noContent().build();
+	}
+
 	@DeleteMapping("/delete/{postId}")
 	public String deletePostById(@PathVariable("postId") Integer postId) {
-
 		forumPostService.deleteForumPostById(postId);
 		return "Deleted post ID: " + postId;
 
@@ -76,6 +82,8 @@ public class ForumPostController {
 	}
 
 	// Read all posts
+	
+	//find both active and inactive threads
 	@GetMapping("/find-all")
 	public List<ForumPostDto> findAllPosts() {
 		return forumPostService.findAllPosts();
@@ -89,14 +97,13 @@ public class ForumPostController {
 		return postDto;
 	}
 
-	//Read post by thread ID
+	// Read post by thread ID
 	@GetMapping("/find-all/thread")
 	public List<ForumPostDto> findAllPosts(@RequestParam("id") Integer threadId) {
 		return forumPostService.findPostsByThreadId(threadId);
 
 	}
-	
-	
+
 	// Read posts by username
 
 }

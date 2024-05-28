@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.softskillz.course.model.CourseBean;
 import com.softskillz.course.model.CourseService;
+import com.softskillz.courseorder.model.service.impl.CourseOrderItemServiceImpl;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
 import com.softskillz.studentschedule.model.StudentScheduleRepository;
 import com.softskillz.teacherschedule.model.TeacherScheduleBean;
@@ -43,10 +44,13 @@ public class StudentReservationService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	@Autowired
+	private CourseOrderItemServiceImpl coiService;
+
 	// 檢查預約時數是否超過購買時數
 	public boolean checkHoursLimit(int studentId, int courseId, int requestedHours) {
 		String sql = "SELECT " + "SUM(ci.qty) AS total_purchased_hours, "
-				+ "(SELECT SUM(sr.total_hours) FROM student_reservation sr WHERE sr.student_id = ? AND sr.course_id = ?) + "
+//				+ "(SELECT SUM(sr.total_hours) FROM student_reservation sr WHERE sr.student_id = ? AND sr.course_id = ?) + "
 				+ "SUM(ci.item_status) AS total_used_hours " + "FROM corderitem ci "
 				+ "JOIN corder co ON ci.order_id = co.order_id AND co.order_status = '已付款' "
 				+ "WHERE co.student_id = ? AND ci.course_id = ? " + "GROUP BY ci.course_id";
@@ -54,11 +58,12 @@ public class StudentReservationService {
 		List<Boolean> results = jdbcTemplate.query(sql, ps -> {
 			ps.setInt(1, studentId);
 			ps.setInt(2, courseId);
-			ps.setInt(3, studentId);
-			ps.setInt(4, courseId);
 		}, (rs, rowNum) -> {
 			int totalPurchasedHours = rs.getInt("total_purchased_hours");
 			int totalUsedHours = rs.getInt("total_used_hours");
+			System.out.println("totalPurchasedHours" + totalPurchasedHours);
+			System.out.println("totalUsedHours" + totalUsedHours);
+
 			return (totalUsedHours + requestedHours) <= totalPurchasedHours;
 		});
 
@@ -112,6 +117,8 @@ public class StudentReservationService {
 
 		// 設置Zoom會議URL
 		savedReservation.setZoomMeetingUrl(meetingUrl);
+
+		coiService.updateStatus(studentId, courseId, requestedHours);
 
 		return savedReservation;
 	}
@@ -280,6 +287,9 @@ public class StudentReservationService {
 		StudentReservationBean reservation = studentReservationRepository.findById(studentReservationID)
 				.orElseThrow(() -> new IllegalStateException("預約不存在"));
 
+		// 打印預約記錄以檢查Zoom會議URL
+		System.out.println("Reservation: " + reservation);
+
 		// 獲取相關的教師行事曆
 		TeacherScheduleBean teacherSchedule = teacherScheduleRepository.findById(reservation.getTeacherScheduleID())
 				.orElseThrow(() -> new IllegalStateException("教師行事曆不存在"));
@@ -289,6 +299,19 @@ public class StudentReservationService {
 
 		// 更新學生行事曆，把預約時段改為「0」
 		updateStudentScheduleForCancellation(reservation);
+
+		// 刪除Zoom會議
+//		String zoomMeetingUrl = reservation.getZoomMeetingUrl();
+//		if (zoomMeetingUrl != null) {
+//			zoomService.deleteMeeting(zoomMeetingUrl);
+//		}
+//		String zoomMeetingUrl = reservation.getZoomMeetingUrl();
+//		if (zoomMeetingUrl != null) {
+//			System.out.println("Attempting to delete Zoom meeting with URL: " + zoomMeetingUrl);
+//			zoomService.deleteMeeting(zoomMeetingUrl);
+//		} else {
+//			System.out.println("No Zoom meeting URL found for reservation ID: " + studentReservationID);
+//		}
 
 		// 刪除學生預約
 		studentReservationRepository.deleteById(studentReservationID);

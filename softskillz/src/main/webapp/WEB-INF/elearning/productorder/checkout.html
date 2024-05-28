@@ -195,6 +195,7 @@
                 <div class="card mb-3 border shadow-0">
                     <div class="card-body">
                         <h5 class="card-title">訂單明細</h5>
+
                         <div class="d-flex justify-content-between">
                             <p class="mb-2">小計:</p>
                             <p id="checkout-subtotal" class="mb-2">$0</p>
@@ -298,7 +299,7 @@
             document.getElementById('customer_name').value = '李筱涵';
             document.getElementById('phone').value = '0912345678';
             document.getElementById('postalCode').value = '320';
-            document.getElementById('address').value = '320桃園市中壢區定寧路31號';
+            document.getElementById('address').value = '桃園市中壢區定寧路31號';
             document.getElementById('notes').value = '幫我分開包裝謝謝~';
         });
 
@@ -359,19 +360,24 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(response => response.text())
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();
+                        } else {
+                            throw new Error('呼叫 Line Pay API 失敗');
+                        }
+                    })
                     .then(paymentUrl => {
                         window.location.href = paymentUrl;
                     })
                     .catch(error => {
                         console.error('Error:', error);
+                        //alert('呼叫 Line Pay API 失敗，請稍後再試。');
                     });
-            }).catch(error => {
-                console.error('Error:', error);
-
             });
         });
     });
+
 </script>
 
 

@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.softskillz.account.model.bean.StudentBean;
-import com.softskillz.account.model.bean.StudentNewPwdBean;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.account.model.bean.TeacherNewPwdBean;
 import com.softskillz.account.model.service.TeacherService;
@@ -150,13 +148,13 @@ public class TeacherCrudController {
 			@RequestParam("teacherCountry") String teacherCountry, @RequestParam("teacherMobile") String teacherMobile,
 			@RequestParam("teacherEducation") String teacherEducation, @RequestParam("teachTime") String teachTime,
 			@RequestParam("experience") String experience, @RequestParam("status") String status,
-			@RequestParam("strength") String strength, @RequestParam("subject") String subject, Model m)
+			@RequestParam("strength") String strength, Model m)
 			throws ParseException {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = simpleDateFormat.parse(teacherBirth);
 
-		TeacherBean teacherBean = new TeacherBean();
+		TeacherBean teacherBean = teacherService.findById(teacherId);
 		teacherBean.setTeacherId(teacherId);
 		teacherBean.setTeacherUserName(teacherUserName);
 		teacherBean.setTeacherLastName(teacherLastName);
@@ -169,10 +167,9 @@ public class TeacherCrudController {
 		teacherBean.setTeacherMobile(teacherMobile);
 		teacherBean.setTeacherEducation(teacherEducation);
 		teacherBean.setTeachTime(teachTime);
-		teacherBean.setExperience(teachTime);
+		teacherBean.setExperience(experience);
 		teacherBean.setStatus(status);
 		teacherBean.setStrength(strength);
-		teacherBean.setSubject(subject);
 		teacherService.updateTeacherBean(teacherBean);
 
 		// 把東西丟到頁面
@@ -331,7 +328,7 @@ public class TeacherCrudController {
 			teacherBean.setTeacherPhoto(teacherPhotoFileName);
 			
 		}
-
+		System.out.println(teacherBean);
 		teacherService.updateTeacherBean(teacherBean);
 
 		// 把東西丟到頁面
@@ -378,7 +375,7 @@ public class TeacherCrudController {
 		// 上傳檔案路徑到專案
 		mf.transferTo(saveFilePath);
 
-		fileName = "/teacher/images/" + fileName;
+		//fileName = "/teacher/images/" + fileName;
 		System.out.println("saveFilePath:" + saveFilePath);
 
 		return fileName;
