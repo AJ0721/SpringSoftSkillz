@@ -1,7 +1,7 @@
 # SpringSoftSkillz
 Spring MVC
 
-Project Name: SpringSoftSkillz
+Project Name: SoftSkillz
 
 1.Description:
 This is part of a group project that is still under development. My contributions to the project focuses on the forum functionality.
@@ -11,7 +11,7 @@ Eclipse 2023/6
 Tomcat 10.1
 
 3.Database Setup:
-Use the 'springboot_softskillz_forumDB.sql' file to set up the database required for the project. This file contains all the necessary SQL scripts.
+Use the 'springboot_team4.sql' file to set up the database required for the project. This file contains all the necessary SQL scripts.
 
 -create a database in sql server named 'softskillzdb'
 -create all the tables and insert corresponding data
@@ -31,5 +31,11 @@ Clone the repository to your local machine.
 The application will be available at http://localhost:8080.
 
 
-5.Accessing the Forum:
-go to http://localhost:8080/forum/adminhome to enter backstage homepage.
+5.Access to the website:
+softskillz frontstage homepage: http://localhost:8080/softskillz/fhomepage
+softskillz backstage homepage: http://localhost:8080/softskillz/newhomepage
+forum frontstage homepage: http://localhost:8080/forum/home
+forum backstage homepage: http://localhost:8080/forum/adminhome
+
+
+
