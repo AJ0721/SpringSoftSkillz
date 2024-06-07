@@ -54,8 +54,8 @@ public interface IDtoConverter {
 	@Mapping(target = "postIds", ignore = true)
 	ForumPostDto toForumPostDto(ForumPostModel forumPostModel);
 
-	@Mapping(source = "student.studentId", target = "studentBean.studentId") // attribute if id=null don't create a new
-																				// student
+	@Mapping(source = "student.studentId", target = "studentBean.studentId") 
+	// to do: replace workaround in controller with mapstruct's 'attribute' (if id=null don't create a new student)
 	@Mapping(source = "admin.adminId", target = "adminBean.adminId")
 	@Mapping(source = "teacher.teacherId", target = "teacherBean.teacherId")
 	@Mapping(source = "thread.threadId", target = "forumThreadModel.threadId")
