@@ -558,7 +558,7 @@ CREATE TABLE forum_post (
     CONSTRAINT FK_thread_id FOREIGN KEY(thread_id) REFERENCES forum_thread(thread_id) ON DELETE CASCADE,
 	CONSTRAINT FK_post_creator1 FOREIGN KEY(post_student_id) REFERENCES student(student_id),
     CONSTRAINT FK_post_creator2 FOREIGN KEY(post_teacher_id) REFERENCES teacher(teacher_id),
-	CONSTRAINT FK_post_parent_post FOREIGN KEY (parent_post_id) REFERENCES forum_post(post_id) ON DELETE CASCADE,
+	CONSTRAINT FK_post_parent_post FOREIGN KEY (parent_post_id) REFERENCES forum_post(post_id) ON DELETE NO ACTION,
 	CONSTRAINT CHK_post_hierarchy CHECK (parent_post_id IS NULL OR parent_post_id <> post_id),
 );
 
@@ -629,3 +629,28 @@ CREATE TABLE forum_image (
 );
 
 SELECT * FROM forum_image;
+
+
+--DROP ALL
+DECLARE @sql NVARCHAR(MAX) = N'';
+
+-- Generate DROP CONSTRAINT statements for each foreign key constraint in the database
+SELECT @sql += 'ALTER TABLE ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) +
+               ' DROP CONSTRAINT ' + QUOTENAME(fk.name) + ';'
+FROM sys.foreign_keys AS fk
+JOIN sys.tables AS t ON fk.parent_object_id = t.object_id
+JOIN sys.schemas AS s ON t.schema_id = s.schema_id;
+
+-- Execute the generated DROP CONSTRAINT statements
+EXEC sp_executesql @sql;
+
+-- Reset the @sql variable
+SET @sql = N'';
+
+-- Generate DROP TABLE statements for each table in the database
+SELECT @sql += 'DROP TABLE ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ';'
+FROM sys.tables t
+JOIN sys.schemas s ON t.schema_id = s.schema_id;
+
+-- Execute the generated DROP TABLE statements
+EXEC sp_executesql @sql;
