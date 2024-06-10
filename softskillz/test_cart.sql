@@ -114,25 +114,24 @@ CREATE TABLE cart_item(
   cart_item_id INT PRIMARY KEY IDENTITY(1,1),
   student_id INT NOT NULL,
   product_id INT NOT NULL,
-  price DECIMAL(7,2) NOT NULL,
   quantity INT NOT NULL,
-  item_subtotal AS (quantity*price) PERSISTED,
   CONSTRAINT FK_cart_item_product FOREIGN KEY (product_id) REFERENCES test_product(product_id),
   CONSTRAINT FK_cart_student FOREIGN KEY (student_id) REFERENCES student(student_id)
-
   );
 
-INSERT INTO cart_item (student_id, product_id, price, quantity) VALUES 
-(1, 1, 300, 1),
-(2, 2, 500, 2),
-(3, 3, 1000, 1),
-(4, 4, 1300, 10),
-(5, 5, 200, 3),
-(6, 6, 2000, 1),
-(7, 7, 400, 2),
-(8, 8, 250, 1),
-(9, 9, 350, 2),
-(10, 10, 150, 1);
+
+
+INSERT INTO cart_item (student_id, product_id, quantity) VALUES 
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 1),
+(4, 4,10),
+(5, 5, 3),
+(6, 6, 1),
+(7, 7, 2),
+(8, 8, 1),
+(9, 9, 2),
+(10, 10, 1);
 
 CREATE TABLE voucher(
   voucher_id INT PRIMARY KEY IDENTITY(1,1),
@@ -163,23 +162,45 @@ CREATE TABLE test_order(
   shipping_address NVARCHAR (256) NOT NULL,
   order_status NVARCHAR(20) CHECK(order_status IN ('TO BE PAID', 
   'PAID', 'SELLER CONFIRMED', 'SHIPPING', 'ARRIVED', 'COMPLETED', 'CANCELLED')) DEFAULT 'TO BE PAID' NOT NULL,
-  create_at DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
-  update_at DATETIME2 NULL,
+  invoice VARCHAR (11) NULL,
+  create_at DATETIME2 DEFAULT SYSDATETIME(),
+  update_at DATETIME2 DEFAULT SYSDATETIME() ,
   voucher_id INT NULL,
   CONSTRAINT FK_order_student FOREIGN KEY (student_id) REFERENCES student(student_id),
   CONSTRAINT FK_order_voucher FOREIGN KEY (voucher_id) REFERENCES voucher(voucher_id),
   INDEX order_student_id NONCLUSTERED (student_id) 
 );
 
-INSERT INTO test_order (student_id, order_subtotal, payment_method, shipping_address, order_status, create_at, update_at) VALUES 
-(1, 300, 'CASH ON DELIVERY', '台北市中正區忠孝東路一段', 'TO BE PAID', SYSDATETIME(), NULL),
-(2, 1000, 'CASH ON DELIVERY', '新北市板橋區文化路二段', 'PAID', SYSDATETIME(), NULL),
-(3, 1000, 'CASH ON DELIVERY', '台中市西屯區市政北二路', 'SELLER CONFIRMED', SYSDATETIME(), NULL),
-(4, 1300, 'CASH ON DELIVERY', '台南市東區崇德路一段', 'SHIPPING', SYSDATETIME(), NULL),
-(5, 600, 'CASH ON DELIVERY', '高雄市鼓山區美術東四路', 'ARRIVED', SYSDATETIME(), NULL),
-(6, 2000, 'CASH ON DELIVERY', '台北市信義區基隆路一段', 'TO BE PAID', SYSDATETIME(), NULL),
-(7, 800, 'CASH ON DELIVERY', '新竹市東區公園路二段', 'PAID', SYSDATETIME(), NULL),
-(8, 250, 'CASH ON DELIVERY', '嘉義市西區文化路三段', 'SELLER CONFIRMED', SYSDATETIME(), NULL),
-(9, 700, 'CASH ON DELIVERY', '彰化市中山路二段', 'SHIPPING', SYSDATETIME(), NULL),
-(10, 150, 'CASH ON DELIVERY', '台東市中興路四段', 'ARRIVED', SYSDATETIME(), NULL);
+--CRATE A TRIGGER FOR UPDATE (NOT YET)
+CREATE TRIGGER trg_update_at
+ON test_order
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE test_order
+    SET update_at = SYSDATETIME()
+    FROM test_order
+    INNER JOIN inserted ON test_order.order_id = inserted.order_id;
+END;
 
+
+
+INSERT INTO test_order (student_id, order_subtotal, payment_method, shipping_address, order_status, invoice) VALUES 
+(1, 300, 'CASH ON DELIVERY', '台北市中正區忠孝東路一段', 'TO BE PAID', 'AK79171152'),
+(1, 1000, 'CASH ON DELIVERY', '新北市板橋區文化路二段', 'PAID', 'BZ12345678'),
+(1, 1000, 'CASH ON DELIVERY', '台中市西屯區市政北二路', 'SELLER CONFIRMED', 'CT77925523'),
+(1, 1300, 'CASH ON DELIVERY', '台南市東區崇德路一段', 'SHIPPING', 'DY87654321'),
+(1, 600, 'CASH ON DELIVERY', '高雄市鼓山區美術東四路', 'ARRIVED', 'EX86562747'),
+(2, 2000, 'CASH ON DELIVERY', '台北市信義區基隆路一段', 'TO BE PAID', 'FW23456789'),
+(2, 800, 'CASH ON DELIVERY', '新竹市東區公園路二段', 'PAID', 'GV79171152'),
+(2, 250, 'CASH ON DELIVERY', '嘉義市西區文化路三段', 'SELLER CONFIRMED', 'HZ34567890'),
+(2, 700, 'CASH ON DELIVERY', '彰化市中山路二段', 'SHIPPING', 'IV77925523'),
+(2, 150, 'CASH ON DELIVERY', '台東市中興路四段', 'ARRIVED', 'JU86562747');
+
+
+drop table test_order cascade constraint FK_order_voucher, FK_order_student 
+alter table test_order drop constraint FK_order_voucher, FK_order_student 
+
+alter table order_item drop constraint FK_order_item_order
+DROP INDEX order_student_id ON test_order;
