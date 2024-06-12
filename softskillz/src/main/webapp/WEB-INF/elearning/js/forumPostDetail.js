@@ -150,14 +150,14 @@ function deletePost(postId) {
 // Ensure that child posts are not affected
 function createCommentHtml(post) {
     const { loggedInUser } = retrieveUser();
-    const { authorId, authorName, canEdit = false } = getUserDetails(post, loggedInUser);
+    const { authorType, authorName, canEdit = false } = getUserDetails(post, loggedInUser);
     const formattedDate = new Date(post.postCreatedTime).toLocaleString();
 
     return `
     <li class="list-unstyled comment border-start border-primary border-3 p-2 ml-0 mb-3 pl-0" data-post-id="${post.postId}">
         <div class="d-flex justify-content-between align-items-center mb-0">
             <div class="d-flex justify-content-start">   
-                <p class="me-3"><strong>${authorName}</strong></p>
+                <p class="me-3 ${authorType}"><strong>${authorName}</strong></p> class="">
                 <span class="text-muted">${formattedDate}</span>
             </div>
             <span class="d-flex post-actions">

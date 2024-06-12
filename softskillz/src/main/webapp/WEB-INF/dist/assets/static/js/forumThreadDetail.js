@@ -143,10 +143,10 @@ $('#cancel').click(function (e) {
 // FUNCTION: DISPLAY THREAD DETAILS
 function displayThreadDetails(data) {
     const { loggedInUser } = retrieveUser();
-    const { authorName, canEdit } = getUserDetails(data, loggedInUser);
+    const { authorName, canEdit, authorType } = getUserDetails(data, loggedInUser);
 
     $('#category').text(data.forumCategory.forumCategoryName);
-    $('#username').text(authorName);
+    $('#username').text(authorName).attr('class', authorType);
     $('#threadTitle').text(data.threadTitle);
     $('#threadContent').text(data.threadContent);
 

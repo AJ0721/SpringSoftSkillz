@@ -19,6 +19,36 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
   <style>
+    .deleted-post {
+      color: gray;
+      /* Change text color to gray */
+      font-style: italic;
+      /* Italicize the text */
+      background-color: #f8f8f8;
+      /* Light gray background */
+      padding: 5px;
+      /* Add some padding */
+      border: 1px solid #e0e0e0;
+      /* Add a light border */
+      border-radius: 3px;
+      /* Rounded corners */
+    }
+
+    .老師 {
+      font-weight: bold;
+      color: blue;
+    }
+
+    .學生 {
+      font-weight: bold;
+      color: green;
+    }
+
+    .管理員 {
+      font-weight: bold;
+      color: red;
+    }
+
     .comment {
       margin-left: 0;
       padding-left: rem;
@@ -347,13 +377,15 @@
               </div>
               <div class="card-body">
                 <form>
-
-                  <label for="category">分類: </label>
-                  <span class=" p-2 mb-3 " style="user-select: text;" id="category" readonly>
-                  </span>
                   <div class="mb-3">
-                    <label for="username">作者:</label>
-                    <span class="p-2" id="username"></span>
+                    <div>
+                      <label for="category">分類：</label>
+                      <span class=" p-2 " style="user-select: text" id="category"></span>
+                    </div>
+                    <div>
+                      <label for="username">作者：</label>
+                      <span class="p-2" style="user-select: text" id="username"></span>
+                    </div>
                   </div>
                   <div class="form-group">
                     <!-- title -->

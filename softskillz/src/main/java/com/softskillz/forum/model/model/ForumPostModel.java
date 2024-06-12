@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import com.softskillz.account.model.bean.AdminBean;
@@ -22,11 +23,43 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@NamedEntityGraph(
+	    name = "ForumPost.All",
+	    attributeNodes = {
+	        @NamedAttributeNode("teacherBean"),
+	        @NamedAttributeNode(value = "studentBean", subgraph = "studentBean.subgraph"),
+	        @NamedAttributeNode("adminBean"),
+	        @NamedAttributeNode(value = "forumThreadModel", subgraph = "forumThreadModel.subgraph"),
+	        @NamedAttributeNode("forumPostModel") // Self-referencing subgraph
+	    },
+	    subgraphs = {
+	        @NamedSubgraph(
+	            name = "studentBean.subgraph",
+	            attributeNodes = {
+	                @NamedAttributeNode("companionBean")
+	            }
+	        ),
+	        @NamedSubgraph(
+	            name = "forumThreadModel.subgraph",
+	            attributeNodes = {
+	                @NamedAttributeNode("forumCategoryModel"),
+	                @NamedAttributeNode("studentBean"),
+	                @NamedAttributeNode("teacherBean"),
+	                @NamedAttributeNode("adminBean"),
+	                @NamedAttributeNode("forumPostModel") // Forum posts in the thread
+	            }
+	        )
+	    }
+	)
 @Component
+@BatchSize (size = 20)
 @Table(name = "forum_post")
 public class ForumPostModel {
 

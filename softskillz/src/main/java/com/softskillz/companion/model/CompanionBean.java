@@ -2,6 +2,7 @@ package com.softskillz.companion.model;
 
 import java.util.Set;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +25,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "learning_companion")
+@BatchSize(size = 20)
 @Component
 public class CompanionBean {
 	
@@ -61,7 +63,7 @@ public class CompanionBean {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companionBId", cascade = CascadeType.ALL)
 	private Set<CompanionMatchBean> companionMatchB;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_id")
 	private StudentBean studentBeanID;
 	
