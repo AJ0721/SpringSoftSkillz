@@ -3,6 +3,7 @@ package com.softskillz.account.model.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,6 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "admin")
+@BatchSize (size = 20)
 @Component
 public class AdminBean {
 	

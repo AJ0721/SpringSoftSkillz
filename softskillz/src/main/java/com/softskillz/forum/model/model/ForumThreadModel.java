@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import com.softskillz.account.model.bean.AdminBean;
@@ -23,11 +24,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@NamedEntityGraph(
+	    name = "ForumThread.All",
+	    attributeNodes = {
+	        @NamedAttributeNode("teacherBean"),
+	        @NamedAttributeNode(value = "studentBean", subgraph = "studentBean.subgraph"),
+	        @NamedAttributeNode("forumCategoryModel"),
+	        @NamedAttributeNode("adminBean")
+	    },
+	    subgraphs = {
+	        @NamedSubgraph(
+	            name = "studentBean.subgraph",
+	            attributeNodes = {
+	                @NamedAttributeNode("companionBean")
+	            }
+	        )
+	    }
+	)
 @Component
+@BatchSize (size = 20)
 @Table(name = "forum_thread")
 public class ForumThreadModel {
 
@@ -66,7 +88,7 @@ public class ForumThreadModel {
 	@JoinColumn(name = "thread_student_id", referencedColumnName = "student_id", insertable = true, updatable = false, nullable = true)
 	private StudentBean studentBean;
 
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "thread_teacher_id", referencedColumnName = "teacher_id", insertable = true, updatable = false, nullable = true)
 	private TeacherBean teacherBean;
 
@@ -221,9 +243,9 @@ public class ForumThreadModel {
 	public void setForumImageModel(List<ForumImageModel> forumImageModel) {
 		this.forumImageModel = forumImageModel;
 	}
-	
+
 	public void setStatusDeleted() {
-		this.threadStatus=StatusEnum.DELETED;
+		this.threadStatus = StatusEnum.DELETED;
 	}
 
 }

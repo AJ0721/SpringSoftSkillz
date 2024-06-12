@@ -283,7 +283,7 @@ window.createPostHtml = function (post) {
     <tr class="text-nowrap">
             <td><input class="form-check-input" type="checkbox"></td>                  
             <td >${post.postId}</td>
-            <td>${userType}-${userId}</td>
+            <td>${userType}-${userId}</td> 
             
             <td class="text-nowrap text-truncate" style="max-width: 200px;">
             <a href="/forum/thread/detailpage/${post.thread.threadId}" class="thread-link"> ID: ${post.thread.threadId}<br/>${post.thread.threadTitle}

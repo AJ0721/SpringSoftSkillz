@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -27,6 +28,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "student")
+@BatchSize (size = 20)
 @Component
 public class StudentBean {
 
@@ -98,7 +100,7 @@ public class StudentBean {
 	private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
 
 	//任萱forum
-	@OneToMany (mappedBy = "studentBean",cascade=CascadeType.ALL)
+	@OneToMany (mappedBy = "studentBean",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ForumThreadModel> threads= new ArrayList<>();
 	
 	public List<ForumThreadModel> getThreads() {
@@ -109,8 +111,8 @@ public class StudentBean {
 		this.threads = threads;
 	}
 	
-	//京田compainon
-	@OneToOne (mappedBy = "studentBeanID")
+	//京田companion
+	@OneToOne (mappedBy = "studentBeanID", fetch = FetchType.LAZY)
 	private CompanionBean companionBean;
 	
 	public CompanionBean getCompanionBean() {

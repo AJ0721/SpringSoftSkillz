@@ -3,6 +3,7 @@ package com.softskillz.forum.model.model;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Column;
@@ -13,11 +14,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-
-@Component @Entity
+@Component
+@Entity
+@BatchSize(size = 20)
 @Table(name = "forum_category")
-public class ForumCategoryModel  {
-
+public class ForumCategoryModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +38,7 @@ public class ForumCategoryModel  {
 
 	}
 
-
-
-	//for update
+	// for update
 	public ForumCategoryModel(Integer forumCategoryId, String forumCategoryName, String forumCategoryDescription) {
 		this.forumCategoryId = forumCategoryId;
 		this.forumCategoryName = forumCategoryName;
@@ -52,57 +51,36 @@ public class ForumCategoryModel  {
 		this.forumCategoryDescription = forumCategoryDescription;
 	}
 
-
-
 	public Integer getForumCategoryId() {
 		return forumCategoryId;
 	}
-
-
 
 	public void setForumCategoryId(Integer forumCategoryId) {
 		this.forumCategoryId = forumCategoryId;
 	}
 
-
-
 	public String getForumCategoryName() {
 		return forumCategoryName;
 	}
-
-
 
 	public void setForumCategoryName(String forumCategoryName) {
 		this.forumCategoryName = forumCategoryName;
 	}
 
-
-
 	public String getForumCategoryDescription() {
 		return forumCategoryDescription;
 	}
-
-
 
 	public void setForumCategoryDescription(String forumCategoryDescription) {
 		this.forumCategoryDescription = forumCategoryDescription;
 	}
 
-
-
 	public Set<ForumThreadModel> getForumThreads() {
 		return forumThreads;
 	}
 
-
-
 	public void setForumThreads(Set<ForumThreadModel> forumThreads) {
 		this.forumThreads = forumThreads;
 	}
-
-
-
-	
-	
 
 }
