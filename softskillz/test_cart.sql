@@ -6,6 +6,7 @@ SELECT * FROM test_order
 SELECT * FROM voucher
 SELECT * FROM order_item;
 
+
 DROP TABLE order_item;
 DROP TABLE test_order;
 DROP TABLE voucher;
@@ -40,6 +41,7 @@ CREATE TABLE test_product(
   stock INT NOT NULL,
   product_category_id INT NOT NULL,
   product_status NVARCHAR(20) CHECK(product_status IN ('VISIBLE', 'LOCKED', 'DELETED')) DEFAULT 'VISIBLE' NOT NULL, 
+  image_id INT,
   create_at DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
   update_at DATETIME2 NULL,
   CONSTRAINT FK_product_category FOREIGN KEY (product_category_id) REFERENCES product_category(product_category_id),

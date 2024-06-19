@@ -1,9 +1,15 @@
 package com.softskillz.forum.model.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
+
+import com.softskillz.account.model.bean.AdminBean;
+import com.softskillz.account.model.bean.StudentBean;
+import com.softskillz.account.model.bean.TeacherBean;
+import com.softskillz.forum.model.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +19,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Component
 @BatchSize(size = 20)
@@ -39,44 +51,6 @@ public class ForumImageModel {
 	@Column(name = "forum_image_upload_date")
 	private Timestamp forumImgUploadDate;
 
-	public int getForumImageId() {
-		return forumImageId;
-	}
-
-	public void setForumImageId(int forumImageId) {
-		this.forumImageId = forumImageId;
-	}
-
-	public ForumThreadModel getForumThreadModel() {
-		return forumThreadModel;
-	}
-
-	public void setForumThreadModel(ForumThreadModel forumThreadModel) {
-		this.forumThreadModel = forumThreadModel;
-	}
-
-	public ForumPostModel getForumPostModel() {
-		return forumPostModel;
-	}
-
-	public void setForumPostModel(ForumPostModel forumPostModel) {
-		this.forumPostModel = forumPostModel;
-	}
-
-	public String getForumImagePath() {
-		return forumImagePath;
-	}
-
-	public void setForumImagePath(String forumImagePath) {
-		this.forumImagePath = forumImagePath;
-	}
-
-	public Timestamp getForumImgUploadDate() {
-		return forumImgUploadDate;
-	}
-
-	public void setForumImgUploadDate(Timestamp forumImgUploadDate) {
-		this.forumImgUploadDate = forumImgUploadDate;
-	}
+	
 
 }

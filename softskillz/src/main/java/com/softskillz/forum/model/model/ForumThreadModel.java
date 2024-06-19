@@ -1,7 +1,7 @@
 package com.softskillz.forum.model.model;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,6 +13,7 @@ import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.forum.model.StatusEnum;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +30,9 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NamedEntityGraph(
@@ -48,6 +52,10 @@ import jakarta.persistence.Table;
 	        )
 	    }
 	)
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Component
 @BatchSize (size = 20)
 @Table(name = "forum_thread")
@@ -62,8 +70,9 @@ public class ForumThreadModel {
 	private String threadTitle;
 
 	@Column(name = "thread_created_time", insertable = false, updatable = false)
-	private Timestamp threadCreatedTime;
+	private Date threadCreatedTime;
 
+	@NonNull
 	@Column(name = "thread_content")
 	private String threadContent;
 
@@ -116,9 +125,7 @@ public class ForumThreadModel {
 		return Objects.hash(threadContent);
 	}
 
-	public ForumThreadModel() {
-
-	}
+	
 
 	// for new thread insertion
 	public ForumThreadModel(ForumCategoryModel forumCategoryModel, String threadTitle, String threadContent) {
@@ -140,109 +147,6 @@ public class ForumThreadModel {
 		this.threadStatus = threadStatus;
 	}
 
-	public AdminBean getAdminBean() {
-		return adminBean;
-	}
-
-	public void setAdminBean(AdminBean adminBean) {
-		this.adminBean = adminBean;
-	}
-
-	public Integer getThreadId() {
-		return threadId;
-	}
-
-	public void setThreadId(Integer threadId) {
-		this.threadId = threadId;
-	}
-
-	public String getThreadTitle() {
-		return threadTitle;
-	}
-
-	public void setThreadTitle(String threadTitle) {
-		this.threadTitle = threadTitle;
-	}
-
-	public Timestamp getThreadCreatedTime() {
-		return threadCreatedTime;
-	}
-
-	public void setThreadCreatedTime(Timestamp threadCreatedTime) {
-		this.threadCreatedTime = threadCreatedTime;
-	}
-
-	public String getThreadContent() {
-		return threadContent;
-	}
-
-	public void setThreadContent(String threadContent) {
-		this.threadContent = threadContent;
-	}
-
-	public int getThreadUpvoteCount() {
-		return threadUpvoteCount;
-	}
-
-	public void setThreadUpvoteCount(int threadUpvoteCount) {
-		this.threadUpvoteCount = threadUpvoteCount;
-	}
-
-	public int getThreadResponseCount() {
-		return threadResponseCount;
-	}
-
-	public void setThreadResponseCount(int threadResponseCount) {
-		this.threadResponseCount = threadResponseCount;
-	}
-
-	public StatusEnum getThreadStatus() {
-		return threadStatus;
-	}
-
-	public void setThreadStatus(StatusEnum threadStatus) {
-		this.threadStatus = threadStatus;
-	}
-
-	public ForumCategoryModel getForumCategoryModel() {
-		return forumCategoryModel;
-	}
-
-	public void setForumCategoryModel(ForumCategoryModel forumCategoryModel) {
-		this.forumCategoryModel = forumCategoryModel;
-	}
-
-	public List<ForumPostModel> getForumPostModel() {
-		return forumPostModel;
-	}
-
-	public void setForumPostModel(List<ForumPostModel> forumPostModel) {
-		this.forumPostModel = forumPostModel;
-	}
-
-	public StudentBean getStudentBean() {
-		return studentBean;
-	}
-
-	public void setStudentBean(StudentBean studentBean) {
-		this.studentBean = studentBean;
-	}
-
-	public TeacherBean getTeacherBean() {
-		return teacherBean;
-	}
-
-	public void setTeacherBean(TeacherBean teacherBean) {
-		this.teacherBean = teacherBean;
-	}
-
-	public List<ForumImageModel> getForumImageModel() {
-		return forumImageModel;
-	}
-
-	public void setForumImageModel(List<ForumImageModel> forumImageModel) {
-		this.forumImageModel = forumImageModel;
-	}
 
 	public void setStatusDeleted() {
 		this.threadStatus = StatusEnum.DELETED;

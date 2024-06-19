@@ -12,67 +12,54 @@ import com.softskillz.util.LoggerUtil;
 
 @RestController
 @RequestMapping("/forum/category")
-public class ForumCategoryController extends LoggerUtil {
+public class ForumCategoryController {
 
-    @Autowired
-    private IForumCategoryService iforumCategoryService;
+	@Autowired
+	private IForumCategoryService iforumCategoryService;
 
-    @PostMapping("/insert")
-    public ForumCategoryDto insertCategory(@RequestBody ForumCategoryDto category) {
-        logger.debug("POST /forum/category/insert - inserting new category: {}", JsonUtil.toJson(category));
-        ForumCategoryDto insertedCategory = iforumCategoryService.insertForumCategory(category);
-        logger.info("New category inserted successfully: {}", JsonUtil.toJson(insertedCategory));
-        return insertedCategory;
-    }
+	@PostMapping("/insert")
+	public ForumCategoryDto insertCategory(@RequestBody ForumCategoryDto category) {
 
-    @GetMapping("/find-all")
-    public List<ForumCategoryDto> findAllCategories() {
-        logger.debug("GET /forum/category/find-all - fetching all categories");
-        List<ForumCategoryDto> categories = iforumCategoryService.findAllCategories();
-        logger.info("Successfully fetched {} categories", categories.size());
-        return categories;
-    }
+		ForumCategoryDto insertedCategory = iforumCategoryService.insertForumCategory(category);
+		return insertedCategory;
+	}
 
-    @GetMapping("/search")
-    public List<ForumCategoryDto> findCategoryBeansByKeyword(@RequestParam String keyword) {
-        logger.debug("GET /forum/category/search - searching categories with keyword: {}", keyword);
-        List<ForumCategoryDto> categories = iforumCategoryService.findCategoryBeansByKeyword(keyword);
-        logger.info("Successfully fetched {} categories for keyword: {}", categories.size(), keyword);
-        return categories;
-    }
+	@GetMapping("/find-all")
+	public List<ForumCategoryDto> findAllCategories() {
+		List<ForumCategoryDto> categories = iforumCategoryService.findAllCategories();
+		return categories;
+	}
 
-    @GetMapping("/find/id/{categoryId}")
-    public ForumCategoryDto findForumCategoryById(@PathVariable Integer categoryId) {
-        logger.debug("GET /forum/category/find/id/{} - fetching category by ID", categoryId);
-        ForumCategoryDto category = iforumCategoryService.findForumCategoryById(categoryId);
-        if (category != null) {
-            logger.info("Successfully fetched category: {}", JsonUtil.toJson(category));
-        } else {
-            logger.warn("Category with ID {} not found", categoryId);
-        }
-        return category;
-    }
+	@GetMapping("/search")
+	public List<ForumCategoryDto> findCategoryBeansByKeyword(@RequestParam String keyword) {
+		List<ForumCategoryDto> categories = iforumCategoryService.findCategoryBeansByKeyword(keyword);
+		return categories;
+	}
 
-    @PutMapping("/update/{categoryId}")
-    public ForumCategoryDto updateCategory(@PathVariable int categoryId, @RequestBody ForumCategoryDto categoryDTO) {
-        logger.debug("PUT /forum/category/update/{} - updating category with data: {}", categoryId, JsonUtil.toJson(categoryDTO));
-        ForumCategoryDto updatedCategory = iforumCategoryService.updateForumCategoryById(categoryDTO.getForumCategoryId(), categoryDTO);
-        logger.info("Successfully updated category: {}", JsonUtil.toJson(updatedCategory));
-        return updatedCategory;
-    }
+	@GetMapping("/find/id/{categoryId}")
+	public ForumCategoryDto findForumCategoryById(@PathVariable Integer categoryId) {
+		ForumCategoryDto category = iforumCategoryService.findForumCategoryById(categoryId);
+		if (category != null) {
+		} else {
+		}
+		return category;
+	}
 
-    @DeleteMapping("/delete/{categoryId}")
-    public void deleteCategoryById(@PathVariable int categoryId) {
-        logger.debug("DELETE /forum/category/delete/{} - deleting category by ID", categoryId);
-        iforumCategoryService.deleteForumCategoryById(categoryId);
-        logger.info("Successfully deleted category with ID: {}", categoryId);
-    }
+	@PutMapping("/update/{categoryId}")
+	public ForumCategoryDto updateCategory(@PathVariable int categoryId, @RequestBody ForumCategoryDto categoryDTO) {
+		ForumCategoryDto updatedCategory = iforumCategoryService
+				.updateForumCategoryById(categoryDTO.getForumCategoryId(), categoryDTO);
+		return updatedCategory;
+	}
 
-    @DeleteMapping("/delete-all")
-    public String deleteAllCategory(@RequestBody List<Integer> categoryIds) {
-        logger.debug("DELETE /forum/category/delete-all - deleting categories with IDs: {}", categoryIds);
-        iforumCategoryService.deleteForumCategoryByIds(categoryIds);
-        logger.info("Successfully deleted categories with IDs: {}", categoryIds);
-        return "Deleted category IDs: " + categoryIds;
-    }
+	@DeleteMapping("/delete/{categoryId}")
+	public void deleteCategoryById(@PathVariable int categoryId) {
+		iforumCategoryService.deleteForumCategoryById(categoryId);
+	}
+
+	@DeleteMapping("/delete-all")
+	public String deleteAllCategory(@RequestBody List<Integer> categoryIds) {
+		iforumCategoryService.deleteForumCategoryByIds(categoryIds);
+		return "Deleted category IDs: " + categoryIds;
+	}
 }

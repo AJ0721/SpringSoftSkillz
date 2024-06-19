@@ -1,7 +1,7 @@
 package com.softskillz.forum.model.model;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.BatchSize;
@@ -12,6 +12,7 @@ import com.softskillz.account.model.bean.StudentBean;
 import com.softskillz.account.model.bean.TeacherBean;
 import com.softskillz.forum.model.StatusEnum;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +29,9 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NamedEntityGraph(
@@ -37,7 +41,7 @@ import jakarta.persistence.Table;
 	        @NamedAttributeNode(value = "studentBean", subgraph = "studentBean.subgraph"),
 	        @NamedAttributeNode("adminBean"),
 	        @NamedAttributeNode(value = "forumThreadModel", subgraph = "forumThreadModel.subgraph"),
-	        @NamedAttributeNode("forumPostModel") // Self-referencing subgraph
+	        @NamedAttributeNode(value = "forumPostModel", subgraph = "forumPostModel.subgraph")
 	    },
 	    subgraphs = {
 	        @NamedSubgraph(
@@ -53,11 +57,22 @@ import jakarta.persistence.Table;
 	                @NamedAttributeNode("studentBean"),
 	                @NamedAttributeNode("teacherBean"),
 	                @NamedAttributeNode("adminBean"),
-	                @NamedAttributeNode("forumPostModel") // Forum posts in the thread
+	                @NamedAttributeNode(value = "forumPostModel", subgraph = "forumPostModel.subgraph")
+	            }
+	        ),
+	        @NamedSubgraph(
+	            name = "forumPostModel.subgraph",
+	            attributeNodes = {
+	                @NamedAttributeNode("studentBean"),
+	                @NamedAttributeNode("teacherBean"),
+	                @NamedAttributeNode("adminBean")
 	            }
 	        )
 	    }
 	)
+@Getter
+@Setter
+@NoArgsConstructor
 @Component
 @BatchSize (size = 20)
 @Table(name = "forum_post")
@@ -68,6 +83,7 @@ public class ForumPostModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer postId;
 
+	@NonNull
 	@Column(name = "post_content")
 	private String postContent;
 
@@ -78,7 +94,7 @@ public class ForumPostModel {
 	private int postResponseCount = 0;
 
 	@Column(name = "post_created_time", insertable = false, updatable = false)
-	private Timestamp postCreatedTime;
+	private Date postCreatedTime;
 
 	
 	@Column(name = "post_status") @Enumerated(EnumType.STRING)
@@ -107,12 +123,9 @@ public class ForumPostModel {
 	@OneToMany(mappedBy = "forumPostModel", cascade = CascadeType.REMOVE)
 	private List<ForumImageModel> forumImageModel = new ArrayList<ForumImageModel>();
 
-	public ForumPostModel() {
-
-	}
-
+	
 	// update post
-	public ForumPostModel(String postContent) {
+	public ForumPostModel(@NonNull String postContent) {
 		this.postContent = postContent;
 	}
 
@@ -122,110 +135,15 @@ public class ForumPostModel {
 	}
 
 	// insert post
-	public ForumPostModel(Integer postId, String postContent) {
+	public ForumPostModel(Integer postId, @NonNull String postContent) {
 		this.postId = postId;
 		this.postContent = postContent;
 	}
-
-	public Integer getPostId() {
-		return postId;
-	}
-
-	public void setPostId(Integer postId) {
-		this.postId = postId;
-	}
-
-	public String getPostContent() {
-		return postContent;
-	}
-
-	public void setPostContent(String postContent) {
-		this.postContent = postContent;
-	}
-
-	public int getPostUpvoteCount() {
-		return postUpvoteCount;
-	}
-
-	public void setPostUpvoteCount(int postUpvoteCount) {
-		this.postUpvoteCount = postUpvoteCount;
-	}
-
-	public int getPostResponseCount() {
-		return postResponseCount;
-	}
-
-	public void setPostResponseCount(int postResponseCount) {
-		this.postResponseCount = postResponseCount;
-	}
-
-	public Timestamp getPostCreatedTime() {
-		return postCreatedTime;
-	}
-
-	public void setPostCreatedTime(Timestamp postCreatedTime) {
-		this.postCreatedTime = postCreatedTime;
-	}
-
-	public StatusEnum getPostStatus() {
-		return postStatus;
-	}
-
-	public void setPostStatus(StatusEnum postStatus) {
-		this.postStatus = postStatus;
-	}
-
-	public StudentBean getStudentBean() {
-		return studentBean;
-	}
-
-	public void setStudentBean(StudentBean studentBean) {
-		this.studentBean = studentBean;
-	}
-
-	public TeacherBean getTeacherBean() {
-		return teacherBean;
-	}
-
-	public void setTeacherBean(TeacherBean teacherBean) {
-		this.teacherBean = teacherBean;
-	}
-
-	public AdminBean getAdminBean() {
-		return adminBean;
-	}
-
-	public void setAdminBean(AdminBean adminBean) {
-		this.adminBean = adminBean;
-	}
-
-	public ForumThreadModel getForumThreadModel() {
-		return forumThreadModel;
-	}
-
-	public void setForumThreadModel(ForumThreadModel forumThreadModel) {
-		this.forumThreadModel = forumThreadModel;
-	}
-
-	public ForumPostModel getForumPostModel() {
-		return forumPostModel;
-	}
-
-	public void setForumPostModel(ForumPostModel forumPostModel) {
-		this.forumPostModel = forumPostModel;
-	}
-
 	
-	public List<ForumImageModel> getForumImageModel() {
-		return forumImageModel;
-	}
-
-	public void setForumImageModel(List<ForumImageModel> forumImageModel) {
-		this.forumImageModel = forumImageModel;
-	}
-
 	public void setStatusDeleted() {
 		this.postStatus= StatusEnum.DELETED;
 	}
+
+	
 	
 }
