@@ -14,7 +14,7 @@ import com.softskillz.forum.model.model.ForumThreadModel;
 public interface ForumThreadRepository extends JpaRepository<ForumThreadModel, Integer> {
 
 //	@Query("SELECT t FROM ForumThreadModel t LEFT JOIN FETCH t.teacherBean LEFT JOIN FETCH t.studentBean sb LEFT JOIN FETCH companionBean LEFT JOIN FETCH t.forumCategoryModel LEFT JOIN FETCH t.adminBean WHERE t.threadStatus <> 'DELETED'")
-	@EntityGraph(value = "ForumThread.All", type = EntityGraph.EntityGraphType.LOAD)
+	@EntityGraph(value = "ForumThread.All")
 	@Query("SELECT t FROM ForumThreadModel t WHERE t.threadStatus <> 'DELETED'")
 	List<ForumThreadModel> findAllActiveThreads();
 

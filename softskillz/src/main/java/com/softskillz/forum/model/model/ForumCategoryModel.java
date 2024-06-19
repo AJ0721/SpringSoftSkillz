@@ -13,7 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Component
 @Entity
 @BatchSize(size = 20)
@@ -34,9 +41,7 @@ public class ForumCategoryModel {
 	@OneToMany(mappedBy = "forumCategoryModel")
 	private Set<ForumThreadModel> forumThreads = new LinkedHashSet<>();
 
-	public ForumCategoryModel() {
-
-	}
+	
 
 	// for update
 	public ForumCategoryModel(Integer forumCategoryId, String forumCategoryName, String forumCategoryDescription) {
@@ -51,36 +56,6 @@ public class ForumCategoryModel {
 		this.forumCategoryDescription = forumCategoryDescription;
 	}
 
-	public Integer getForumCategoryId() {
-		return forumCategoryId;
-	}
 
-	public void setForumCategoryId(Integer forumCategoryId) {
-		this.forumCategoryId = forumCategoryId;
-	}
-
-	public String getForumCategoryName() {
-		return forumCategoryName;
-	}
-
-	public void setForumCategoryName(String forumCategoryName) {
-		this.forumCategoryName = forumCategoryName;
-	}
-
-	public String getForumCategoryDescription() {
-		return forumCategoryDescription;
-	}
-
-	public void setForumCategoryDescription(String forumCategoryDescription) {
-		this.forumCategoryDescription = forumCategoryDescription;
-	}
-
-	public Set<ForumThreadModel> getForumThreads() {
-		return forumThreads;
-	}
-
-	public void setForumThreads(Set<ForumThreadModel> forumThreads) {
-		this.forumThreads = forumThreads;
-	}
 
 }

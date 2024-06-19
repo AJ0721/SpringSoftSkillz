@@ -43,7 +43,7 @@ public class ForumThreadDto {
 		super();
 		this.threadTitle = threadTitle;
 		this.threadContent = threadContent;
-		this.forumCategory = forumCategory;
+		this.forumCategory = categoryDto;
 	}
 
 	public List<Integer> getThreadIds() {
