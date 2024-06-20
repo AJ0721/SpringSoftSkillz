@@ -40,22 +40,28 @@ public class LogAspect {
     }
 
     private Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        logger.debug("Enter method: {} \n with arguments: {}", 
-        		joinPoint.getSignature().getName(), formatArgs(joinPoint.getArgs()));
+    	
+    	String className= joinPoint.getTarget().getClass().getName();
+    	String methodName= joinPoint.getSignature().getName();
+    	String args= formatArgs(joinPoint.getArgs());
+    	
+        logger.debug("\n Enter class: {} \n Enter method: {} \n with arguments: {} \n", 
+        		className,methodName, args);
+                
 
         Object result;
         try {
             result = joinPoint.proceed();
         } catch (Throwable throwable) {
-            logger.error("Exception in method: {} \n with message: {}", 
+            logger.error("\n Exception in method: {} \n with message: {} \n", 
             		joinPoint.getSignature(), throwable.getMessage());
             throw throwable;
         }
 
         if (result instanceof Collection) {
-            logger.debug("Exit method: {} \n with result size: {}", joinPoint.getSignature().getName(), ((Collection<?>) result).size());
+            logger.debug("\n Exit class: {} \n Exit method: {} \n with result size: {} \n",className, methodName, ((Collection<?>) result).size());
         } else {
-            logger.debug("Exit method: {} \n with result: {}", joinPoint.getSignature().getName(), formatObject(result));
+            logger.debug("\n Exit class: {} \n Exit method: {} \n with result: {} \n", className, methodName, formatObject(result));
         }
 
         return result;
