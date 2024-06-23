@@ -15,6 +15,7 @@ DROP TABLE image_url;
 DROP TABLE test_product;
 DROP TABLE product_category; 
 
+
 CREATE TABLE product_category(
   product_category_id INT PRIMARY KEY IDENTITY(1,1),
   product_category_name NVARCHAR (50) NOT NULL,
@@ -141,8 +142,7 @@ CREATE TABLE voucher(
   voucher_value DECIMAL(3,2) NOT NULL,
 );
 
-alter table voucher
-drop column order_id
+
 
 INSERT INTO voucher (voucher_name, voucher_value) VALUES 
 ('新年特惠 60%OFF', 0.40),
@@ -200,9 +200,3 @@ INSERT INTO test_order (student_id, order_subtotal, payment_method, shipping_add
 (2, 700, 'CASH ON DELIVERY', '彰化市中山路二段', 'SHIPPING', 'IV77925523'),
 (2, 150, 'CASH ON DELIVERY', '台東市中興路四段', 'ARRIVED', 'JU86562747');
 
-
-drop table test_order cascade constraint FK_order_voucher, FK_order_student 
-alter table test_order drop constraint FK_order_voucher, FK_order_student 
-
-alter table order_item drop constraint FK_order_item_order
-DROP INDEX order_student_id ON test_order;

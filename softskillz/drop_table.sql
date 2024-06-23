@@ -1,26 +1,25 @@
-DROP TABLE companion_match;
-DROP TABLE learning_companion;
-DROP TABLE corderitem;
-DROP TABLE corder;
-DROP TABLE orderitem;
-DROP TABLE orders;
-DROP TABLE coursechat;
-DROP TABLE coursechatroom;
-DROP TABLE coursediscount;
-DROP TABLE product;
-DROP TABLE student_schedule;
-DROP TABLE student_reservation;
-DROP TABLE teacher_schedule;
-DROP TABLE course;
-DROP TABLE forum_image;
-DROP TABLE forum_post;
-DROP TABLE forum_thread;
-DROP TABLE forum_category;
-DROP TABLE coupon_type_relations;
-DROP TABLE coupon_type;
-DROP TABLE coupon;
-DROP TABLE s_forgotpwd;
-DROP TABLE t_forgotpwd;
-DROP TABLE teacher;
-DROP TABLE student;
-DROP TABLE admin;
+
+
+--DROP ALL
+DECLARE @sql NVARCHAR(MAX) = N'';
+
+-- Generate DROP CONSTRAINT statements for each foreign key constraint in the database
+SELECT @sql += 'ALTER TABLE ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) +
+               ' DROP CONSTRAINT ' + QUOTENAME(fk.name) + ';'
+FROM sys.foreign_keys AS fk
+JOIN sys.tables AS t ON fk.parent_object_id = t.object_id
+JOIN sys.schemas AS s ON t.schema_id = s.schema_id;
+
+-- Execute the generated DROP CONSTRAINT statements
+EXEC sp_executesql @sql;
+
+-- Reset the @sql variable
+SET @sql = N'';
+
+-- Generate DROP TABLE statements for each table in the database
+SELECT @sql += 'DROP TABLE ' + QUOTENAME(s.name) + '.' + QUOTENAME(t.name) + ';'
+FROM sys.tables t
+JOIN sys.schemas s ON t.schema_id = s.schema_id;
+
+-- Execute the generated DROP TABLE statements
+EXEC sp_executesql @sql;
