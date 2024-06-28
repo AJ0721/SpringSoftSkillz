@@ -1,7 +1,7 @@
 package com.softskillz.account.model.bean;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +10,10 @@ import org.hibernate.annotations.BatchSize;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.softskillz.cart.bean.model.TestCartItem;
+import com.softskillz.cart.bean.model.TestOrder;
 import com.softskillz.companion.model.CompanionBean;
+import com.softskillz.forum.model.model.ForumPostModel;
 import com.softskillz.forum.model.model.ForumThreadModel;
 import com.softskillz.studentreservation.model.StudentReservationBean;
 import com.softskillz.studentschedule.model.StudentScheduleBean;
@@ -28,7 +31,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "student")
-@BatchSize (size = 20)
+@BatchSize(size = 20)
 @Component
 public class StudentBean {
 
@@ -88,33 +91,35 @@ public class StudentBean {
 	@Column(name = "learning_frequency")
 	private String learningFrequency;
 
-	@Column(name = "student_id_formatted",insertable = false,updatable = false)
+	@Column(name = "student_id_formatted", insertable = false, updatable = false)
 	private String studentIdFormatted;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
 	@JsonManagedReference("student-studentReservation")
 	private Set<StudentReservationBean> studentReservation = new HashSet<StudentReservationBean>();
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "studentBean", cascade = CascadeType.ALL)
 	@JsonManagedReference("student-studentSchedule")
 	private Set<StudentScheduleBean> studentSchedule = new HashSet<StudentScheduleBean>();
 
-	//任萱forum
-	@OneToMany (mappedBy = "studentBean",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<ForumThreadModel> threads= new ArrayList<>();
-	
-	public List<ForumThreadModel> getThreads() {
-		return threads;
-	}
+	// 任萱forum
+	@OneToMany(mappedBy = "studentBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ForumThreadModel> threads = new ArrayList<>();
 
-	public void setThreads(List<ForumThreadModel> threads) {
-		this.threads = threads;
-	}
+	@OneToMany(mappedBy = "studentBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ForumPostModel> posts = new ArrayList<>();
+
+	@OneToMany(mappedBy = "studentBean", fetch = FetchType.LAZY)
+	private List<TestOrder> testOrders = new ArrayList<>();
+
+	@OneToMany(mappedBy = "studentBean", fetch = FetchType.LAZY)
+	private List<TestCartItem> testCartItems = new ArrayList<>();
+
 	
-	//京田companion
-	@OneToOne (mappedBy = "studentBeanID", fetch = FetchType.LAZY)
+	// 京田companion
+	@OneToOne(mappedBy = "studentBeanID", fetch = FetchType.LAZY)
 	private CompanionBean companionBean;
-	
+
 	public CompanionBean getCompanionBean() {
 		return companionBean;
 	}
@@ -122,8 +127,7 @@ public class StudentBean {
 	public void setCompanionBean(CompanionBean companionBean) {
 		this.companionBean = companionBean;
 	}
-	
-	
+
 	public StudentBean() {
 	}
 
@@ -348,5 +352,38 @@ public class StudentBean {
 	public void setStudentSchedule(Set<StudentScheduleBean> studentSchedule) {
 		this.studentSchedule = studentSchedule;
 	}
+
+	public List<ForumThreadModel> getThreads() {
+		return threads;
+	}
+
+	public void setThreads(List<ForumThreadModel> threads) {
+		this.threads = threads;
+	}
+
+	public List<ForumPostModel> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<ForumPostModel> posts) {
+		this.posts = posts;
+	}
+
+	public List<TestCartItem> getTestCartItems() {
+		return testCartItems;
+	}
+
+	public void setTestCartItems(List<TestCartItem> testCartItems) {
+		this.testCartItems = testCartItems;
+	}
+
+	public List<TestOrder> getTestOrders() {
+		return testOrders;
+	}
+
+	public void setTestOrders(List<TestOrder> testOrders) {
+		this.testOrders = testOrders;
+	}
+	
 
 }
