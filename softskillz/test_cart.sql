@@ -51,17 +51,29 @@ CREATE TABLE test_product(
 );
 --use full text scan CONTAINS(table, column, number of rows) to replace LIKE %STRING% query
 
-INSERT INTO test_product (product_name, price, description_text, stock, product_category_id, product_status, create_at, update_at) VALUES
-('英漢字典', 300, '全面的英漢字典', 50, 1, 'VISIBLE', SYSDATETIME(), NULL),
-('公務員國考講義 - 行政學', 500, '公務員國考必備講義', 30, 2, 'VISIBLE', SYSDATETIME(), NULL),
-('托福滿分密集訓練', 1000, '托福考試密集訓練資料', 20, 3, 'VISIBLE', SYSDATETIME(), NULL),
-('電子書閱讀器', 1300, '高效能電子書閱讀器', 15, 4, 'VISIBLE', SYSDATETIME(), NULL),
-('多功能筆記本', 200, '創意多功能筆記本', 100, 5, 'VISIBLE', SYSDATETIME(), NULL),
-('線上課程訂閱', 2000, '一年的線上課程訂閱', 10, 6, 'VISIBLE', SYSDATETIME(), NULL),
-('數學練習軟體', 400, '互動數學練習軟體', 25, 7, 'VISIBLE', SYSDATETIME(), NULL),
-('英語文法大全', 250, '詳細的英語文法指南', 40, 1, 'VISIBLE', SYSDATETIME(), NULL),
-('國中數學講義', 350, '國中數學重點講義', 35, 6, 'VISIBLE', SYSDATETIME(), NULL),
-('學習計畫手冊', 150, '有效的學習計畫手冊', 75, 4, 'VISIBLE', SYSDATETIME(), NULL);
+CREATE TRIGGER trg_update_at_test_product
+ON test_product
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE test_product
+    SET update_at = SYSDATETIME()
+    FROM test_product
+    INNER JOIN inserted ON test_product.product_id = inserted.product_id;
+END;
+
+INSERT INTO test_product (product_name, price, description_text, stock, product_category_id, product_status) VALUES
+('英漢字典', 300, '全面的英漢字典', 50, 1, 'VISIBLE'),
+('公務員國考講義 - 行政學', 500, '公務員國考必備講義', 30, 2, 'VISIBLE'),
+('托福滿分密集訓練', 1000, '托福考試密集訓練資料', 20, 3, 'VISIBLE'),
+('電子書閱讀器', 1300, '高效能電子書閱讀器', 15, 4, 'VISIBLE'),
+('多功能筆記本', 200, '創意多功能筆記本', 100, 5, 'VISIBLE'),
+('線上課程訂閱', 2000, '一年的線上課程訂閱', 10, 6, 'VISIBLE'),
+('數學練習軟體', 400, '互動數學練習軟體', 25, 7, 'VISIBLE'),
+('英語文法大全', 250, '詳細的英語文法指南', 40, 1, 'VISIBLE'),
+('國中數學講義', 350, '國中數學重點講義', 35, 6, 'VISIBLE'),
+('學習計畫手冊', 150, '有效的學習計畫手冊', 75, 4, 'VISIBLE');
 
 
 CREATE TABLE image_url(
