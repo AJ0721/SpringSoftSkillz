@@ -4,14 +4,17 @@ Spring MVC
 Project Name: SoftSkillz
 
 1.Description:
-This is part of a group project that is still under development. My contributions to the project focuses on the forum functionality.
+This is part of a group project that is still under development. My contributions to the project focuses on the forum/cart functionality.
 
 2.Installation:
 Eclipse 2023/6
 Tomcat 10.1
 
 3.Database Setup:
-Use the 'springboot_team4.sql' file to set up the database required for the project. This file contains all the necessary SQL scripts.
+Go to 'schema' file. This file contains all the necessary SQL scripts.
+Use the file 'create_table.sql' to create tables. 
+Use the file 'insert_data.sql' to insert data.
+Use the file 'drop_select.sql' to drop or select tables.
 
 -create a database in sql server named 'softskillzdb'
 -create all the tables and insert corresponding data
