@@ -1,3 +1,18 @@
+SELECT * FROM product_category;
+SELECT * FROM test_product;
+SELECT * FROM image_url;
+SELECT * FROM cart_item;
+SELECT * FROM test_order
+SELECT * FROM voucher
+SELECT * FROM order_item;
+
+DROP TABLE IF EXISTS order_item;
+DROP TABLE IF EXISTS cart_item;
+DROP TABLE IF EXISTS test_order;
+DROP TABLE IF EXISTS voucher;
+DROP TABLE IF EXISTS image_url;
+DROP TABLE IF EXISTS test_product;
+DROP TABLE IF EXISTS product_category;
 
 
 --DROP ALL

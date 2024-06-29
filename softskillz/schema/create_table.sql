@@ -355,3 +355,77 @@ CREATE TABLE forum_image (
     CONSTRAINT FK_image_post_id FOREIGN KEY (post_id) REFERENCES forum_post(post_id)
 );
 
+--test購物車(延伸project)
+
+CREATE TABLE product_category(
+  product_category_id INT PRIMARY KEY IDENTITY(1,1),
+  product_category_name NVARCHAR (50) NOT NULL,
+  CONSTRAINT UQ_product_category_name UNIQUE(product_category_name)
+);
+
+CREATE TABLE test_product(
+  product_id INT PRIMARY KEY IDENTITY(1,1),
+  product_name NVARCHAR(50) NOT NULL,
+  price DECIMAL(7,2) NOT NULL,
+  description_text NVARCHAR(500) NOT NULL,
+  stock INT NOT NULL,
+  product_category_id INT NOT NULL,
+  product_status NVARCHAR(20) CHECK(product_status IN ('VISIBLE', 'LOCKED', 'DELETED')) DEFAULT 'VISIBLE' NOT NULL, 
+  image_id INT,
+  create_at DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+  update_at DATETIME2 NULL,
+  CONSTRAINT FK_product_category FOREIGN KEY (product_category_id) REFERENCES product_category(product_category_id),
+  INDEX IX_product_name NONCLUSTERED (product_name),
+  INDEX IX_product_category_id NONCLUSTERED (product_category_id)
+);
+--use full text scan CONTAINS(table, column, number of rows) to replace LIKE %STRING% query
+
+
+CREATE TABLE image_url(
+  image_url_id INT PRIMARY KEY IDENTITY(1,1),
+  image_url NVARCHAR(MAX) NULL,
+  product_id INT NOT NULL,
+  CONSTRAINT FK_image_product FOREIGN KEY (product_id) REFERENCES test_product(product_id)
+);
+
+CREATE TABLE voucher(
+  voucher_id INT PRIMARY KEY IDENTITY(1,1),
+  voucher_name NVARCHAR(50) NOT NULL,
+  voucher_value DECIMAL(3,2) NOT NULL
+);
+
+CREATE TABLE test_order(
+  order_id INT PRIMARY KEY IDENTITY(1,1),
+  student_id INT NOT NULL,
+  order_subtotal DECIMAL(7,2) NOT NULL, 
+  payment_method NVARCHAR (20) NOT NULL DEFAULT 'CASH ON DELIVERY',
+  shipping_address NVARCHAR (256) NOT NULL,
+  order_status NVARCHAR(20) CHECK(order_status IN ('TO BE PAID', 'PAID', 'SELLER CONFIRMED', 'SHIPPING', 'ARRIVED', 'COMPLETED', 'CANCELLED')) DEFAULT 'TO BE PAID' NOT NULL,
+  invoice VARCHAR (11) NULL,
+  create_at DATETIME2 DEFAULT SYSDATETIME(),
+  update_at DATETIME2 DEFAULT SYSDATETIME() ,
+  voucher_id INT NULL,
+  CONSTRAINT FK_order_student FOREIGN KEY (student_id) REFERENCES student(student_id),
+  CONSTRAINT FK_order_voucher FOREIGN KEY (voucher_id) REFERENCES voucher(voucher_id),
+  INDEX order_student_id NONCLUSTERED (student_id)
+);
+
+CREATE TABLE cart_item(
+  cart_item_id INT PRIMARY KEY IDENTITY(1,1),
+  student_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  CONSTRAINT FK_cart_item_product FOREIGN KEY (product_id) REFERENCES test_product(product_id),
+  CONSTRAINT FK_cart_student FOREIGN KEY (student_id) REFERENCES student(student_id)
+);
+
+CREATE TABLE order_item(
+  order_item_id INT PRIMARY KEY IDENTITY(1,1),
+  product_id INT NOT NULL,
+  order_id INT NOT NULL,
+  price DECIMAL(7,2) NOT NULL,
+  quantity INT NOT NULL,
+  item_subtotal AS (quantity*price) PERSISTED,
+  CONSTRAINT FK_order_item_product FOREIGN KEY (product_id) REFERENCES test_product(product_id),
+  CONSTRAINT FK_order_item_order FOREIGN KEY (order_id) REFERENCES test_order(order_id)
+);
